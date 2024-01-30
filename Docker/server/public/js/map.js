@@ -1,5 +1,5 @@
 // 격자
-var locArr = [
+const locArr = [
   [61, 129],
   [62, 129],
   [59, 128],
@@ -33,21 +33,21 @@ var locArr = [
 ];
 
 // 위도
-var lat_line = [
+const lat_line = [
   37.69173846, 37.64577895, 37.60262058, 37.55674696, 37.51063517, 37.46494092, 37.42198141,
 ];
 // 경도
-var lon_line = [
+const lon_line = [
   126.7851093, 126.8432583, 126.9010823, 126.9599082, 127.0180783, 127.0766389, 127.1340031,
   127.1921521,
 ];
 
-var grid_count = 30;
-var grid_bounds = [];
-var grid_objects = new Array(grid_count);
+const grid_count = 30;
+let grid_bounds = [];
+let grid_objects = new Array(grid_count);
 
 // sw : 남서, ne : 북동
-var sw, ne;
+let sw, ne;
 
 for (let lat_idx = 1; lat_idx < lat_line.length; lat_idx++) {
   for (let lon_idx = 0; lon_idx < lon_line.length - 1; lon_idx++) {
@@ -72,7 +72,7 @@ function hideGrid(grid_objects) {
 }
 // 강수량에 따른 격자 색(하늘색 --> 검정색)
 function getFillColor(rainfall) {
-  var fillColor = "#000000";
+  let fillColor = "#000000";
 
   if (rainfall === 0) {
     fillColor = "#FFFFFF";
@@ -121,8 +121,8 @@ function showGrid(time) {
   hideGrid(grid_objects);
   // 격자 개수만큼 반복
   for (var idx = 0; idx < grid_count; idx++) {
-    var fillColor = getFillColor(receivedData[idx][time].RN1);
-    var fillOpacity = fillColor === "#FFFFFF" ? 0 : 0.4; // 조건에 따라 fillOpacity 설정
+    const fillColor = getFillColor(receivedData[idx][time].RN1);
+    const fillOpacity = fillColor === "#FFFFFF" ? 0 : 0.4; // 조건에 따라 fillOpacity 설정
 
     grid_objects[idx] = new kakao.maps.Rectangle({
       bounds: grid_bounds[idx], // 그려질 사각형의 영역정보입니다

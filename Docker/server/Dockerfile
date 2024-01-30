@@ -1,13 +1,11 @@
-FROM node:latest
+FROM node:21
 
 WORKDIR /usr/src/app/server
 
-COPY  .  .
+COPY package.json ./
 
-RUN npm install
+RUN npm install 
 
-COPY . .
-
-Expose 8080 
+COPY ./ ./
 
 CMD ["npm", "start"]

@@ -60,26 +60,27 @@ function get_next_basedate(input_date) {
 
 //날짜, 시간 구하기
 function getTimeStamp(i) {
-  var d = new Date();
+  let s, s0, s1, s2, s3;
+  let d = new Date();
   if (i == 1) {
     // 날짜
-    var s =
+    s =
       leadingZeros(d.getFullYear(), 4) +
       leadingZeros(d.getMonth() + 1, 2) +
       leadingZeros(d.getDate(), 2);
   } else if (i == 2) {
     // 시간
-    var s = leadingZeros(d.getHours(), 2) + leadingZeros(d.getMinutes(), 2);
+    s = leadingZeros(d.getHours(), 2) + leadingZeros(d.getMinutes(), 2);
   } else if (i == 3) {
     // 30분간격 4개의 시간 배열
-    let s0 = leadingZeros(d.getHours(), 2) + ":" + leadingZeros(d.getMinutes(), 2);
+    s0 = leadingZeros(d.getHours(), 2) + ":" + leadingZeros(d.getMinutes(), 2);
     d.setMinutes(d.getMinutes() + 30);
-    let s1 = leadingZeros(d.getHours(), 2) + ":" + leadingZeros(d.getMinutes(), 2);
+    s1 = leadingZeros(d.getHours(), 2) + ":" + leadingZeros(d.getMinutes(), 2);
     d.setMinutes(d.getMinutes() + 30);
-    let s2 = leadingZeros(d.getHours(), 2) + ":" + leadingZeros(d.getMinutes(), 2);
+    s2 = leadingZeros(d.getHours(), 2) + ":" + leadingZeros(d.getMinutes(), 2);
     d.setMinutes(d.getMinutes() + 30);
-    let s3 = leadingZeros(d.getHours(), 2) + ":" + leadingZeros(d.getMinutes(), 2);
-    var s = [s0, s1, s2, s3];
+    s3 = leadingZeros(d.getHours(), 2) + ":" + leadingZeros(d.getMinutes(), 2);
+    s = [s0, s1, s2, s3];
   }
   return s;
 }

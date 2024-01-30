@@ -5,10 +5,10 @@ import { dfs_xy_conv } from "./convert_XY.js";
 import { convertTimeFormat, addTime } from "./cal_time.js";
 
 export function get_RouteLine(Route) {
-  for (var idx = 0; idx < Route.SubPaths.length; idx++) {
-    var subpath = Route.SubPaths[idx];
-    var linePath = [];
-    var Color;
+  for (let idx = 0; idx < Route.SubPaths.length; idx++) {
+    const subpath = Route.SubPaths[idx];
+    let linePath = [];
+    let Color;
 
     // 도보 구간
     if (subpath.Type == "WALK") continue;
@@ -20,8 +20,8 @@ export function get_RouteLine(Route) {
       Color = subpath.SubwayColor;
     }
 
-    var stationinfo = subpath.StationInfo;
-    for (var station_idx = 0; station_idx < stationinfo.length; station_idx++) {
+    const stationinfo = subpath.StationInfo;
+    for (let station_idx = 0; station_idx < stationinfo.length; station_idx++) {
       // line 저장
       linePath.push(
         new kakao.maps.LatLng(stationinfo[station_idx].Lat, stationinfo[station_idx].Lon)
@@ -29,7 +29,7 @@ export function get_RouteLine(Route) {
     }
 
     // 지도에 표시할 선을 생성합니다
-    var polyline = new kakao.maps.Polyline({
+    const polyline = new kakao.maps.Polyline({
       path: linePath, // 선을 구성하는 좌표배열 입니다
       strokeWeight: 10, // 선의 두께 입니다
       strokeColor: `${Color}`, // 선의 색깔입니다
@@ -42,20 +42,20 @@ export function get_RouteLine(Route) {
 }
 
 export function get_WalkData(Route, time) {
-  var Walk_Data = [];
-  var cur_time = time;
-  var cur_basetime;
+  let Walk_Data = [];
+  let cur_time = time;
+  let cur_basetime;
 
-  for (var idx = 0; idx < Route.SubPaths.length; idx++) {
-    var subpath = Route.SubPaths[idx];
+  for (let idx = 0; idx < Route.SubPaths.length; idx++) {
+    const subpath = Route.SubPaths[idx];
     // 도보 구간
     if (subpath.Type == "WALK") {
-      var MidLat = (subpath.StartLat + subpath.EndLat) / 2;
-      var MidLon = (subpath.StartLon + subpath.EndLon) / 2;
-      var xy = dfs_xy_conv("toXY", MidLat, MidLon);
+      const MidLat = (subpath.StartLat + subpath.EndLat) / 2;
+      const MidLon = (subpath.StartLon + subpath.EndLon) / 2;
+      const xy = dfs_xy_conv("toXY", MidLat, MidLon);
       cur_basetime = convertTimeFormat(cur_time);
 
-      var cur_walkdata = {
+      const cur_walkdata = {
         MidLat: MidLat,
         MidLon: MidLon,
         X: xy.x,

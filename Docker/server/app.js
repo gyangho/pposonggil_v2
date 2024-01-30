@@ -38,12 +38,13 @@ app.use("/script", express.static(__dirname + "/public"));
 
 app.use(
   session({
-    secret: "SECRETKEY", // 비밀키
+    secret: `${process.env.SESSION_KEY}`, // 비밀키
     resave: false,
     saveUninitialized: false,
     store: new FileStore({ reapInterval: 60 * 60 }), //세션 파일 삭제 주기
     cookie: {
       expires: 1000 * 60 * 60, //세션유지 1시간
+      httpOnly: true,
     },
   })
 );
@@ -85,8 +86,8 @@ async function getWeatherDataAndRenderPage(filePath, res) {
   let gridData = [];
 
   try {
-    for (var idx = 0; idx < 30; idx++) {
-      var data = await weather.get_6weather_Data(locArr[idx][0], locArr[idx][1]);
+    for (let idx = 0; idx < 30; idx++) {
+      const data = await weather.get6WeatherData(locArr[idx][0], locArr[idx][1]);
       gridData.push(data);
     }
     const fileContent = await fsPromises.readFile(filePath, "utf-8");
@@ -98,17 +99,18 @@ async function getWeatherDataAndRenderPage(filePath, res) {
   }
 }
 
-function queryAsync(sql, params) {
-  return new Promise((resolve, reject) => {
-    db.query(sql, params, (error, results, fields) => {
-      if (error) {
-        reject(error);
-      } else {
-        resolve(results);
-      }
-    });
-  });
-}
+// async function queryAsync(sql, params) {
+//   return new Promise(async (resolve, reject) => {
+//     try {
+//       const connection = await db();
+//       let [results] = await connection.query(sql, params);
+//       connection.destroy();
+//       resolve(results);
+//     } catch (error) {
+//       reject(error);
+//     }
+//   });
+// }
 
 // 인증 라우터
 app.use("/auth", authRouter);
@@ -237,15 +239,16 @@ app.post("/main/POI/result/pposong/cal", async (req, res) => {
   let receivedData = req.body.WalkData;
   let resultData = [];
   try {
+    const connection = await db();
     for (const walkData of receivedData) {
       const sectionData = [];
-      var sum_RN1 = 0;
+      let sum_RN1 = 0;
       for (const section of walkData) {
-        const weatherData = await queryAsync(
+        let [weatherData] = await query(
           "SELECT * FROM FORECAST WHERE TIME = ? AND X = ? AND Y =  ?",
           [section.basetime, section.X, section.Y]
         );
-        var section_RN1 = (Number(weatherData[0].RN1) * section.sectiontime) / 60;
+        const section_RN1 = (Number(weatherData[0].RN1) * section.sectiontime) / 60;
         sum_RN1 += section_RN1;
         sectionData.push({
           DATE: weatherData[0].DATE,
@@ -259,12 +262,13 @@ app.post("/main/POI/result/pposong/cal", async (req, res) => {
           section_RN1: section_RN1.toString(),
         });
       }
-      var WalkWeatherData = {
+      const WalkWeatherData = {
         sum_RN1: sum_RN1.toString(),
         walkData: sectionData,
       };
       resultData.push(WalkWeatherData);
     }
+    connection.destroy();
   } catch (error) {
     console.error("pposong/cal 에러: " + error);
   }

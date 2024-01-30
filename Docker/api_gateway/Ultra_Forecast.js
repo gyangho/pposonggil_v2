@@ -7,7 +7,7 @@ const calculate = require("./cal_time_date.js");
 const axios = require("axios");
 const path = require("path");
 const dotenv = require("dotenv");
-dotenv.config({ path: path.resolve(__dirname, ".env") });
+dotenv.config({ path: path.join(__dirname, "Keys/.env") });
 
 function fill_existData(existingData, category, fcstValue) {
   if (category === "RN1") {
@@ -54,7 +54,6 @@ async function fill_nowCast(
     else if (item.category === "REH") reh = parseInt(item.obsrValue);
     else if (item.category === "WSD") wsd = parseInt(item.obsrValue);
   });
-  var a = 3;
   ultra_forecast_datas.push({
     Date: parseInt(cur_base_date),
     Time: cur_base_time_str,

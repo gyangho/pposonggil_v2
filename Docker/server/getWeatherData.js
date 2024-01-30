@@ -1,35 +1,33 @@
-var db = require("./db");
+const db = require("./db.js");
 
 // 예제: 프로미스 패턴 사용
-function get_6weather_Data(x, y) {
-  return new Promise((resolve, reject) => {
-    db.query(`SELECT * FROM forecast WHERE X = ${x} AND Y = ${y}`, (error, results, fields) => {
-      if (error) {
-        reject(error);
-      } else {
-        resolve(results);
-      }
-    });
-  });
+async function get6WeatherData(x, y) {
+  try {
+    const connection = await db();
+    let [results] = await connection.query("SELECT * FROM forecast WHERE X = ? AND Y = ?", [x, y]);
+    connection.destroy();
+    return results;
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 // 예제: 프로미스 패턴 사용
-function get_1weather_Data(x, y, time) {
-  return new Promise((resolve, reject) => {
-    db.query(
-      `SELECT * FROM forecast WHERE X = ${x} AND Y = ${y} AND TIME = '${time}'`,
-      (error, results, fields) => {
-        if (error) {
-          reject(error);
-        } else {
-          resolve(results);
-        }
-      }
+async function get1WeatherData(x, y, time) {
+  try {
+    const connection = await db();
+    let [results] = await connection.query(
+      "SELECT * FROM forecast WHERE X = ? AND Y = ? AND TIME = ?",
+      [x, y, time]
     );
-  });
+    connection.destroy();
+    return results;
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 module.exports = {
-  get_6weather_Data: get_6weather_Data,
-  get_1weather_Data: get_1weather_Data,
+  get6WeatherData: get6WeatherData,
+  get1WeatherData: get1WeatherData,
 };

@@ -192,23 +192,23 @@ function showLocation() {
   if (navigator.geolocation) {
     // GeoLocation을 이용해서 접속 위치를 얻어옵니다
     navigator.geolocation.getCurrentPosition(function (position) {
-      var lat = position.coords.latitude, // 위도
+      const lat = position.coords.latitude, // 위도
         lon = position.coords.longitude; // 경도
 
-      var locPosition = new kakao.maps.LatLng(lat, lon); // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
+      const locPosition = new kakao.maps.LatLng(lat, lon); // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
       // 마커를 표시합니다
       displayMarker(locPosition);
     });
   } else {
     // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치를 설정합니다
-    var locPosition = new kakao.maps.LatLng(37.566826, 126.9786567);
+    const locPosition = new kakao.maps.LatLng(37.566826, 126.9786567);
     displayMarker(locPosition);
   }
   //지도 위 마커 표시 함수
   function displayMarker(locPosition) {
     // 재클릭시 마크업 제거 및 지도 중심 좌표 서울 중심좌표로 변경
     if (marker) {
-      var seoulCenter = new kakao.maps.LatLng(37.566826, 126.9786567);
+      const seoulCenter = new kakao.maps.LatLng(37.566826, 126.9786567);
       map.setCenter(seoulCenter);
       map.setLevel(ZOOMOUT);
       marker.setMap(null);
@@ -228,8 +228,8 @@ function showLocation() {
 
 /* 1시간 간격의 시간 값 세팅 함수*/
 function calculateTime() {
-  let currentTime = new Date();
-  let hour = currentTime.getHours();
+  const currentTime = new Date();
+  const hour = currentTime.getHours();
   let minute = currentTime.getMinutes();
   let formattedTime;
   const timeNavBtns = document.querySelectorAll(".time-nav__btn");
@@ -256,8 +256,8 @@ document.querySelector(".searchBox").addEventListener("submit", function (event)
   event.preventDefault();
   async function getRoutes() {
     let routesfield = document.getElementById("routes");
-    let url = `https://localhost/api/Odsay`;
-    let response = await axios.get(url, {
+    const url = `https://localhost/api/Odsay`;
+    const response = await axios.get(url, {
       params: {
         start: document.getElementById("start-field").value,
         end: document.getElementById("end-field").value,

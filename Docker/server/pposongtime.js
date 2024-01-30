@@ -1,20 +1,23 @@
 const calculate = require("./API/cal_time_date.js");
-var db = require("./db");
+const db = require("./db");
 
 async function cal_pposong_time(input_date, input_time, route) {
   const times = get_4time(input_date, input_time, 100); // 30분간격 4time
   const pposong_results1 = []; // 구간별 결과들
   const pposong_results2 = []; // 총 결과들
 
-  // Define a function to execute db.query with Promise
-  function dbQueryAsync(sql, params) {
-    return new Promise((resolve, reject) => {
-      db.query(sql, params, (error, results, fields) => {
-        if (error) reject(error);
-        else resolve(results);
-      });
-    });
-  }
+  // // Define a function to execute db.query with Promise
+  // function dbQueryAsync(sql, params) {
+  //   return new Promise(async (resolve, reject) => {
+  //     try {
+  //       const connection = await db();
+  //       let [results] = await connection.query(sql, params);
+  //       resolve(results);
+  //     } catch (error) {
+  //       reject(error);
+  //     }
+  //   });
+  // }
 
   for (const time of times) {
     const pposong_result = []; // 구간의 결과
@@ -39,8 +42,8 @@ async function cal_pposong_time(input_date, input_time, route) {
         }
       }
 
-      let hours = String(Math.floor(end_time / 100)).padStart(2, "0");
-      let minutes = String(end_time % 100).padStart(2, "0");
+      const hours = String(Math.floor(end_time / 100)).padStart(2, "0");
+      const minutes = String(end_time % 100).padStart(2, "0");
       end_time = hours + minutes;
 
       let base_time = Math.floor(parseInt(start_time, 10) / 100) * 100;
@@ -54,7 +57,8 @@ async function cal_pposong_time(input_date, input_time, route) {
         let Y = section.section_start.Y;
         // db에서 RN1받아옴
         try {
-          const results = await dbQueryAsync(
+          const connection = await db();
+          const results = await connection.query(
             "SELECT RN1 FROM forecast WHERE TIME = ? AND X = ? AND Y = ?",
             [base_time_str, X, Y]
           );
@@ -74,6 +78,7 @@ async function cal_pposong_time(input_date, input_time, route) {
           } else {
             console.log("NO DATA");
           }
+          connection.destroy();
         } catch (error) {
           console.error(error);
         }

@@ -164,17 +164,17 @@ async function GetRoot(startX, startY, endX, endY) {
       const Paths = [];
 
       response.data.result.path.forEach((path) => {
-        var TotalWalkTime = 0;
+        let TotalWalkTime = 0;
         // 2023.11.30 김건학
         // 지도 표현에 사용할 위도, 경도의 중간값 저장하는 변수
-        var mid_Lat = 0;
-        var mid_Lon = 0;
-        var totalCount = 0;
+        let mid_Lat = 0;
+        let mid_Lon = 0;
+        let totalCount = 0;
 
         const SubPaths = [];
         // 2023.12.01 김건학
         // subpath에 저장할 위도, 경도, x, y를 담은 start, end 추가
-        var idx = 0;
+        let idx = 0;
         path.subPath.forEach((subpath) => {
           let SubPath, StationInfo;
           switch (subpath.trafficType) {

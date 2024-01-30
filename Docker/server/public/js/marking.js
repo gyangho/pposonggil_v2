@@ -11,26 +11,26 @@ function getWeatherContent(weatherData) {
 }
 
 async function markingWeather(seq, WalkData, WalkWeatherData) {
-  var PathCount = WalkData[seq].length;
+  let PathCount = WalkData[seq].length;
 
-  for (var i = 0; i < PathCount; i++) {
-    var targetLatitude = WalkData[seq][i].MidLat; //동적 위도
-    var targetLongitude = WalkData[seq][i].MidLon; //동적 경도
+  for (let i = 0; i < PathCount; i++) {
+    let targetLatitude = WalkData[seq][i].MidLat; //동적 위도
+    let targetLongitude = WalkData[seq][i].MidLon; //동적 경도
 
-    var weatherData = WalkWeatherData[seq].walkData[i]; //날씨 데이터 가져오기
+    let weatherData = WalkWeatherData[seq].walkData[i]; //날씨 데이터 가져오기
 
     // 특정 위치에 강수량 글씨 표시
     // var markerPosition = new kakao.maps.LatLng(targetLatitude, targetLongitude);
 
-    var imageSrc = "/image/23.png", // 마커이미지의 주소
+    const imageSrc = "/image/23.png", // 마커이미지의 주소
       imageSize = new kakao.maps.Size(30, 35), // 마커이미지의 크기
       imageOption = { offset: new kakao.maps.Point(15, 17.5) }; //point 지점에서 얼마나 떨어지게 이미지 넣을건지
 
-    var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption),
+    const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption),
       markerPosition = new kakao.maps.LatLng(targetLatitude, targetLongitude);
 
     // 마커 추가
-    var marker = new kakao.maps.Marker({
+    const marker = new kakao.maps.Marker({
       position: markerPosition,
       image: markerImage,
     });
@@ -48,7 +48,7 @@ async function markingWeather(seq, WalkData, WalkWeatherData) {
           marker.setZIndex(9999);
 
           // 인포윈도우 추가
-          var infowindow = new kakao.maps.InfoWindow({
+          const infowindow = new kakao.maps.InfoWindow({
             content: getWeatherContent(weatherData),
             position: markerPosition,
           });
@@ -60,7 +60,7 @@ async function markingWeather(seq, WalkData, WalkWeatherData) {
     //여기까지 마커 클릭 이벤트
 
     // 인포윈도우 추가
-    var infowindow = new kakao.maps.InfoWindow({
+    const infowindow = new kakao.maps.InfoWindow({
       content: getWeatherContent(weatherData),
       position: markerPosition,
     });

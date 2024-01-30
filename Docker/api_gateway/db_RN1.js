@@ -46,9 +46,9 @@ async function get_RN1_Data(input_date, input_time, input_x, input_y) {
   });
 
   // 초단기예측 6시간 결과
-  // 1100 ~ 1144 --> 초단기예측(base_time : 1000) --> 11, 12, 13, 14, 15, 16
-  // 1200 ~ 1244 --> 초단기예측(base_time : 1100) --> 12, 13, 14, 15, 16, 17
-  if (input_time % 100 < 45) {
+  // 1100 ~ 1139 --> 초단기예측(base_time : 1000) --> 11, 12, 13, 14, 15, 16
+  // 1200 ~ 1239 --> 초단기예측(base_time : 1100) --> 12, 13, 14, 15, 16, 17
+  if (input_time % 100 < 40) {
     // (1, 3)
     const items = await fetch_ultra_forecast_data(queryParams);
 
@@ -77,9 +77,9 @@ async function get_RN1_Data(input_date, input_time, input_x, input_y) {
   }
 
   // 초단기실황 결과 1개 + 초단기예측 결과 5개
-  // 1145 ~ 1159 --> 초단기실황(base_time : 1100) --> 11
+  // 1140 ~ 1159 --> 초단기실황(base_time : 1100) --> 11
   //                 + 초단기예측(base_time : 1100) --> 12, 13, 14, 15, 16
-  // 1245 ~ 1259 --> 초단기실황(base_time : 1200) --> 12
+  // 1240 ~ 1259 --> 초단기실황(base_time : 1200) --> 12
   //                 + 초단기예측(base_time : 1200) --> 13, 14, 15, 16, 16
   else {
     const {

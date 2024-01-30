@@ -1,7 +1,7 @@
 version: '3'
 services:
   nginx:
-    image: nginx:latest
+    image: nginx:1.25
     container_name: nginx
     ports:
       - 80:80
@@ -30,8 +30,6 @@ services:
     build: ./Docker/server
     container_name: server
     restart: unless-stopped
-
-    # combine below two together makes `it` option when you use `docker exec -it`
     stdin_open: true # `-i`
     tty: true # `-t`
     environment:
@@ -42,6 +40,7 @@ services:
     volumes:
       - ./Docker/server:/usr/src/app/server
       - ./Docker/Keys:/usr/src/app/server/Keys
+
   api_gateway:
     depends_on:
       mysql:
@@ -51,13 +50,10 @@ services:
     build: ./Docker/api_gateway
     container_name: api_gateway
     restart: unless-stopped
-
-    # combine below two together makes `it` option when you use `docker exec -it`
     stdin_open: true # `-i`
     tty: true # `-t`
     environment:
       - TZ=Asia/Seoul
-
     networks:
       - front-network
       - back-network
@@ -66,7 +62,7 @@ services:
       - ./Docker/Keys:/usr/src/app/api_gateway/Keys
 
   mysql:
-    image: mysql:latest
+    image: mysql:8
     restart: unless-stopped
     env_file:
       - Docker/Keys/.env
@@ -74,23 +70,15 @@ services:
     expose:
       - 3306
     environment:
-      # - MYSQL_USER
-      # - MYSQL_DATABASE
-      # - MYSQL_CONTAINER_NAME
-      # - MYSQL_ROOT_PASSWORD
-      # - MYSQL_PASSWORD
       - TZ=Asia/Seoul
     command:
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
-
     volumes:
       - db:/var/lib/mysql
       - ./Docker/mysql/:/docker-entrypoint-initdb.d/
-
     networks:
       - back-network
-
     healthcheck:
       test: ['CMD-SHELL', 'mysqladmin ping -h 127.0.0.1 -u root --password=$$MYSQL_ROOT_PASSWORD']
       interval: 5s
