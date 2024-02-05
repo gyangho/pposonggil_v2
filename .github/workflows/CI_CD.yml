@@ -114,16 +114,18 @@ jobs:
             sudo rm -rf pposonggil_v2
             git clone https://github.com/Gonagi/pposonggil_v2.git 
       - name: pull image from Docker Hub
-        run: |      
-            sudo docker rm -f $(docker ps -qa) 
-            sudo docker rmi ${{secrets.DOCKER_REPO}}/api_gateway:latest 
-            sudo docker rmi ${{secrets.DOCKER_REPO}}/server:latest 
-            sudo docker rmi ${{secrets.DOCKER_REPO}}/nginx:1.25 
-            sudo docker rmi ${{secrets.DOCKER_REPO}}/mysql:8 
-            sudo docker pull ${{secrets.DOCKER_REPO}}/api_gateway:latest 
-            sudo docker pull ${{secrets.DOCKER_REPO}}/server:latest 
-            sudo docker pull ${{secrets.DOCKER_REPO}}/nginx:1.25 
-            sudo docker pull ${{secrets.DOCKER_REPO}}/mysql:8 
+        run: |
+          if [ "$(docker ps -q)" ]; then
+            sudo docker rm -f $(docker ps -qa);
+          fi
+          sudo docker rmi ${{secrets.DOCKER_REPO}}/api_gateway:latest;
+          sudo docker rmi ${{secrets.DOCKER_REPO}}/server:latest;
+          sudo docker rmi ${{secrets.DOCKER_REPO}}/nginx:1.25;
+          sudo docker rmi ${{secrets.DOCKER_REPO}}/mysql:8;
+          sudo docker pull ${{secrets.DOCKER_REPO}}/api_gateway:latest;
+          sudo docker pull ${{secrets.DOCKER_REPO}}/server:latest;
+          sudo docker pull ${{secrets.DOCKER_REPO}}/nginx:1.25;
+          sudo docker pull ${{secrets.DOCKER_REPO}}/mysql:8;
       - name: Set up .pem files and update configurations
         run: |
             sudo cp gonagi.store-key.pem pposonggil_v2/Docker/Keys 
