@@ -115,10 +115,6 @@ jobs:
             git clone https://github.com/Gonagi/pposonggil_v2.git 
       - name: pull image from Docker Hub
         run: |
-          sudo docker rmi ${{secrets.DOCKER_REPO}}/api_gateway:latest
-          sudo docker rmi ${{secrets.DOCKER_REPO}}/server:latest
-          sudo docker rmi ${{secrets.DOCKER_REPO}}/nginx:1.25
-          sudo docker rmi ${{secrets.DOCKER_REPO}}/mysql:8
           sudo docker pull ${{secrets.DOCKER_REPO}}/api_gateway:latest
           sudo docker pull ${{secrets.DOCKER_REPO}}/server:latest
           sudo docker pull ${{secrets.DOCKER_REPO}}/nginx:1.25
