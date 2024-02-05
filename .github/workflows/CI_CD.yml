@@ -1,4 +1,3 @@
-
 name: CI/CD
 
 on:
@@ -116,9 +115,6 @@ jobs:
             git clone https://github.com/Gonagi/pposonggil_v2.git 
       - name: pull image from Docker Hub
         run: |
-          if [ "$(docker ps -q)" ]; then
-            sudo docker rm -f $(docker ps -qa);
-          fi
           sudo docker rmi ${{secrets.DOCKER_REPO}}/api_gateway:latest
           sudo docker rmi ${{secrets.DOCKER_REPO}}/server:latest
           sudo docker rmi ${{secrets.DOCKER_REPO}}/nginx:1.25
