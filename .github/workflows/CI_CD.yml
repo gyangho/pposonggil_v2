@@ -109,34 +109,30 @@ jobs:
           username: ${{secrets.AWS_USERNAME}}
           key: ${{secrets.AWS_KEY}}
           port: ${{secrets.AWS_PORT}}
-      - name: git clone
-        run: |
+          script: |
             sudo rm -rf pposonggil_v2
             git clone https://github.com/Gonagi/pposonggil_v2.git 
-      - name: pull image from Docker Hub
-        run: |
-          sudo docker pull ${{secrets.DOCKER_REPO}}/api_gateway:latest
-          sudo docker pull ${{secrets.DOCKER_REPO}}/server:latest
-          sudo docker pull ${{secrets.DOCKER_REPO}}/nginx:1.25
-          sudo docker pull ${{secrets.DOCKER_REPO}}/mysql:8
-      - name: Set up .pem files and update configurations
-        run: |
+            sudo docker rmi ${{secrets.DOCKER_REPO}}/api_gateway:latest
+            sudo docker rmi ${{secrets.DOCKER_REPO}}/server:latest
+            sudo docker rmi ${{secrets.DOCKER_REPO}}/nginx:1.25
+            sudo docker rmi ${{secrets.DOCKER_REPO}}/mysql:8
+            sudo docker pull ${{secrets.DOCKER_REPO}}/api_gateway:latest
+            sudo docker pull ${{secrets.DOCKER_REPO}}/server:latest
+            sudo docker pull ${{secrets.DOCKER_REPO}}/nginx:1.25
+            sudo docker pull ${{secrets.DOCKER_REPO}}/mysql:8
             sudo cp gonagi.store-key.pem pposonggil_v2/Docker/Keys 
             sudo cp gonagi.store.pem pposonggil_v2/Docker/Keys 
             cd pposonggil_v2 
             sudo find . -type f -exec sed -i 's/localhost/gonagi.store/g' {} +   
-      - name: Set up .env file
-        run: |
-          echo "MYSQL_HOST=${{secrets.MYSQL_HOST}}" >> .env
-          echo "MYSQL_USER=${{secrets.MYSQL_USER}}" >> .env
-          echo "MYSQL_DATABASE=${{secrets.MYSQL_DATABASE}}" >> .env
-          echo "MYSQL_ROOT_PASSWORD=${{secrets.MYSQL_ROOT_PASSWORD}}" >>.env
-          echo "MYSQL_PASSWORD=${{secrets.MYSQL_PASSWORD}}" >> .env
-          echo "PUBLIC_KEY=${{secrets.PUBLIC_KEY}}" >> .env
-          echo "ODSAY_KEY=${{secrets.ODSAY_KEY}}" >>.env
-          echo "KAKAO_JAVASCRIPT_KEY=${{secrets.KAKAO_JAVASCRIPT_KEY}}" >> .env
-          echo "KAKAO_REST_KEY=${{secrets.KAKAO_REST_KEY}}" >> .env
-          echo "SESSION_KEY=${{secrets.SESSION_KEY}}" >>.env
-        working-directory: Docker/Keys
-      - name: Docker Compose up
-        run: sudo docker-compose up -d
+            cd Docker/Keys
+            echo "MYSQL_HOST=${{secrets.MYSQL_HOST}}" >> .env
+            echo "MYSQL_USER=${{secrets.MYSQL_USER}}" >> .env
+            echo "MYSQL_DATABASE=${{secrets.MYSQL_DATABASE}}" >> .env
+            echo "MYSQL_ROOT_PASSWORD=${{secrets.MYSQL_ROOT_PASSWORD}}" >>.env
+            echo "MYSQL_PASSWORD=${{secrets.MYSQL_PASSWORD}}" >> .env
+            echo "PUBLIC_KEY=${{secrets.PUBLIC_KEY}}" >> .env
+            echo "ODSAY_KEY=${{secrets.ODSAY_KEY}}" >>.env
+            echo "KAKAO_JAVASCRIPT_KEY=${{secrets.KAKAO_JAVASCRIPT_KEY}}" >> .env
+            echo "KAKAO_REST_KEY=${{secrets.KAKAO_REST_KEY}}" >> .env
+            echo "SESSION_KEY=${{secrets.SESSION_KEY}}" >>.env
+            sudo docker-compose up -d
