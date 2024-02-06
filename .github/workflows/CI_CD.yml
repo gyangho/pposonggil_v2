@@ -112,6 +112,7 @@ jobs:
           port: ${{secrets.AWS_PORT}}
       - name: colne repository and configuration files
         run: |
+          cd /home/ubuntu
           sudo rm -rf pposonggil_v2
           git clone https://github.com/Gonagi/pposonggil_v2.git 
           sudo cp gonagi.store-key.pem pposonggil_v2/Docker/Keys 
@@ -128,7 +129,7 @@ jobs:
           sudo docker pull ${{secrets.DOCKER_REPO}}/mysql:8
       - name: Setup environment and install dependencies
         run: |
-          cd pposonggil_v2 
+          cd /home/ubuntu/pposonggil_v2        
           sudo find . -type f -exec sed -i 's/localhost/gonagi.store/g' {} +   
           cd Docker/Keys
           echo "MYSQL_HOST=${{secrets.MYSQL_HOST}}" >> .env
@@ -146,4 +147,6 @@ jobs:
           cd ../api_gateway
           sudo npm install
       - name: Run services
-        run: sudo docker-compose up -d
+        run: |
+          cd /home/ubuntu/pposonggil_v2
+          sudo docker-compose up -d
