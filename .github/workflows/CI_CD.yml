@@ -94,13 +94,7 @@ jobs:
           docker tag nginx:1.25 ${{secrets.DOCKER_REPO}}/nginx:1.25
           docker push ${{secrets.DOCKER_REPO}}/nginx:1.25
   Deploy_to_server:
-    needs:
-      [
-        build_and_push_server,
-        build_and_push_api_gateway,
-        build_and_push_mysql,
-        build_and_push_nginx,
-      ]
+    needs: [ build_and_push_server, build_and_push_api_gateway, build_and_push_mysql, build_and_push_nginx]
     runs-on: ubuntu-latest
     steps:
       - name: executing remote ssh commands using password
@@ -110,44 +104,33 @@ jobs:
           username: ${{secrets.AWS_USERNAME}}
           key: ${{secrets.AWS_KEY}}
           port: ${{secrets.AWS_PORT}}
-      - name: colne repository and configuration files
-        run: |
-          cd /home/runner/work/
-          sudo rm -rf pposonggil_v2
-          git clone https://github.com/Gonagi/pposonggil_v2.git 
-          cd pposonggil_v2/Docker/Keys
-          echo ${{secrets.GONAGI_STORE_PEM}} >> gonagi.store.pem
-          echo ${{secrets.GONAGI_STORE_KEY_PEM}} >> gonagi.store-key.pem
-      - name: Manage Docker images
-        run: |
-          sudo docker rmi ${{secrets.DOCKER_REPO}}/api_gateway:latest
-          sudo docker rmi ${{secrets.DOCKER_REPO}}/server:latest
-          sudo docker rmi ${{secrets.DOCKER_REPO}}/nginx:1.25
-          sudo docker rmi ${{secrets.DOCKER_REPO}}/mysql:8
-          sudo docker pull ${{secrets.DOCKER_REPO}}/api_gateway:latest
-          sudo docker pull ${{secrets.DOCKER_REPO}}/server:latest
-          sudo docker pull ${{secrets.DOCKER_REPO}}/nginx:1.25
-          sudo docker pull ${{secrets.DOCKER_REPO}}/mysql:8
-      - name: Setup environment and install dependencies
-        run: |
-          cd /home/runner/work/pposonggil_v2        
-          sudo find . -type f -exec sed -i 's/localhost/gonagi.store/g' {} +   
-          cd Docker/Keys
-          echo "MYSQL_HOST=${{secrets.MYSQL_HOST}}" >> .env
-          echo "MYSQL_USER=${{secrets.MYSQL_USER}}" >> .env
-          echo "MYSQL_DATABASE=${{secrets.MYSQL_DATABASE}}" >> .env
-          echo "MYSQL_ROOT_PASSWORD=${{secrets.MYSQL_ROOT_PASSWORD}}" >>.env
-          echo "MYSQL_PASSWORD=${{secrets.MYSQL_PASSWORD}}" >> .env
-          echo "PUBLIC_KEY=${{secrets.PUBLIC_KEY}}" >> .env
-          echo "ODSAY_KEY=${{secrets.ODSAY_KEY}}" >>.env
-          echo "KAKAO_JAVASCRIPT_KEY=${{secrets.KAKAO_JAVASCRIPT_KEY}}" >> .env
-          echo "KAKAO_REST_KEY=${{secrets.KAKAO_REST_KEY}}" >> .env
-          echo "SESSION_KEY=${{secrets.SESSION_KEY}}" >>.env
-          cd ../server
-          sudo npm install
-          cd ../api_gateway
-          sudo npm install
-      - name: Run services
-        run: |
-          cd /home/runner/work/pposonggil_v2
-          sudo docker-compose up -d
+          script: |
+            sudo rm -rf pposonggil_v2
+            git clone https://github.com/Gonagi/pposonggil_v2.git 
+            sudo docker rmi ${{secrets.DOCKER_REPO}}/api_gateway:latest
+            sudo docker rmi ${{secrets.DOCKER_REPO}}/server:latest
+            sudo docker rmi ${{secrets.DOCKER_REPO}}/nginx:1.25
+            sudo docker rmi ${{secrets.DOCKER_REPO}}/mysql:8
+            sudo docker pull ${{secrets.DOCKER_REPO}}/api_gateway:latest
+            sudo docker pull ${{secrets.DOCKER_REPO}}/server:latest
+            sudo docker pull ${{secrets.DOCKER_REPO}}/nginx:1.25
+            sudo docker pull ${{secrets.DOCKER_REPO}}/mysql:8 
+            sudo find . -type f -exec sed -i 's/localhost/gonagi.store/g' {} +   
+            cd Docker/Keys
+            echo ${{secrets.GONAGI_STORE_PEM}} >> gonagi.store.pem
+            echo ${{secrets.GONAGI_STORE_KEY_PEM}} >> gonagi.store-key.pem
+            echo "MYSQL_HOST=${{secrets.MYSQL_HOST}}" >> .env
+            echo "MYSQL_USER=${{secrets.MYSQL_USER}}" >> .env
+            echo "MYSQL_DATABASE=${{secrets.MYSQL_DATABASE}}" >> .env
+            echo "MYSQL_ROOT_PASSWORD=${{secrets.MYSQL_ROOT_PASSWORD}}" >>.env
+            echo "MYSQL_PASSWORD=${{secrets.MYSQL_PASSWORD}}" >> .env
+            echo "PUBLIC_KEY=${{secrets.PUBLIC_KEY}}" >> .env
+            echo "ODSAY_KEY=${{secrets.ODSAY_KEY}}" >>.env
+            echo "KAKAO_JAVASCRIPT_KEY=${{secrets.KAKAO_JAVASCRIPT_KEY}}" >> .env
+            echo "KAKAO_REST_KEY=${{secrets.KAKAO_REST_KEY}}" >> .env
+            echo "SESSION_KEY=${{secrets.SESSION_KEY}}" >>.env
+            cd ../server
+            sudo npm install
+            cd ../api_gateway
+            sudo npm install
+            sudo docker-compose up -d
