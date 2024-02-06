@@ -118,8 +118,8 @@ jobs:
             cd pposonggil_v2
             sudo find . -type f -exec sed -i 's/localhost/gonagi.store/g' {} +   
             cd Docker/Keys
-            echo ${{secrets.GONAGI_STORE_PEM}} >> gonagi.store.pem
-            echo ${{secrets.GONAGI_STORE_KEY_PEM}} >> gonagi.store-key.pem
+            echo "${{secrets.GONAGI_STORE_PEM}}" >> gonagi.store.pem
+            echo "${{secrets.GONAGI_STORE_KEY_PEM}}" >> gonagi.store-key.pem
             echo "MYSQL_HOST=${{secrets.MYSQL_HOST}}" >> .env
             echo "MYSQL_USER=${{secrets.MYSQL_USER}}" >> .env
             echo "MYSQL_DATABASE=${{secrets.MYSQL_DATABASE}}" >> .env
