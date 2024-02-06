@@ -112,14 +112,12 @@ jobs:
           port: ${{secrets.AWS_PORT}}
       - name: colne repository and configuration files
         run: |
-          ls
           cd /home/runner/work/
-          ls
           sudo rm -rf pposonggil_v2
           git clone https://github.com/Gonagi/pposonggil_v2.git 
-          sudo cp gonagi.store-key.pem pposonggil_v2/Docker/Keys 
-          sudo cp gonagi.store.pem pposonggil_v2/Docker/Keys
-          ls
+          cd pposonggil_v2/Docker/Keys
+          echo ${{secrets.GONAGI_STORE_PEM}} >> gonagi.store.pem
+          echo ${{secrets.GONAGI_STORE_KEY_PEM}} >> gonagi.store-key.pem
       - name: Manage Docker images
         run: |
           sudo docker rmi ${{secrets.DOCKER_REPO}}/api_gateway:latest
