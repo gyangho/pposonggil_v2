@@ -115,6 +115,7 @@ jobs:
             sudo docker pull ${{secrets.DOCKER_REPO}}/server:latest
             sudo docker pull ${{secrets.DOCKER_REPO}}/nginx:1.25
             sudo docker pull ${{secrets.DOCKER_REPO}}/mysql:8 
+            cd pposonggil_v2
             sudo find . -type f -exec sed -i 's/localhost/gonagi.store/g' {} +   
             cd Docker/Keys
             echo ${{secrets.GONAGI_STORE_PEM}} >> gonagi.store.pem
