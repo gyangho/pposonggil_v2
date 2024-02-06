@@ -165,7 +165,7 @@ app.get("/main/mypage", (req, res) => {
 app.get("/main/mypage/bookmark", async (req, res) => {
   const filePath = path.join(__dirname, "/views/bookmark.html");
   let Routes = {};
-  console.log("나는 천재다 우하하하-이경호호");
+  let a = 1;
   res.send("수정예정");
   나는 천재다 우하하 - 이경호호
   // try {
