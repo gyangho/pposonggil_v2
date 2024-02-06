@@ -135,4 +135,8 @@ jobs:
             echo "KAKAO_JAVASCRIPT_KEY=${{secrets.KAKAO_JAVASCRIPT_KEY}}" >> .env
             echo "KAKAO_REST_KEY=${{secrets.KAKAO_REST_KEY}}" >> .env
             echo "SESSION_KEY=${{secrets.SESSION_KEY}}" >>.env
+            cd ../server
+            npm install
+            cd ../api_gateway
+            npm install
             sudo docker-compose up -d
