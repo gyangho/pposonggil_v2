@@ -167,7 +167,7 @@ app.get("/main/mypage/bookmark", async (req, res) => {
   let Routes = {};
   let a = 1;
   res.send("수정예정");
-  나는 천재다 우하하하-이경호호
+  나는 천재다 우하하 - 이경호호
   // try {
   //   Routes = await transport.getPublicTransport(126.9961, 37.5035, 126.96, 37.4946, 202307291200); //신반포역->정보관
   //   if (Routes.length < 1) {
