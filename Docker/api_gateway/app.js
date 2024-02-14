@@ -8,6 +8,7 @@ const morgan = require("morgan");
 
 const { scheduleUpdate } = require("./schedule.js");
 const apiRouter = require("./routes/api.js");
+const swaggerDocs = require("./swagger/swagger.js");
 
 const options = {
   key: fs.readFileSync(path.join(__dirname, "Keys/localhost-key.pem")),
@@ -23,7 +24,8 @@ app.use(
   express.static(path.join(__dirname, "public")),
   cors(),
   bodyParser.urlencoded({ extended: false }),
-  bodyParser.json()
+  bodyParser.json(),
+  swaggerDocs
 );
 
 // 인증 라우터
