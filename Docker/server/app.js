@@ -12,6 +12,7 @@ const { nextTick } = require("process");
 const authRouter = require("./routes/auth.js");
 const mainRouter = require("./routes/main.js");
 const indexRouter = require("./routes/index.js");
+const swaggerDocs = require("./swagger/swagger.js");
 
 dotenv.config({ path: path.join(__dirname, "Keys/.env") });
 
@@ -30,7 +31,7 @@ app.use(
   express.static(path.join(__dirname, "views")),
   bodyParser.urlencoded({ limit: "10mb", extended: true }),
   bodyParser.json({ limit: "10mb" }),
-
+  swaggerDocs,
   session({
     secret: `${process.env.SESSION_KEY}`, // 비밀키
     resave: false,
