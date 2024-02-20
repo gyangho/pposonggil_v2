@@ -121,7 +121,7 @@ function showGrid(time) {
   hideGrid(grid_objects);
   // 격자 개수만큼 반복
   for (var idx = 0; idx < grid_count; idx++) {
-    const fillColor = getFillColor(receivedData[idx][time].RN1);
+    const fillColor = getFillColor(parseInt(receivedData[idx][time].RN1));
     const fillOpacity = fillColor === "#FFFFFF" ? 0 : 0.4; // 조건에 따라 fillOpacity 설정
 
     grid_objects[idx] = new kakao.maps.Rectangle({
