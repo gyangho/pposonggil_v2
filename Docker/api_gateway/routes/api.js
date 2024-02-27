@@ -5,11 +5,12 @@ const dotenv = require("dotenv");
 const axios = require("axios");
 
 const { GetRoot } = require("../public_transport.js");
+const { GetWalk } = require("../convertWalkData.js");
 
 dotenv.config({ path: path.join(__dirname, "../Keys/.env") });
 
 router.get("/POI", async (req, res) => {
-  input = req.query;
+  const input = req.query;
   const url = `https://dapi.kakao.com/v2/local/search/keyword.json?query=${encodeURIComponent(
     input.query
   )}`;
@@ -43,6 +44,13 @@ router.get("/Odsay", async (req, res) => {
     endPoint.end_lat
   );
   return res.send(Routes);
+});
+
+router.get("/osrm", async (req, res) => {
+  const { sLat, sLon, eLat, eLon } = req.query;
+  const walkData = await GetWalk(sLat, sLon, eLat, eLon);
+
+  return res.send(walkData);
 });
 
 module.exports = router;
