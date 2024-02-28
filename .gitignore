@@ -1,8 +1,12 @@
 # Created by https://www.toptal.com/developers/gitignore/api/node
 # Edit at https://www.toptal.com/developers/gitignore?templates=node
 
+#Node.js modules
+*/node_modules/
+
 #key
 *.pem
+.env
 
 #Mac
 .DS_Store
