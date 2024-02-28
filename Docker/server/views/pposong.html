@@ -60,10 +60,10 @@
     <main class="main-screen">
         <div id="map" style="width:100%;height:50vh;">
             <div class="btns" style="z-index:999;">
-                <button id="TimeButton1" style="position: absolute; z-index:100; left: 5%; bottom: 5%;"></button>
-                <button id="TimeButton2" style="position: absolute; z-index:100; left: 30%; bottom: 5%;"></button>
-                <button id="TimeButton3" style="position: absolute; z-index:100; left: 55%; bottom: 5%;"></button>
-                <button id="TimeButton4" style="position: absolute; z-index:100; left: 80%; bottom: 5%;"></button>
+                <button id="TimeButton1" style="position: absolute; z-index:100; left: 3%; bottom: 5%;"></button>
+                <button id="TimeButton2" style="position: absolute; z-index:100; left: 27%; bottom: 5%;"></button>
+                <button id="TimeButton3" style="position: absolute; z-index:100; left: 52%; bottom: 5%;"></button>
+                <button id="TimeButton4" style="position: absolute; z-index:100; left: 77%; bottom: 5%;"></button>
             </div>
         </div>
         <div class="route-component" style="z-index:999;">
@@ -136,7 +136,7 @@
                                     T1H: weather.T1H,
                                     REH: weather.REH,
                                     WSD: weather.WSD,
-                                    section_RN1: section_RN1.toString(),
+                                    section_RN1: section_RN1.toFixed(2),
                                 })
                                 break;
                             }
@@ -145,7 +145,7 @@
                     }
                 }
                 var resultData = {
-                    sum_RN1: sum_RN1.toString(),
+                    sum_RN1: sum_RN1.toFixed(2),
                     walkData: sectionData,
                 };
             }
