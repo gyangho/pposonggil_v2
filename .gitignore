@@ -5,6 +5,7 @@
 */node_modules/
 
 #key
+Docker/Keys/
 *.pem
 .env
 
