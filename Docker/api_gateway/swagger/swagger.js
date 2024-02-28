@@ -81,6 +81,73 @@ const apiPaths = {
       },
     },
   },
+  "/api/osrm/": {
+    get: {
+      summary: "OSRM으로 도보경로 요청하기",
+      description:
+        "위도: lan, 경도 : lon<br>출발지의 위경도, 도착지의 위경도를 입력하여 도보경로를 받아옵니다.",
+      parameters: [
+        {
+          in: "query",
+          name: "sLat",
+          description: "출발지 위도",
+          required: true,
+          schema: {
+            type: "string",
+            example: 126.9594,
+          },
+        },
+        {
+          in: "query",
+          name: "sLon",
+          description: "출발지 경도",
+          required: true,
+          schema: {
+            type: "string",
+            example: 37.4945,
+          },
+        },
+        {
+          in: "query",
+          name: "eLat",
+          description: "도착지 위도",
+          required: true,
+          schema: {
+            type: "string",
+            example: 126.96,
+          },
+        },
+        {
+          in: "query",
+          name: "eLon",
+          description: "도착지 경도",
+          required: true,
+          schema: {
+            type: "string",
+            example: 37.5068,
+          },
+        },
+      ],
+      responses: {
+        200: {
+          description: "도보경로는 [위도(lon), 경도(lat)] 형식의 배열로 구성되어 있습니다",
+          content: {
+            "application/json": {
+              items: {
+                type: "number",
+                description: "위도, 경도",
+              },
+              example: [
+                [37.49448, 126.95942000000001],
+                [37.4945, 126.95946],
+                [37.49492, 126.95954],
+              ],
+            },
+          },
+        },
+      },
+    },
+  },
 };
 
 const options = {
