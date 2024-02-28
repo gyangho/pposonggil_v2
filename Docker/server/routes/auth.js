@@ -1,12 +1,13 @@
 const express = require("express");
 const router = express.Router();
 const path = require("path");
-const template = require("./template.js");
-const db = require("./db.js");
+
+const template = require("../template.js");
+const db = require("../db.js");
 
 // 로그인 화면
 router.get("/login", function (request, response) {
-  response.sendFile(path.join(__dirname, "/views/index.html"));
+  response.sendFile(path.join(__dirname, "../views/index.html"));
 });
 
 // 로그인 프로세스
@@ -50,7 +51,7 @@ router.get("/logout", function (request, response) {
 
 // 회원가입 화면
 router.get("/register", function (request, response) {
-  response.sendFile(path.join(__dirname, "/views/join.html"));
+  response.sendFile(path.join(__dirname, "../views/join.html"));
 });
 
 // 회원가입 프로세스
@@ -69,7 +70,7 @@ router.post("/register_process", async function (request, response) {
           "INSERT INTO usertable (username, password) VALUES(?,?)",
           [username, password]
         );
-        response.sendFile(path.join(__dirname, "/views/welcome.html"));
+        response.sendFile(path.join(__dirname, "../views/welcome.html"));
       } else if (password != password2) {
         // 비밀번호가 올바르게 입력되지 않은 경우
         response.send(`<script type="text/javascript">alert("입력된 비밀번호가 서로 다릅니다."); 
