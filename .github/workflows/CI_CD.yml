@@ -1,11 +1,9 @@
 name: CI/CD
 
 on:
-  push:
-    branches: 
-      - main
-      - develop
   pull_request:
+    branches:
+      - develop
 jobs:
   setup:
     runs-on: ubuntu-latest
@@ -68,42 +66,8 @@ jobs:
           cd Docker/api_gateway
           docker build -t ${{secrets.DOCKER_REPO}}/api_gateway:latest .
           docker push ${{secrets.DOCKER_REPO}}/api_gateway:latest
-  build_and_push_mysql:
-    needs: setup
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download Docker token
-        uses: actions/download-artifact@v4.1.1
-        with:
-          name: docker-token
-          path: ~/.docker/
-      - name: Build and push mysql image
-        run: |
-          docker pull mysql:8
-          docker tag mysql:8 ${{secrets.DOCKER_REPO}}/mysql:8
-          docker push ${{secrets.DOCKER_REPO}}/mysql:8
-  build_and_push_nginx:
-    needs: setup
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download Docker token
-        uses: actions/download-artifact@v4.1.1
-        with:
-          name: docker-token
-          path: ~/.docker/
-      - name: Build and push nginx image
-        run: |
-          docker pull nginx:1.25
-          docker tag nginx:1.25 ${{secrets.DOCKER_REPO}}/nginx:1.25
-          docker push ${{secrets.DOCKER_REPO}}/nginx:1.25
   Deploy_to_server:
-    needs:
-      [
-        build_and_push_server,
-        build_and_push_api_gateway,
-        build_and_push_mysql,
-        build_and_push_nginx,
-      ]
+    needs: [build_and_push_server, build_and_push_api_gateway]
     runs-on: ubuntu-latest
     steps:
       - name: executing remote ssh commands using password
@@ -116,7 +80,7 @@ jobs:
           script: |
             sudo rm -rf pposonggil_v2
             git clone https://github.com/Gonagi/pposonggil_v2.git 
-                        cd pposonggil_v2
+            cd pposonggil_v2
             sudo find . -type f -exec sed -i 's/localhost/gonagi.store/g' {} +   
             cd Docker/Keys
             echo "${{secrets.GONAGI_STORE_PEM}}" >> gonagi.store.pem
@@ -137,10 +101,10 @@ jobs:
             sudo npm install
             sudo docker rmi ${{secrets.DOCKER_REPO}}/api_gateway:latest
             sudo docker rmi ${{secrets.DOCKER_REPO}}/server:latest
-            sudo docker rmi ${{secrets.DOCKER_REPO}}/nginx:1.25
-            sudo docker rmi ${{secrets.DOCKER_REPO}}/mysql:8
+            sudo docker rmi nginx:1.25
+            sudo docker rmi mysql:8
             sudo docker pull ${{secrets.DOCKER_REPO}}/api_gateway:latest
             sudo docker pull ${{secrets.DOCKER_REPO}}/server:latest
-            sudo docker pull ${{secrets.DOCKER_REPO}}/nginx:1.25
-            sudo docker pull ${{secrets.DOCKER_REPO}}/mysql:8 
+            sudo docker pull nginx:1.25
+            sudo docker pull mysql:8 
             sudo docker-compose up -d
