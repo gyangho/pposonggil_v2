@@ -113,8 +113,8 @@ jobs:
             echo "${{secrets.GONAGI_STORE_PEM}}" >> gonagi.store.pem
             echo "${{secrets.GONAGI_STORE_KEY_PEM}}" >> gonagi.store-key.pem
             jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' <<< "$SECRETS_CONTEXT" > .env
-            cd ../server
-            sudo npm install
-            cd ../api_gateway
-            sudo npm install
+            sudo docker pull ${{secrets.DOCKER_REPO}}/api_gateway:0.62
+            sudo docker pull ${{secrets.DOCKER_REPO}}/server:0.62
+            sudo docker pull ${{secrets.DOCKER_REPO}}/nginx:0.62
+            sudo docker pull ${{secrets.DOCKER_REPO}}/mysql:0.62
             sudo docker-compose up -d
