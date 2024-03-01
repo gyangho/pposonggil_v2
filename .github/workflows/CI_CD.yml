@@ -90,7 +90,13 @@ jobs:
           docker tag nginx:1.25 ${{secrets.DOCKER_REPO}}/nginx:1.25
           docker push ${{secrets.DOCKER_REPO}}/nginx:1.25
   Deploy_to_server:
-    needs: [build_and_push_server, build_and_push_api_gateway]
+    needs:
+      [
+        build_and_push_server,
+        build_and_push_api_gateway,
+        build_and_push_mysql,
+        build_and_push_nginx,
+      ]
     runs-on: ubuntu-latest
     steps:
       - name: executing remote ssh commands using password
@@ -111,8 +117,4 @@ jobs:
             echo "$GONAGI_STORE_PEM" > gonagi.store.pem
             echo "$GONAGI_STORE_KEY_PEM" > gonagi.store-key.pem
             jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' <<< "$SECRETS_CONTEXT" > .env
-            cd ../server
-            sudo npm install
-            cd ../api_gateway
-            sudo npm install
             sudo docker-compose up -d
