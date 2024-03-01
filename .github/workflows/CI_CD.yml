@@ -122,10 +122,6 @@ jobs:
             echo "KAKAO_JAVASCRIPT_KEY=${{secrets.KAKAO_JAVASCRIPT_KEY}}" >> .env
             echo "KAKAO_REST_KEY=${{secrets.KAKAO_REST_KEY}}" >> .env
             echo "SESSION_KEY=${{secrets.SESSION_KEY}}" >>.env
-            cd ../server
-            sudo npm install
-            cd ../api_gateway
-            sudo npm install
             sudo docker rmi ${{secrets.DOCKER_REPO}}/api_gateway:latest
             sudo docker rmi ${{secrets.DOCKER_REPO}}/server:latest
             sudo docker rmi ${{secrets.DOCKER_REPO}}/nginx:1.25
