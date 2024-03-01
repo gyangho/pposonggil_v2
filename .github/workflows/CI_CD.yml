@@ -112,7 +112,7 @@ jobs:
             cd Docker/Keys
             echo "${{secrets.GONAGI_STORE_PEM}}" >> gonagi.store.pem
             echo "${{secrets.GONAGI_STORE_KEY_PEM}}" >> gonagi.store-key.pem
-            jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' <<< "$SECRETS_CONTEXT" > Docker/Keys/.env
+            jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' <<< "$SECRETS_CONTEXT" > .env
             cd ../server
             sudo npm install
             cd ../api_gateway
