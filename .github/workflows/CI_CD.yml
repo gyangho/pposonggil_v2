@@ -42,8 +42,7 @@ jobs:
           path: ~/.docker/
       - name: Build and push server image
         run: |
-          cd Docker/server
-          docker build -t ${{secrets.DOCKER_REPO}}/server:0.62
+          docker buildx build -t ${{secrets.DOCKER_REPO}}/server:0.62 Docker/server
           docker push ${{secrets.DOCKER_REPO}}/server:0.62
   build_and_push_api_gateway:
     needs: setup
@@ -58,8 +57,7 @@ jobs:
           path: ~/.docker/
       - name: Build and push api_gateway image
         run: |
-          cd Docker/api_gateway
-          docker build -t ${{secrets.DOCKER_REPO}}/api_gateway:0.62
+          docker buildx build -t ${{secrets.DOCKER_REPO}}/api_gateway:0.62 Docker/api_gateway
           docker push ${{secrets.DOCKER_REPO}}/api_gateway:0.62
   build_and_push_mysql:
     needs: setup
