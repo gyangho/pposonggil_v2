@@ -42,8 +42,8 @@ jobs:
           path: ~/.docker/
       - name: Build and push server image
         run: |
-          docker buildx build -t ${{secrets.DOCKER_REPO}}/server:0.62 Docker/server
-          docker push ${{secrets.DOCKER_REPO}}/server:0.62
+          docker buildx build -t ${{secrets.DOCKER_REPO}}/server:latest Docker/server
+          docker push ${{secrets.DOCKER_REPO}}/server:latest
   build_and_push_api_gateway:
     needs: setup
     runs-on: ubuntu-latest
@@ -57,8 +57,8 @@ jobs:
           path: ~/.docker/
       - name: Build and push api_gateway image
         run: |
-          docker buildx build -t ${{secrets.DOCKER_REPO}}/api_gateway:0.62 Docker/api_gateway
-          docker push ${{secrets.DOCKER_REPO}}/api_gateway:0.62
+          docker buildx build -t ${{secrets.DOCKER_REPO}}/api_gateway:latest Docker/api_gateway
+          docker push ${{secrets.DOCKER_REPO}}/api_gateway:latest
   build_and_push_mysql:
     needs: setup
     runs-on: ubuntu-latest
@@ -71,8 +71,8 @@ jobs:
       - name: Build and push mysql image
         run: |
           docker pull mysql:8
-          docker tag mysql:8 ${{secrets.DOCKER_REPO}}/mysql:0.62
-          docker push ${{secrets.DOCKER_REPO}}/mysql:0.62
+          docker tag mysql:8 ${{secrets.DOCKER_REPO}}/mysql:8
+          docker push ${{secrets.DOCKER_REPO}}/mysql:8
   build_and_push_nginx:
     needs: setup
     runs-on: ubuntu-latest
@@ -85,8 +85,8 @@ jobs:
       - name: Build and push nginx image
         run: |
           docker pull nginx:1.25
-          docker tag nginx:1.25 ${{secrets.DOCKER_REPO}}/nginx:0.62
-          docker push ${{secrets.DOCKER_REPO}}/nginx:0.62
+          docker tag nginx:1.25 ${{secrets.DOCKER_REPO}}/nginx:1.25
+          docker push ${{secrets.DOCKER_REPO}}/nginx:1.25
   Deploy_to_server:
     needs:
       [
@@ -117,4 +117,12 @@ jobs:
             sudo npm install
             cd ../api_gateway
             sudo npm install
+            sudo docker rmi ${{secrets.DOCKER_REPO}}/api_gateway:latest
+            sudo docker rmi ${{secrets.DOCKER_REPO}}/server:latest
+            sudo docker rmi ${{secrets.DOCKER_REPO}}/nginx:1.25
+            sudo docker rmi ${{secrets.DOCKER_REPO}}/mysql:8
+            sudo docker pull ${{secrets.DOCKER_REPO}}/api_gateway:latest
+            sudo docker pull ${{secrets.DOCKER_REPO}}/server:latest
+            sudo docker pull ${{secrets.DOCKER_REPO}}/nginx:1.25
+            sudo docker pull ${{secrets.DOCKER_REPO}}/mysql:8 
             sudo docker-compose up -d

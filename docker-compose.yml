@@ -1,7 +1,7 @@
 version: '3'
 services:
   nginx:
-    image: gonaging/nginx
+    image: nginx:1.25
     container_name: nginx
     ports:
       - 80:80
@@ -22,7 +22,6 @@ services:
       - mysql
 
   server:
-    image: gonaging/server
     depends_on:
       - mysql
     expose:
@@ -41,7 +40,6 @@ services:
       - ./Docker/Keys:/usr/src/app/server/Keys
 
   api_gateway:
-    image: gonaging/api_gateway
     depends_on:
       - mysql
     expose:
@@ -60,7 +58,7 @@ services:
       - ./Docker/Keys:/usr/src/app/api_gateway/Keys
 
   mysql:
-    image: gonaging/mysql
+    image: mysql:8
     restart: unless-stopped
     env_file:
       - Docker/Keys/.env
