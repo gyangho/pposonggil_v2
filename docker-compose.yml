@@ -68,7 +68,7 @@ services:
       - Docker/Keys/.env
     container_name: mysqlDB
     expose:
-      - 3306
+      - 33060:3306
     environment:
       - TZ=Asia/Seoul
     command:
