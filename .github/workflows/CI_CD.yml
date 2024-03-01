@@ -130,8 +130,5 @@ jobs:
             sudo docker rmi ${{secrets.DOCKER_REPO}}/server:latest
             sudo docker rmi ${{secrets.DOCKER_REPO}}/nginx:1.25
             sudo docker rmi ${{secrets.DOCKER_REPO}}/mysql:8
-            sudo docker pull ${{secrets.DOCKER_REPO}}/api_gateway:latest
-            sudo docker pull ${{secrets.DOCKER_REPO}}/server:latest
-            sudo docker pull ${{secrets.DOCKER_REPO}}/nginx:1.25
-            sudo docker pull ${{secrets.DOCKER_REPO}}/mysql:8 
+            sudo docker-compose pull
             sudo docker-compose up -d
