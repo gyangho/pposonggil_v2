@@ -69,6 +69,7 @@ services:
     container_name: mysqlDB
     expose:
       - 3306
+      - 33060
     environment:
       - TZ=Asia/Seoul
     command:
