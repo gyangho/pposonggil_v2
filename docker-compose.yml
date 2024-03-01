@@ -1,7 +1,7 @@
 version: '3'
 services:
   nginx:
-    image: gonaging/nginx:1.25
+    image: gonaging/nginx:0.62
     container_name: nginx
     ports:
       - 80:80
@@ -22,12 +22,11 @@ services:
       - mysql
 
   server:
-    image: gonaging/server
+    image: gonaging/server:0.62
     depends_on:
       - mysql
     expose:
       - 8888
-    build: ./Docker/server
     container_name: server
     restart: unless-stopped
     stdin_open: true # `-i`
@@ -42,12 +41,11 @@ services:
       - ./Docker/Keys:/usr/src/app/server/Keys
 
   api_gateway:
-    image: gonaging/api_gateway:latest
+    image: gonaging/api_gateway:0.62
     depends_on:
       - mysql
     expose:
       - 8889
-    build: ./Docker/api_gateway
     container_name: api_gateway
     restart: unless-stopped
     stdin_open: true # `-i`
@@ -62,7 +60,7 @@ services:
       - ./Docker/Keys:/usr/src/app/api_gateway/Keys
 
   mysql:
-    image: gonaging/mysql:8
+    image: gonaging/mysql:0.62
     restart: unless-stopped
     env_file:
       - Docker/Keys/.env
