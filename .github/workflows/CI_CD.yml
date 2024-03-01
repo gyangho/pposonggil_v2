@@ -112,7 +112,16 @@ jobs:
             cd Docker/Keys
             echo "${{secrets.GONAGI_STORE_PEM}}" >> gonagi.store.pem
             echo "${{secrets.GONAGI_STORE_KEY_PEM}}" >> gonagi.store-key.pem
-            jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' <<< "$SECRETS_CONTEXT" > .env
+            echo "MYSQL_HOST=${{secrets.MYSQL_HOST}}" >> .env
+            echo "MYSQL_USER=${{secrets.MYSQL_USER}}" >> .env
+            echo "MYSQL_DATABASE=${{secrets.MYSQL_DATABASE}}" >> .env
+            echo "MYSQL_ROOT_PASSWORD=${{secrets.MYSQL_ROOT_PASSWORD}}" >>.env
+            echo "MYSQL_PASSWORD=${{secrets.MYSQL_PASSWORD}}" >> .env
+            echo "PUBLIC_KEY=${{secrets.PUBLIC_KEY}}" >> .env
+            echo "ODSAY_KEY=${{secrets.ODSAY_KEY}}" >>.env
+            echo "KAKAO_JAVASCRIPT_KEY=${{secrets.KAKAO_JAVASCRIPT_KEY}}" >> .env
+            echo "KAKAO_REST_KEY=${{secrets.KAKAO_REST_KEY}}" >> .env
+            echo "SESSION_KEY=${{secrets.SESSION_KEY}}" >>.env
             cd ../server
             sudo npm install
             cd ../api_gateway
