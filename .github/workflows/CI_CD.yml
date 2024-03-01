@@ -83,8 +83,8 @@ jobs:
             echo "$GONAGI_STORE_PEM" > gonagi.store.pem
             echo "$GONAGI_STORE_KEY_PEM" > gonagi.store-key.pem
             jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' <<< "$SECRETS_CONTEXT" > .env
+            sudo docker-compose up -d
             cd ../server
             sudo npm install
             cd ../api_gateway
             sudo npm install
-            sudo docker-compose up -d
