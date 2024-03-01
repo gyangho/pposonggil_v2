@@ -26,6 +26,7 @@ services:
       - mysql
     expose:
       - 8888
+    build: ./Docker/server
     container_name: server
     restart: unless-stopped
     stdin_open: true # `-i`
@@ -44,6 +45,7 @@ services:
       - mysql
     expose:
       - 8889
+    build: ./Docker/api_gateway
     container_name: api_gateway
     restart: unless-stopped
     stdin_open: true # `-i`
