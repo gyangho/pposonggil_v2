@@ -43,8 +43,8 @@ jobs:
       - name: Build and push server image
         run: |
           cd Docker/server
-          docker build -t ${{secrets.DOCKER_REPO}}/server:latest .
-          docker push ${{secrets.DOCKER_REPO}}/server:latest
+          docker build -t ${{secrets.DOCKER_REPO}}/server:0.62
+          docker push ${{secrets.DOCKER_REPO}}/server:0.62
   build_and_push_api_gateway:
     needs: setup
     runs-on: ubuntu-latest
