@@ -82,9 +82,9 @@ jobs:
           path: ~/.docker/
       - name: Build and push nginx image
         run: |
-          docker pull nginx:1.25
-          docker tag nginx:1.25 ${{secrets.DOCKER_REPO}}/nginx:1.25
+          docker buildx build -t ${{secrets.DOCKER_REPO}}/nginx:1.25 Docker/nginx
           docker push ${{secrets.DOCKER_REPO}}/nginx:1.25
+
   Deploy_to_server:
     needs:
       [
