@@ -1,4 +1,4 @@
-version: '3'
+version: '3.2'
 services:
   nginx:
     image: gonaging/nginx:1.25
@@ -8,13 +8,13 @@ services:
       - 443:443
     volumes:
       - type: bind
-        source: Docker/Keys
+        source: ./Docker/Keys
         target: /etc/Keys
       - type: bind
-        source: Docker/nginx/conf.d
+        source: ./Docker/nginx/conf.d
         target: /etc/nginx/conf.d
       - type: bind
-        source: Docker/nginx/nginx.conf
+        source: ./Docker/nginx/nginx.conf
         target: /etc/nginx/nginx.conf
     networks:
       - front-network
@@ -43,10 +43,10 @@ services:
       - back-network
     volumes:
       - type: bind
-        source: Docker/server
+        source: ./Docker/server
         target: /usr/src/app/server
       - type: bind
-        source: Docker/Keys
+        source: ./Docker/Keys
         target: /usr/src/app/server/Keys
 
   api_gateway:
@@ -67,17 +67,17 @@ services:
       - back-network
     volumes:
       - type: bind
-        source: Docker/api_gateway
+        source: ./Docker/api_gateway
         target: /usr/src/app/api_gateway
       - type: bind
-        source: Docker/Keys
+        source: ./Docker/Keys
         target: /usr/src/app/api_gateway/Keys
 
   mysql:
     image: gonaging/mysql:8
     restart: unless-stopped
     env_file:
-      - Docker/Keys/.env
+      - ./Docker/Keys/.env
     container_name: mysqlDB
     expose:
       - 3306
@@ -91,7 +91,7 @@ services:
         source: db
         target: /var/lib/mysql
       - type: bind
-        source: Docker/mysql
+        source: ./Docker/mysql
         target: /docker-entrypoint-initdb.d
     networks:
       - back-network
