@@ -1,11 +1,17 @@
+FROM node:21 AS builder
+
+WORKDIR /build
+
+COPY package.json .
+
+RUN npm install 
+
 FROM node:21
 
 WORKDIR /usr/src/app/server
 
-COPY package.json ./
+COPY --from=builder /build/node_modules/ /usr/src/app/server/node_modules/
 
-RUN npm install 
-
-COPY ./ ./
+COPY . .
 
 CMD ["npm", "start"]
