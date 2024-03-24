@@ -13,9 +13,8 @@ class Place {
 }
 
 export async function GetPOI(input) {
-  //2023.12.09. 이경호
-  //url API Gateway 주소로 수정
-  const url = `https://localhost/api/POI?query=${encodeURIComponent(input)}`;
+  //2024.03.24 이경호 "https://localhost" 삭제(도커 구동 중이지 않은 장치에서도 호출 가능하도록 수정)
+  const url = `/api/POI?query=${encodeURIComponent(input)}`;
 
   try {
     const response = await axios.get(url);

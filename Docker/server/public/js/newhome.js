@@ -256,7 +256,8 @@ document.querySelector(".searchBox").addEventListener("submit", function (event)
   event.preventDefault();
   async function getRoutes() {
     let routesfield = document.getElementById("routes");
-    const url = `https://localhost/api/Odsay`;
+    //2024.03.24 이경호 "https://localhost" 삭제(도커 구동 중이지 않은 장치에서도 호출 가능하도록 수정)
+    const url = `/api/Odsay`;
     const response = await axios.get(url, {
       params: {
         start: document.getElementById("start-field").value,
