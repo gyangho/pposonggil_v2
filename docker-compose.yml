@@ -11,8 +11,8 @@ services:
         source: ./Docker/Keys
         target: /etc/Keys
       - type: bind
-        source: ./Docker/nginx/conf.d
-        target: /etc/nginx/conf.d
+        source: ./Docker/nginx/conf.d/api_gateway.conf
+        target: /etc/nginx/conf.d/api_gateway.conf
       - type: bind
         source: ./Docker/nginx/nginx.conf
         target: /etc/nginx/nginx.conf
