@@ -22,7 +22,7 @@
 			<i class="fa-solid fa-cloud" style="color: #9fd8f6;"></i>
 		</div>
 		<div class="status-bar__column">
-			<span>ver 0.6.2</span>
+			<span>ver 0.0.2</span>
 		</div>
 	</div>
 	<header class="alt-header">
@@ -118,8 +118,8 @@
 		const receivedData = JSON.parse(`{{gridData}}`); // 템플릿 문법이라 js파일에 추가 시 오류 발생하므로 html파일에 넣어줘야 함 (js파일로 분리 하면 X)
 	</script>
 	<!--카카오맵 API-->
-	<!--2023.12.09 이경호 API GATEWAY로 url 수정-->
-	<script type="text/javascript" src="https://localhost/api/map"></script>
+	<!--2024.03.24 이경호 "https://localhost" 삭제(도커 구동 중이지 않은 장치에서도 호출 가능하도록 수정)-->
+	<script type="text/javascript" src="/api/map"></script>
 
 	<!--아이콘-->
 	<script src="https://kit.fontawesome.com/660f4d6ed1.js" crossorigin="anonymous"></script>
