@@ -20,7 +20,7 @@ public class Block {
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "umbrella_transaction_id")
-    private UmbrellaTransaction umbrellaTransaction;
+    private UmbrellaTransaction blockUmbrellaTransaction;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "blocked_id")

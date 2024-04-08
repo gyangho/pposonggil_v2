@@ -21,11 +21,11 @@ public class TimeRange {
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "board_id")
-    private Board board;
+    private Board timeRangeBoard;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "umbrella_transaction_id")
-    private UmbrellaTransaction umbrellaTransaction;
+    private UmbrellaTransaction timeRangeUmbrellaTransaction;
 
     private LocalDate startTime;
     private LocalDate endTime;

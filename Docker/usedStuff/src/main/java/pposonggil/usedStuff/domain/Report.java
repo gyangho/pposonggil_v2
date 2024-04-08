@@ -10,7 +10,8 @@ import java.time.LocalDate;
 import static jakarta.persistence.FetchType.LAZY;
 
 @Entity
-@Getter @Setter
+@Getter
+@Setter
 @DynamicInsert
 public class Report {
     @Id
@@ -19,8 +20,12 @@ public class Report {
     private Long id;
 
     @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "umbrellaTransaction")
+    private Board board;
+
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "umbrella_transaction_id")
-    private UmbrellaTransaction umbrellaTransaction;
+    private UmbrellaTransaction reportUmbrellaTransaction;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "reported_id")

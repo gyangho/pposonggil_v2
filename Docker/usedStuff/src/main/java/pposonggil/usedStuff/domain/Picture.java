@@ -19,7 +19,7 @@ public class Picture {
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "board_id")
-    private Board board;
+    private Board pictureBoard;
 
     private String name;
 

@@ -23,14 +23,6 @@ public class Message {
     @JoinColumn(name = "umbrella_transaction_id")
     private UmbrellaTransaction umbrellaTransaction;
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "seller_id")
-    private Member seller;
-
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "buyer_id")
-    private Member buyer;
-
     private LocalDate date;
     private String content;
 }

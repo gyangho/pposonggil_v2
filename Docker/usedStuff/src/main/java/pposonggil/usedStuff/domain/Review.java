@@ -20,7 +20,7 @@ public class Review {
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "umbrella_transaction_id")
-    private UmbrellaTransaction umbrellaTransaction;
+    private UmbrellaTransaction reviewUmbrellaTransaction;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "reviewed_id")

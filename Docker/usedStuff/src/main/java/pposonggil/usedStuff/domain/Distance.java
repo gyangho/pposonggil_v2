@@ -20,7 +20,7 @@ public class Distance {
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "umbrella_transaction_id")
-    private UmbrellaTransaction umbrellaTransaction;
+    private UmbrellaTransaction distanceUmbrellaTransaction;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "seller_id")

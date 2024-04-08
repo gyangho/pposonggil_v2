@@ -6,6 +6,8 @@ import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import static jakarta.persistence.FetchType.LAZY;
 
@@ -19,13 +21,19 @@ public class Board {
     @Column(name = "board_id")
     private Long id;
 
+    @OneToOne(fetch = LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "umbrella_transaction_id")
+    private UmbrellaTransaction umbrellaTransaction;
+
+    @OneToMany(mappedBy = "pictureBoard")
+    private List<Picture> pictures = new ArrayList<>();
+
+    @OneToMany(mappedBy = "timeRangeBoard")
+    private List<TimeRange> timeRanges = new ArrayList<>();
+
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
-
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "umbrella_transaction_id")
-    private UmbrellaTransaction umbrellaTransaction;
 
     private String title;
     private LocalDate date;
