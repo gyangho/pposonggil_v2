@@ -21,7 +21,7 @@
         </div>
 
         <div class="status-bar__column">
-            <span>ver 0.6.2</span>
+            <span>ver 0.0.2</span>
             <!-- version information &Icon-->
         </div>
     </div>
@@ -54,8 +54,8 @@
     </main>
 
     <!-- 2023.11.30 김건학 -->
-    <!-- 2023.12.09 이경호 src url API GATEWAY로 변경-->
-    <script type="text/javascript" src="https://localhost/api/map"></script>
+    <!--2024.03.24 이경호 "localhost" 삭제(도커 구동 중이지 않은 장치에서도 호출 가능하도록 수정)-->
+    <script type="text/javascript" src="/api/map"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
         // route list 클릭 시 화면 전환
@@ -78,7 +78,8 @@
                     sessionStorage.setItem('end', end);
 
                     // 페이지 변경
-                    var newPageURL = 'https://localhost/main/POI/result/pposong';
+                    //2024.03.24 이경호 "localhost" 삭제(도커 구동 중이지 않은 장치에서도 호출 가능하도록 수정)
+                    var newPageURL = '/main/POI/result/pposong';
                     window.location.href = newPageURL;
                 });
             });
