@@ -18,7 +18,8 @@ public class MemberChatRoom {
     @Column(name = "member_chat_room_id")
     private Long id;
 
-    @OneToOne(mappedBy = "distanceMemberChatRoom")
+    @OneToOne(fetch = LAZY)
+    @JoinColumn(name = "distance_id")
     private Distance distance;
 
     @OneToMany(mappedBy = "chatMessageMemberChatRoom")

@@ -19,7 +19,8 @@ public class Board {
     @Column(name = "board_id")
     private Long id;
 
-    @OneToOne(mappedBy = "chatBoard")
+    @OneToOne(fetch = LAZY)
+    @JoinColumn(name = "chat_room_id")
     private ChatRoom chatRoom;
 
     @OneToMany(mappedBy = "imageBoard")
