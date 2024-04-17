@@ -17,6 +17,7 @@ public class Report {
     @Column(name = "chat_report_id")
     private Long id;
 
+
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "report_subject_id")
     private Member reportSubject;
@@ -26,7 +27,7 @@ public class Report {
     private Member reportObject;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "report_board_id")
+    @JoinColumn(name = "board_id")
     private Board reportBoard;
 
     private String reportType;
