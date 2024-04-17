@@ -2,16 +2,16 @@ package pposonggil.usedStuff.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
+
+import java.time.LocalDate;
 
 import static jakarta.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
-@Setter
 @DynamicInsert
-public class Picture {
+public class Image {
     @Id
     @GeneratedValue
     @Column(name = "picture_id")
@@ -19,8 +19,9 @@ public class Picture {
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "board_id")
-    private Board pictureBoard;
+    private Board imageBoard;
 
-    private String name;
+    private String imageUrl;
+    private LocalDate createdAt;
 
 }

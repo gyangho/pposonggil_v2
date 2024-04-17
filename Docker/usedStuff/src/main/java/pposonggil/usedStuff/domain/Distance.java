@@ -2,15 +2,12 @@ package pposonggil.usedStuff.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
-
-import java.time.LocalDate;
 
 import static jakarta.persistence.FetchType.LAZY;
 
 @Entity
-@Getter @Setter
+@Getter
 @DynamicInsert
 public class Distance {
     @Id
@@ -19,19 +16,12 @@ public class Distance {
     private Long id;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "umbrella_transaction_id")
-    private UmbrellaTransaction distanceUmbrellaTransaction;
+    @JoinColumn(name = "distance_subject_id")
+    private Member distanceSubject;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "seller_id")
-    private Member seller;
+    @JoinColumn(name = "chat_room_id")
+    private MemberChatRoom memberChatRoom;
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "buyer_id")
-    private Member buyer;
-
-    private Long sellerDistance;
-    private Long buyerDistance;
-
-    private LocalDate date;
+    private Long distance;
 }

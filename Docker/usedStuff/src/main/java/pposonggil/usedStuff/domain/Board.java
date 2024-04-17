@@ -2,7 +2,6 @@ package pposonggil.usedStuff.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
 
 import java.time.LocalDate;
@@ -12,28 +11,26 @@ import java.util.List;
 import static jakarta.persistence.FetchType.LAZY;
 
 @Entity
-@Getter @Setter
+@Getter
 @DynamicInsert
 public class Board {
-
     @Id
     @GeneratedValue
     @Column(name = "board_id")
     private Long id;
 
-    @OneToOne(fetch = LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "umbrella_transaction_id")
-    private UmbrellaTransaction umbrellaTransaction;
+    @OneToOne(mappedBy = "chatBoard")
+    private ChatRoom chatRoom;
 
-    @OneToMany(mappedBy = "pictureBoard")
-    private List<Picture> pictures = new ArrayList<>();
+    @OneToMany(mappedBy = "imageBoard")
+    private List<Image> images = new ArrayList<>();
 
-    @OneToMany(mappedBy = "timeRangeBoard")
-    private List<TimeRange> timeRanges = new ArrayList<>();
+    @OneToMany(mappedBy = "reviewBoard")
+    private List<Review> reviews = new ArrayList<>();
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
+    @JoinColumn(name = "writer_id")
+    private Member writer;
 
     private String title;
     private LocalDate date;

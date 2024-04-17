@@ -2,7 +2,6 @@ package pposonggil.usedStuff.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
@@ -12,7 +11,6 @@ import java.util.List;
 
 @Entity
 @Getter
-@Setter
 @DynamicInsert
 public class Member {
     @Id
@@ -20,40 +18,44 @@ public class Member {
     @Column(name = "member_id")
     private Long id;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "writer")
     private List<Board> boards = new ArrayList<>();
 
-    @OneToMany(mappedBy = "reviewer")
-    private List<Review> reviewerReviews = new ArrayList<>();
+    @OneToMany(mappedBy = "member")
+    private List<MemberChatRoom> memberChatRooms = new ArrayList<>();
 
-    @OneToMany(mappedBy = "reviewed")
-    private List<Review> reviewedReviews = new ArrayList<>();
+    @OneToMany(mappedBy = "reviewSubject")
+    private List<Review> reviewSubjects = new ArrayList<>();
 
-    @OneToMany(mappedBy = "reported")
-    private List<Report> reportedReviews = new ArrayList<>();
+    @OneToMany(mappedBy = "reviewObject")
+    private List<Review> reviewObjects = new ArrayList<>();
 
-    @OneToMany(mappedBy = "reporter")
-    private List<Report> reporterReviews = new ArrayList<>();
+    @OneToMany(mappedBy = "reportSubject")
+    private List<Report> reportSubjects = new ArrayList<>();
 
-    @OneToMany(mappedBy = "blocked")
-    private List<Block> blockedBlocks = new ArrayList<>();
+    @OneToMany(mappedBy = "reportObject")
+    private List<Report> reportObjects = new ArrayList<>();
 
-    @OneToMany(mappedBy = "blocker")
-    private List<Block> blockerBlocks = new ArrayList<>();
+    @OneToMany(mappedBy = "blockSubject")
+    private List<Block> blockSubjects = new ArrayList<>();
 
-    @OneToMany(mappedBy = "seller")
-    private List<Distance> sellerDistances = new ArrayList<>();
+    @OneToMany(mappedBy = "blockObject")
+    private List<Block> blockObjects = new ArrayList<>();
 
-    @OneToMany(mappedBy = "buyer")
-    private List<Distance> buyerDistances = new ArrayList<>();
 
-    private String Name;
-    private String nickname;
+    private String name;
+    private String nickName;
     private String phone;
 
     @ColumnDefault(value = "10")
-    private Double rating;
+    private Double ratingScore;
 
-    private Long transaction_count;
-    private List<LocalDate> transaction_times;
+    private LocalDate createdAt;
+    private Long transactionCount;
+    private List<LocalDate> transactionTimes;
+    private boolean isActivated;
+
+    public void changeName(String newName) {
+        this.name = newName;
+    }
 }

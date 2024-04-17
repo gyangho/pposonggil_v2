@@ -2,7 +2,6 @@ package pposonggil.usedStuff.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
 
 import java.time.LocalDate;
@@ -10,7 +9,7 @@ import java.time.LocalDate;
 import static jakarta.persistence.FetchType.LAZY;
 
 @Entity
-@Getter @Setter
+@Getter
 @DynamicInsert
 public class Block {
     @Id
@@ -19,16 +18,14 @@ public class Block {
     private Long id;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "umbrella_transaction_id")
-    private UmbrellaTransaction blockUmbrellaTransaction;
+    @JoinColumn(name = "block_subject_id")
+    private Member blockSubject;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "blocked_id")
-    private Member blocked;
+    @JoinColumn(name = "block_object_id")
+    private Member blockObject;
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "blocker_id")
-    private Member blocker;
-
-    private LocalDate date;
+    private String blockType;
+    private String content;
+    private LocalDate createdAt;
 }

@@ -2,7 +2,6 @@ package pposonggil.usedStuff.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
 
 import java.time.LocalDate;
@@ -11,32 +10,26 @@ import static jakarta.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
-@Setter
 @DynamicInsert
 public class Report {
     @Id
     @GeneratedValue
-    @Column(name = "report_id")
+    @Column(name = "chat_report_id")
     private Long id;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "umbrellaTransaction")
-    private Board board;
+    @JoinColumn(name = "report_subject_id")
+    private Member reportSubject;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "umbrella_transaction_id")
-    private UmbrellaTransaction reportUmbrellaTransaction;
+    @JoinColumn(name = "report_object_id")
+    private Member reportObject;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "reported_id")
-    private Member reported;
+    @JoinColumn(name = "report_board_id")
+    private Board reportBoard;
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "reporter_id")
-    private Member reporter;
-
-    private LocalDate date;
-    private String type;
+    private String reportType;
     private String content;
-
+    private LocalDate createdAt;
 }
