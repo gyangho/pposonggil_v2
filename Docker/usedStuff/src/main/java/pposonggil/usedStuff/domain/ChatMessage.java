@@ -18,9 +18,10 @@ public class ChatMessage {
     private Long id;
 
     @ManyToOne(fetch = LAZY)
-    private Member chatSubject;
-
-    @ManyToOne(fetch = LAZY)
+    @JoinColumns({
+            @JoinColumn(name = "chat_subject_id", referencedColumnName = "member_id"),
+            @JoinColumn(name = "chat_room_id", referencedColumnName = "chat_room_id")
+    })
     private MemberChatRoom memberChatRoom;
 
     @Column(length = 500)

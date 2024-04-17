@@ -16,11 +16,10 @@ public class Distance {
     private Long id;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "distance_subject_id")
-    private Member distanceSubject;
-
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "chat_room_id")
+    @JoinColumns({
+            @JoinColumn(name = "distance_subject_id", referencedColumnName = "member_id"),
+            @JoinColumn(name = "chat_room_id", referencedColumnName = "chat_room_id")
+    })
     private MemberChatRoom memberChatRoom;
 
     private Long distance;

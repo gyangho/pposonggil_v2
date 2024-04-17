@@ -25,6 +25,10 @@ public class Review {
     @JoinColumn(name = "review_object_id")
     private Member reviewObject;
 
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "review_board_id")
+    private Board reviewBoard;
+
     private Long score;
     private String content;
     private LocalDate createdAt;
