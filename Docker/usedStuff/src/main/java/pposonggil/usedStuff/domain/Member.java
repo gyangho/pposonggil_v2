@@ -22,7 +22,13 @@ public class Member {
     private List<Board> boards = new ArrayList<>();
 
     @OneToMany(mappedBy = "member")
-    private List<MemberChatRoom> memberChatRooms = new ArrayList<>();
+    private List<ChatRoom> chatRooms = new ArrayList<>();
+
+    @OneToMany(mappedBy = "sender")
+    private List<Message> messages = new ArrayList<>();
+
+    @OneToMany(mappedBy = "transactionMember")
+    private List<TransactionInformation> transactionInformations = new ArrayList<>();
 
     @OneToMany(mappedBy = "reviewSubject")
     private List<Review> reviewSubjects = new ArrayList<>();
@@ -42,7 +48,6 @@ public class Member {
     @OneToMany(mappedBy = "blockObject")
     private List<Block> blockObjects = new ArrayList<>();
 
-
     private String name;
     private String nickName;
     private String phone;
@@ -51,8 +56,6 @@ public class Member {
     private Double ratingScore;
 
     private LocalDate createdAt;
-    private Long transactionCount;
-    private List<LocalDate> transactionTimes;
     private boolean isActivated;
 
     public void changeName(String newName) {

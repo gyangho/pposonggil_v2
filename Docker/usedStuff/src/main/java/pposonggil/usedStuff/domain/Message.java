@@ -11,15 +11,19 @@ import static jakarta.persistence.FetchType.LAZY;
 @Entity
 @Getter
 @DynamicInsert
-public class ChatMessage {
+public class Message {
     @Id
     @GeneratedValue
-    @Column(name = "chat_message_id")
+    @Column(name = "message_id")
     private Long id;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "member_chat_room_id")
-    private MemberChatRoom chatMessageMemberChatRoom;
+    @JoinColumn(name = "sender_id")
+    private Member sender;
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "chat_room_id")
+    private ChatRoom messageChatRoom;
 
     @Column(length = 500)
     private String content;

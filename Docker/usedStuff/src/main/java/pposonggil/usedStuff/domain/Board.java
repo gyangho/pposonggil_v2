@@ -23,7 +23,11 @@ public class Board {
     @JoinColumn(name = "chat_room_id")
     private ChatRoom chatRoom;
 
-    @OneToMany(mappedBy = "imageBoard")
+    @OneToOne(fetch = LAZY)
+    @JoinColumn(name = "transaction_information_id")
+    private TransactionInformation transactionInformation;
+
+    @OneToMany(mappedBy = "imageBoard", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Image> images = new ArrayList<>();
 
     @OneToMany(mappedBy = "reviewBoard")

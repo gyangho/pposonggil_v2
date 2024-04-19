@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import org.hibernate.annotations.DynamicInsert;
 
+import static jakarta.persistence.FetchType.LAZY;
+
 @Entity
 @Getter
 @DynamicInsert
@@ -12,6 +14,10 @@ public class Distance {
     @GeneratedValue
     @Column(name = "distance_id")
     private Long id;
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "chat_room_id")
+    private ChatRoom distanceChatRoom;
 
     private Long distance;
 }
