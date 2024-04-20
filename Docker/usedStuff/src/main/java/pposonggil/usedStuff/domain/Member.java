@@ -10,6 +10,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(uniqueConstraints = {
+
+        @UniqueConstraint(
+                name = "NICKNAME_UNIQUE",
+                columnNames = {"nickName"}
+        ),
+        @UniqueConstraint(
+                name = "PHONE_UNIQUE",
+                columnNames = {"phone"}
+        )
+})
 @Getter
 @DynamicInsert
 public class Member {
@@ -58,7 +69,14 @@ public class Member {
     private LocalDate createdAt;
     private boolean isActivated;
 
-    public void setMember(String newName) {
-        this.name = newName;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }
