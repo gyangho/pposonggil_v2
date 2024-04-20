@@ -20,4 +20,9 @@ public class Distance {
     private ChatRoom distanceChatRoom;
 
     private Long distance;
+
+    public void setDistanceChatRoom(ChatRoom chatRoom) {
+        this.distanceChatRoom = chatRoom;
+        chatRoom.getDistances().add(this);
+    }
 }

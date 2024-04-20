@@ -32,4 +32,20 @@ public class Review {
     private Long score;
     private String content;
     private LocalDate createdAt;
+
+
+    public void setReviewSubject(Member member) {
+        this.reviewSubject = member;
+        member.getReviewSubjects().add(this);
+    }
+
+    public void setReviewObject(Member member) {
+        this.reviewObject = member;
+        member.getReviewObjects().add(this);
+    }
+
+    public void setReviewBoard(Board board) {
+        this.reviewBoard = board;
+        board.getReviews().add(this);
+    }
 }

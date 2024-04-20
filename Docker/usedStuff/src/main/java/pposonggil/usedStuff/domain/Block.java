@@ -28,4 +28,15 @@ public class Block {
     private String blockType;
     private String content;
     private LocalDate createdAt;
+
+    public void setBlockSubject(Member member) {
+        this.blockSubject = member;
+        member.getBlockSubjects().add(this);
+    }
+
+    public void setBlockObject(Member member) {
+        this.blockObject = member;
+        member.getBlockObjects().add(this);
+    }
+
 }

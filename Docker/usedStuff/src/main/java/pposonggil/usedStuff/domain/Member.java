@@ -21,7 +21,7 @@ public class Member {
     @OneToMany(mappedBy = "writer")
     private List<Board> boards = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "chatMember")
     private List<ChatRoom> chatRooms = new ArrayList<>();
 
     @OneToMany(mappedBy = "sender")
@@ -58,7 +58,7 @@ public class Member {
     private LocalDate createdAt;
     private boolean isActivated;
 
-    public void changeName(String newName) {
+    public void setMember(String newName) {
         this.name = newName;
     }
 }

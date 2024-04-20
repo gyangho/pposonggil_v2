@@ -24,4 +24,8 @@ public class Image {
     private String imageUrl;
     private LocalDate createdAt;
 
+    public void setImageBoard(Board board) {
+        this.imageBoard = board;
+        board.getImages().add(this);
+    }
 }

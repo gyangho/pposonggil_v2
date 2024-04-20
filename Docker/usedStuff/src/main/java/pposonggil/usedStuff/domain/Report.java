@@ -26,11 +26,17 @@ public class Report {
     @JoinColumn(name = "report_object_id")
     private Member reportObject;
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "board_id")
-    private Board reportBoard;
-
     private String reportType;
     private String content;
     private LocalDate createdAt;
+
+    public void setReportSubject(Member member) {
+        this.reportSubject = member;
+        member.getReportSubjects().add(this);
+    }
+
+    public void setReportObject(Member member) {
+        this.reportObject = member;
+        member.getReportObjects().add(this);
+    }
 }

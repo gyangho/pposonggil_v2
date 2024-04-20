@@ -19,7 +19,7 @@ public class ChatRoom {
     private Long id;
 
     @OneToOne(mappedBy = "chatRoom", fetch = LAZY)
-    private Board board;
+    private Board chatBoard;
 
     @OneToMany(mappedBy = "distanceChatRoom", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Distance> distances = new ArrayList<>();
@@ -32,6 +32,15 @@ public class ChatRoom {
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "member_id")
-    private Member member;
+    private Member chatMember;
+
+    public void setChatBoard(Board board) {
+        this.chatBoard = board;
+    }
+
+    public void setChatMember(Member member) {
+        this.chatMember = member;
+        member.getChatRooms().add(this);
+    }
 
 }

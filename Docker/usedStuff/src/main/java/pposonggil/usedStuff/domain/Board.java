@@ -42,9 +42,16 @@ public class Board {
     private LocalDate startTime;
     private LocalDate endTime;
 
-    @Embedded
-    private TransactionAddress address;
-
     private Long price;
     private boolean isFreebie;
+
+    public void setWriter(Member member) {
+        this.writer = member;
+        member.getBoards().add(this);
+    }
+
+    public void setChatRoom(ChatRoom chatRoom) {
+        this.chatRoom = chatRoom;
+        chatRoom.setChatBoard(this);
+    }
 }

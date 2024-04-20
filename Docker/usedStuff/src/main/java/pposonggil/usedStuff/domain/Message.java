@@ -30,4 +30,14 @@ public class Message {
 
     private boolean isRead;
     private LocalDate createdAt;
+
+    public void setSender(Member member) {
+        this.sender = member;
+        member.getMessages().add(this);
+    }
+
+    public void setMessageChatRoom(ChatRoom chatRoom){
+        this.messageChatRoom = chatRoom;
+        chatRoom.getMessages().add(this);
+    }
 }

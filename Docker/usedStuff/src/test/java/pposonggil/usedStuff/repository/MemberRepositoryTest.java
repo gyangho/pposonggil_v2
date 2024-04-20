@@ -23,7 +23,7 @@ class MemberRepositoryTest {
     public void testMember() throws Exception {
         // given
         Member member = new Member();
-        member.changeName("member1");
+        member.setMember("member1");
 
         // when
         Long saveId = memberRepository.save(member);
