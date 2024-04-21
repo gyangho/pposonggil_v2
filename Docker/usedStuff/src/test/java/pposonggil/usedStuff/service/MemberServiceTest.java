@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import pposonggil.usedStuff.domain.Member;
-import pposonggil.usedStuff.repository.MemberRepository;
+import pposonggil.usedStuff.repository.member.MemberRepository;
 
 import static org.junit.jupiter.api.Assertions.*;
 

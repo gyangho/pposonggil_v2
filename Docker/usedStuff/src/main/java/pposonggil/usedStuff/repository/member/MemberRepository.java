@@ -1,4 +1,4 @@
-package pposonggil.usedStuff.repository;
+package pposonggil.usedStuff.repository.member;
 
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;

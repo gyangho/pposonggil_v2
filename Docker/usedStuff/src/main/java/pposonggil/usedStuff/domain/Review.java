@@ -1,5 +1,6 @@
 package pposonggil.usedStuff.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import org.hibernate.annotations.DynamicInsert;
@@ -17,14 +18,17 @@ public class Review {
     @Column(name = "review_id")
     private Long id;
 
+    @JsonIgnore
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "review_subject_id")
     private Member reviewSubject;
 
+    @JsonIgnore
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "review_object_id")
     private Member reviewObject;
 
+    @JsonIgnore
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "review_board_id")
     private Board reviewBoard;

@@ -1,5 +1,6 @@
 package pposonggil.usedStuff.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import org.hibernate.annotations.DynamicInsert;
@@ -17,10 +18,12 @@ public class Message {
     @Column(name = "message_id")
     private Long id;
 
+    @JsonIgnore
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "sender_id")
     private Member sender;
 
+    @JsonIgnore
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "chat_room_id")
     private ChatRoom messageChatRoom;

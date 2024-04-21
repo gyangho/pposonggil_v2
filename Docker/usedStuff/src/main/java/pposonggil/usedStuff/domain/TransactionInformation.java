@@ -1,5 +1,6 @@
 package pposonggil.usedStuff.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import org.hibernate.annotations.DynamicInsert;
@@ -17,18 +18,22 @@ public class TransactionInformation {
     @Column(name = "transaction_information_id")
     private Long id;
 
+    @JsonIgnore
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "member_id")
     private Member transactionMember;
 
+    @JsonIgnore
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "chat_room_id")
     private ChatRoom transactionChatRoom;
 
+    private LocalDate startTime;
+    private LocalDate endTime;
+
     @Embedded
     private TransactionAddress address;
 
-    private LocalDate created_at;
 
     public void setTransactionMember(Member member) {
         this.transactionMember = member;
