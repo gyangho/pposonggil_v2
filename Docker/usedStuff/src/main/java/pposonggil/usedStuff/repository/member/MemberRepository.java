@@ -41,4 +41,8 @@ public class MemberRepository {
                 .setParameter("phone", phone)
                 .getResultList();
     }
+
+    public void delete(Member member) {
+        em.remove(member);
+    }
 }

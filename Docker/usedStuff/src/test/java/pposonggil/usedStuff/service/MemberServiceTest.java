@@ -24,69 +24,119 @@ class MemberServiceTest {
     EntityManager em;
 
     @Test
-    public void 회원가입() throws Exception {
+    public void 회원_가입() throws Exception {
         // given
-        Member member = new Member();
-        member.setName("test1");
-        member.setNickName("nickName1");
-        member.setPhone("01012345678");
+        String name = "name";
+        String nickName = "nickName";
+        String phone = "01011111111";
+
 
         // when
-        Long savedId = memberService.join(member);
+        Long savedId = memberService.join(Member.builder(nickName)
+                .name(name)
+                .phone(phone)
+                .isActivated(true)
+                .build());
 
         // then
         em.flush();
-        assertEquals(member, memberRepository.findOne(savedId));
+        Member savedMember = memberRepository.findOne(savedId);
+        assertEquals(name, savedMember.getName());
+        assertEquals(nickName, savedMember.getNickName());
+        assertEquals(phone, savedMember.getPhone());
+        assertTrue(savedMember.isActivated());
     }
 
     @Test
-    public void 회원탈퇴() throws Exception {
+    public void 회원_탈퇴() throws  Exception{
         // given
+        String name = "name";
+        String nickName = "nickName";
+        String phone = "01011111111";
+
+        Long savedId = memberService.join(Member.builder(nickName)
+                .name(name)
+                .phone(phone)
+                .build());
 
         // when
+        memberService.deleteMember(savedId);
 
         // then
+        assertNull(memberService.findOne(savedId));
     }
 
     @Test
     public void 중복_닉네임_예외() throws Exception {
         // given
-        Member member1 = new Member();
-        member1.setNickName("nickName1");
-
-        Member member2 = new Member();
-        member2.setNickName("nickName1");
+        String nickName = "nickName";
 
         // when
-        memberService.join(member1);
+        Long savedId = memberService.join(Member.builder(nickName).build());
 
         // then
         assertThrows(IllegalStateException.class, () -> {
-            memberService.join(member2);
+            memberService.join(Member.builder(nickName).build());
         });
 
-        Member findMember = memberService.findOne(member1.getId());
-        assertEquals(findMember, member1);
+        Member findMember = memberService.findOne(savedId);
+        assertNotNull(findMember);
+        assertEquals(nickName, findMember.getNickName());
     }
-
 
     @Test
     public void 중복_전화번호_예외() throws Exception {
-        Member member1 = new Member();
-        member1.setPhone("01012345678");
-
-        Member member2 = new Member();
-        member2.setPhone("01012345678");
+        String nickName1 = "nickName1";
+        String nickName2 = "nickName2";
+        String phone = "01011111111";
 
         // when
-        memberService.join(member1);
+        Long savedId = memberService.join(Member
+                .builder(nickName1)
+                .phone(phone)
+                .build());
 
         // then
         assertThrows(IllegalStateException.class, () -> {
-            memberService.join(member2);
+            memberService.join(Member
+                    .builder(nickName2)
+                    .phone(phone)
+                    .build());
         });
 
-        Member findMember = memberService.findOne(member1.getId());
-        assertEquals(findMember, member1);
+        Member findMember = memberService.findOne(savedId);
+        assertNotNull(findMember);
+        assertEquals(phone, findMember.getPhone());
+    }
+
+    /**
+     * 회원 정보 업데이트
+     */
+    @Test
+    public void 회원_정보_업데이트() throws Exception {
+        // given
+        String name = "name";
+        String nickName = "nickName";
+        String phone = "01011111111";
+
+        String updateName = "updateName";
+        String updateNickName = "updateNickName";
+        String updatePhone = "010122222222";
+
+        Member member = Member.builder(nickName)
+                .name(name)
+                .phone(phone)
+                .build();
+
+        Long savedId = memberService.join(member);
+
+        // when
+        memberService.updateMember(savedId, updateName, updateNickName, updatePhone);
+
+        // then
+        Member updateMember = memberService.findOne(savedId);
+        assertEquals(updateName, updateMember.getName());
+        assertEquals(updateNickName, updateMember.getNickName());
+        assertEquals(updatePhone, updateMember.getPhone());
     }
 }
