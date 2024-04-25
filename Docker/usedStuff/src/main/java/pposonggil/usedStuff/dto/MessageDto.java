@@ -1,4 +1,4 @@
-package pposonggil.usedStuff.repository.message.simplequery;
+package pposonggil.usedStuff.dto;
 
 import lombok.Data;
 import pposonggil.usedStuff.domain.Message;
@@ -6,7 +6,7 @@ import pposonggil.usedStuff.domain.Message;
 import java.time.LocalDate;
 
 @Data
-public class MessageSimpleQueryDto {
+public class MessageDto {
     private Long messageId;
     private Long senderId;
     private Long messageChatRoomId;
@@ -14,7 +14,7 @@ public class MessageSimpleQueryDto {
     private String content;
     private LocalDate createdAt;
 
-    public MessageSimpleQueryDto(Message message) {
+    public MessageDto(Message message) {
         messageId = message.getId();
         senderId = message.getSender().getId();
         messageChatRoomId = message.getMessageChatRoom().getId();

@@ -1,4 +1,4 @@
-package pposonggil.usedStuff.repository.block.simplequery;
+package pposonggil.usedStuff.dto;
 
 import lombok.Data;
 import pposonggil.usedStuff.domain.Block;
@@ -6,7 +6,7 @@ import pposonggil.usedStuff.domain.Block;
 import java.time.LocalDate;
 
 @Data
-public class BlockSimpleQueryDto {
+public class BlockDto {
     private Long blockId;
     private String subjectNickName;
     private String objectNickName;
@@ -14,7 +14,7 @@ public class BlockSimpleQueryDto {
     private LocalDate createdAt;
     private String content;
 
-    public BlockSimpleQueryDto(Block block) {
+    public BlockDto(Block block) {
         blockId = block.getId();
         subjectNickName = block.getBlockSubject().getNickName();
         objectNickName = block.getBlockObject().getNickName();

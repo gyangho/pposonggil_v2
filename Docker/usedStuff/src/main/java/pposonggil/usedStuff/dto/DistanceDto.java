@@ -1,15 +1,15 @@
-package pposonggil.usedStuff.repository.distance.simplequery;
+package pposonggil.usedStuff.dto;
 
 import lombok.Data;
 import pposonggil.usedStuff.domain.Distance;
 
 @Data
-public class DistanceSimpleQueryDto {
+public class DistanceDto {
     private Long distanceId;
     private Long chatRoomId;
     private Long curDistance;
 
-    public DistanceSimpleQueryDto(Distance distance) {
+    public DistanceDto(Distance distance) {
         distanceId = distance.getId();
         chatRoomId = distance.getDistanceChatRoom().getId();
         curDistance = distance.getCurDistance();

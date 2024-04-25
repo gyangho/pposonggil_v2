@@ -1,4 +1,4 @@
-package pposonggil.usedStuff.repository.report.simplequery;
+package pposonggil.usedStuff.dto;
 
 import lombok.Data;
 import pposonggil.usedStuff.domain.Report;
@@ -6,7 +6,7 @@ import pposonggil.usedStuff.domain.Report;
 import java.time.LocalDate;
 
 @Data
-public class ReportSimpleQueryDto {
+public class ReportDto {
     private Long reportId;
     private Long subjectId;
     private Long objectId;
@@ -16,7 +16,7 @@ public class ReportSimpleQueryDto {
     private String content;
     private LocalDate createdAt;
 
-    public ReportSimpleQueryDto(Report report) {
+    public ReportDto(Report report) {
         reportId = report.getId();
         subjectId = report.getReportSubject().getId();
         objectId = report.getReportObject().getId();

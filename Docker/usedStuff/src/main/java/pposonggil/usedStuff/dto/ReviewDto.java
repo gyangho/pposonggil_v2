@@ -1,4 +1,4 @@
-package pposonggil.usedStuff.repository.review.simplequery;
+package pposonggil.usedStuff.dto;
 
 import lombok.Data;
 import pposonggil.usedStuff.domain.Review;
@@ -6,7 +6,7 @@ import pposonggil.usedStuff.domain.Review;
 import java.time.LocalDate;
 
 @Data
-public class ReviewSimpleQueryDto {
+public class ReviewDto {
     private Long reviewId;
     private Long subjectId;
     private Long objectId;
@@ -17,7 +17,7 @@ public class ReviewSimpleQueryDto {
     private String content;
     private LocalDate createdAt;
 
-    public ReviewSimpleQueryDto(Review review) {
+    public ReviewDto(Review review) {
         reviewId = review.getId();
         subjectId = review.getReviewSubject().getId();
         objectId = review.getReviewObject().getId();
