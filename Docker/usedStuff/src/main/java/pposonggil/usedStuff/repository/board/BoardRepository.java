@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import pposonggil.usedStuff.domain.Board;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Repository
@@ -13,6 +14,12 @@ public class BoardRepository {
     private final EntityManager em;
 
     public void save(Board board) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm");
+        String formattedStartTime = board.getStartTime().format(formatter);
+        String formattedEndTime = board.getEndTime().format(formatter);
+
+        board.setStartTimeString(formattedStartTime);
+        board.setEndTimeString(formattedEndTime);
         em.persist(board);
     }
 
@@ -32,11 +39,12 @@ public class BoardRepository {
                 .getResultList();
     }
 
-    public List<Board> findAllWithChatRoomMemberTransactionInformation() {
+    public List<Board> findAllWithMember() {
         return em.createQuery("select b from Board b " +
-                        "join fetch b.chatRoom c" +
-                        "join fetch b.transactionInformation t " +
                         "join fetch b.writer m", Board.class)
                 .getResultList();
     }
+
+    public void delete(Board board){
+        em.remove(board);}
 }
