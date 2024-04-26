@@ -30,7 +30,6 @@ class MemberServiceTest {
         String nickName = "nickName";
         String phone = "01011111111";
 
-
         // when
         Long savedId = memberService.join(Member.builder(nickName)
                 .name(name)
@@ -39,7 +38,6 @@ class MemberServiceTest {
                 .build());
 
         // then
-        em.flush();
         Member savedMember = memberRepository.findOne(savedId);
         assertEquals(name, savedMember.getName());
         assertEquals(nickName, savedMember.getNickName());

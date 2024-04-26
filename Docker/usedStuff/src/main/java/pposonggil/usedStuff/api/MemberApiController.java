@@ -30,7 +30,7 @@ public class MemberApiController {
     /**
      * 특정 회원 상세 정보 조회
      */
-    @GetMapping("api/members/{memberId}")
+    @GetMapping("api/member/{memberId}")
     public ResponseEntity<MemberDto> getMember(@PathVariable Long memberId) {
         Member member = memberService.findOne(memberId);
         if (member == null) {
@@ -42,7 +42,7 @@ public class MemberApiController {
     /**
      * 회원 정보 업데이트
      */
-    @PutMapping("/api/members/{memberId}")
+    @PutMapping("/api/member/{memberId}")
     public ResponseEntity<String> updateMember(@PathVariable Long memberId, @RequestBody MemberDto memberDto) {
         Member member = memberService.findOne(memberId);
         if (member == null) {
@@ -56,7 +56,7 @@ public class MemberApiController {
     /**
      * 회원 삭제
      */
-    @DeleteMapping("/api/members/{memberId}")
+    @DeleteMapping("/api/member/{memberId}")
     public ResponseEntity<String> deleteMember(@PathVariable Long memberId) {
         memberService.deleteMember(memberId);
 
