@@ -1,5 +1,6 @@
 package pposonggil.usedStuff.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import org.hibernate.annotations.DynamicInsert;
@@ -17,6 +18,7 @@ public class Image {
     @Column(name = "picture_id")
     private Long id;
 
+    @JsonIgnore
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "board_id")
     private Board imageBoard;

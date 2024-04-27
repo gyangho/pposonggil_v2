@@ -1,5 +1,6 @@
 package pposonggil.usedStuff.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import org.hibernate.annotations.DynamicInsert;
@@ -15,11 +16,12 @@ public class Distance {
     @Column(name = "distance_id")
     private Long id;
 
+    @JsonIgnore
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "chat_room_id")
     private ChatRoom distanceChatRoom;
 
-    private Long distance;
+    private Long curDistance;
 
     public void setDistanceChatRoom(ChatRoom chatRoom) {
         this.distanceChatRoom = chatRoom;

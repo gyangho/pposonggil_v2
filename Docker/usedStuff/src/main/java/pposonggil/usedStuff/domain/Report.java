@@ -1,5 +1,6 @@
 package pposonggil.usedStuff.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import org.hibernate.annotations.DynamicInsert;
@@ -17,11 +18,12 @@ public class Report {
     @Column(name = "chat_report_id")
     private Long id;
 
-
+    @JsonIgnore
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "report_subject_id")
     private Member reportSubject;
 
+    @JsonIgnore
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "report_object_id")
     private Member reportObject;
