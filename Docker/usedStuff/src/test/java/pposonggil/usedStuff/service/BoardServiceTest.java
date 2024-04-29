@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import pposonggil.usedStuff.domain.Board;
 import pposonggil.usedStuff.domain.Member;
 import pposonggil.usedStuff.domain.TransactionAddress;
-import pposonggil.usedStuff.repository.board.BoardRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -25,8 +24,7 @@ class BoardServiceTest {
     BoardService boardService;
     @Autowired
     MemberService memberService;
-    @Autowired
-    BoardRepository boardRepository;
+
     @Autowired
     EntityManager em;
 
@@ -69,13 +67,13 @@ class BoardServiceTest {
 
         // when
         Member savedWriter1 = memberService.findOne(savedId1);
-        Board savedBoard1 = boardRepository.findOne(boardId1);
+        Board savedBoard1 = boardService.findOne(boardId1);
 
         Member savedWriter2 = memberService.findOne(savedId2);
-        Board savedBoard2 = boardRepository.findOne(boardId2);
+        Board savedBoard2 = boardService.findOne(boardId2);
 
         // then
-        List<Board> boards = boardRepository.findAll();
+        List<Board> boards = boardService.findBoards();
         assertEquals(2, boards.size());
         assertEquals(savedWriter1, savedBoard1.getWriter());
         assertEquals(savedWriter2, savedBoard2.getWriter());
@@ -119,7 +117,7 @@ class BoardServiceTest {
 
         // when
         Member savedWriter = memberService.findOne(savedId1);
-        List<Board> boards = boardRepository.findAllWithMember();
+        List<Board> boards = boardService.findAllWithMember();
 
         // then
         assertEquals(2, boards.size());
@@ -176,7 +174,7 @@ class BoardServiceTest {
 
         // then
         Member savedWriter = memberService.findOne(savedId1);
-        Board savedBoard = boardRepository.findOne(boardId1);
+        Board savedBoard = boardService.findOne(boardId1);
 
         assertNotNull(savedBoard);
         assertEquals(savedWriter, savedBoard.getWriter());
@@ -229,7 +227,7 @@ class BoardServiceTest {
                 updateAddress, updatePrice, updateIsFreebie);
 
         // then
-        Board updateBoard = boardRepository.findOne(boardId1);
+        Board updateBoard = boardService.findOne(boardId1);
 
         assertNotNull(updateBoard);
         assertEquals(savedWriter, updateBoard.getWriter());

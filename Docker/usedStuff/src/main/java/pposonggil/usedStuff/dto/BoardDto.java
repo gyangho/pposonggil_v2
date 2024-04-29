@@ -48,12 +48,7 @@ public class BoardDto {
                 .build();
     }
 
-    public static Board toEntity(BoardDto dto) {
-        Member writer = Member.builder(dto.getWriterNickName())
-                .id(dto.getWriterId())
-                .ratingScore(dto.getRatingScore())
-                .build();
-
+    public static Board toEntity(BoardDto dto, Member writer) {
         LocalDateTime startTime = LocalDateTime.parse(dto.getStartTimeString(), DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm"));
         LocalDateTime endTime = LocalDateTime.parse(dto.getEndTimeString(), DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm"));
 

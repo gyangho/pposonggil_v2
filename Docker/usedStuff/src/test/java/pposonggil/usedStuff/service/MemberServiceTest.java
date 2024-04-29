@@ -8,7 +8,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import pposonggil.usedStuff.domain.Member;
-import pposonggil.usedStuff.repository.member.MemberRepository;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -18,8 +17,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class MemberServiceTest {
     @Autowired
     MemberService memberService;
-    @Autowired
-    MemberRepository memberRepository;
     @Autowired
     EntityManager em;
 
@@ -38,7 +35,7 @@ class MemberServiceTest {
                 .build());
 
         // then
-        Member savedMember = memberRepository.findOne(savedId);
+        Member savedMember = memberService.findOne(savedId);
         assertEquals(name, savedMember.getName());
         assertEquals(nickName, savedMember.getNickName());
         assertEquals(phone, savedMember.getPhone());

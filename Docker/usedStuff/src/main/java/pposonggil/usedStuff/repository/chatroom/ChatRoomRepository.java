@@ -32,4 +32,14 @@ public class ChatRoomRepository {
                         "join fetch r.chatBoard b", ChatRoom.class)
                 .getResultList();
     }
+
+    public List<ChatRoom> findChatRoomsByMemberId(Long memberId) {
+        return em.createQuery("select c from ChatRoom c where c.chatMember.id = :memberId OR c.chatBoard.writer.id = :memberId", ChatRoom.class)
+                .setParameter("memberId", memberId)
+                .getResultList();
+    }
+
+    public void delete(ChatRoom chatRoom) {
+        em.remove(chatRoom);
+    }
 }

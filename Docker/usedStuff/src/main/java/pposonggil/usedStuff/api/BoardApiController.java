@@ -42,7 +42,7 @@ public class BoardApiController {
      * 작성자 아이디로 게시글 조회
      */
     @GetMapping("/api/boards/{memberId}")
-    public List<BoardDto> getBoarByMemberId(@PathVariable Long memberId) {
+    public List<BoardDto> getBoardsByMemberId(@PathVariable Long memberId) {
         List<Board> boards = boardService.findBoardsByWriterId(memberId);
         return boards.stream()
                 .map(BoardDto::fromEntity)
@@ -63,7 +63,7 @@ public class BoardApiController {
     /**
      * 게시글 작성
      */
-    @PostMapping("/api/boards")
+    @PostMapping("/api/board")
     public ResponseEntity<String> createBoard(@RequestBody BoardDto boardDto) {
         LocalDateTime startTime = LocalDateTime.parse(boardDto.getStartTimeString(), DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm"));
         LocalDateTime endTime = LocalDateTime.parse(boardDto.getEndTimeString(), DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm"));
