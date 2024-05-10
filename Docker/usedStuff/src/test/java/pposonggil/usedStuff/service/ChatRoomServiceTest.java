@@ -14,6 +14,7 @@ import pposonggil.usedStuff.domain.TransactionAddress;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -27,8 +28,6 @@ class ChatRoomServiceTest {
     BoardService boardService;
     @Autowired
     MemberService memberService;
-    @Autowired
-    EntityManager em;
 
     @Test
     public void 채팅방_생성() throws Exception {
@@ -201,7 +200,6 @@ class ChatRoomServiceTest {
                 .isActivated(true)
                 .build());
 
-
         // 게시글 1 생성
         String title = "title";
         String content = "우산 팔아요";
@@ -308,6 +306,7 @@ class ChatRoomServiceTest {
         chatRoomService.deleteChatRoom(chatRoomId1);
 
         // then
-        assertNull(chatRoomService.findOne(chatRoomId1));
+        assertThrows(NoSuchElementException.class, () -> chatRoomService.findOne(chatRoomId1));
+
     }
 }

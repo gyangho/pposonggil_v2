@@ -1,18 +1,19 @@
 package pposonggil.usedStuff.service;
 
 import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.transaction.annotation.Transactional;
 import pposonggil.usedStuff.domain.Board;
 import pposonggil.usedStuff.domain.Member;
 import pposonggil.usedStuff.domain.TransactionAddress;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -24,9 +25,6 @@ class BoardServiceTest {
     BoardService boardService;
     @Autowired
     MemberService memberService;
-
-    @Autowired
-    EntityManager em;
 
     @Test
     public void 전체_게시글_조회() throws Exception {
@@ -269,7 +267,8 @@ class BoardServiceTest {
         boardService.deleteBoard(savedId1);
 
         // then
-        assertNull(boardService.findOne(savedId1));
+        assertThrows(NoSuchElementException.class, () -> boardService.findOne(savedId1));
+
     }
 
 }

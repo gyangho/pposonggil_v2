@@ -9,6 +9,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import pposonggil.usedStuff.domain.Member;
 
+import java.util.NoSuchElementException;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
@@ -17,8 +19,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class MemberServiceTest {
     @Autowired
     MemberService memberService;
-    @Autowired
-    EntityManager em;
 
     @Test
     public void 회원_가입() throws Exception {
@@ -58,7 +58,7 @@ class MemberServiceTest {
         memberService.deleteMember(savedId);
 
         // then
-        assertNull(memberService.findOne(savedId));
+        assertThrows(NoSuchElementException.class, () -> memberService.findOne(savedId));
     }
 
     @Test
