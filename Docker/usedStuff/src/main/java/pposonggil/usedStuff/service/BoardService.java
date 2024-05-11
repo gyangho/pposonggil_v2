@@ -12,6 +12,8 @@ import pposonggil.usedStuff.repository.member.MemberRepository;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Objects;
 
 @Service
 @Transactional(readOnly = true)
@@ -31,7 +33,7 @@ public class BoardService {
      * 게시글 상세 조회
      */
     public Board findOne(Long boardId) {
-        return boardRepository.findOne(boardId);
+        return boardRepository.findById(boardId).orElseThrow(NoSuchElementException::new);
     }
 
     /**
@@ -54,7 +56,8 @@ public class BoardService {
     @Transactional
     public Long createBoard(Long writerId, String title, String content, LocalDateTime startTime,
                             LocalDateTime  endTime, TransactionAddress address, Long price, boolean isFreebie) {
-        Member writer = memberRepository.findOne(writerId);
+        Member writer = memberRepository.findById(writerId)
+                .orElseThrow(() -> new NoSuchElementException("Member not found with id: " + writerId));
 
         Board board = Board.buildBoard(writer, title, content, startTime, endTime, address, price, isFreebie);
         board.setWriter(writer);
@@ -70,21 +73,22 @@ public class BoardService {
     @Transactional
     public void updateBoard(Long boardId, String title, String content, LocalDateTime startTime,
                             LocalDateTime endTime, TransactionAddress address, Long price, boolean isFreebie) {
-        Board board = boardRepository.findOne(boardId);
+        Board board = boardRepository.findById(boardId).orElseThrow(NoSuchElementException::new);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm");
         String formattedStartTime = startTime.format(formatter);
         String formattedEndTime = endTime.format(formatter);
 
+
         if(!board.getTitle().equals(title))
             board.changeTitle(title);
         if(!board.getContent().equals(content))
             board.changeContent(content);
-        if(!board.getStartTimeString().equals(formattedStartTime)){
+        if(!Objects.equals(board.getStartTimeString(), formattedStartTime)){
             board.changeStartTimeString(formattedStartTime);
             board.changeStartTime(startTime);
         }
-        if(!board.getEndTimeString().equals(formattedEndTime)) {
+        if(!Objects.equals(board.getEndTimeString(), formattedEndTime)){
             board.changeEndTimeString(formattedEndTime);
             board.changeEndTime(endTime);
         }
@@ -103,11 +107,7 @@ public class BoardService {
      */
     @Transactional
     public void deleteBoard(Long boardId) {
-        Board board = boardRepository.findOne(boardId);
-        if (board == null) {
-            throw new IllegalArgumentException("게시글이 존재하지 않습니다.");
-        }
-
+        Board board = boardRepository.findById(boardId).orElseThrow(NoSuchElementException::new);
         boardRepository.delete(board);
     }
 }

@@ -2,16 +2,22 @@ package pposonggil.usedStuff.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Getter;
+import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import static jakarta.persistence.FetchType.LAZY;
+import static lombok.AccessLevel.PRIVATE;
+import static lombok.AccessLevel.PROTECTED;
 
 @Entity
 @Getter
 @DynamicInsert
+@Builder
+@NoArgsConstructor(access = PROTECTED)
+@AllArgsConstructor(access = PRIVATE)
+@ToString
 public class Message {
     @Id
     @GeneratedValue
@@ -32,7 +38,17 @@ public class Message {
     private String content;
 
     private boolean isRead;
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
+
+    public static MessageBuilder builder(Member sender, ChatRoom messageChatRoom,
+                                         String content, LocalDateTime createdAt){
+        if(sender == null || messageChatRoom == null || content == null)
+            throw new IllegalArgumentException("필수 파라미터 누락");
+        return new MessageBuilder()
+                .sender(sender)
+                .messageChatRoom(messageChatRoom)
+                .content(content);
+    }
 
     public void setSender(Member member) {
         this.sender = member;
@@ -43,4 +59,13 @@ public class Message {
         this.messageChatRoom = chatRoom;
         chatRoom.getMessages().add(this);
     }
+
+    public static Message buildMessage(Member sender, ChatRoom messageChatRoom,
+                                       String content, LocalDateTime createdAt) {
+        return Message.builder(sender, messageChatRoom, content, createdAt)
+                .isRead(false)
+                .createdAt(LocalDateTime.now())
+                .build();
+    }
+
 }
