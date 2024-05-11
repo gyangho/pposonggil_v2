@@ -1,6 +1,5 @@
 package pposonggil.usedStuff.service;
 
-import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -120,7 +119,8 @@ class BoardServiceTest {
         // then
         assertEquals(2, boards.size());
 
-        Board board1 = boards.stream().filter(board -> board.getId().equals(boardId1)).findFirst().orElse(null);
+        Board board1 = boards.stream().filter(board -> board.getId().equals(boardId1)).findFirst()
+                .orElseThrow(NoSuchElementException::new);
         assertNotNull(board1);
         assertEquals(savedWriter, board1.getWriter());
         assertEquals(title, board1.getTitle());
@@ -131,7 +131,8 @@ class BoardServiceTest {
         assertEquals(price, board1.getPrice());
         assertFalse(board1.isFreebie());
 
-        Board board2 = boards.stream().filter(board -> board.getId().equals(boardId2)).findFirst().orElse(null);
+        Board board2 = boards.stream().filter(board -> board.getId().equals(boardId2)).findFirst()
+                .orElseThrow(NoSuchElementException::new);
         assertNotNull(board2);
         assertEquals(savedWriter, board2.getWriter());
         assertEquals(title2, board2.getTitle());
