@@ -41,7 +41,6 @@ public class ReportDto {
         ReportType reportType = ReportType.valueOf(dto.getReportType());
         return Report.builder(reportSubject, reportObject, reportType)
                 .content(dto.getContent())
-                .createdAt(dto.getCreatedAt())
                 .build();
     }
 }

@@ -5,8 +5,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 
-import java.time.LocalDateTime;
-
 import static jakarta.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
@@ -18,7 +16,7 @@ import static lombok.AccessLevel.PROTECTED;
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PRIVATE)
 @ToString
-public class Message {
+public class Message extends BaseEntity{
     @Id
     @GeneratedValue
     @Column(name = "message_id")
@@ -38,10 +36,9 @@ public class Message {
     private String content;
 
     private boolean isRead;
-    private LocalDateTime createdAt;
 
     public static MessageBuilder builder(Member sender, ChatRoom messageChatRoom,
-                                         String content, LocalDateTime createdAt){
+                                         String content){
         if(sender == null || messageChatRoom == null || content == null)
             throw new IllegalArgumentException("필수 파라미터 누락");
         return new MessageBuilder()
@@ -61,10 +58,9 @@ public class Message {
     }
 
     public static Message buildMessage(Member sender, ChatRoom messageChatRoom,
-                                       String content, LocalDateTime createdAt) {
-        return Message.builder(sender, messageChatRoom, content, createdAt)
+                                       String content) {
+        return Message.builder(sender, messageChatRoom, content)
                 .isRead(false)
-                .createdAt(LocalDateTime.now())
                 .build();
     }
 

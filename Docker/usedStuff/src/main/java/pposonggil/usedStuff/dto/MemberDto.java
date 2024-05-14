@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import pposonggil.usedStuff.domain.Member;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
@@ -21,7 +21,7 @@ public class MemberDto {
     private String nickName;
     private String phone;
     private Double ratingScore;
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
     private boolean isActivated;
 
     public static MemberDto fromEntity(Member member){
@@ -40,7 +40,6 @@ public class MemberDto {
         return Member.builder(dto.getNickName())
                 .phone(dto.getPhone())
                 .ratingScore(dto.getRatingScore())
-                .createdAt(dto.getCreatedAt())
                 .isActivated(dto.isActivated())
                 .build();
     }

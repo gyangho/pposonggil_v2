@@ -34,7 +34,7 @@ public class MessageDto {
     }
 
     public static Message toEntity(MessageDto dto, ChatRoom messageChatRoom, Member sender){
-        return Message.builder(sender, messageChatRoom, dto.content, dto.createdAt)
+        return Message.builder(sender, messageChatRoom, dto.content)
                 .build();
     }
 }

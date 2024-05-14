@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +18,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Builder
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PRIVATE)
-public class ChatRoom {
+public class ChatRoom extends BaseEntity{
     @Id
     @GeneratedValue
     @Column(name = "chat_room_id")
@@ -43,7 +42,6 @@ public class ChatRoom {
     @JoinColumn(name = "member_id")
     private Member chatMember;
 
-    private LocalDateTime createdAt;
     private String startTimeString;
     private String endTimeString;
 
@@ -72,7 +70,6 @@ public class ChatRoom {
         return ChatRoom.builder(chatBoard, chatMember)
                 .chatMember(chatMember)
                 .chatBoard(chatBoard)
-                .createdAt(LocalDateTime.now())
                 .startTimeString(chatBoard.getStartTimeString())
                 .endTimeString(chatBoard.getEndTimeString())
                 .address(chatBoard.getAddress())

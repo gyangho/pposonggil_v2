@@ -26,6 +26,8 @@ public class ChatRoomDto {
     private String endTimeString;
     private TransactionAddress address;
     private LocalDateTime createdAt;
+    private LocalDateTime updateAt;
+
     public static ChatRoomDto fromEntity(ChatRoom chatRoom){
         return ChatRoomDto.builder()
                 .chatRoomId(chatRoom.getId())
@@ -38,6 +40,7 @@ public class ChatRoomDto {
                 .endTimeString(chatRoom.getEndTimeString())
                 .address(chatRoom.getAddress())
                 .createdAt(chatRoom.getCreatedAt())
+                .updateAt(chatRoom.getUpdateAt())
                 .build();
     }
 
@@ -45,7 +48,6 @@ public class ChatRoomDto {
         return ChatRoom.builder(chatBoard, chatMember)
                 .chatBoard(chatBoard)
                 .chatMember(chatMember)
-                .createdAt(dto.getCreatedAt())
                 .startTimeString(dto.getStartTimeString())
                 .endTimeString(dto.getEndTimeString())
                 .address(dto.getAddress())

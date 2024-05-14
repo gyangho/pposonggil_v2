@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 
-import java.time.LocalDateTime;
 import java.util.Arrays;
 
 import static jakarta.persistence.EnumType.STRING;
@@ -19,7 +18,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Builder
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PRIVATE)
-public class Report {
+public class Report extends BaseEntity{
     @Id
     @GeneratedValue
     @Column(name = "chat_report_id")
@@ -38,7 +37,6 @@ public class Report {
     @Enumerated(STRING)
     private ReportType reportType;
     private String content;
-    private LocalDateTime createdAt;
 
     public static ReportBuilder builder(Member reportSubject, Member reportObject, ReportType reportType) {
         if(reportSubject == null || reportObject == null || reportType == null)
@@ -68,7 +66,6 @@ public class Report {
 
         return Report.builder(reportSubject, reportObject, enumReportType)
                 .content(content)
-                .createdAt(LocalDateTime.now())
                 .build();
     }
 }
