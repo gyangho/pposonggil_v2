@@ -53,7 +53,6 @@ public class BoardDto {
         LocalDateTime endTime = LocalDateTime.parse(dto.getEndTimeString(), DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm"));
 
         return Board.builder(writer, dto.getTitle(), startTime, endTime, dto.getAddress(), dto.getPrice())
-                .id(dto.getBoardId())
                 .content(dto.getContent())
                 .createdAt(dto.getCreatedAt())
                 .isFreebie(dto.isFreebie())

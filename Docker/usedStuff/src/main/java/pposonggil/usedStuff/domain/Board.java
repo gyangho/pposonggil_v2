@@ -19,7 +19,6 @@ import static lombok.AccessLevel.PROTECTED;
 @Builder
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PRIVATE)
-@ToString
 public class Board {
     @Id
     @GeneratedValue

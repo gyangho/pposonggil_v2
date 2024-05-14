@@ -38,7 +38,6 @@ public class MemberDto {
 
     public static Member toEntity(MemberDto dto) {
         return Member.builder(dto.getNickName())
-                .id(dto.getMemberId())
                 .phone(dto.getPhone())
                 .ratingScore(dto.getRatingScore())
                 .createdAt(dto.getCreatedAt())

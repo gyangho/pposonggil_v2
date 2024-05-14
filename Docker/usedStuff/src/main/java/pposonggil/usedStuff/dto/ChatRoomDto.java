@@ -43,7 +43,6 @@ public class ChatRoomDto {
 
     public static ChatRoom toEntity(ChatRoomDto dto, Board chatBoard, Member chatMember) {
         return ChatRoom.builder(chatBoard, chatMember)
-                .id(dto.getChatRoomId())
                 .chatBoard(chatBoard)
                 .chatMember(chatMember)
                 .createdAt(dto.getCreatedAt())
