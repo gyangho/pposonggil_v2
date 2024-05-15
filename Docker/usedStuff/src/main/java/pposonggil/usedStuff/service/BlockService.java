@@ -35,6 +35,20 @@ public class BlockService {
     }
 
     /**
+     * 차단자 아이디로 차단 조회
+     */
+    public List<Block> findBlocksBySubjectId(Long subjectId) {
+        return blockRepository.findBlocksBySubjectId(subjectId);
+    }
+
+    /**
+     * 피차단자 아이디로 차단 조회
+     */
+    public List<Block> findBlocksByObjectId(Long objectId) {
+        return blockRepository.findBlocksByObjectId(objectId);
+    }
+
+    /**
      * 차단 & 차단자 & 피차단자 조회
      */
     public List<Block> findALlWithMember() {

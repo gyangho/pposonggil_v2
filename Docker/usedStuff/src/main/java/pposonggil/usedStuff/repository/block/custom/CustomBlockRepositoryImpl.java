@@ -31,5 +31,25 @@ public class CustomBlockRepositoryImpl implements CustomBlockRepository{
                 .fetch();
     }
 
+    @Override
+    public List<Block> findBlocksBySubjectId(Long subjectId){
+        return query
+                .select(block)
+                .from(block)
+                .join(block.blockSubject, subjectMember).fetchJoin()
+                .where(subjectMember.id.eq(subjectId))
+                .limit(1000)
+                .fetch();
+    }
 
+    @Override
+    public List<Block> findBlocksByObjectId(Long objectId){
+        return query
+                .select(block)
+                .from(block)
+                .join(block.blockObject, objectMember).fetchJoin()
+                .where(subjectMember.id.eq(objectId))
+                .limit(1000)
+                .fetch();
+    }
 }
