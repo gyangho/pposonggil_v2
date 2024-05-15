@@ -5,14 +5,12 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import org.hibernate.annotations.DynamicInsert;
 
-import java.time.LocalDate;
-
 import static jakarta.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
 @DynamicInsert
-public class Block {
+public class Block extends BaseEntity{
     @Id
     @GeneratedValue
     @Column(name = "block_id")
@@ -28,9 +26,10 @@ public class Block {
     @JoinColumn(name = "block_object_id")
     private Member blockObject;
 
-    private String blockType;
-    private String content;
-    private LocalDate createdAt;
+    public Block(Member blockSubject, Member blockObject) {
+        this.blockSubject = blockSubject;
+        this.blockObject = blockObject;
+    }
 
     public void setBlockSubject(Member member) {
         this.blockSubject = member;
@@ -41,5 +40,4 @@ public class Block {
         this.blockObject = member;
         member.getBlockObjects().add(this);
     }
-
 }

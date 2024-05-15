@@ -1,36 +1,12 @@
 package pposonggil.usedStuff.repository.block;
 
-import jakarta.persistence.EntityManager;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import pposonggil.usedStuff.domain.Block;
+import pposonggil.usedStuff.domain.Member;
+import pposonggil.usedStuff.repository.block.custom.CustomBlockRepository;
 
-import java.util.List;
+import java.util.Optional;
 
-@Repository
-@RequiredArgsConstructor
-public class BlockRepository {
-    private final EntityManager em;
-
-    public void save(Block block) {
-        em.persist(block);
-    }
-
-    public Block findOne(Long id) {
-        return em.find(Block.class, id);
-    }
-
-    public List<Block> findAll() {
-        return em.createQuery("select b from Block b", Block.class)
-                .setMaxResults(1000)
-                .getResultList();
-    }
-
-    public List<Block> findAllWithMember() {
-        return em.createQuery("select b from Board b " +
-                        "join fetch b.blockSubject ms " +
-                        "join fetch b.blockObject mo", Block.class)
-                .getResultList();
-    }
-
+public interface BlockRepository extends JpaRepository<Block, Long>, CustomBlockRepository {
+   Optional<Block> findByBlockSubjectAndBlockObject(Member blockSubject, Member blockObject);
 }
