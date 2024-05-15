@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pposonggil.usedStuff.domain.Member;
 import pposonggil.usedStuff.domain.Report;
+import pposonggil.usedStuff.dto.ReportDto;
 import pposonggil.usedStuff.repository.member.MemberRepository;
 import pposonggil.usedStuff.repository.report.ReportRepository;
 
@@ -29,7 +30,8 @@ public class ReportService {
      * 신고 상세 조회
      */
     public Report findOne(Long reportId){
-        return reportRepository.findById(reportId).orElseThrow(NoSuchElementException::new);
+        return reportRepository.findById(reportId)
+                .orElseThrow(NoSuchElementException::new);
     }
 
     /**
@@ -43,20 +45,20 @@ public class ReportService {
      * 신고 생성
      */
     @Transactional
-    public Long createReport(Long reportSubjectId, Long reportObjectId, String reportType, String content){
-        Member reportSubject = memberRepository.findById(reportSubjectId)
-                .orElseThrow(() -> new NoSuchElementException("Member not found with id: " + reportSubjectId));
-        Member reportObject = memberRepository.findById(reportObjectId)
-                .orElseThrow(() -> new NoSuchElementException("Member not found with id: " + reportObjectId));
+    public Long createReport(ReportDto reportDto){
+        Member reportSubject = memberRepository.findById(reportDto.getSubjectId())
+                .orElseThrow(() -> new NoSuchElementException("Member not found with id: " + reportDto.getSubjectId()));
+        Member reportObject = memberRepository.findById(reportDto.getObjectId())
+                .orElseThrow(() -> new NoSuchElementException("Member not found with id: " + reportDto.getObjectId()));
 
         if(reportSubject.equals(reportObject)){
             throw new IllegalArgumentException("자기 자신을 신고할 수는 없습니다.");
         }
 
-        Report report = Report.buildReport(reportSubject, reportObject, reportType, content);
+        Report report = Report.buildReport(reportSubject, reportObject, reportDto.getReportType(), reportDto.getContent());
+
         report.setReportSubject(reportSubject);
         report.setReportObject(reportObject);
-
         reportRepository.save(report);
 
         return report.getId();

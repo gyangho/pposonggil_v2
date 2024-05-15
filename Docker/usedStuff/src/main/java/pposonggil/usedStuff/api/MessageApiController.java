@@ -20,8 +20,7 @@ public class MessageApiController {
      */
     @PostMapping("/api/message")
     public ResponseEntity<String> createMessage(@RequestBody MessageDto messageDto) {
-        Long messageId = messageService.createMessage(messageDto.getSenderId(), messageDto.getMessageChatRoomId(),
-                messageDto.getContent());
+        Long messageId = messageService.createMessage(messageDto);
         return ResponseEntity.ok("Created message with ID: " + messageId);
     }
 
@@ -29,7 +28,7 @@ public class MessageApiController {
      * 특정 메시지 상세 조회
      */
     @GetMapping("/api/messages/{messageId}")
-    public MessageDto getMessageByMessageId(@PathVariable Long messageId){
+    public MessageDto getMessageByMessageId(@PathVariable Long messageId) {
         Message message = messageService.findOne(messageId);
         return MessageDto.fromEntity(message);
     }

@@ -5,11 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import pposonggil.usedStuff.domain.Board;
-import pposonggil.usedStuff.domain.Member;
 import pposonggil.usedStuff.domain.TransactionAddress;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
@@ -47,16 +45,6 @@ public class BoardDto {
                 .createdAt(board.getCreatedAt())
                 .updateAt(board.getUpdateAt())
                 .price(board.getPrice())
-                .build();
-    }
-
-    public static Board toEntity(BoardDto dto, Member writer) {
-        LocalDateTime startTime = LocalDateTime.parse(dto.getStartTimeString(), DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm"));
-        LocalDateTime endTime = LocalDateTime.parse(dto.getEndTimeString(), DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm"));
-
-        return Board.builder(writer, dto.getTitle(), startTime, endTime, dto.getAddress(), dto.getPrice())
-                .content(dto.getContent())
-                .isFreebie(dto.isFreebie())
                 .build();
     }
 }

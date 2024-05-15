@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pposonggil.usedStuff.domain.ChatRoom;
 import pposonggil.usedStuff.domain.Member;
 import pposonggil.usedStuff.domain.Message;
+import pposonggil.usedStuff.dto.MessageDto;
 import pposonggil.usedStuff.repository.chatroom.ChatRoomRepository;
 import pposonggil.usedStuff.repository.member.MemberRepository;
 import pposonggil.usedStuff.repository.message.MessageRepository;
@@ -25,21 +26,21 @@ public class MessageService {
      * 메시지 송신
      */
     @Transactional
-    public Long createMessage(Long senderId, Long messageChatRoomId, String content){
-        Member sender = memberRepository.findById(senderId)
-                .orElseThrow(() -> new NoSuchElementException("Member not found with id: " + senderId));
-        ChatRoom messageChatRoom = chatRoomRepository.findById(messageChatRoomId)
-                .orElseThrow(() -> new NoSuchElementException("ChatRoom not found with id: " + messageChatRoomId));
+    public Long createMessage(MessageDto messageDto){
+        Member sender = memberRepository.findById(messageDto.getSenderId())
+                .orElseThrow(() -> new NoSuchElementException("Member not found with id: " + messageDto.getSenderId()));
+        ChatRoom messageChatRoom = chatRoomRepository.findById(messageDto.getMessageChatRoomId())
+                .orElseThrow(() -> new NoSuchElementException("ChatRoom not found with id: " + messageDto.getMessageChatRoomId()));
 
-        if (!messageChatRoom.getChatMember().getId().equals(senderId) &&
-                !messageChatRoom.getChatBoard().getWriter().getId().equals(senderId)) {
+        if (!messageChatRoom.getChatMember().getId().equals(messageDto.getSenderId()) &&
+                !messageChatRoom.getChatBoard().getWriter().getId().equals(messageDto.getSenderId())) {
             throw new IllegalArgumentException("Sender가 채팅방 멤버가 아닙니다.");
         }
 
-        Message message = Message.buildMessage(sender, messageChatRoom, content);
+        Message message = Message.buildMessage(sender, messageChatRoom, messageDto.getContent());
+
         message.setSender(sender);
         message.setMessageChatRoom(messageChatRoom);
-
         messageRepository.save(message);
 
         return message.getId();
@@ -50,7 +51,8 @@ public class MessageService {
      * 메시지 조회
      */
     public Message findOne(Long messageId) {
-        return messageRepository.findById(messageId).orElseThrow(NoSuchElementException::new);
+        return messageRepository.findById(messageId)
+                .orElseThrow(NoSuchElementException::new);
     }
 
     /**

@@ -1,6 +1,6 @@
 package pposonggil.usedStuff.service;
 
-import jakarta.persistence.EntityManager;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +8,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import pposonggil.usedStuff.domain.Member;
+import pposonggil.usedStuff.dto.MemberDto;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,88 +22,81 @@ class MemberServiceTest {
     @Autowired
     MemberService memberService;
 
-    @Test
-    public void 회원_가입() throws Exception {
-        // given
-        String name = "name";
-        String nickName = "nickName";
-        String phone = "01011111111";
+    private Long memberId1, memberId2;
 
-        // when
-        Long savedId = memberService.join(Member.builder(nickName)
-                .name(name)
-                .phone(phone)
-                .isActivated(true)
-                .build());
-
-        // then
-        Member savedMember = memberService.findOne(savedId);
-        assertEquals(name, savedMember.getName());
-        assertEquals(nickName, savedMember.getNickName());
-        assertEquals(phone, savedMember.getPhone());
-        assertTrue(savedMember.isActivated());
+    @BeforeEach
+    void setUp() {
+        // 회원 1, 2 생성
+        memberId1 = createMember("name1", "nickName1", "01011111111");
+        memberId2 = createMember("name2", "nickName2", "01022222222");
     }
 
     @Test
-    public void 회원_탈퇴() throws  Exception{
-        // given
-        String name = "name";
-        String nickName = "nickName";
-        String phone = "01011111111";
-
-        Long savedId = memberService.join(Member.builder(nickName)
-                .name(name)
-                .phone(phone)
-                .build());
-
+    public void 회원_가입() throws Exception {
         // when
-        memberService.deleteMember(savedId);
+        Member member = memberService.findOne(memberId1);
 
         // then
-        assertThrows(NoSuchElementException.class, () -> memberService.findOne(savedId));
+        assertEquals("name1", member.getName());
+        assertEquals("nickName1", member.getNickName());
+        assertEquals("01011111111", member.getPhone());
+        assertTrue(member.isActivated());
+    }
+
+    @Test
+    public void 회원_탈퇴() throws Exception {
+        // given
+        Member member = memberService.findOne(memberId1);
+
+        // when
+        memberService.deleteMember(memberId1);
+
+        // then
+        List<Member> members = memberService.findMembers();
+        assertEquals(1, members.size());
+        assertThrows(NoSuchElementException.class, () -> memberService.findOne(memberId1));
     }
 
     @Test
     public void 중복_닉네임_예외() throws Exception {
         // given
-        String nickName = "nickName";
+        String nickName = "nickName1";
 
         // when
-        Long savedId = memberService.join(Member.builder(nickName).build());
+        MemberDto memberDto = MemberDto.builder()
+                .nickName(nickName)
+                .build();
 
         // then
         assertThrows(IllegalStateException.class, () -> {
-            memberService.join(Member.builder(nickName).build());
+            memberService.createMember(memberDto);
         });
 
-        Member findMember = memberService.findOne(savedId);
-        assertNotNull(findMember);
-        assertEquals(nickName, findMember.getNickName());
+        Member member1 = memberService.findOne(memberId1);
+        assertNotNull(member1);
+        assertEquals(nickName, member1.getNickName());
     }
 
     @Test
     public void 중복_전화번호_예외() throws Exception {
-        String nickName1 = "nickName1";
-        String nickName2 = "nickName2";
+        // given
+        String nickName3 = "nickName3";
         String phone = "01011111111";
 
         // when
-        Long savedId = memberService.join(Member
-                .builder(nickName1)
+        MemberDto memberDto = MemberDto.builder()
+                .nickName(nickName3)
                 .phone(phone)
-                .build());
+                .build();
 
         // then
         assertThrows(IllegalStateException.class, () -> {
-            memberService.join(Member
-                    .builder(nickName2)
-                    .phone(phone)
-                    .build());
+            memberService.createMember(memberDto);
         });
 
-        Member findMember = memberService.findOne(savedId);
-        assertNotNull(findMember);
-        assertEquals(phone, findMember.getPhone());
+        Member member1 = memberService.findOne(memberId1);
+        assertNotNull(member1);
+        assertEquals(phone, member1.getPhone());
     }
 
     /**
@@ -110,28 +105,34 @@ class MemberServiceTest {
     @Test
     public void 회원_정보_업데이트() throws Exception {
         // given
-        String name = "name";
-        String nickName = "nickName";
-        String phone = "01011111111";
-
         String updateName = "updateName";
         String updateNickName = "updateNickName";
         String updatePhone = "010122222222";
 
-        Member member = Member.builder(nickName)
-                .name(name)
-                .phone(phone)
+        MemberDto memberDto = MemberDto.builder()
+                .memberId(memberId1)
+                .name(updateName)
+                .nickName(updateNickName)
+                .phone(updatePhone)
                 .build();
 
-        Long savedId = memberService.join(member);
-
         // when
-        memberService.updateMember(savedId, updateName, updateNickName, updatePhone);
+        memberService.updateMember(memberDto);
 
         // then
-        Member updateMember = memberService.findOne(savedId);
+        Member updateMember = memberService.findOne(memberId1);
         assertEquals(updateName, updateMember.getName());
         assertEquals(updateNickName, updateMember.getNickName());
         assertEquals(updatePhone, updateMember.getPhone());
+    }
+
+    public Long createMember(String name, String nickName, String phone) {
+        MemberDto memberDto = MemberDto.builder()
+                .name(name)
+                .nickName(nickName)
+                .phone(phone)
+                .build();
+
+        return memberService.createMember(memberDto);
     }
 }

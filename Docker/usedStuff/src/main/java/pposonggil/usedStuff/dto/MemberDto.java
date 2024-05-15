@@ -35,12 +35,4 @@ public class MemberDto {
                 .isActivated(member.isActivated())
                 .build();
     }
-
-    public static Member toEntity(MemberDto dto) {
-        return Member.builder(dto.getNickName())
-                .phone(dto.getPhone())
-                .ratingScore(dto.getRatingScore())
-                .isActivated(dto.isActivated())
-                .build();
-    }
 }

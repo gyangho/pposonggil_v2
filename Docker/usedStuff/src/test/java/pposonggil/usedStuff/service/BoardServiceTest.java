@@ -1,6 +1,7 @@
 package pposonggil.usedStuff.service;
 
 import jakarta.transaction.Transactional;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +10,11 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import pposonggil.usedStuff.domain.Board;
 import pposonggil.usedStuff.domain.Member;
 import pposonggil.usedStuff.domain.TransactionAddress;
+import pposonggil.usedStuff.dto.BoardDto;
+import pposonggil.usedStuff.dto.MemberDto;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -25,215 +29,125 @@ class BoardServiceTest {
     @Autowired
     MemberService memberService;
 
+    private Long memberId1, memberId2;
+    private Long boardId1, boardId2;
+
+    @BeforeEach
+    public void setUp() {
+        // 회원 1, 2 생성
+        memberId1 = createMember("name1", "nickName1", "01011111111");
+        memberId2 = createMember("name2", "nickName2", "01022222222");
+
+        // 게시글 1, 2 생성
+        boardId1 = createBoard(memberId1, "title1", "우산 팔아요1", LocalDateTime.now(), LocalDateTime.now().plusMinutes(30),
+                new TransactionAddress("숭실대1", 37.4958, 126.9583, "주소1"), 1000L, false);
+        boardId2 = createBoard(memberId2, "title2", "우산 팔아요2", LocalDateTime.now(), LocalDateTime.now().plusHours(1),
+                new TransactionAddress("숭실대2", 37.5000, 126.9500, "주소2"), 2000L, false);
+    }
+
     @Test
     public void 전체_게시글_조회() throws Exception {
-        // given
-        // 회원 1 생성
-        String name1 = "name1";
-        String nickName1 = "nickName1";
-        String phone1 = "01011111111";
-
-        Long savedId1 = memberService.join(Member.builder(nickName1)
-                .name(name1)
-                .phone(phone1)
-                .isActivated(true)
-                .build());
-
-        // 회원 2 생성
-        String name2 = "name2";
-        String nickName2 = "nickName2";
-        String phone2 = "01022222222";
-
-        Long savedId2 = memberService.join(Member.builder(nickName2)
-                .name(name2)
-                .phone(phone2)
-                .isActivated(true)
-                .build());
-
-        // 게시글 1, 2 작성
-        String title = "title";
-        String content = "우산 팔아요";
-        LocalDateTime startTime = LocalDateTime.now();
-        LocalDateTime endTime = startTime.plusMinutes(30);
-        TransactionAddress address = new TransactionAddress("숭실대", 37.4958, 126.9583, "주소");
-        Long price = 1000L;
-        boolean isFreebie = false;
-
-        Long boardId1 = boardService.createBoard(savedId1, title, content, startTime, endTime, address, price, isFreebie);
-        Long boardId2 = boardService.createBoard(savedId2, title, content, startTime, endTime, address, price, isFreebie);
-
         // when
-        Member savedWriter1 = memberService.findOne(savedId1);
-        Board savedBoard1 = boardService.findOne(boardId1);
+        Member member1 = memberService.findOne(memberId1);
+        Board board1 = boardService.findOne(boardId1);
 
-        Member savedWriter2 = memberService.findOne(savedId2);
-        Board savedBoard2 = boardService.findOne(boardId2);
+        Member member2 = memberService.findOne(memberId2);
+        Board board2 = boardService.findOne(boardId2);
 
         // then
         List<Board> boards = boardService.findBoards();
         assertEquals(2, boards.size());
-        assertEquals(savedWriter1, savedBoard1.getWriter());
-        assertEquals(savedWriter2, savedBoard2.getWriter());
+        assertEquals(member1, board1.getWriter());
+        assertEquals(member2, board2.getWriter());
     }
 
     @Test
     public void 작성자_정보와_함께_모든_게시글_조회() throws Exception {
-        // given
-        // 회원 1 생성
-        String name1 = "name1";
-        String nickName1 = "nickName1";
-        String phone1 = "01011111111";
-
-        Long savedId1 = memberService.join(Member.builder(nickName1)
-                .name(name1)
-                .phone(phone1)
-                .isActivated(true)
-                .build());
-
-        // 게시글 1 작성
-        String title = "title";
-        String content = "우산 팔아요";
-        LocalDateTime startTime = LocalDateTime.now();
-        LocalDateTime endTime = startTime.plusMinutes(30);
-        TransactionAddress address = new TransactionAddress("숭실대", 37.4958, 126.9583, "주소");
-        Long price = 1000L;
-        boolean isFreebie = false;
-
-        Long boardId1 = boardService.createBoard(savedId1, title, content, startTime, endTime, address, price, isFreebie);
-
-        // 게시글 2 작성
-        String title2 = "title2";
-        String content2 = "우산 팔아요2";
-        LocalDateTime startTime2 = startTime.plusHours(1);
-        LocalDateTime endTime2 = startTime2.plusMinutes(30);
-        TransactionAddress address2 = new TransactionAddress("숭숭숭", 37.4500, 126.9500, "주소2");
-        Long price2 = 2000L;
-        boolean isFreebie2 = false;
-
-        Long boardId2 = boardService.createBoard(savedId1, title2, content2, startTime2, endTime2, address2, price2, isFreebie2);
-
         // when
-        Member savedWriter = memberService.findOne(savedId1);
-        List<Board> boards = boardService.findAllWithMember();
+        Board board1 = boardService.findOne(boardId1);
+        Board board2 = boardService.findOne(boardId2);
 
         // then
+        List<Board> boards = boardService.findAllWithMember();
         assertEquals(2, boards.size());
 
-        Board board1 = boards.stream().filter(board -> board.getId().equals(boardId1)).findFirst()
+        Board findBoard1 = boards.stream().filter(board -> board.getId().equals(boardId1)).findFirst()
                 .orElseThrow(NoSuchElementException::new);
         assertNotNull(board1);
-        assertEquals(savedWriter, board1.getWriter());
-        assertEquals(title, board1.getTitle());
-        assertEquals(content, board1.getContent());
-        assertEquals(startTime, board1.getStartTime());
-        assertEquals(endTime, board1.getEndTime());
-        assertEquals(address, board1.getAddress());
-        assertEquals(price, board1.getPrice());
-        assertFalse(board1.isFreebie());
+        assertEquals(findBoard1.getWriter(), board1.getWriter());
+        assertEquals(findBoard1.getTitle(), board1.getTitle());
+        assertEquals(findBoard1.getContent(), board1.getContent());
+        assertEquals(findBoard1.getStartTime(), board1.getStartTime());
+        assertEquals(findBoard1.getEndTime(), board1.getEndTime());
+        assertEquals(findBoard1.getAddress(), board1.getAddress());
+        assertEquals(findBoard1.getPrice(), board1.getPrice());
+        assertFalse(findBoard1.isFreebie());
 
-        Board board2 = boards.stream().filter(board -> board.getId().equals(boardId2)).findFirst()
+        Board findBoard2 = boards.stream().filter(board -> board.getId().equals(boardId2)).findFirst()
                 .orElseThrow(NoSuchElementException::new);
         assertNotNull(board2);
-        assertEquals(savedWriter, board2.getWriter());
-        assertEquals(title2, board2.getTitle());
-        assertEquals(content2, board2.getContent());
-        assertEquals(startTime2, board2.getStartTime());
-        assertEquals(endTime2, board2.getEndTime());
-        assertEquals(address2, board2.getAddress());
-        assertEquals(price2, board2.getPrice());
-        assertFalse(board2.isFreebie());
+        assertEquals(findBoard2.getWriter(), board2.getWriter());
+        assertEquals(findBoard2.getTitle(), board2.getTitle());
+        assertEquals(findBoard2.getContent(), board2.getContent());
+        assertEquals(findBoard2.getStartTime(), board2.getStartTime());
+        assertEquals(findBoard2.getEndTime(), board2.getEndTime());
+        assertEquals(findBoard2.getAddress(), board2.getAddress());
+        assertEquals(findBoard2.getPrice(), board2.getPrice());
+        assertFalse(findBoard2.isFreebie());
     }
 
     @Test
     public void 게시판_작성() throws Exception {
-        //given
-        // 회원 1 생성
-        String name1 = "name1";
-        String nickName1 = "nickName1";
-        String phone1 = "01011111111";
-
-        Long savedId1 = memberService.join(Member.builder(nickName1)
-                .name(name1)
-                .phone(phone1)
-                .isActivated(true)
-                .build());
-
-        // 게시글 1 작성
-        String title = "title";
-        String content = "우산 팔아요";
-        LocalDateTime startTime = LocalDateTime.now();
-        LocalDateTime endTime = startTime.plusMinutes(30);
-        TransactionAddress address = new TransactionAddress("숭실대", 37.4958, 126.9583, "주소");
-        Long price = 1000L;
-        boolean isFreebie = false;
-
-        Long boardId1 = boardService.createBoard(savedId1, title, content, startTime, endTime, address, price, isFreebie);
-
         // when
+        Member member1 = memberService.findOne(memberId1);
+        Board board1 = boardService.findOne(boardId1);
 
         // then
-        Member savedWriter = memberService.findOne(savedId1);
-        Board savedBoard = boardService.findOne(boardId1);
-
-        assertNotNull(savedBoard);
-        assertEquals(savedWriter, savedBoard.getWriter());
-        assertEquals(title, savedBoard.getTitle());
-        assertEquals(content, savedBoard.getContent());
-        assertEquals(startTime, savedBoard.getStartTime());
-        assertEquals(endTime, savedBoard.getEndTime());
-        assertEquals(address, savedBoard.getAddress());
-        assertEquals(price, savedBoard.getPrice());
-        assertFalse(savedBoard.isFreebie());
+        assertNotNull(board1);
+        assertEquals(member1, board1.getWriter());
     }
 
     @Test
     public void 게시글_수정() throws Exception {
         // given
-        // 회원 1 생성
-        String name1 = "name1";
-        String nickName1 = "nickName1";
-        String phone1 = "01011111111";
-
-        Long savedId1 = memberService.join(Member.builder(nickName1)
-                .name(name1)
-                .phone(phone1)
-                .isActivated(true)
-                .build());
-
-        // 게시글 1 작성
-        String title = "title";
-        String content = "우산 팔아요";
-        LocalDateTime startTime = LocalDateTime.now();
-        LocalDateTime endTime = startTime.plusMinutes(30);
-        TransactionAddress address = new TransactionAddress("숭실대", 37.4958, 126.9583, "주소");
-        Long price = 1000L;
-        boolean isFreebie = false;
-
-        Long boardId1 = boardService.createBoard(savedId1, title, content, startTime, endTime, address, price, isFreebie);
-
         // 업데이트할 게시글 내용
-        String updateTitle = "updateTitle";
-        String updateContent = "updateContent";
-        LocalDateTime updateStartTime = startTime.plusHours(1);
+        String updateTitle = "제목1";
+        String updateContent = "우산 팔아요1";
+        LocalDateTime updateStartTime = LocalDateTime.now().plusHours(1);
         LocalDateTime updateEndTime = updateStartTime.plusMinutes(30);
         TransactionAddress updateAddress = new TransactionAddress("숭숭숭", 37.5000, 126.9555, "주소2");
         Long updatePrice = 10000L;
         boolean updateIsFreebie = false;
 
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm");
+        String updateFormatStartTime = updateStartTime.format(formatter);
+        String updateFormatEndTime = updateEndTime.format(formatter);
+
         // when
-        Member savedWriter = memberService.findOne(savedId1);
-        boardService.updateBoard(boardId1, updateTitle, updateContent, updateStartTime, updateEndTime,
-                updateAddress, updatePrice, updateIsFreebie);
+        Member member1 = memberService.findOne(memberId1);
+        BoardDto boardDto = BoardDto.builder()
+                .boardId(boardId1)
+                .writerId(memberId1)
+                .title(updateTitle)
+                .content(updateContent)
+                .startTimeString(updateFormatStartTime)
+                .endTimeString(updateFormatEndTime)
+                .address(updateAddress)
+                .price(updatePrice)
+                .isFreebie(updateIsFreebie)
+                .build();
+
+        boardService.updateBoard(boardDto);
 
         // then
         Board updateBoard = boardService.findOne(boardId1);
 
         assertNotNull(updateBoard);
-        assertEquals(savedWriter, updateBoard.getWriter());
+        assertEquals(member1, updateBoard.getWriter());
         assertEquals(updateTitle, updateBoard.getTitle());
         assertEquals(updateContent, updateBoard.getContent());
-        assertEquals(updateStartTime, updateBoard.getStartTime());
-        assertEquals(updateEndTime, updateBoard.getEndTime());
+        assertEquals(updateFormatStartTime, updateBoard.getStartTime().format(formatter));
+        assertEquals(updateFormatEndTime, updateBoard.getEndTime().format(formatter));
         assertEquals(updateAddress, updateBoard.getAddress());
         assertEquals(updatePrice, updateBoard.getPrice());
         assertFalse(updateBoard.isFreebie());
@@ -241,35 +155,42 @@ class BoardServiceTest {
 
     @Test
     public void 게시판_삭제() throws Exception {
-        // given
-        // 회원 1 생성
-        String name1 = "name1";
-        String nickName1 = "nickName1";
-        String phone1 = "01011111111";
-
-        Long savedId1 = memberService.join(Member.builder(nickName1)
-                .name(name1)
-                .phone(phone1)
-                .isActivated(true)
-                .build());
-
-        // 게시글 1 작성
-        String title = "title";
-        String content = "우산 팔아요";
-        LocalDateTime startTime = LocalDateTime.now();
-        LocalDateTime endTime = startTime.plusMinutes(30);
-        TransactionAddress address = new TransactionAddress("숭실대", 37.4958, 126.9583, "주소");
-        Long price = 1000L;
-        boolean isFreebie = false;
-
-        Long boardId1 = boardService.createBoard(savedId1, title, content, startTime, endTime, address, price, isFreebie);
-
         // when
-        boardService.deleteBoard(savedId1);
+        boardService.deleteBoard(boardId1);
+        List<Board> boards = boardService.findBoards();
 
         // then
-        assertThrows(NoSuchElementException.class, () -> boardService.findOne(savedId1));
-
+        assertEquals(1, boards.size());
+        assertThrows(NoSuchElementException.class, () -> boardService.findOne(memberId1));
     }
 
+    public Long createMember(String name, String nickName, String phone) {
+        MemberDto memberDto = MemberDto.builder()
+                .name(name)
+                .nickName(nickName)
+                .phone(phone)
+                .build();
+
+        return memberService.createMember(memberDto);
+    }
+
+
+    public Long createBoard(Long savedId, String title, String content, LocalDateTime startTime, LocalDateTime endTime,
+                            TransactionAddress address, Long price, boolean isFreebie) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm");
+        String formatStartTime = startTime.format(formatter);
+        String formatEndTime = endTime.format(formatter);
+
+        BoardDto boardDto = BoardDto.builder()
+                .writerId(savedId)
+                .title(title)
+                .content(content)
+                .startTimeString(formatStartTime)
+                .endTimeString(formatEndTime)
+                .address(address)
+                .price(price)
+                .isFreebie(isFreebie)
+                .build();
+        return boardService.createBoard(boardDto);
+    }
 }

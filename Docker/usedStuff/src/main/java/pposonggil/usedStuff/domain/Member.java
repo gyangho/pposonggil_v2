@@ -31,7 +31,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Builder
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PRIVATE)
-public class Member extends BaseEntity{
+public class Member extends BaseEntity {
     @Id
     @GeneratedValue
     @Column(name = "member_id")
@@ -83,7 +83,7 @@ public class Member extends BaseEntity{
     private boolean isActivated;
 
     public static MemberBuilder builder(String nickName) {
-        if(nickName == null)
+        if (nickName == null)
             throw new IllegalArgumentException("필수 파라미터 누락");
         return new MemberBuilder()
                 .nickName(nickName);
@@ -101,7 +101,7 @@ public class Member extends BaseEntity{
         this.phone = phone;
     }
 
-    public static Member buildMember(String name, String nickName, String phone, boolean isActivated) {
+    public static Member buildMember(String name, String nickName, String phone) {
         return Member.builder(nickName)
                 .name(name)
                 .phone(phone)

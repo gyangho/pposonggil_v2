@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pposonggil.usedStuff.domain.Board;
 import pposonggil.usedStuff.domain.Member;
-import pposonggil.usedStuff.domain.TransactionAddress;
+import pposonggil.usedStuff.dto.BoardDto;
 import pposonggil.usedStuff.repository.board.BoardRepository;
 import pposonggil.usedStuff.repository.member.MemberRepository;
 
@@ -54,14 +54,18 @@ public class BoardService {
      * 게시글 작성
      */
     @Transactional
-    public Long createBoard(Long writerId, String title, String content, LocalDateTime startTime,
-                            LocalDateTime  endTime, TransactionAddress address, Long price, boolean isFreebie) {
-        Member writer = memberRepository.findById(writerId)
-                .orElseThrow(() -> new NoSuchElementException("Member not found with id: " + writerId));
+    public Long createBoard(BoardDto boardDto) {
+        Member writer = memberRepository.findById(boardDto.getWriterId())
+                .orElseThrow(() -> new NoSuchElementException("Member not found with id: " + boardDto.getWriterId()));
 
-        Board board = Board.buildBoard(writer, title, content, startTime, endTime, address, price, isFreebie);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm");
+        LocalDateTime startTime = LocalDateTime.parse(boardDto.getStartTimeString(), formatter);
+        LocalDateTime endTime = LocalDateTime.parse(boardDto.getEndTimeString(), formatter);
+
+        Board board = Board.buildBoard(writer, boardDto.getTitle(), boardDto.getContent(),
+                startTime, endTime, boardDto.getAddress(), boardDto.getPrice(), boardDto.isFreebie());
+
         board.setWriter(writer);
-
         boardRepository.save(board);
 
         return board.getId();
@@ -71,33 +75,32 @@ public class BoardService {
      * 게시글 수정
      */
     @Transactional
-    public void updateBoard(Long boardId, String title, String content, LocalDateTime startTime,
-                            LocalDateTime endTime, TransactionAddress address, Long price, boolean isFreebie) {
-        Board board = boardRepository.findById(boardId).orElseThrow(NoSuchElementException::new);
+    public void updateBoard(BoardDto boardDto) {
+        Board board = boardRepository.findById(boardDto.getBoardId())
+                .orElseThrow(NoSuchElementException::new);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm");
-        String formattedStartTime = startTime.format(formatter);
-        String formattedEndTime = endTime.format(formatter);
+        LocalDateTime formattedStartTime = LocalDateTime.parse(boardDto.getStartTimeString(), formatter);
+        LocalDateTime formattedEndTime = LocalDateTime.parse(boardDto.getEndTimeString(), formatter);
 
-
-        if(!board.getTitle().equals(title))
-            board.changeTitle(title);
-        if(!board.getContent().equals(content))
-            board.changeContent(content);
-        if(!Objects.equals(board.getStartTimeString(), formattedStartTime)){
-            board.changeStartTimeString(formattedStartTime);
-            board.changeStartTime(startTime);
+        if (!board.getTitle().equals(boardDto.getTitle()))
+            board.changeTitle(boardDto.getTitle());
+        if (!board.getContent().equals(boardDto.getContent()))
+            board.changeContent(board.getContent());
+        if (!Objects.equals(board.getStartTime(), formattedStartTime)) {
+            board.changeStartTime(formattedStartTime);
+            board.changeStartTimeString(boardDto.getStartTimeString());
         }
-        if(!Objects.equals(board.getEndTimeString(), formattedEndTime)){
-            board.changeEndTimeString(formattedEndTime);
-            board.changeEndTime(endTime);
+        if (!Objects.equals(board.getEndTime(), formattedEndTime)) {
+            board.changeEndTime(formattedEndTime);
+            board.changeEndTimeString(boardDto.getEndTimeString());
         }
-        if(!board.getAddress().equals(address))
-            board.changeAddress(address);
-        if(!board.getPrice().equals(price))
-            board.changePrice(price);
-        if(board.isFreebie() != isFreebie)
-            board.changeIsFreebie(isFreebie);
+        if (!board.getAddress().equals(boardDto.getAddress()))
+            board.changeAddress(boardDto.getAddress());
+        if (!board.getPrice().equals(boardDto.getPrice()))
+            board.changePrice(boardDto.getPrice());
+        if (board.isFreebie() != boardDto.isFreebie())
+            board.changeIsFreebie(board.isFreebie());
 
         boardRepository.save(board);
     }
@@ -107,7 +110,9 @@ public class BoardService {
      */
     @Transactional
     public void deleteBoard(Long boardId) {
-        Board board = boardRepository.findById(boardId).orElseThrow(NoSuchElementException::new);
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(NoSuchElementException::new);
         boardRepository.delete(board);
     }
+
 }

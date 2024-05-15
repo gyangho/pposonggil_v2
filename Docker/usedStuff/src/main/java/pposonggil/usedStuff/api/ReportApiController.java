@@ -1,9 +1,8 @@
 package pposonggil.usedStuff.api;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import pposonggil.usedStuff.domain.Report;
 import pposonggil.usedStuff.dto.ReportDto;
 import pposonggil.usedStuff.service.ReportService;
@@ -46,5 +45,14 @@ public class ReportApiController {
         return reports.stream()
                 .map(ReportDto::fromEntity)
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * 신고 생성
+     */
+    @PutMapping("/api/report")
+    public ResponseEntity<String> createReport(@RequestBody ReportDto reportDto) {
+        Long reportId = reportService.createReport(reportDto);
+        return ResponseEntity.ok("Created report with ID : " + reportId);
     }
 }
