@@ -5,7 +5,7 @@ import pposonggil.usedStuff.domain.ChatRoom;
 import java.util.List;
 
 public interface CustomChatRoomRepository  {
-    public List<ChatRoom> findChatRoomsWithBoardMember();
+    List<ChatRoom> findChatRoomsWithBoardMember();
 
-    public List<ChatRoom> findChatRoomsByMemberId(Long memberId);
+    List<ChatRoom> findChatRoomsByMemberId(Long memberId);
 }

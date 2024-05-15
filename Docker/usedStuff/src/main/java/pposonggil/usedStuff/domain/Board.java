@@ -19,8 +19,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Builder
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PRIVATE)
-@ToString
-public class Board {
+public class Board extends BaseEntity{
     @Id
     @GeneratedValue
     @Column(name = "board_id")
@@ -41,7 +40,6 @@ public class Board {
 
     private String title;
     private String content;
-    private LocalDateTime createdAt;
 
     private LocalDateTime startTime;
     private LocalDateTime endTime;
@@ -122,7 +120,6 @@ public class Board {
                                    LocalDateTime endTime, TransactionAddress address, Long price, boolean isFreebie) {
         return Board.builder(writer, title, startTime, endTime, address, price)
                 .content(content)
-                .createdAt(LocalDateTime.now())
                 .isFreebie(isFreebie)
                 .build();
     }

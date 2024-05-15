@@ -29,6 +29,7 @@ public class BoardDto {
     private String endTimeString;
     private TransactionAddress address;
     private LocalDateTime createdAt;
+    private LocalDateTime updateAt;
     private Long price;
     private boolean isFreebie;
 
@@ -44,6 +45,7 @@ public class BoardDto {
                 .endTimeString(board.getEndTimeString())
                 .address(board.getAddress())
                 .createdAt(board.getCreatedAt())
+                .updateAt(board.getUpdateAt())
                 .price(board.getPrice())
                 .build();
     }
@@ -53,9 +55,7 @@ public class BoardDto {
         LocalDateTime endTime = LocalDateTime.parse(dto.getEndTimeString(), DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm"));
 
         return Board.builder(writer, dto.getTitle(), startTime, endTime, dto.getAddress(), dto.getPrice())
-                .id(dto.getBoardId())
                 .content(dto.getContent())
-                .createdAt(dto.getCreatedAt())
                 .isFreebie(dto.isFreebie())
                 .build();
     }

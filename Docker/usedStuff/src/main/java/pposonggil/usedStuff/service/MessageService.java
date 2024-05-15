@@ -10,7 +10,6 @@ import pposonggil.usedStuff.repository.chatroom.ChatRoomRepository;
 import pposonggil.usedStuff.repository.member.MemberRepository;
 import pposonggil.usedStuff.repository.message.MessageRepository;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -37,7 +36,7 @@ public class MessageService {
             throw new IllegalArgumentException("Sender가 채팅방 멤버가 아닙니다.");
         }
 
-        Message message = Message.buildMessage(sender, messageChatRoom, content, LocalDateTime.now());
+        Message message = Message.buildMessage(sender, messageChatRoom, content);
         message.setSender(sender);
         message.setMessageChatRoom(messageChatRoom);
 

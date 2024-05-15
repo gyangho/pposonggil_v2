@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +31,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Builder
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PRIVATE)
-public class Member {
+public class Member extends BaseEntity{
     @Id
     @GeneratedValue
     @Column(name = "member_id")
@@ -81,7 +80,6 @@ public class Member {
     @ColumnDefault(value = "10")
     private Double ratingScore;
 
-    private LocalDate createdAt;
     private boolean isActivated;
 
     public static MemberBuilder builder(String nickName) {
@@ -108,7 +106,6 @@ public class Member {
                 .name(name)
                 .phone(phone)
                 .ratingScore(10.0)
-                .createdAt(LocalDate.now())
                 .isActivated(true)
                 .build();
     }
