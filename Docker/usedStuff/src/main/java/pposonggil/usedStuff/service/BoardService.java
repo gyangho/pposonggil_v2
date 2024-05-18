@@ -100,7 +100,7 @@ public class BoardService {
         if (!board.getPrice().equals(boardDto.getPrice()))
             board.changePrice(boardDto.getPrice());
         if (board.isFreebie() != boardDto.isFreebie())
-            board.changeIsFreebie(board.isFreebie());
+            board.changeIsFreebie(boardDto.isFreebie());
 
         boardRepository.save(board);
     }
