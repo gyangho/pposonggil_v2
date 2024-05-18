@@ -26,11 +26,6 @@ public class Block extends BaseEntity{
     @JoinColumn(name = "block_object_id")
     private Member blockObject;
 
-    public Block(Member blockSubject, Member blockObject) {
-        this.blockSubject = blockSubject;
-        this.blockObject = blockObject;
-    }
-
     public void setBlockSubject(Member member) {
         this.blockSubject = member;
         member.getBlockSubjects().add(this);
@@ -39,5 +34,10 @@ public class Block extends BaseEntity{
     public void setBlockObject(Member member) {
         this.blockObject = member;
         member.getBlockObjects().add(this);
+    }
+
+    public Block(Member blockSubject, Member blockObject) {
+        this.blockSubject = blockSubject;
+        this.blockObject = blockObject;
     }
 }

@@ -10,13 +10,13 @@ import pposonggil.usedStuff.domain.QMember;
 import java.util.List;
 
 @Repository
-public class CustomBlockRepositoryImpl implements CustomBlockRepository{
+public class CustomBlockRepositoryImpl implements CustomBlockRepository {
     private final JPAQueryFactory query;
     QBlock block = QBlock.block;
     QMember subjectMember = new QMember("subjectMember");
     QMember objectMember = new QMember("objectMember");
 
-    public CustomBlockRepositoryImpl(EntityManager em){
+    public CustomBlockRepositoryImpl(EntityManager em) {
         this.query = new JPAQueryFactory(em);
     }
 
@@ -32,7 +32,7 @@ public class CustomBlockRepositoryImpl implements CustomBlockRepository{
     }
 
     @Override
-    public List<Block> findBlocksBySubjectId(Long subjectId){
+    public List<Block> findBlocksBySubjectId(Long subjectId) {
         return query
                 .select(block)
                 .from(block)
@@ -43,12 +43,12 @@ public class CustomBlockRepositoryImpl implements CustomBlockRepository{
     }
 
     @Override
-    public List<Block> findBlocksByObjectId(Long objectId){
+    public List<Block> findBlocksByObjectId(Long objectId) {
         return query
                 .select(block)
                 .from(block)
                 .join(block.blockObject, objectMember).fetchJoin()
-                .where(subjectMember.id.eq(objectId))
+                .where(objectMember.id.eq(objectId))
                 .limit(1000)
                 .fetch();
     }

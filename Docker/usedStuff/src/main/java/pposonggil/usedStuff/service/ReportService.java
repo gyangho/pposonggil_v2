@@ -35,6 +35,20 @@ public class ReportService {
     }
 
     /**
+     * 신고자 아이디로 신고 조회
+     */
+    public List<Report> findReportsBySubjectId(Long subjectId){
+        return reportRepository.findReportsBySubjectId(subjectId);
+    }
+
+    /**
+     * 피신고자 아이디로 신고 조회
+     */
+    public List<Report> findReportsByObjectId(Long objectId){
+        return reportRepository.findReportsByObjectId(objectId);
+    }
+
+    /**
      * 신조 & 신고자 & 피신고자 조회
      */
     public List<Report> findAllWithMember() {

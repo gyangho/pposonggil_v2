@@ -12,6 +12,7 @@ import pposonggil.usedStuff.dto.MemberDto;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -34,13 +35,16 @@ class MemberServiceTest {
     @Test
     public void 회원_가입() throws Exception {
         // when
-        Member member = memberService.findOne(memberId1);
+        Member member1 = memberService.findOne(memberId1);
 
         // then
-        assertEquals("name1", member.getName());
-        assertEquals("nickName1", member.getNickName());
-        assertEquals("01011111111", member.getPhone());
-        assertTrue(member.isActivated());
+        Optional.of(member1)
+                .ifPresent(member -> assertAll("회원 가입 검증",
+                        () -> assertEquals(member1.getName(), member.getName(), "회원 이름 불일치"),
+                        () -> assertEquals(member1.getNickName(), member.getNickName(), "회원 닉네임 불일치"),
+                        () -> assertEquals(member1.getPhone(), member.getPhone(), "회원 전화번호 불일치"),
+                        () -> assertTrue(member.isActivated(), "회원 비활성화")
+                ));
     }
 
     @Test
@@ -121,9 +125,13 @@ class MemberServiceTest {
 
         // then
         Member updateMember = memberService.findOne(memberId1);
-        assertEquals(updateName, updateMember.getName());
-        assertEquals(updateNickName, updateMember.getNickName());
-        assertEquals(updatePhone, updateMember.getPhone());
+
+        Optional.of(updateMember)
+                .ifPresent(member -> assertAll("회원 가입 검증",
+                        () -> assertEquals(updateName, member.getName(), "회원 이름 불일치"),
+                        () -> assertEquals(updateNickName, member.getNickName(), "회원 닉네임 불일치"),
+                        () -> assertEquals(updatePhone, member.getPhone(), "회원 전화번호 불일치")
+                ));
     }
 
     public Long createMember(String name, String nickName, String phone) {

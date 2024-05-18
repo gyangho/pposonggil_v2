@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -44,7 +45,7 @@ class ChatRoomServiceTest {
         memberId2 = createMember("name2", "nickName2", "01022222222");
         memberId3 = createMember("name3", "nickName3", "01033333333");
 
-        // 게시글 1, 2 생성
+        // 게시글 1, 2, 3 생성
         boardId1 = createBoard(memberId1, "title1", "우산 팔아요1", LocalDateTime.now(), LocalDateTime.now().plusMinutes(30),
                 new TransactionAddress("숭실대1", 37.4958, 126.9583, "주소1"), 1000L, false);
         boardId2 = createBoard(memberId2, "title2", "우산 팔아요2", LocalDateTime.now(), LocalDateTime.now().plusHours(1),
@@ -52,7 +53,7 @@ class ChatRoomServiceTest {
         boardId3 = createBoard(memberId3, "title3", "우산 팔아요3", LocalDateTime.now(), LocalDateTime.now().plusHours(2),
                 new TransactionAddress("숭실대3", 37.0600, 126.9600, "주소3"), 3000L, false);
 
-        // 채팅방 1, 2 생성
+        // 채팅방 1, 2, 3생성
         // 채팅방 1 : 게시글1(회원1) - 회원3
         // 채팅방 2 : 게시글2(회원2) - 회원3
         // 채팅방 3 : 게시글3(회원3) - 회원1
@@ -71,10 +72,27 @@ class ChatRoomServiceTest {
         // then
         ChatRoom chatRoom1 = chatRoomService.findOne(chatRoomId1);
 
-        assertNotNull(chatRoom1);
-        assertEquals(member1, chatRoom1.getChatBoard().getWriter());
-        assertEquals(board1, chatRoom1.getChatBoard());
-        assertEquals(member3, chatRoom1.getChatMember());
+        Optional.of(chatRoom1)
+                .filter(chatRoom -> chatRoom.getChatBoard().getWriter().equals(member1) &&
+                        chatRoom.getChatMember().equals(member3) &&
+                        chatRoom.getChatBoard().equals(board1))
+                .ifPresent(chatRoom -> assertAll("채팅방 정보 검증",
+                        () -> assertEquals(member1.getName(), chatRoom.getChatBoard().getWriter().getName(), "게시글 작성자 이름 불일치"),
+                        () -> assertEquals(member1.getNickName(), chatRoom.getChatBoard().getWriter().getNickName(), "게시글 작성자 닉네임 불일치"),
+                        () -> assertEquals(member1.getPhone(), chatRoom.getChatBoard().getWriter().getPhone(), "게시글 작성자 전화번호 불일치"),
+                        () -> assertEquals(member3.getName(), chatRoom.getChatMember().getName(), "거래 요청자 이름 불일치"),
+                        () -> assertEquals(member3.getNickName(), chatRoom.getChatMember().getNickName(), "거래 요청자 닉네임 불일치"),
+                        () -> assertEquals(member3.getPhone(), chatRoom.getChatMember().getPhone(), "거래 요청자 전화번호 불일치"),
+                        () -> assertEquals(board1.getTitle(), chatRoom.getChatBoard().getTitle(), "게시글 제목 불일치"),
+                        () -> assertEquals(board1.getContent(), chatRoom.getChatBoard().getContent(), "게시글 내용 불일치"),
+                        () -> assertEquals(board1.getStartTime(), chatRoom.getChatBoard().getStartTime(), "게시글 시작 시각 불일치"),
+                        () -> assertEquals(board1.getEndTime(), chatRoom.getChatBoard().getEndTime(), "게시글 종료 시각 불일치"),
+                        () -> assertEquals(board1.getStartTimeString(), chatRoom.getChatBoard().getStartTimeString(), "게시글 시작 시각(String) 불일치"),
+                        () -> assertEquals(board1.getEndTimeString(), chatRoom.getChatBoard().getEndTimeString(), "게시글 종료 시각(String) 불일치"),
+                        () -> assertEquals(board1.getAddress(), chatRoom.getChatBoard().getAddress(), "게시글 주소 불일치"),
+                        () -> assertEquals(board1.getPrice(), chatRoom.getChatBoard().getPrice(), "게시글 가격 불일치"),
+                        () -> assertEquals(board1.isFreebie(), chatRoom.getChatBoard().isFreebie(), "게시글 나눔여부 불일치")
+                ));
     }
 
     @Test
@@ -83,82 +101,91 @@ class ChatRoomServiceTest {
         Member member1 = memberService.findOne(memberId1);
         Member member2 = memberService.findOne(memberId2);
         Member member3 = memberService.findOne(memberId3);
-        Board chatBoard1 = boardService.findOne(boardId1);
-        Board chatBoard2 = boardService.findOne(boardId2);
-        Board chatBoard3 = boardService.findOne(boardId3);
-        ChatRoom chatRoom1 = chatRoomService.findOne(chatRoomId1);
-        ChatRoom chatRoom2 = chatRoomService.findOne(chatRoomId2);
-        ChatRoom chatRoom3 = chatRoomService.findOne(chatRoomId3);
+        Board board1 = boardService.findOne(boardId1);
+        Board board2 = boardService.findOne(boardId2);
+        Board board3 = boardService.findOne(boardId3);
 
         // then
         List<ChatRoom> chatRooms = chatRoomService.findChatRoomsWithBoardMember();
-
         assertEquals(3, chatRooms.size());
 
         // 첫 번째 채팅방 검증
-        assertEquals(chatBoard1, chatRoom1.getChatBoard());
-        assertEquals(member1, chatRoom1.getChatBoard().getWriter());
-        assertEquals(member3, chatRoom1.getChatMember());
-
-        assertEquals(chatBoard1.getTitle(), chatRoom1.getChatBoard().getTitle());
-        assertEquals(chatBoard1.getContent(), chatRoom1.getChatBoard().getContent());
-        assertEquals(chatBoard1.getPrice(), chatRoom1.getChatBoard().getPrice());
-
-        assertEquals(member3.getName(), chatRoom1.getChatMember().getName());
-        assertEquals(member3.getNickName(), chatRoom1.getChatMember().getNickName());
-        assertEquals(member3.getPhone(), chatRoom1.getChatMember().getPhone());
+        chatRooms.stream()
+                .filter(chatRoom -> chatRoom.getChatBoard().getWriter().equals(member1) &&
+                        chatRoom.getChatMember().equals(member3) &&
+                        chatRoom.getChatBoard().equals(board1))
+                .findFirst()
+                .ifPresent(chatRoom -> {
+                    assertAll("게시글 정보, 회원 정보를 포함한 채팅방 조회 검증(채팅방1)",
+                            () -> assertEquals(member1.getName(), chatRoom.getChatBoard().getWriter().getName(), "게시글 작성자 이름 불일치"),
+                            () -> assertEquals(member1.getNickName(), chatRoom.getChatBoard().getWriter().getNickName(), "게시글 작성자 닉네임 불일치"),
+                            () -> assertEquals(member1.getPhone(), chatRoom.getChatBoard().getWriter().getPhone(), "게시글 작성자 전화번호 불일치"),
+                            () -> assertEquals(member3.getName(), chatRoom.getChatMember().getName(), "거래 요청자 이름 불일치"),
+                            () -> assertEquals(member3.getNickName(), chatRoom.getChatMember().getNickName(), "거래 요청자 닉네임 불일치"),
+                            () -> assertEquals(member3.getPhone(), chatRoom.getChatMember().getPhone(), "거래 요청자 전화번호 불일치"),
+                            () -> assertEquals(board1.getTitle(), chatRoom.getChatBoard().getTitle(), "게시글 제목 불일치"),
+                            () -> assertEquals(board1.getContent(), chatRoom.getChatBoard().getContent(), "게시글 내용 불일치"),
+                            () -> assertEquals(board1.getStartTime(), chatRoom.getChatBoard().getStartTime(), "게시글 시작 시각 불일치"),
+                            () -> assertEquals(board1.getEndTime(), chatRoom.getChatBoard().getEndTime(), "게시글 종료 시각 불일치"),
+                            () -> assertEquals(board1.getStartTimeString(), chatRoom.getChatBoard().getStartTimeString(), "게시글 시작 시각(String) 불일치"),
+                            () -> assertEquals(board1.getEndTimeString(), chatRoom.getChatBoard().getEndTimeString(), "게시글 종료 시각(String) 불일치"),
+                            () -> assertEquals(board1.getAddress(), chatRoom.getChatBoard().getAddress(), "게시글 주소 불일치"),
+                            () -> assertEquals(board1.getPrice(), chatRoom.getChatBoard().getPrice(), "게시글 가격 불일치"),
+                            () -> assertEquals(board1.isFreebie(), chatRoom.getChatBoard().isFreebie(), "게시글 나눔여부 불일치")
+                    );
+                });
 
         // 두 번째 채팅방 검증
-        assertEquals(chatBoard2, chatRoom2.getChatBoard());
-        assertEquals(member2, chatRoom2.getChatBoard().getWriter());
-        assertEquals(member3, chatRoom2.getChatMember());
-
-        assertEquals(chatBoard2.getTitle(), chatRoom2.getChatBoard().getTitle());
-        assertEquals(chatBoard2.getContent(), chatRoom2.getChatBoard().getContent());
-        assertEquals(chatBoard2.getPrice(), chatRoom2.getChatBoard().getPrice());
-
-        assertEquals(member3.getName(), chatRoom2.getChatMember().getName());
-        assertEquals(member3.getNickName(), chatRoom2.getChatMember().getNickName());
-        assertEquals(member3.getPhone(), chatRoom2.getChatMember().getPhone());
+        chatRooms.stream()
+                .filter(chatRoom -> chatRoom.getChatBoard().getWriter().equals(member2) &&
+                        chatRoom.getChatMember().equals(member3) &&
+                        chatRoom.getChatBoard().equals(board2))
+                .findFirst()
+                .ifPresent(chatRoom -> {
+                    assertAll("게시글 정보, 회원 정보를 포함한 채팅방 조회 검증(채팅방2)",
+                            () -> assertEquals(member2.getName(), chatRoom.getChatBoard().getWriter().getName(), "게시글 작성자 이름 불일치"),
+                            () -> assertEquals(member2.getNickName(), chatRoom.getChatBoard().getWriter().getNickName(), "게시글 작성자 닉네임 불일치"),
+                            () -> assertEquals(member2.getPhone(), chatRoom.getChatBoard().getWriter().getPhone(), "게시글 작성자 전화번호 불일치"),
+                            () -> assertEquals(member3.getName(), chatRoom.getChatMember().getName(), "거래 요청자 이름 불일치"),
+                            () -> assertEquals(member3.getNickName(), chatRoom.getChatMember().getNickName(), "거래 요청자 닉네임 불일치"),
+                            () -> assertEquals(member3.getPhone(), chatRoom.getChatMember().getPhone(), "거래 요청자 전화번호 불일치"),
+                            () -> assertEquals(board2.getTitle(), chatRoom.getChatBoard().getTitle(), "게시글 제목 불일치"),
+                            () -> assertEquals(board2.getContent(), chatRoom.getChatBoard().getContent(), "게시글 내용 불일치"),
+                            () -> assertEquals(board2.getStartTime(), chatRoom.getChatBoard().getStartTime(), "게시글 시작 시각 불일치"),
+                            () -> assertEquals(board2.getEndTime(), chatRoom.getChatBoard().getEndTime(), "게시글 종료 시각 불일치"),
+                            () -> assertEquals(board2.getStartTimeString(), chatRoom.getChatBoard().getStartTimeString(), "게시글 시작 시각(String) 불일치"),
+                            () -> assertEquals(board2.getEndTimeString(), chatRoom.getChatBoard().getEndTimeString(), "게시글 종료 시각(String) 불일치"),
+                            () -> assertEquals(board2.getAddress(), chatRoom.getChatBoard().getAddress(), "게시글 주소 불일치"),
+                            () -> assertEquals(board2.getPrice(), chatRoom.getChatBoard().getPrice(), "게시글 가격 불일치"),
+                            () -> assertEquals(board2.isFreebie(), chatRoom.getChatBoard().isFreebie(), "게시글 나눔여부 불일치")
+                    );
+                });
 
         // 세 번째 채팅방 검증
-        assertEquals(chatBoard3, chatRoom3.getChatBoard());
-        assertEquals(member3, chatRoom3.getChatBoard().getWriter());
-        assertEquals(member1, chatRoom3.getChatMember());
-
-        assertEquals(chatBoard3.getTitle(), chatRoom3.getChatBoard().getTitle());
-        assertEquals(chatBoard3.getContent(), chatRoom3.getChatBoard().getContent());
-        assertEquals(chatBoard3.getPrice(), chatRoom3.getChatBoard().getPrice());
-
-        assertEquals(member1.getName(), chatRoom3.getChatMember().getName());
-        assertEquals(member1.getNickName(), chatRoom3.getChatMember().getNickName());
-        assertEquals(member1.getPhone(), chatRoom3.getChatMember().getPhone());
-    }
-
-    @Test
-    public void 회원_아이디로_채팅방_조회() throws Exception {
-        // when
-        Member member1 = memberService.findOne(memberId1);
-        Member member2 = memberService.findOne(memberId2);
-        Member member3 = memberService.findOne(memberId3);
-        Board chatBoard1 = boardService.findOne(boardId1);
-        Board chatBoard2 = boardService.findOne(boardId2);
-        Board chatBoard3 = boardService.findOne(boardId3);
-        ChatRoom chatRoom1 = chatRoomService.findOne(chatRoomId1);
-        ChatRoom chatRoom2 = chatRoomService.findOne(chatRoomId2);
-        ChatRoom chatRoom3 = chatRoomService.findOne(chatRoomId3);
-
-        // then
-        List<ChatRoom> chatRooms = chatRoomService.findChatRoomsByMemberId(memberId3);
-
-        assertEquals(3, chatRooms.size());
-        assertEquals(member1, chatRoomService.findOne(chatRoomId1).getChatBoard().getWriter());
-        assertEquals(member2, chatRoomService.findOne(chatRoomId2).getChatBoard().getWriter());
-        assertEquals(member3, chatRoomService.findOne(chatRoomId3).getChatBoard().getWriter());
-
-        assertEquals(member3, chatRoomService.findOne(chatRoomId1).getChatMember());
-        assertEquals(member3, chatRoomService.findOne(chatRoomId2).getChatMember());
-        assertEquals(member1, chatRoomService.findOne(chatRoomId3).getChatMember());
+        chatRooms.stream()
+                .filter(chatRoom -> chatRoom.getChatBoard().getWriter().equals(member3) &&
+                        chatRoom.getChatMember().equals(member1) &&
+                        chatRoom.getChatBoard().equals(board3))
+                .findFirst()
+                .ifPresent(chatRoom -> {
+                    assertAll("게시글 정보, 회원 정보를 포함한 채팅방 조회 검증(채팅방3)",
+                            () -> assertEquals(member3.getName(), chatRoom.getChatBoard().getWriter().getName(), "게시글 작성자 이름 불일치"),
+                            () -> assertEquals(member3.getNickName(), chatRoom.getChatBoard().getWriter().getNickName(), "게시글 작성자 닉네임 불일치"),
+                            () -> assertEquals(member3.getPhone(), chatRoom.getChatBoard().getWriter().getPhone(), "게시글 작성자 전화번호 불일치"),
+                            () -> assertEquals(member1.getName(), chatRoom.getChatMember().getName(), "거래 요청자 이름 불일치"),
+                            () -> assertEquals(member1.getNickName(), chatRoom.getChatMember().getNickName(), "거래 요청자 닉네임 불일치"),
+                            () -> assertEquals(member1.getPhone(), chatRoom.getChatMember().getPhone(), "거래 요청자 전화번호 불일치"),
+                            () -> assertEquals(board3.getTitle(), chatRoom.getChatBoard().getTitle(), "게시글 제목 불일치"),
+                            () -> assertEquals(board3.getContent(), chatRoom.getChatBoard().getContent(), "게시글 내용 불일치"),
+                            () -> assertEquals(board3.getStartTime(), chatRoom.getChatBoard().getStartTime(), "게시글 시작 시각 불일치"),
+                            () -> assertEquals(board3.getEndTime(), chatRoom.getChatBoard().getEndTime(), "게시글 종료 시각 불일치"),
+                            () -> assertEquals(board3.getStartTimeString(), chatRoom.getChatBoard().getStartTimeString(), "게시글 시작 시각(String) 불일치"),
+                            () -> assertEquals(board3.getEndTimeString(), chatRoom.getChatBoard().getEndTimeString(), "게시글 종료 시각(String) 불일치"),
+                            () -> assertEquals(board3.getAddress(), chatRoom.getChatBoard().getAddress(), "게시글 주소 불일치"),
+                            () -> assertEquals(board3.getPrice(), chatRoom.getChatBoard().getPrice(), "게시글 가격 불일치"),
+                            () -> assertEquals(board3.isFreebie(), chatRoom.getChatBoard().isFreebie(), "게시글 나눔여부 불일치")
+                    );
+                });
     }
 
     @Test

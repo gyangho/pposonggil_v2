@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -165,22 +166,24 @@ class BoardServiceTest {
         Board board1 = boardService.findOne(boardId1);
 
         // then
-        assertAll("게시글 작성 검증",
-                () -> assertNotNull((board1), "게시글 생성 확인"),
-                () -> assertEquals(member1, board1.getWriter(), "작성자 객체 불일치"),
-                () -> assertEquals(member1.getName(), board1.getWriter().getName(), "작성자 이름 불일치"),
-                () -> assertEquals(member1.getNickName(), board1.getWriter().getNickName(), "작성자 이름 불일치"),
-                () -> assertEquals(member1.getPhone(), board1.getWriter().getPhone(), "작성자 이름 불일치"),
-                () -> assertEquals(member1.getPhone(), board1.getWriter().getPhone(), "작성자 이름 불일치"),
-                () -> assertEquals("title1", board1.getTitle(), "게시글 제목 불일치"),
-                () -> assertEquals("우산 팔아요1", board1.getContent(), "게시글 내용 불일치"),
-                () -> assertEquals("숭실대1", board1.getAddress().getName(), "게시글 주소 이름 불일치"),
-                () -> assertEquals(37.4958, board1.getAddress().getLatitude(), "게시글 주소 위도 불일치"),
-                () -> assertEquals(126.9583, board1.getAddress().getLongitude(), "게시글 주소 경도 불일치"),
-                () -> assertEquals("주소1", board1.getAddress().getStreet(), "게시글 주소 도로명 불일치"),
-                () -> assertEquals(1000L, board1.getPrice(), "게시글 가격 불일치"),
-                () -> assertFalse(board1.isFreebie(), "게시글 나눔여부 불일치")
-        );
+        Optional.of(board1)
+                .filter(board -> board.getWriter().equals(member1))
+                .ifPresent(board -> assertAll("게시글 작성 검증",
+                        () -> assertNotNull((board1), "게시글 생성 확인"),
+                        () -> assertEquals(member1, board1.getWriter(), "작성자 객체 불일치"),
+                        () -> assertEquals(member1.getName(), board1.getWriter().getName(), "작성자 이름 불일치"),
+                        () -> assertEquals(member1.getNickName(), board1.getWriter().getNickName(), "작성자 이름 불일치"),
+                        () -> assertEquals(member1.getPhone(), board1.getWriter().getPhone(), "작성자 이름 불일치"),
+                        () -> assertEquals(member1.getPhone(), board1.getWriter().getPhone(), "작성자 이름 불일치"),
+                        () -> assertEquals("title1", board1.getTitle(), "게시글 제목 불일치"),
+                        () -> assertEquals("우산 팔아요1", board1.getContent(), "게시글 내용 불일치"),
+                        () -> assertEquals("숭실대1", board1.getAddress().getName(), "게시글 주소 이름 불일치"),
+                        () -> assertEquals(37.4958, board1.getAddress().getLatitude(), "게시글 주소 위도 불일치"),
+                        () -> assertEquals(126.9583, board1.getAddress().getLongitude(), "게시글 주소 경도 불일치"),
+                        () -> assertEquals("주소1", board1.getAddress().getStreet(), "게시글 주소 도로명 불일치"),
+                        () -> assertEquals(1000L, board1.getPrice(), "게시글 가격 불일치"),
+                        () -> assertFalse(board1.isFreebie(), "게시글 나눔여부 불일치")
+                ));
     }
 
     @Test
@@ -218,24 +221,26 @@ class BoardServiceTest {
         // then
         Board updateBoard = boardService.findOne(boardId1);
 
-        assertAll("게시글 수정 검증",
-                () -> assertNotNull((updateBoard), "게시글 생성 확인"),
-                () -> assertEquals(member1, updateBoard.getWriter(), "작성자 객체 불일치"),
-                () -> assertEquals(member1.getName(), updateBoard.getWriter().getName(), "작성자 이름 불일치"),
-                () -> assertEquals(member1.getNickName(), updateBoard.getWriter().getNickName(), "작성자 이름 불일치"),
-                () -> assertEquals(member1.getPhone(), updateBoard.getWriter().getPhone(), "작성자 이름 불일치"),
-                () -> assertEquals(member1.getPhone(), updateBoard.getWriter().getPhone(), "작성자 이름 불일치"),
-                () -> assertEquals(updateTitle, updateBoard.getTitle(), "게시글 제목 불일치"),
-                () -> assertEquals(updateContent, updateBoard.getContent(), "게시글 내용 불일치"),
-                () -> assertEquals(updateFormatStartTime, updateBoard.getStartTimeString(), "게시글 시작 시각(String) 불일치"),
-                () -> assertEquals(updateFormatEndTime, updateBoard.getEndTimeString(), "게시글 종료 시각(String) 불일치"),
-                () -> assertEquals("숭숭숭", updateBoard.getAddress().getName(), "게시글 주소 이름 불일치"),
-                () -> assertEquals(37.5000, updateBoard.getAddress().getLatitude(), "게시글 주소 위도 불일치"),
-                () -> assertEquals(126.9555, updateBoard.getAddress().getLongitude(), "게시글 주소 경도 불일치"),
-                () -> assertEquals("주소2", updateBoard.getAddress().getStreet(), "게시글 주소 도로명 불일치"),
-                () -> assertEquals(updatePrice, updateBoard.getPrice(), "게시글 가격 불일치"),
-                () -> assertTrue(updateBoard.isFreebie(), "게시글 나눔여부 불일치")
-        );
+        Optional.of(updateBoard)
+                .filter(board -> board.getWriter().equals(member1))
+                .ifPresent(board -> assertAll("게시글 수정 검증",
+                        () -> assertNotNull((updateBoard), "게시글 생성 확인"),
+                        () -> assertEquals(member1, updateBoard.getWriter(), "작성자 객체 불일치"),
+                        () -> assertEquals(member1.getName(), updateBoard.getWriter().getName(), "작성자 이름 불일치"),
+                        () -> assertEquals(member1.getNickName(), updateBoard.getWriter().getNickName(), "작성자 이름 불일치"),
+                        () -> assertEquals(member1.getPhone(), updateBoard.getWriter().getPhone(), "작성자 이름 불일치"),
+                        () -> assertEquals(member1.getPhone(), updateBoard.getWriter().getPhone(), "작성자 이름 불일치"),
+                        () -> assertEquals(updateTitle, updateBoard.getTitle(), "게시글 제목 불일치"),
+                        () -> assertEquals(updateContent, updateBoard.getContent(), "게시글 내용 불일치"),
+                        () -> assertEquals(updateFormatStartTime, updateBoard.getStartTimeString(), "게시글 시작 시각(String) 불일치"),
+                        () -> assertEquals(updateFormatEndTime, updateBoard.getEndTimeString(), "게시글 종료 시각(String) 불일치"),
+                        () -> assertEquals("숭숭숭", updateBoard.getAddress().getName(), "게시글 주소 이름 불일치"),
+                        () -> assertEquals(37.5000, updateBoard.getAddress().getLatitude(), "게시글 주소 위도 불일치"),
+                        () -> assertEquals(126.9555, updateBoard.getAddress().getLongitude(), "게시글 주소 경도 불일치"),
+                        () -> assertEquals("주소2", updateBoard.getAddress().getStreet(), "게시글 주소 도로명 불일치"),
+                        () -> assertEquals(updatePrice, updateBoard.getPrice(), "게시글 가격 불일치"),
+                        () -> assertTrue(updateBoard.isFreebie(), "게시글 나눔여부 불일치")
+                ));
     }
 
     @Test

@@ -37,6 +37,28 @@ public class ReportApiController {
     }
 
     /**
+     * 신고자 아이디로 신고 조회
+     */
+    @GetMapping("/api/reports/by-subject/{subjectId}")
+    public List<ReportDto> getReportsBySubjectId(@PathVariable Long subjectId) {
+        List<Report> reports = reportService.findReportsBySubjectId(subjectId);
+        return reports.stream()
+                .map(ReportDto::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * 피신고자 아이디로 신고 조회
+     */
+    @GetMapping("/api/reports/by-object/{objectId}")
+    public List<ReportDto> getReportsByObjectId(@PathVariable Long objectId) {
+        List<Report> reports = reportService.findReportsByObjectId(objectId);
+        return reports.stream()
+                .map(ReportDto::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+    /**
      * 신고 & 신고자 & 피신고자 조회
      */
     @GetMapping("/api/reports/with-subject-object")

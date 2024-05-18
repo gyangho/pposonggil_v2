@@ -31,4 +31,26 @@ public class CustomReportRepositoryImpl implements CustomReportRepository{
                 .limit(1000)
                 .fetch();
     }
+
+    @Override
+    public List<Report> findReportsBySubjectId(Long subjectId){
+        return query
+                .select(report)
+                .from(report)
+                .join(report.reportSubject, subjectMember).fetchJoin()
+                .where(subjectMember.id.eq(subjectId))
+                .limit(1000)
+                .fetch();
+    }
+
+    @Override
+    public List<Report> findReportsByObjectId(Long objectId){
+        return query
+                .select(report)
+                .from(report)
+                .join(report.reportObject, objectMember).fetchJoin()
+                .where(objectMember.id.eq(objectId))
+                .limit(1000)
+                .fetch();
+    }
 }
