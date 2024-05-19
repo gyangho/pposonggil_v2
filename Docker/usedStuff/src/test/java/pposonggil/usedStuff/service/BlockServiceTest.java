@@ -58,12 +58,12 @@ class BlockServiceTest {
         Optional.of(block1)
                 .filter(block -> block.getBlockSubject().equals(member1) && block.getBlockObject().equals(member3))
                 .ifPresent(block -> assertAll("차단 정보 검증",
-                        () -> assertEquals(member1.getName(), block1.getBlockSubject().getName(), "차단자 이름 불일치"),
-                        () -> assertEquals(member1.getNickName(), block1.getBlockSubject().getNickName(), "차단자 닉네임 불일치"),
-                        () -> assertEquals(member1.getPhone(), block1.getBlockSubject().getPhone(), "차단자 전화번호 불일치"),
-                        () -> assertEquals(member3.getName(), block1.getBlockObject().getName(), "피차단자 이름 불일치"),
-                        () -> assertEquals(member3.getNickName(), block1.getBlockObject().getNickName(), "피차단자 닉네임 불일치"),
-                        () -> assertEquals(member3.getPhone(), block1.getBlockObject().getPhone(), "피차단자 전화번호 불일치")
+                        () -> assertEquals("name1", block.getBlockSubject().getName(), "차단자 이름 불일치"),
+                        () -> assertEquals("nickName1", block.getBlockSubject().getNickName(), "차단자 닉네임 불일치"),
+                        () -> assertEquals("01011111111", block.getBlockSubject().getPhone(), "차단자 전화번호 불일치"),
+                        () -> assertEquals("name3", block.getBlockObject().getName(), "피차단자 이름 불일치"),
+                        () -> assertEquals("nickName3", block.getBlockObject().getNickName(), "피차단자 닉네임 불일치"),
+                        () -> assertEquals("01033333333", block.getBlockObject().getPhone(), "피차단자 전화번호 불일치")
                 ));
     }
 
@@ -87,12 +87,12 @@ class BlockServiceTest {
                 .findFirst()
                 .ifPresent(block -> {
                     assertAll("차단 정보 검증",
-                            () -> assertEquals(member1.getName(), block.getBlockSubject().getName(), "차단자 이름 불일치"),
-                            () -> assertEquals(member1.getNickName(), block.getBlockSubject().getNickName(), "차단자 닉네임 불일치"),
-                            () -> assertEquals(member1.getPhone(), block.getBlockSubject().getPhone(), "차단자 전화번호 불일치"),
-                            () -> assertEquals(member3.getName(), block.getBlockObject().getName(), "피차단자 이름 불일치"),
-                            () -> assertEquals(member3.getNickName(), block.getBlockObject().getNickName(), "피차단자 닉네임 불일치"),
-                            () -> assertEquals(member3.getPhone(), block.getBlockObject().getPhone(), "피차단자 전화번호 불일치")
+                            () -> assertEquals("name1", block.getBlockSubject().getName(), "차단자 이름 불일치"),
+                            () -> assertEquals("nickName1", block.getBlockSubject().getNickName(), "차단자 닉네임 불일치"),
+                            () -> assertEquals("01011111111", block.getBlockSubject().getPhone(), "차단자 전화번호 불일치"),
+                            () -> assertEquals("name3", block.getBlockObject().getName(), "피차단자 이름 불일치"),
+                            () -> assertEquals("nickName3", block.getBlockObject().getNickName(), "피차단자 닉네임 불일치"),
+                            () -> assertEquals("01033333333", block.getBlockObject().getPhone(), "피차단자 전화번호 불일치")
                     );
                 });
 
@@ -102,12 +102,12 @@ class BlockServiceTest {
                 .findFirst()
                 .ifPresent(block -> {
                     assertAll("차단 정보 검증",
-                            () -> assertEquals(member1.getName(), block.getBlockSubject().getName(), "차단자 이름 불일치"),
-                            () -> assertEquals(member1.getNickName(), block.getBlockSubject().getNickName(), "차단자 닉네임 불일치"),
-                            () -> assertEquals(member1.getPhone(), block.getBlockSubject().getPhone(), "차단자 전화번호 불일치"),
-                            () -> assertEquals(member2.getName(), block.getBlockObject().getName(), "피차단자 이름 불일치"),
-                            () -> assertEquals(member2.getNickName(), block.getBlockObject().getNickName(), "피차단자 닉네임 불일치"),
-                            () -> assertEquals(member2.getPhone(), block.getBlockObject().getPhone(), "피차단자 전화번호 불일치")
+                            () -> assertEquals("name1", block.getBlockSubject().getName(), "차단자 이름 불일치"),
+                            () -> assertEquals("nickName1", block.getBlockSubject().getNickName(), "차단자 닉네임 불일치"),
+                            () -> assertEquals("01011111111", block.getBlockSubject().getPhone(), "차단자 전화번호 불일치"),
+                            () -> assertEquals("name2", block.getBlockObject().getName(), "피차단자 이름 불일치"),
+                            () -> assertEquals("nickName2", block.getBlockObject().getNickName(), "피차단자 닉네임 불일치"),
+                            () -> assertEquals("01022222222", block.getBlockObject().getPhone(), "피차단자 전화번호 불일치")
                     );
                 });
     }
@@ -129,12 +129,12 @@ class BlockServiceTest {
                 .findFirst()
                 .ifPresent(block -> {
                     assertAll("차단 정보 검증",
-                            () -> assertEquals(member1.getName(), block.getBlockSubject().getName(), "차단자 이름 불일치"),
-                            () -> assertEquals(member1.getNickName(), block.getBlockSubject().getNickName(), "차단자 닉네임 불일치"),
-                            () -> assertEquals(member1.getPhone(), block.getBlockSubject().getPhone(), "차단자 전화번호 불일치"),
-                            () -> assertEquals(member3.getName(), block.getBlockObject().getName(), "피차단자 이름 불일치"),
-                            () -> assertEquals(member3.getNickName(), block.getBlockObject().getNickName(), "피차단자 닉네임 불일치"),
-                            () -> assertEquals(member3.getPhone(), block.getBlockObject().getPhone(), "피차단자 전화번호 불일치")
+                            () -> assertEquals("name1", block.getBlockSubject().getName(), "차단자 이름 불일치"),
+                            () -> assertEquals("nickName1", block.getBlockSubject().getNickName(), "차단자 닉네임 불일치"),
+                            () -> assertEquals("01011111111", block.getBlockSubject().getPhone(), "차단자 전화번호 불일치"),
+                            () -> assertEquals("name3", block.getBlockObject().getName(), "피차단자 이름 불일치"),
+                            () -> assertEquals("nickName3", block.getBlockObject().getNickName(), "피차단자 닉네임 불일치"),
+                            () -> assertEquals("01033333333", block.getBlockObject().getPhone(), "피차단자 전화번호 불일치")
                     );
                 });
 
@@ -144,12 +144,12 @@ class BlockServiceTest {
                 .findFirst()
                 .ifPresent(block -> {
                     assertAll("차단 정보 검증",
-                            () -> assertEquals(member2.getName(), block.getBlockSubject().getName(), "차단자 이름 불일치"),
-                            () -> assertEquals(member2.getNickName(), block.getBlockSubject().getNickName(), "차단자 닉네임 불일치"),
-                            () -> assertEquals(member2.getPhone(), block.getBlockSubject().getPhone(), "차단자 전화번호 불일치"),
-                            () -> assertEquals(member3.getName(), block.getBlockObject().getName(), "피차단자 이름 불일치"),
-                            () -> assertEquals(member3.getNickName(), block.getBlockObject().getNickName(), "피차단자 닉네임 불일치"),
-                            () -> assertEquals(member3.getPhone(), block.getBlockObject().getPhone(), "피차단자 전화번호 불일치")
+                            () -> assertEquals("name2", block.getBlockSubject().getName(), "차단자 이름 불일치"),
+                            () -> assertEquals("nickName2", block.getBlockSubject().getNickName(), "차단자 닉네임 불일치"),
+                            () -> assertEquals("01022222222", block.getBlockSubject().getPhone(), "차단자 전화번호 불일치"),
+                            () -> assertEquals("name3", block.getBlockObject().getName(), "피차단자 이름 불일치"),
+                            () -> assertEquals("nickName3", block.getBlockObject().getNickName(), "피차단자 닉네임 불일치"),
+                            () -> assertEquals("01033333333", block.getBlockObject().getPhone(), "피차단자 전화번호 불일치")
                     );
                 });
     }
@@ -195,12 +195,12 @@ class BlockServiceTest {
                 .findFirst()
                 .ifPresent(block -> {
                     assertAll("차단 정보 검증",
-                            () -> assertEquals(member1.getName(), block.getBlockSubject().getName(), "차단자 이름 불일치"),
-                            () -> assertEquals(member1.getNickName(), block.getBlockSubject().getNickName(), "차단자 닉네임 불일치"),
-                            () -> assertEquals(member1.getPhone(), block.getBlockSubject().getPhone(), "차단자 전화번호 불일치"),
-                            () -> assertEquals(member3.getName(), block.getBlockObject().getName(), "피차단자 이름 불일치"),
-                            () -> assertEquals(member3.getNickName(), block.getBlockObject().getNickName(), "피차단자 닉네임 불일치"),
-                            () -> assertEquals(member3.getPhone(), block.getBlockObject().getPhone(), "피차단자 전화번호 불일치")
+                            () -> assertEquals("name1", block.getBlockSubject().getName(), "차단자 이름 불일치"),
+                            () -> assertEquals("nickName1", block.getBlockSubject().getNickName(), "차단자 닉네임 불일치"),
+                            () -> assertEquals("01011111111", block.getBlockSubject().getPhone(), "차단자 전화번호 불일치"),
+                            () -> assertEquals("name3", block.getBlockObject().getName(), "피차단자 이름 불일치"),
+                            () -> assertEquals("nickName3", block.getBlockObject().getNickName(), "피차단자 닉네임 불일치"),
+                            () -> assertEquals("01033333333", block.getBlockObject().getPhone(), "피차단자 전화번호 불일치")
                     );
                 });
 
@@ -210,12 +210,12 @@ class BlockServiceTest {
                 .findFirst()
                 .ifPresent(block -> {
                     assertAll("차단 정보 검증",
-                            () -> assertEquals(member2.getName(), block.getBlockSubject().getName(), "차단자 이름 불일치"),
-                            () -> assertEquals(member2.getNickName(), block.getBlockSubject().getNickName(), "차단자 닉네임 불일치"),
-                            () -> assertEquals(member2.getPhone(), block.getBlockSubject().getPhone(), "차단자 전화번호 불일치"),
-                            () -> assertEquals(member3.getName(), block.getBlockObject().getName(), "피차단자 이름 불일치"),
-                            () -> assertEquals(member3.getNickName(), block.getBlockObject().getNickName(), "피차단자 닉네임 불일치"),
-                            () -> assertEquals(member3.getPhone(), block.getBlockObject().getPhone(), "피차단자 전화번호 불일치")
+                            () -> assertEquals("name2", block.getBlockSubject().getName(), "차단자 이름 불일치"),
+                            () -> assertEquals("nickName2", block.getBlockSubject().getNickName(), "차단자 닉네임 불일치"),
+                            () -> assertEquals("01022222222", block.getBlockSubject().getPhone(), "차단자 전화번호 불일치"),
+                            () -> assertEquals("name3", block.getBlockObject().getName(), "피차단자 이름 불일치"),
+                            () -> assertEquals("nickName3", block.getBlockObject().getNickName(), "피차단자 닉네임 불일치"),
+                            () -> assertEquals("01033333333", block.getBlockObject().getPhone(), "피차단자 전화번호 불일치")
                     );
                 });
 
@@ -225,12 +225,12 @@ class BlockServiceTest {
                 .findFirst()
                 .ifPresent(block -> {
                     assertAll("차단 정보 검증",
-                            () -> assertEquals(member3.getName(), block.getBlockSubject().getName(), "차단자 이름 불일치"),
-                            () -> assertEquals(member3.getNickName(), block.getBlockSubject().getNickName(), "차단자 닉네임 불일치"),
-                            () -> assertEquals(member3.getPhone(), block.getBlockSubject().getPhone(), "차단자 전화번호 불일치"),
-                            () -> assertEquals(member1.getName(), block.getBlockObject().getName(), "피차단자 이름 불일치"),
-                            () -> assertEquals(member1.getNickName(), block.getBlockObject().getNickName(), "피차단자 닉네임 불일치"),
-                            () -> assertEquals(member1.getPhone(), block.getBlockObject().getPhone(), "피차단자 전화번호 불일치")
+                            () -> assertEquals("name3", block.getBlockSubject().getName(), "차단자 이름 불일치"),
+                            () -> assertEquals("nickName3", block.getBlockSubject().getNickName(), "차단자 닉네임 불일치"),
+                            () -> assertEquals("01033333333", block.getBlockSubject().getPhone(), "차단자 전화번호 불일치"),
+                            () -> assertEquals("name1", block.getBlockObject().getName(), "피차단자 이름 불일치"),
+                            () -> assertEquals("nickName1", block.getBlockObject().getNickName(), "피차단자 닉네임 불일치"),
+                            () -> assertEquals("01011111111", block.getBlockObject().getPhone(), "피차단자 전화번호 불일치")
                     );
                 });
     }

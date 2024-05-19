@@ -2,17 +2,20 @@ package pposonggil.usedStuff.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Getter;
+import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 
-import java.time.LocalDate;
-
 import static jakarta.persistence.FetchType.LAZY;
+import static lombok.AccessLevel.PRIVATE;
+import static lombok.AccessLevel.PROTECTED;
 
 @Entity
 @Getter
 @DynamicInsert
-public class Review {
+@Builder
+@NoArgsConstructor(access = PROTECTED)
+@AllArgsConstructor(access = PRIVATE)
+public class Review extends BaseEntity {
     @Id
     @GeneratedValue
     @Column(name = "review_id")
@@ -30,13 +33,11 @@ public class Review {
 
     @JsonIgnore
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "review_board_id")
-    private Board reviewBoard;
+    @JoinColumn(name = "chat_room_id")
+    private ChatRoom reviewChatRoom;
 
     private Long score;
     private String content;
-    private LocalDate createdAt;
-
 
     public void setReviewSubject(Member member) {
         this.reviewSubject = member;
@@ -48,8 +49,26 @@ public class Review {
         member.getReviewObjects().add(this);
     }
 
-    public void setReviewBoard(Board board) {
-        this.reviewBoard = board;
-        board.getReviews().add(this);
+    public void setReviewChatRoom(ChatRoom chatRoom) {
+        this.reviewChatRoom = chatRoom;
+        chatRoom.getReviews().add(this);
+    }
+
+    public static ReviewBuilder builder(Member reviewSubject, Member reviewObject, Long score) {
+        if(reviewSubject == null || reviewObject == null || score == null)
+            throw new IllegalArgumentException("필수 파라미터 누락");
+        if(score < 0 || score > 5 )
+            throw new IllegalArgumentException("리뷰 점수 범위(0~5)를 벗어났습니다.");
+
+        return new ReviewBuilder()
+                .reviewSubject(reviewSubject)
+                .reviewObject(reviewObject)
+                .score(score);
+    }
+
+    public static Review buildReview(Member reviewSubject, Member reviewObject, Long score, String content) {
+        return Review.builder(reviewSubject, reviewObject, score)
+                .content(content)
+                .build();
     }
 }

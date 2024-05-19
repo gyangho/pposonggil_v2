@@ -40,9 +40,9 @@ class MemberServiceTest {
         // then
         Optional.of(member1)
                 .ifPresent(member -> assertAll("회원 가입 검증",
-                        () -> assertEquals(member1.getName(), member.getName(), "회원 이름 불일치"),
-                        () -> assertEquals(member1.getNickName(), member.getNickName(), "회원 닉네임 불일치"),
-                        () -> assertEquals(member1.getPhone(), member.getPhone(), "회원 전화번호 불일치"),
+                        () -> assertEquals("name1", member.getName(), "회원 이름 불일치"),
+                        () -> assertEquals("nickName1", member.getNickName(), "회원 닉네임 불일치"),
+                        () -> assertEquals("01011111111", member.getPhone(), "회원 전화번호 불일치"),
                         () -> assertTrue(member.isActivated(), "회원 비활성화")
                 ));
     }
@@ -77,8 +77,13 @@ class MemberServiceTest {
         });
 
         Member member1 = memberService.findOne(memberId1);
-        assertNotNull(member1);
-        assertEquals(nickName, member1.getNickName());
+        Optional.of(member1)
+                .ifPresent(member -> assertAll("중복 닉네임 검증",
+                        () -> assertEquals("name1", member.getName(), "회원 이름 불일치"),
+                        () -> assertEquals("nickName1", member.getNickName(), "회원 닉네임 불일치"),
+                        () -> assertEquals("01011111111", member.getPhone(), "회원 전화번호 불일치"),
+                        () -> assertTrue(member.isActivated(), "회원 비활성화")
+                ));
     }
 
     @Test
@@ -99,9 +104,13 @@ class MemberServiceTest {
         });
 
         Member member1 = memberService.findOne(memberId1);
-        assertNotNull(member1);
-        assertEquals(phone, member1.getPhone());
-    }
+        Optional.of(member1)
+                .ifPresent(member -> assertAll("중복 닉네임 검증",
+                        () -> assertEquals("name1", member.getName(), "회원 이름 불일치"),
+                        () -> assertEquals("nickName1", member.getNickName(), "회원 닉네임 불일치"),
+                        () -> assertEquals("01011111111", member.getPhone(), "회원 전화번호 불일치"),
+                        () -> assertTrue(member.isActivated(), "회원 비활성화")
+                ));    }
 
     /**
      * 회원 정보 업데이트

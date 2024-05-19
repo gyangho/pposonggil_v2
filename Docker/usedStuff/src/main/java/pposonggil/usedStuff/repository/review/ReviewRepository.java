@@ -1,36 +1,13 @@
 package pposonggil.usedStuff.repository.review;
 
-import jakarta.persistence.EntityManager;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import pposonggil.usedStuff.domain.ChatRoom;
+import pposonggil.usedStuff.domain.Member;
 import pposonggil.usedStuff.domain.Review;
+import pposonggil.usedStuff.repository.review.custom.CustomReviewRepository;
 
-import java.util.List;
+import java.util.Optional;
 
-@Repository
-@RequiredArgsConstructor
-public class ReviewRepository {
-    private final EntityManager em;
-
-    public void save(Review review) {
-        em.persist(review);
-    }
-
-    public Review findOne(Long id){
-        return em.find(Review.class, id);
-    }
-
-    public List<Review> findAll() {
-        return em.createQuery("select r from Review r", Review.class)
-                .setMaxResults(1000)
-                .getResultList();
-    }
-
-    public List<Review> findWithMemberBoard() {
-        return em.createQuery("select r from Review r " +
-                        "join fetch r.reviewSubject ms " +
-                        "join fetch r.reviewObject mo " +
-                        "join fetch r.reviewBoard b", Review.class)
-                .getResultList();
-    }
+public interface ReviewRepository extends JpaRepository<Review, Long>, CustomReviewRepository {
+    Optional<Review> findByReviewSubjectAndReviewObjectAndReviewChatRoom(Member reviewSubject, Member reviewObject, ChatRoom reviewChatRoom);
 }

@@ -62,7 +62,7 @@ public class ReportApiController {
      * 신고 & 신고자 & 피신고자 조회
      */
     @GetMapping("/api/reports/with-subject-object")
-    public List<ReportDto> getReportMember() {
+    public List<ReportDto> getReportWithMember() {
         List<Report> reports = reportService.findAllWithMember();
         return reports.stream()
                 .map(ReportDto::fromEntity)
