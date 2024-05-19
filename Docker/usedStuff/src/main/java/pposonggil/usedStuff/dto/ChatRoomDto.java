@@ -1,9 +1,7 @@
 package pposonggil.usedStuff.dto;
 
 import lombok.*;
-import pposonggil.usedStuff.domain.Board;
 import pposonggil.usedStuff.domain.ChatRoom;
-import pposonggil.usedStuff.domain.Member;
 import pposonggil.usedStuff.domain.TransactionAddress;
 
 import java.time.LocalDateTime;
@@ -17,7 +15,7 @@ import static lombok.AccessLevel.PROTECTED;
 @AllArgsConstructor(access = PRIVATE)
 public class ChatRoomDto {
     private Long chatRoomId;
-    private Long boardId;
+    private Long chatBoardId;
     private Long writerId;
     private String writerNickName;
     private Long chatMemberId;
@@ -28,10 +26,10 @@ public class ChatRoomDto {
     private LocalDateTime createdAt;
     private LocalDateTime updateAt;
 
-    public static ChatRoomDto fromEntity(ChatRoom chatRoom){
+    public static ChatRoomDto fromEntity(ChatRoom chatRoom) {
         return ChatRoomDto.builder()
                 .chatRoomId(chatRoom.getId())
-                .boardId(chatRoom.getChatBoard().getId())
+                .chatBoardId(chatRoom.getChatBoard().getId())
                 .writerId(chatRoom.getChatBoard().getWriter().getId())
                 .writerNickName(chatRoom.getChatBoard().getWriter().getNickName())
                 .chatMemberId(chatRoom.getChatMember().getId())
@@ -41,16 +39,6 @@ public class ChatRoomDto {
                 .address(chatRoom.getAddress())
                 .createdAt(chatRoom.getCreatedAt())
                 .updateAt(chatRoom.getUpdateAt())
-                .build();
-    }
-
-    public static ChatRoom toEntity(ChatRoomDto dto, Board chatBoard, Member chatMember) {
-        return ChatRoom.builder(chatBoard, chatMember)
-                .chatBoard(chatBoard)
-                .chatMember(chatMember)
-                .startTimeString(dto.getStartTimeString())
-                .endTimeString(dto.getEndTimeString())
-                .address(dto.getAddress())
                 .build();
     }
 }

@@ -1,9 +1,7 @@
 package pposonggil.usedStuff.dto;
 
 import lombok.*;
-import pposonggil.usedStuff.domain.Member;
 import pposonggil.usedStuff.domain.Report;
-import pposonggil.usedStuff.domain.ReportType;
 
 import java.time.LocalDateTime;
 
@@ -34,13 +32,6 @@ public class ReportDto {
                 .reportType(report.getReportType().getKrName())
                 .content(report.getContent())
                 .createdAt(report.getCreatedAt())
-                .build();
-    }
-
-    public static Report toEntity(ReportDto dto, Member reportSubject, Member reportObject) {
-        ReportType reportType = ReportType.valueOf(dto.getReportType());
-        return Report.builder(reportSubject, reportObject, reportType)
-                .content(dto.getContent())
                 .build();
     }
 }

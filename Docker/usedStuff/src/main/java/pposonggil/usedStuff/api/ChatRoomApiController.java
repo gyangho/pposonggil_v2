@@ -62,8 +62,8 @@ public class ChatRoomApiController {
      * 채팅방 생성
      */
     @PostMapping("/api/chatroom")
-    public ResponseEntity<String> createChatRoom(@RequestBody ChatRoomDto chatRoomDto){
-        Long chatRoomId = chatRoomService.createChatRoom(chatRoomDto.getBoardId(), chatRoomDto.getChatMemberId());
+    public ResponseEntity<String> createChatRoom(@RequestBody ChatRoomDto chatRoomDto) {
+        Long chatRoomId = chatRoomService.createChatRoom(chatRoomDto);
         return ResponseEntity.ok("채팅방을 생성하였습니다. (채팅방 ID : " + chatRoomId + ")");
     }
 

@@ -38,16 +38,6 @@ public class Report extends BaseEntity{
     private ReportType reportType;
     private String content;
 
-    public static ReportBuilder builder(Member reportSubject, Member reportObject, ReportType reportType) {
-        if(reportSubject == null || reportObject == null || reportType == null)
-            throw new IllegalArgumentException("필수 파라미터 누락");
-
-        return new ReportBuilder()
-                .reportSubject(reportSubject)
-                .reportObject(reportObject)
-                .reportType(reportType);
-    }
-
     public void setReportSubject(Member member) {
         this.reportSubject = member;
         member.getReportSubjects().add(this);
@@ -56,6 +46,16 @@ public class Report extends BaseEntity{
     public void setReportObject(Member member) {
         this.reportObject = member;
         member.getReportObjects().add(this);
+    }
+
+    public static ReportBuilder builder(Member reportSubject, Member reportObject, ReportType reportType) {
+        if(reportSubject == null || reportObject == null || reportType == null)
+            throw new IllegalArgumentException("필수 파라미터 누락");
+
+        return new ReportBuilder()
+                .reportSubject(reportSubject)
+                .reportObject(reportObject)
+                .reportType(reportType);
     }
 
     public static Report buildReport(Member reportSubject, Member reportObject, String reportType, String content){

@@ -16,6 +16,15 @@ public class MemberApiController {
     private final MemberService memberService;
 
     /**
+     * 회원 생성
+     */
+    @PostMapping("/api/member")
+    public ResponseEntity<String> createMember(@RequestBody MemberDto memberDto) {
+        Long memberId = memberService.createMember(memberDto);
+        return ResponseEntity.ok("Created member with ID : " + memberId);
+    }
+
+    /**
      * 전체 회원 조회
      */
     @GetMapping("/api/members")
@@ -48,7 +57,7 @@ public class MemberApiController {
         if (member == null) {
             return ResponseEntity.notFound().build();
         }
-        memberService.updateMember(memberId, memberDto.getName(), memberDto.getNickName(), memberDto.getPhone());
+        memberService.updateMember(memberDto);
 
         return ResponseEntity.ok("회원 정보를 업데이트 하였습니다.");
     }

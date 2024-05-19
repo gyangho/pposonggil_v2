@@ -1,8 +1,6 @@
 package pposonggil.usedStuff.dto;
 
 import lombok.*;
-import pposonggil.usedStuff.domain.ChatRoom;
-import pposonggil.usedStuff.domain.Member;
 import pposonggil.usedStuff.domain.Message;
 
 import java.time.LocalDateTime;
@@ -30,11 +28,6 @@ public class MessageDto {
                 .senderNickName(message.getSender().getNickName())
                 .content(message.getContent())
                 .createdAt(message.getCreatedAt())
-                .build();
-    }
-
-    public static Message toEntity(MessageDto dto, ChatRoom messageChatRoom, Member sender){
-        return Message.builder(sender, messageChatRoom, dto.content)
                 .build();
     }
 }

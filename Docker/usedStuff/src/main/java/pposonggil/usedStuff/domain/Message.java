@@ -37,16 +37,6 @@ public class Message extends BaseEntity{
 
     private boolean isRead;
 
-    public static MessageBuilder builder(Member sender, ChatRoom messageChatRoom,
-                                         String content){
-        if(sender == null || messageChatRoom == null || content == null)
-            throw new IllegalArgumentException("필수 파라미터 누락");
-        return new MessageBuilder()
-                .sender(sender)
-                .messageChatRoom(messageChatRoom)
-                .content(content);
-    }
-
     public void setSender(Member member) {
         this.sender = member;
         member.getMessages().add(this);
@@ -55,6 +45,16 @@ public class Message extends BaseEntity{
     public void setMessageChatRoom(ChatRoom chatRoom){
         this.messageChatRoom = chatRoom;
         chatRoom.getMessages().add(this);
+    }
+
+    public static MessageBuilder builder(Member sender, ChatRoom messageChatRoom,
+                                         String content){
+        if(sender == null || messageChatRoom == null || content == null)
+            throw new IllegalArgumentException("필수 파라미터 누락");
+        return new MessageBuilder()
+                .sender(sender)
+                .messageChatRoom(messageChatRoom)
+                .content(content);
     }
 
     public static Message buildMessage(Member sender, ChatRoom messageChatRoom,

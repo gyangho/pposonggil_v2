@@ -1,9 +1,8 @@
 package pposonggil.usedStuff.api;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import pposonggil.usedStuff.domain.Report;
 import pposonggil.usedStuff.dto.ReportDto;
 import pposonggil.usedStuff.service.ReportService;
@@ -38,6 +37,28 @@ public class ReportApiController {
     }
 
     /**
+     * 신고자 아이디로 신고 조회
+     */
+    @GetMapping("/api/reports/by-subject/{subjectId}")
+    public List<ReportDto> getReportsBySubjectId(@PathVariable Long subjectId) {
+        List<Report> reports = reportService.findReportsBySubjectId(subjectId);
+        return reports.stream()
+                .map(ReportDto::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * 피신고자 아이디로 신고 조회
+     */
+    @GetMapping("/api/reports/by-object/{objectId}")
+    public List<ReportDto> getReportsByObjectId(@PathVariable Long objectId) {
+        List<Report> reports = reportService.findReportsByObjectId(objectId);
+        return reports.stream()
+                .map(ReportDto::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+    /**
      * 신고 & 신고자 & 피신고자 조회
      */
     @GetMapping("/api/reports/with-subject-object")
@@ -46,5 +67,14 @@ public class ReportApiController {
         return reports.stream()
                 .map(ReportDto::fromEntity)
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * 신고 생성
+     */
+    @PutMapping("/api/report")
+    public ResponseEntity<String> createReport(@RequestBody ReportDto reportDto) {
+        Long reportId = reportService.createReport(reportDto);
+        return ResponseEntity.ok("Created report with ID : " + reportId);
     }
 }

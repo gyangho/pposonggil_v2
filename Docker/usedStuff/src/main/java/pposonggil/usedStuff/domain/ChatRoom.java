@@ -37,6 +37,10 @@ public class ChatRoom extends BaseEntity{
     @OneToMany(mappedBy = "messageChatRoom")
     private List<Message> messages = new ArrayList<>();
 
+    @Builder.Default
+    @OneToMany(mappedBy = "reviewChatRoom")
+    private List<Review> reviews = new ArrayList<>();
+
     @JsonIgnore
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "member_id")
@@ -48,6 +52,15 @@ public class ChatRoom extends BaseEntity{
     @Embedded
     private TransactionAddress address;
 
+    public void setChatBoard(Board board) {
+        this.chatBoard = board;
+    }
+
+    public void setChatMember(Member member) {
+        this.chatMember = member;
+        member.getChatRooms().add(this);
+    }
+
     public static ChatRoomBuilder builder(Board chatBoard, Member chatMember) {
         if (chatBoard == null || chatMember == null) {
             throw new IllegalArgumentException("필수 파라미터 누락");
@@ -56,14 +69,6 @@ public class ChatRoom extends BaseEntity{
         return new ChatRoomBuilder()
                 .chatBoard(chatBoard)
                 .chatMember(chatMember);
-    }
-    public void setChatBoard(Board board) {
-        this.chatBoard = board;
-    }
-
-    public void setChatMember(Member member) {
-        this.chatMember = member;
-        member.getChatRooms().add(this);
     }
 
     public static ChatRoom buildChatRoom(Board chatBoard,Member chatMember) {

@@ -7,6 +7,7 @@ import pposonggil.usedStuff.domain.Board;
 import pposonggil.usedStuff.domain.ChatRoom;
 import pposonggil.usedStuff.domain.Member;
 
+import pposonggil.usedStuff.dto.ChatRoomDto;
 import pposonggil.usedStuff.repository.board.BoardRepository;
 import pposonggil.usedStuff.repository.chatroom.ChatRoomRepository;
 import pposonggil.usedStuff.repository.member.MemberRepository;
@@ -33,7 +34,8 @@ public class ChatRoomService {
      * 채팅방 상세 조회
      */
     public ChatRoom findOne(Long chatRoomId) {
-        return chatRoomRepository.findById(chatRoomId).orElseThrow(NoSuchElementException::new);
+        return chatRoomRepository.findById(chatRoomId)
+                .orElseThrow(NoSuchElementException::new);
     }
 
     /**
@@ -54,12 +56,14 @@ public class ChatRoomService {
      * 채팅방 생성
      */
     @Transactional
-    public Long createChatRoom(Long chatBoardId, Long chatMemberId) {
-        Board chatBoard = boardRepository.findById(chatBoardId).orElseThrow(NoSuchElementException::new);
-        Member chatMember = memberRepository.findById(chatMemberId)
-                .orElseThrow(() -> new NoSuchElementException("Member not found with id: " + chatMemberId));
+    public Long createChatRoom(ChatRoomDto chatRoomDto) {
+        Board chatBoard = boardRepository.findById(chatRoomDto.getChatBoardId())
+                .orElseThrow(NoSuchElementException::new);
+        Member chatMember = memberRepository.findById(chatRoomDto.getChatMemberId())
+                .orElseThrow(() -> new NoSuchElementException("Member not found with id: " + chatRoomDto.getChatMemberId()));
 
         ChatRoom chatRoom = ChatRoom.buildChatRoom(chatBoard, chatMember);
+
         chatRoom.setChatBoard(chatBoard);
         chatRoom.setChatMember(chatMember);
 
@@ -73,7 +77,8 @@ public class ChatRoomService {
      */
     @Transactional
     public void deleteChatRoom(Long chatRoomId) {
-        ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId).orElseThrow(NoSuchElementException::new);
+        ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId)
+                .orElseThrow(NoSuchElementException::new);
         chatRoomRepository.delete(chatRoom);
     }
 }

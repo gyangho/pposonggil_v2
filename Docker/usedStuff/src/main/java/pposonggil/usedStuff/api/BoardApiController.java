@@ -7,8 +7,6 @@ import pposonggil.usedStuff.domain.Board;
 import pposonggil.usedStuff.dto.BoardDto;
 import pposonggil.usedStuff.service.BoardService;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -65,12 +63,7 @@ public class BoardApiController {
      */
     @PostMapping("/api/board")
     public ResponseEntity<String> createBoard(@RequestBody BoardDto boardDto) {
-        LocalDateTime startTime = LocalDateTime.parse(boardDto.getStartTimeString(), DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm"));
-        LocalDateTime endTime = LocalDateTime.parse(boardDto.getEndTimeString(), DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm"));
-
-        Long boardId = boardService.createBoard(boardDto.getWriterId(), boardDto.getTitle(),
-                boardDto.getContent(), startTime, endTime, boardDto.getAddress(),
-                boardDto.getPrice(), boardDto.isFreebie());
+        Long boardId = boardService.createBoard(boardDto);
         return ResponseEntity.ok("Created board with ID: " + boardId);
     }
 
@@ -83,13 +76,9 @@ public class BoardApiController {
         if (board == null) {
             return ResponseEntity.notFound().build();
         }
-        LocalDateTime startTime = LocalDateTime.parse(boardDto.getStartTimeString(), DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm"));
-        LocalDateTime endTime = LocalDateTime.parse(boardDto.getEndTimeString(), DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm"));
 
-        boardService.updateBoard(boardId, boardDto.getTitle(), boardDto.getContent(), startTime, endTime,
-                boardDto.getAddress(), board.getPrice(), boardDto.isFreebie());
+        boardService.updateBoard(boardDto);
         return ResponseEntity.ok("게시글을 수정하였습니다.");
-
     }
 
     /**
