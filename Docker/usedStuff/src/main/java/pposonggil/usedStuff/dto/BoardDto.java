@@ -5,11 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import pposonggil.usedStuff.domain.Board;
-import pposonggil.usedStuff.domain.Member;
 import pposonggil.usedStuff.domain.TransactionAddress;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
@@ -29,6 +27,7 @@ public class BoardDto {
     private String endTimeString;
     private TransactionAddress address;
     private LocalDateTime createdAt;
+    private LocalDateTime updateAt;
     private Long price;
     private boolean isFreebie;
 
@@ -44,19 +43,8 @@ public class BoardDto {
                 .endTimeString(board.getEndTimeString())
                 .address(board.getAddress())
                 .createdAt(board.getCreatedAt())
+                .updateAt(board.getUpdateAt())
                 .price(board.getPrice())
-                .build();
-    }
-
-    public static Board toEntity(BoardDto dto, Member writer) {
-        LocalDateTime startTime = LocalDateTime.parse(dto.getStartTimeString(), DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm"));
-        LocalDateTime endTime = LocalDateTime.parse(dto.getEndTimeString(), DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm"));
-
-        return Board.builder(writer, dto.getTitle(), startTime, endTime, dto.getAddress(), dto.getPrice())
-                .id(dto.getBoardId())
-                .content(dto.getContent())
-                .createdAt(dto.getCreatedAt())
-                .isFreebie(dto.isFreebie())
                 .build();
     }
 }

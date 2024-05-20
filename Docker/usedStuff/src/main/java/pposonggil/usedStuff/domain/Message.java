@@ -2,17 +2,21 @@ package pposonggil.usedStuff.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Getter;
+import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 
-import java.time.LocalDate;
-
 import static jakarta.persistence.FetchType.LAZY;
+import static lombok.AccessLevel.PRIVATE;
+import static lombok.AccessLevel.PROTECTED;
 
 @Entity
 @Getter
 @DynamicInsert
-public class Message {
+@Builder
+@NoArgsConstructor(access = PROTECTED)
+@AllArgsConstructor(access = PRIVATE)
+@ToString
+public class Message extends BaseEntity{
     @Id
     @GeneratedValue
     @Column(name = "message_id")
@@ -32,7 +36,6 @@ public class Message {
     private String content;
 
     private boolean isRead;
-    private LocalDate createdAt;
 
     public void setSender(Member member) {
         this.sender = member;
@@ -43,4 +46,22 @@ public class Message {
         this.messageChatRoom = chatRoom;
         chatRoom.getMessages().add(this);
     }
+
+    public static MessageBuilder builder(Member sender, ChatRoom messageChatRoom,
+                                         String content){
+        if(sender == null || messageChatRoom == null || content == null)
+            throw new IllegalArgumentException("필수 파라미터 누락");
+        return new MessageBuilder()
+                .sender(sender)
+                .messageChatRoom(messageChatRoom)
+                .content(content);
+    }
+
+    public static Message buildMessage(Member sender, ChatRoom messageChatRoom,
+                                       String content) {
+        return Message.builder(sender, messageChatRoom, content)
+                .isRead(false)
+                .build();
+    }
+
 }

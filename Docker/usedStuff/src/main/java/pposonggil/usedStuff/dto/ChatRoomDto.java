@@ -1,9 +1,7 @@
 package pposonggil.usedStuff.dto;
 
 import lombok.*;
-import pposonggil.usedStuff.domain.Board;
 import pposonggil.usedStuff.domain.ChatRoom;
-import pposonggil.usedStuff.domain.Member;
 import pposonggil.usedStuff.domain.TransactionAddress;
 
 import java.time.LocalDateTime;
@@ -17,7 +15,7 @@ import static lombok.AccessLevel.PROTECTED;
 @AllArgsConstructor(access = PRIVATE)
 public class ChatRoomDto {
     private Long chatRoomId;
-    private Long boardId;
+    private Long chatBoardId;
     private Long writerId;
     private String writerNickName;
     private Long chatMemberId;
@@ -26,10 +24,12 @@ public class ChatRoomDto {
     private String endTimeString;
     private TransactionAddress address;
     private LocalDateTime createdAt;
-    public static ChatRoomDto fromEntity(ChatRoom chatRoom){
+    private LocalDateTime updateAt;
+
+    public static ChatRoomDto fromEntity(ChatRoom chatRoom) {
         return ChatRoomDto.builder()
                 .chatRoomId(chatRoom.getId())
-                .boardId(chatRoom.getChatBoard().getId())
+                .chatBoardId(chatRoom.getChatBoard().getId())
                 .writerId(chatRoom.getChatBoard().getWriter().getId())
                 .writerNickName(chatRoom.getChatBoard().getWriter().getNickName())
                 .chatMemberId(chatRoom.getChatMember().getId())
@@ -38,18 +38,7 @@ public class ChatRoomDto {
                 .endTimeString(chatRoom.getEndTimeString())
                 .address(chatRoom.getAddress())
                 .createdAt(chatRoom.getCreatedAt())
-                .build();
-    }
-
-    public static ChatRoom toEntity(ChatRoomDto dto, Board chatBoard, Member chatMember) {
-        return ChatRoom.builder(chatBoard, chatMember)
-                .id(dto.getChatRoomId())
-                .chatBoard(chatBoard)
-                .chatMember(chatMember)
-                .createdAt(dto.getCreatedAt())
-                .startTimeString(dto.getStartTimeString())
-                .endTimeString(dto.getEndTimeString())
-                .address(dto.getAddress())
+                .updateAt(chatRoom.getUpdateAt())
                 .build();
     }
 }

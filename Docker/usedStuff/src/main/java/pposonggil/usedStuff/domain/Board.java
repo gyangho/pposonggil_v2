@@ -19,8 +19,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Builder
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PRIVATE)
-@ToString
-public class Board {
+public class Board extends BaseEntity{
     @Id
     @GeneratedValue
     @Column(name = "board_id")
@@ -30,10 +29,6 @@ public class Board {
     @OneToMany(mappedBy = "imageBoard", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Image> images = new ArrayList<>();
 
-    @Builder.Default
-    @OneToMany(mappedBy = "reviewBoard")
-    private List<Review> reviews = new ArrayList<>();
-
     @JsonIgnore
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "writer_id")
@@ -41,7 +36,6 @@ public class Board {
 
     private String title;
     private String content;
-    private LocalDateTime createdAt;
 
     private LocalDateTime startTime;
     private LocalDateTime endTime;
@@ -55,31 +49,9 @@ public class Board {
     private Long price;
     private boolean isFreebie;
 
-    public static BoardBuilder builder(Member member, String title, LocalDateTime startTime,
-                                       LocalDateTime endTime, TransactionAddress address, Long price) {
-        if (member == null || title == null || startTime == null || endTime == null
-                || address == null || price == null)
-            throw new IllegalArgumentException("필수 파라미터 누락");
-        return new BoardBuilder()
-                .writer(member)
-                .title(title)
-                .startTime(startTime)
-                .endTime(endTime)
-                .address(address)
-                .price(price);
-    }
-
     public void setWriter(Member member) {
         this.writer = member;
         member.getBoards().add(this);
-    }
-
-    public void setStartTimeString(String startTimeString) {
-        this.startTimeString = startTimeString;
-    }
-
-    public void setEndTimeString(String endTimeString) {
-        this.endTimeString = endTimeString;
     }
 
     public void changeTitle(String title) {
@@ -118,11 +90,23 @@ public class Board {
         this.isFreebie = isFreebie;
     }
 
+    public static BoardBuilder builder(Member member, String title, LocalDateTime startTime,
+                                       LocalDateTime endTime, TransactionAddress address, Long price) {
+        if (member == null || title == null || startTime == null || endTime == null
+                || address == null || price == null)
+            throw new IllegalArgumentException("필수 파라미터 누락");
+        return new BoardBuilder()
+                .writer(member)
+                .title(title)
+                .startTime(startTime)
+                .endTime(endTime)
+                .address(address)
+                .price(price);
+    }
     public static Board buildBoard(Member writer, String title, String content, LocalDateTime startTime,
                                    LocalDateTime endTime, TransactionAddress address, Long price, boolean isFreebie) {
         return Board.builder(writer, title, startTime, endTime, address, price)
                 .content(content)
-                .createdAt(LocalDateTime.now())
                 .isFreebie(isFreebie)
                 .build();
     }

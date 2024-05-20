@@ -4,9 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pposonggil.usedStuff.domain.Member;
+import pposonggil.usedStuff.dto.MemberDto;
 import pposonggil.usedStuff.repository.member.MemberRepository;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @Transactional(readOnly = true)
@@ -18,9 +20,12 @@ public class MemberService {
      * 회원 가입
      */
     @Transactional
-    public Long join(Member member) {
-        validateDuplicateNickName(member.getNickName());
-        validateDuplicatePhone(member.getPhone());
+    public Long createMember(MemberDto memberDto) {
+        validateDuplicateNickName(memberDto.getNickName());
+        validateDuplicatePhone(memberDto.getPhone());
+
+        Member member = Member.buildMember(memberDto.getName(), memberDto.getNickName(), memberDto.getPhone());
+
         memberRepository.save(member);
         return member.getId();
     }
@@ -49,31 +54,34 @@ public class MemberService {
      * 회원 아이디로 조회
      */
     public Member findOne(Long memberId) {
-        return memberRepository.findOne(memberId);
+        return memberRepository.findById(memberId)
+                .orElseThrow(NoSuchElementException::new);
     }
 
     /**
      * 회원 정보 업데이트
      */
     @Transactional
-    public void updateMember(Long memberId, String name, String nickName, String phone){
-        Member member = memberRepository.findOne(memberId);
+    public void updateMember(MemberDto memberDto){
+        Member member = memberRepository.findById(memberDto.getMemberId())
+                .orElseThrow(NoSuchElementException::new);
 
         // 이름 변경 여부 확인
-        if(!member.getName().equals(name))
-            member.setName(name);
+        if(!member.getName().equals(memberDto.getName()))
+            member.setName(memberDto.getName());
 
         // 닉네임 변경 여부 확인 && 닉네임 중복 체크
-        if(!member.getNickName().equals(nickName)){
-            validateDuplicateNickName(nickName);
-            member.setNickName(nickName);
+        if(!member.getNickName().equals(memberDto.getNickName())){
+            validateDuplicateNickName(memberDto.getNickName());
+            member.setNickName(memberDto.getNickName());
         }
 
         // 전화번호 변경 여부 확인 && 전화번호 중복 체크
-        if(!member.getPhone().equals(phone)){
-            validateDuplicateNickName(phone);
-            member.setPhone(phone);
+        if(!member.getPhone().equals(memberDto.getPhone())){
+            validateDuplicateNickName(memberDto.getPhone());
+            member.setPhone(memberDto.getPhone());
         }
+        memberRepository.save(member);
     }
 
     /**
@@ -81,11 +89,8 @@ public class MemberService {
      */
     @Transactional
     public void deleteMember(Long memberId) {
-        Member member = memberRepository.findOne(memberId);
-        if (member == null) {
-            throw new IllegalArgumentException("존재하지 않는 회원입니다.");
-        }
-
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(NoSuchElementException::new);
         memberRepository.delete(member);
     }
 }
