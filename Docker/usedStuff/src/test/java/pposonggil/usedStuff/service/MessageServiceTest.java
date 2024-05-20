@@ -81,40 +81,24 @@ class MessageServiceTest {
         // then
         // 채팅 1
         Optional.of(message1)
+                .filter(message -> message.getSender().equals(member1) && message.getMessageChatRoom().equals(chatRoom1))
                 .ifPresent(message -> assertAll("채팅 1 송신 검증",
-                        () -> assertEquals(member1, message.getSender(), "채팅 송신자 객체 불일치"),
-                        () -> assertEquals(member1.getName(), message.getSender().getName(), "채팅 송신자 이름 불일치"),
-                        () -> assertEquals(member1.getNickName(), message.getSender().getNickName(), "채팅 송신자 닉네임 불일치"),
-                        () -> assertEquals(member1.getPhone(), message.getSender().getPhone(), "채팅 송신자 전화번호 불일치"),
-                        () -> assertEquals(chatRoom1, message.getMessageChatRoom(), "채팅방 객체 불일치"),
-                        () -> assertEquals(chatRoom1, message.getMessageChatRoom(), "채팅방 불일치"),
+                        () -> assertEquals("name1", message.getSender().getName(), "채팅 송신자 이름 불일치"),
+                        () -> assertEquals("nickName1", message.getSender().getNickName(), "채팅 송신자 닉네임 불일치"),
+                        () -> assertEquals("01011111111", message.getSender().getPhone(), "채팅 송신자 전화번호 불일치"),
                         () -> assertEquals(chatRoom1.getChatBoard(), message.getMessageChatRoom().getChatBoard(), "게시글 객체 불일치"),
-                        () -> assertEquals(chatRoom1.getChatMember(), message.getMessageChatRoom().getChatMember(), "채팅 회원 객체 불일치"),
-                        () -> assertEquals(chatRoom1.getStartTimeString(), message.getMessageChatRoom().getStartTimeString(), "거래 시작 시각 불일치"),
-                        () -> assertEquals(chatRoom1.getEndTimeString(), message.getMessageChatRoom().getEndTimeString(), "거래 종료 시각 불일치"),
-                        () -> assertEquals("숭실대1", message.getMessageChatRoom().getAddress().getName(), "주소 이름 불일치"),
-                        () -> assertEquals(37.4958, message.getMessageChatRoom().getAddress().getLatitude(), "주소 위도 불일치"),
-                        () -> assertEquals(126.9583, message.getMessageChatRoom().getAddress().getLongitude(), "주소 경도 불일치"),
-                        () -> assertEquals("주소1", message.getMessageChatRoom().getAddress().getStreet(), "주소 도로명 불일치")
+                        () -> assertEquals("우산 팔아요", message.getContent())
                 ));
 
         // 채팅 2
         Optional.of(message2)
+                .filter(message -> message.getSender().equals(member3) && message.getMessageChatRoom().equals(chatRoom1))
                 .ifPresent(message -> assertAll("채팅 2 송신 검증",
-                        () -> assertEquals(member3, message.getSender(), "채팅 송신자 객체 불일치"),
-                        () -> assertEquals(member3.getName(), message.getSender().getName(), "채팅 송신자 이름 불일치"),
-                        () -> assertEquals(member3.getNickName(), message.getSender().getNickName(), "채팅 송신자 닉네임 불일치"),
-                        () -> assertEquals(member3.getPhone(), message.getSender().getPhone(), "채팅 송신자 전화번호 불일치"),
-                        () -> assertEquals(chatRoom1, message.getMessageChatRoom(), "채팅방 객체 불일치"),
-                        () -> assertEquals(chatRoom1, message.getMessageChatRoom(), "채팅방 불일치"),
+                        () -> assertEquals("name3", message.getSender().getName(), "채팅 송신자 이름 불일치"),
+                        () -> assertEquals("nickName3", message.getSender().getNickName(), "채팅 송신자 닉네임 불일치"),
+                        () -> assertEquals("01033333333", message.getSender().getPhone(), "채팅 송신자 전화번호 불일치"),
                         () -> assertEquals(chatRoom1.getChatBoard(), message.getMessageChatRoom().getChatBoard(), "게시글 객체 불일치"),
-                        () -> assertEquals(chatRoom1.getChatMember(), message.getMessageChatRoom().getChatMember(), "채팅 회원 객체 불일치"),
-                        () -> assertEquals(chatRoom1.getStartTimeString(), message.getMessageChatRoom().getStartTimeString(), "거래 시작 시각 불일치"),
-                        () -> assertEquals(chatRoom1.getEndTimeString(), message.getMessageChatRoom().getEndTimeString(), "거래 종료 시각 불일치"),
-                        () -> assertEquals("숭실대1", message.getMessageChatRoom().getAddress().getName(), "주소 이름 불일치"),
-                        () -> assertEquals(37.4958, message.getMessageChatRoom().getAddress().getLatitude(), "주소 위도 불일치"),
-                        () -> assertEquals(126.9583, message.getMessageChatRoom().getAddress().getLongitude(), "주소 경도 불일치"),
-                        () -> assertEquals("주소1", message.getMessageChatRoom().getAddress().getStreet(), "주소 도로명 불일치")
+                        () -> assertEquals("우산 살래요", message.getContent())
                 ));
     }
 
@@ -137,12 +121,9 @@ class MessageServiceTest {
                 .filter(message -> message.getSender().equals(member1) && message.getMessageChatRoom().equals(chatRoom1))
                 .findFirst()
                 .ifPresent(message -> assertAll("채팅 1 송신 검증",
-                        () -> assertEquals(member1, message.getSender(), "채팅 송신자 객체 불일치"),
-                        () -> assertEquals(member1.getName(), message.getSender().getName(), "채팅 송신자 이름 불일치"),
-                        () -> assertEquals(member1.getNickName(), message.getSender().getNickName(), "채팅 송신자 닉네임 불일치"),
-                        () -> assertEquals(member1.getPhone(), message.getSender().getPhone(), "채팅 송신자 전화번호 불일치"),
-                        () -> assertEquals(chatRoom1, message.getMessageChatRoom(), "채팅방 객체 불일치"),
-                        () -> assertEquals(chatRoom1, message.getMessageChatRoom(), "채팅방 불일치"),
+                        () -> assertEquals("name1", message.getSender().getName(), "채팅 송신자 이름 불일치"),
+                        () -> assertEquals("nickName1", message.getSender().getNickName(), "채팅 송신자 닉네임 불일치"),
+                        () -> assertEquals("01011111111", message.getSender().getPhone(), "채팅 송신자 전화번호 불일치"),
                         () -> assertEquals(chatRoom1.getChatBoard(), message.getMessageChatRoom().getChatBoard(), "게시글 객체 불일치"),
                         () -> assertEquals(chatRoom1.getChatMember(), message.getMessageChatRoom().getChatMember(), "채팅 회원 객체 불일치"),
                         () -> assertEquals(chatRoom1.getStartTimeString(), message.getMessageChatRoom().getStartTimeString(), "거래 시작 시각 불일치"),
@@ -150,7 +131,8 @@ class MessageServiceTest {
                         () -> assertEquals("숭실대1", message.getMessageChatRoom().getAddress().getName(), "주소 이름 불일치"),
                         () -> assertEquals(37.4958, message.getMessageChatRoom().getAddress().getLatitude(), "주소 위도 불일치"),
                         () -> assertEquals(126.9583, message.getMessageChatRoom().getAddress().getLongitude(), "주소 경도 불일치"),
-                        () -> assertEquals("주소1", message.getMessageChatRoom().getAddress().getStreet(), "주소 도로명 불일치")
+                        () -> assertEquals("주소1", message.getMessageChatRoom().getAddress().getStreet(), "주소 도로명 불일치"),
+                        () -> assertEquals("우산 팔아요", message.getContent())
                 ));
 
         // 두번째 메시지 검증
@@ -158,12 +140,9 @@ class MessageServiceTest {
                 .filter(message -> message.getSender().equals(member3) && message.getMessageChatRoom().equals(chatRoom1))
                 .findFirst()
                 .ifPresent(message -> assertAll("채팅 2 송신 검증",
-                        () -> assertEquals(member3, message.getSender(), "채팅 송신자 객체 불일치"),
-                        () -> assertEquals(member3.getName(), message.getSender().getName(), "채팅 송신자 이름 불일치"),
-                        () -> assertEquals(member3.getNickName(), message.getSender().getNickName(), "채팅 송신자 닉네임 불일치"),
-                        () -> assertEquals(member3.getPhone(), message.getSender().getPhone(), "채팅 송신자 전화번호 불일치"),
-                        () -> assertEquals(chatRoom1, message.getMessageChatRoom(), "채팅방 객체 불일치"),
-                        () -> assertEquals(chatRoom1, message.getMessageChatRoom(), "채팅방 불일치"),
+                        () -> assertEquals("name3", message.getSender().getName(), "채팅 송신자 이름 불일치"),
+                        () -> assertEquals("nickName3", message.getSender().getNickName(), "채팅 송신자 닉네임 불일치"),
+                        () -> assertEquals("01033333333", message.getSender().getPhone(), "채팅 송신자 전화번호 불일치"),
                         () -> assertEquals(chatRoom1.getChatBoard(), message.getMessageChatRoom().getChatBoard(), "게시글 객체 불일치"),
                         () -> assertEquals(chatRoom1.getChatMember(), message.getMessageChatRoom().getChatMember(), "채팅 회원 객체 불일치"),
                         () -> assertEquals(chatRoom1.getStartTimeString(), message.getMessageChatRoom().getStartTimeString(), "거래 시작 시각 불일치"),
@@ -171,7 +150,9 @@ class MessageServiceTest {
                         () -> assertEquals("숭실대1", message.getMessageChatRoom().getAddress().getName(), "주소 이름 불일치"),
                         () -> assertEquals(37.4958, message.getMessageChatRoom().getAddress().getLatitude(), "주소 위도 불일치"),
                         () -> assertEquals(126.9583, message.getMessageChatRoom().getAddress().getLongitude(), "주소 경도 불일치"),
-                        () -> assertEquals("주소1", message.getMessageChatRoom().getAddress().getStreet(), "주소 도로명 불일치")
+                        () -> assertEquals("주소1", message.getMessageChatRoom().getAddress().getStreet(), "주소 도로명 불일치"),
+                        () -> assertEquals("우산 살래요", message.getContent())
+
                 ));
 
         // 번째 메시지 검증
@@ -179,12 +160,9 @@ class MessageServiceTest {
                 .filter(message -> message.getSender().equals(member2) && message.getMessageChatRoom().equals(chatRoom2))
                 .findFirst()
                 .ifPresent(message -> assertAll("채팅 3 송신 검증",
-                        () -> assertEquals(member2, message.getSender(), "채팅 송신자 객체 불일치"),
-                        () -> assertEquals(member2.getName(), message.getSender().getName(), "채팅 송신자 이름 불일치"),
-                        () -> assertEquals(member2.getNickName(), message.getSender().getNickName(), "채팅 송신자 닉네임 불일치"),
-                        () -> assertEquals(member2.getPhone(), message.getSender().getPhone(), "채팅 송신자 전화번호 불일치"),
-                        () -> assertEquals(chatRoom2, message.getMessageChatRoom(), "채팅방 객체 불일치"),
-                        () -> assertEquals(chatRoom2, message.getMessageChatRoom(), "채팅방 불일치"),
+                        () -> assertEquals("name2", message.getSender().getName(), "채팅 송신자 이름 불일치"),
+                        () -> assertEquals("nickName2", message.getSender().getNickName(), "채팅 송신자 닉네임 불일치"),
+                        () -> assertEquals("01022222222", message.getSender().getPhone(), "채팅 송신자 전화번호 불일치"),
                         () -> assertEquals(chatRoom2.getChatBoard(), message.getMessageChatRoom().getChatBoard(), "게시글 객체 불일치"),
                         () -> assertEquals(chatRoom2.getChatMember(), message.getMessageChatRoom().getChatMember(), "채팅 회원 객체 불일치"),
                         () -> assertEquals(chatRoom2.getStartTimeString(), message.getMessageChatRoom().getStartTimeString(), "거래 시작 시각 불일치"),
@@ -192,20 +170,18 @@ class MessageServiceTest {
                         () -> assertEquals("숭실대2", message.getMessageChatRoom().getAddress().getName(), "주소 이름 불일치"),
                         () -> assertEquals(37.5000, message.getMessageChatRoom().getAddress().getLatitude(), "주소 위도 불일치"),
                         () -> assertEquals(126.9500, message.getMessageChatRoom().getAddress().getLongitude(), "주소 경도 불일치"),
-                        () -> assertEquals("주소2", message.getMessageChatRoom().getAddress().getStreet(), "주소 도로명 불일치")
+                        () -> assertEquals("주소2", message.getMessageChatRoom().getAddress().getStreet(), "주소 도로명 불일치"),
+                        () -> assertEquals("만나요", message.getContent())
                 ));
 
         // 네번째 메시지 검증
         messages.stream()
                 .filter(message -> message.getSender().equals(member3) && message.getMessageChatRoom().equals(chatRoom2))
                 .findFirst()
-                .ifPresent(message -> assertAll("채팅 2 송신 검증",
-                        () -> assertEquals(member3, message.getSender(), "채팅 송신자 객체 불일치"),
-                        () -> assertEquals(member3.getName(), message.getSender().getName(), "채팅 송신자 이름 불일치"),
-                        () -> assertEquals(member3.getNickName(), message.getSender().getNickName(), "채팅 송신자 닉네임 불일치"),
-                        () -> assertEquals(member3.getPhone(), message.getSender().getPhone(), "채팅 송신자 전화번호 불일치"),
-                        () -> assertEquals(chatRoom2, message.getMessageChatRoom(), "채팅방 객체 불일치"),
-                        () -> assertEquals(chatRoom2, message.getMessageChatRoom(), "채팅방 불일치"),
+                .ifPresent(message -> assertAll("채팅 4 송신 검증",
+                        () -> assertEquals("name3", message.getSender().getName(), "채팅 송신자 이름 불일치"),
+                        () -> assertEquals("nickName3", message.getSender().getNickName(), "채팅 송신자 닉네임 불일치"),
+                        () -> assertEquals("01033333333", message.getSender().getPhone(), "채팅 송신자 전화번호 불일치"),
                         () -> assertEquals(chatRoom2.getChatBoard(), message.getMessageChatRoom().getChatBoard(), "게시글 객체 불일치"),
                         () -> assertEquals(chatRoom2.getChatMember(), message.getMessageChatRoom().getChatMember(), "채팅 회원 객체 불일치"),
                         () -> assertEquals(chatRoom2.getStartTimeString(), message.getMessageChatRoom().getStartTimeString(), "거래 시작 시각 불일치"),
@@ -213,7 +189,9 @@ class MessageServiceTest {
                         () -> assertEquals("숭실대2", message.getMessageChatRoom().getAddress().getName(), "주소 이름 불일치"),
                         () -> assertEquals(37.5000, message.getMessageChatRoom().getAddress().getLatitude(), "주소 위도 불일치"),
                         () -> assertEquals(126.9500, message.getMessageChatRoom().getAddress().getLongitude(), "주소 경도 불일치"),
-                        () -> assertEquals("주소2", message.getMessageChatRoom().getAddress().getStreet(), "주소 도로명 불일치")
+                        () -> assertEquals("주소2", message.getMessageChatRoom().getAddress().getStreet(), "주소 도로명 불일치"),
+                        () -> assertEquals("싫어요", message.getContent())
+
                 ));
     }
 
