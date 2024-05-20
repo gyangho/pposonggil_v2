@@ -17,6 +17,7 @@ public class ReportApiController {
 
     /**
      * 전체 신고 조회
+     * @return 신고 Dto 리스트
      */
     @GetMapping("/api/reports")
     public List<ReportDto> reports() {
@@ -29,6 +30,8 @@ public class ReportApiController {
 
     /**
      * 특정 신고 상세 조회
+     * @param reportId 조회할 신고 아이디
+     * @return 조회한 신고 Dto
      */
     @GetMapping("/api/report/{reportId}")
     public ReportDto getReportByReportId(@PathVariable Long reportId) {
@@ -38,6 +41,8 @@ public class ReportApiController {
 
     /**
      * 신고자 아이디로 신고 조회
+     * @param subjectId 조회할 신고자 아이디
+     * @return 신고자 아이디가 일치하는 신고 Dto
      */
     @GetMapping("/api/reports/by-subject/{subjectId}")
     public List<ReportDto> getReportsBySubjectId(@PathVariable Long subjectId) {
@@ -49,6 +54,8 @@ public class ReportApiController {
 
     /**
      * 피신고자 아이디로 신고 조회
+     * @param objectId 조회할 피신고자 아이디
+     * @return 피신고자 아이디가 일치하는 신고 Dto
      */
     @GetMapping("/api/reports/by-object/{objectId}")
     public List<ReportDto> getReportsByObjectId(@PathVariable Long objectId) {
@@ -60,6 +67,7 @@ public class ReportApiController {
 
     /**
      * 신고 & 신고자 & 피신고자 조회
+     * @return 신고자, 피신고자를 포함한 신고 Dto 리스트
      */
     @GetMapping("/api/reports/with-subject-object")
     public List<ReportDto> getReportWithMember() {
@@ -71,6 +79,8 @@ public class ReportApiController {
 
     /**
      * 신고 생성
+     * @param reportDto 생성할 reportDto
+     * @return 성공 --> "Created report with ID : " + reportId
      */
     @PutMapping("/api/report")
     public ResponseEntity<String> createReport(@RequestBody ReportDto reportDto) {
