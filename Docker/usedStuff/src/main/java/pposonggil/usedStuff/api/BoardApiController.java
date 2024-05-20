@@ -17,6 +17,7 @@ public class BoardApiController {
 
     /**
      * 전체 게시글 조회
+     * @return 게시글 Dto 리스트
      */
     @GetMapping("/api/boards")
     public List<BoardDto> boards() {
@@ -29,6 +30,8 @@ public class BoardApiController {
 
     /**
      * 특정 게시글 상세 조회
+     * @param boardId : 조회할 게시글 아이디
+     * @return 게시글 아이디로 조회한 게시글 Dto
      */
     @GetMapping("/api/board/{boardId}")
     public BoardDto getBoarByBoardId(@PathVariable Long boardId) {
@@ -38,6 +41,8 @@ public class BoardApiController {
 
     /**
      * 작성자 아이디로 게시글 조회
+     * @param memberId : 조회할 회원 아이디
+     * @return 회원 아이디로 조회한 게시글 Dto 리스트
      */
     @GetMapping("/api/boards/{memberId}")
     public List<BoardDto> getBoardsByMemberId(@PathVariable Long memberId) {
@@ -48,7 +53,8 @@ public class BoardApiController {
     }
 
     /**
-     * 게시글 & 작성자 조회
+     * * 게시글 & 작성자 조회
+     * @return 게시글 Dto 리스트
      */
     @GetMapping("/api/boards/with-member")
     public List<BoardDto> getBoardsWithMember() {
@@ -60,6 +66,8 @@ public class BoardApiController {
 
     /**
      * 게시글 작성
+     * @param boardDto
+     * @return 성공 --> "Created board with ID: " + boardId
      */
     @PostMapping("/api/board")
     public ResponseEntity<String> createBoard(@RequestBody BoardDto boardDto) {
@@ -69,6 +77,9 @@ public class BoardApiController {
 
     /**
      * 게시글 수정
+     * @param boardId : 게시글 아이디
+     * @param boardDto : 수정한 게시글 Dto
+     * @return
      */
     @PutMapping("/api/board/{boardId}")
     public ResponseEntity<String> updateBoard(@PathVariable Long boardId, @RequestBody BoardDto boardDto) {
@@ -83,6 +94,8 @@ public class BoardApiController {
 
     /**
      * 게시글 삭제
+     * @param boardId : 게시글 아이디
+     * @return 성공 --> "게시글을 삭제하였습니다."
      */
     @DeleteMapping("/api/board/{boardId}")
     public ResponseEntity<String> deleteBoard(@PathVariable Long boardId) {

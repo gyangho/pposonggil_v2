@@ -17,6 +17,8 @@ public class MessageApiController {
 
     /**
      * 메시지 송신
+     * @param messageDto : 메시지 Dto
+     * @return 성공 --> "Created message with ID: " + messageId
      */
     @PostMapping("/api/message")
     public ResponseEntity<String> createMessage(@RequestBody MessageDto messageDto) {
@@ -26,6 +28,8 @@ public class MessageApiController {
 
     /**
      * 특정 메시지 상세 조회
+     * @param messageId : 조회하려는 메시지 아이디
+     * @return 조회한 메시지 Dto
      */
     @GetMapping("/api/messages/{messageId}")
     public MessageDto getMessageByMessageId(@PathVariable Long messageId) {
@@ -35,6 +39,7 @@ public class MessageApiController {
 
     /**
      * 메시지 & 송신자 & 채팅방 조회
+     * @return 송신자, 채팅방 정보를 포함한 메시지 Dto 리스트
      */
     @GetMapping("/api/messages/with-member-chatroom")
     public List<MessageDto> getMessageWithMemberChatRoom() {
