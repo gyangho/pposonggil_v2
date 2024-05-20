@@ -1,0 +1,32 @@
+.post-detail {
+    width: 90%;
+    max-width: 700px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 3px solid #5b6fcb;
+    border-radius: 15px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.post-detail h2 {
+    margin-top: 0;
+    font-size: 24px;
+    color: #333;
+}
+
+.post-detail p {
+    margin: 10px 0;
+    color: #666;
+}
+
+.post-detail .location {
+    font-size: 14px;
+    color: #999;
+}
+
+.post-detail img {
+    max-width: 100%;
+    margin-top: 20px;
+    border-radius: 10px;
+}

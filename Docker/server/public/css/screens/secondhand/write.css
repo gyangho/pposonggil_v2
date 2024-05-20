@@ -1,0 +1,124 @@
+#writeFrm {
+    width: 70%;
+}
+
+#title-container,
+#content-container,
+#location-container {
+    margin-bottom: 20px;
+    position: relative;
+    width: 100%;
+}
+
+#title-box,
+#content-box,
+#location-box {
+    width: 100%;
+    height: 40px;
+    /* 입력칸 길이 */
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-bottom: 2px solid rgb(162, 216, 248);
+    outline: none;
+    transition: border-color 0.3s;
+    text-align: center;
+}
+
+#content-box {
+    width: 100%;
+    height: 150px;
+    /* 높이를 다른 필드의 3배로 설정 */
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-bottom: 2px solid rgb(162, 216, 248);
+    outline: none;
+    transition: border-color 0.3s;
+    text-align: center;
+}
+
+#title-box:focus,
+#content-box:focus,
+#location-box:focus {
+    border-bottom: 2px solid #007BFF;
+}
+
+#title-box::placeholder,
+#content-box::placeholder,
+#location-box::placeholder {
+    transition: transform 0.3s ease, font-size 0.3s ease;
+    transform-origin: left top;
+    text-align: center;
+}
+
+#title-box:focus::placeholder,
+#content-box:focus::placeholder,
+#location-box:focus::placeholder {
+    transform: translateY(-150%);
+    font-size: 12px;
+}
+
+.image-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.image-upload {
+    width: 48%;
+    height: 190px;
+    border: 2px dashed #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+}
+
+.image-upload i {
+    font-size: 30px;
+    color: #ccc;
+}
+
+.image-upload img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    object-fit: cover;
+    width: 100%;
+    /* 이미지가 업로드 칸에 맞도록 너비를 100%로 설정 */
+    height: 100%;
+    /* 이미지가 업로드 칸에 맞도록 높이를 100%로 설정 */
+}
+
+.submit-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    /* 제출 컨테이너 너비를 100%로 설정 */
+}
+
+#submit-btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#submit-btn:hover {
+    background-color: #0056b3;
+}
+
+.write-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 50px;
+}

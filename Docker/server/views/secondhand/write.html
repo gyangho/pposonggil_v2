@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="/css/styles.css" />
+    <link rel="icon" href="/image/21.png" type="image/x-icon">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>뽀송길</title>
+</head>
+
+<body>
+    <div class="status-bar">
+        <div class="status-bar__column">
+            <span>PPOSONG</span>
+            <!-- Icon -->
+            <i class="fa-solid fa-cloud" style="color: #9fd8f6;"></i>
+        </div>
+
+        <div class="status-bar__column">
+            <span>ver 0.6.2</span>
+            <!-- version information &Icon-->
+        </div>
+    </div>
+
+    <header class="alt-header">
+        <div class="alt-header__column">
+            <i class="fa-solid fa-angle-left fa-xl"></i>
+        </div>
+        <div class="alt-header__column">
+            <h1 class="alt-header__title">거래 글쓰기</h1>
+        </div>
+        <div class="alt-header__column">
+            <!-- 헤더 우측에 위치한 홈/마이페이지 버튼 -->
+            <nav class="screen-header__menu">
+                <ul class="screen-header__menu-list">
+                    <li class="screen-header__menu-btn">
+                        <a class="screen-header__menu-link" href="/main"><i class="fa-solid fa-house fa-lg"></i></a>
+                    </li>
+                    <li class="screen-header__menu-btn">
+                        <a class="screen-header__menu-link" href="/main/mypage"><i
+                                class="fa-solid fa-circle-user fa-lg"></i></a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <!-- <div class="write-box">
+        <form id="writeFrm">
+            <div class="title">제목 : <input id="title-box" type="text" name="subject" placeholder="제목을 입력하세요" /></div>
+            <div class="content">내용 : <input id="content-box" type="text" name="writer" placeholder="내용을 입력하세요" /></div>
+            <div class="image">사진 : <input id="image-box" type="file" class="real-upload" accept="image/*" required
+                    multiple style="display: none;" placeholder="사진을 첨부하세요" />
+                <div class="upload" style="background-color: red; height:30px;"></div>
+                <script>
+                    const realUpload = document.querySelector('.real-upload');
+                    const upload = document.querySelector('.upload');
+                    upload.addEventListener('click', () => realUpload.click());
+                </script>
+            </div>
+            <input type="submit" value="등록" />
+        </form>
+    </div> -->
+
+    <div class="write-box">
+        <form id="writeFrm">
+            <div class="input-container" id="title-container">
+                <input id="title-box" type="text" name="subject" placeholder="제목을 입력하세요" />
+            </div>
+            <div class="input-container" id="content-container">
+                <input id="content-box" type="text" name="writer" placeholder="내용을 입력하세요" />
+            </div>
+            <div class="input-container" id="location-container">
+                <input id="location-box" type="text" name="location" placeholder="예상 거래 위치를 입력하세요" />
+            </div>
+            <div class="image-container">
+                <div class="image-upload" id="image-upload1">
+                    <i class="fa-solid fa-camera"></i>
+                    <input type="file" id="file-input1" accept="image/*" style="display: none;" />
+                    <img id="preview1" style="display:none; width:100%; height:100%;" />
+                </div>
+                <div class="image-upload" id="image-upload2">
+                    <i class="fa-solid fa-camera"></i>
+                    <input type="file" id="file-input2" accept="image/*" style="display: none;" />
+                    <img id="preview2" style="display:none; width:100%; height:100%;" />
+                </div>
+            </div>
+            <div class="submit-container">
+                <input id="submit-btn" type="submit" value="게시글 등록" />
+            </div>
+        </form>
+    </div>
+
+
+    <script src="https://kit.fontawesome.com/660f4d6ed1.js" crossorigin="anonymous"></script>
+    <script src="/js/back.js"></script>
+    <script src="/js/secondhand/write.js"></script>
+</body>
+
+</html>
