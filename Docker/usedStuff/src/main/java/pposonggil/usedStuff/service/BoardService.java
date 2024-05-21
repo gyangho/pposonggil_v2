@@ -9,11 +9,8 @@ import pposonggil.usedStuff.dto.BoardDto;
 import pposonggil.usedStuff.repository.board.BoardRepository;
 import pposonggil.usedStuff.repository.member.MemberRepository;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 
 @Service
 @Transactional(readOnly = true)
@@ -58,12 +55,8 @@ public class BoardService {
         Member writer = memberRepository.findById(boardDto.getWriterId())
                 .orElseThrow(() -> new NoSuchElementException("Member not found with id: " + boardDto.getWriterId()));
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm");
-        LocalDateTime startTime = LocalDateTime.parse(boardDto.getStartTimeString(), formatter);
-        LocalDateTime endTime = LocalDateTime.parse(boardDto.getEndTimeString(), formatter);
-
-        Board board = Board.buildBoard(writer, boardDto.getTitle(), boardDto.getContent(),
-                startTime, endTime, boardDto.getAddress(), boardDto.getPrice(), boardDto.isFreebie());
+        Board board = Board.buildBoard(writer, boardDto.getTitle(), boardDto.getContent(), boardDto.getStartTimeString(),
+                boardDto.getEndTimeString(), boardDto.getAddress(), boardDto.getPrice(), boardDto.isFreebie());
 
         board.setWriter(writer);
         boardRepository.save(board);
@@ -79,22 +72,14 @@ public class BoardService {
         Board board = boardRepository.findById(boardDto.getBoardId())
                 .orElseThrow(NoSuchElementException::new);
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm");
-        LocalDateTime formattedStartTime = LocalDateTime.parse(boardDto.getStartTimeString(), formatter);
-        LocalDateTime formattedEndTime = LocalDateTime.parse(boardDto.getEndTimeString(), formatter);
-
         if (!board.getTitle().equals(boardDto.getTitle()))
             board.changeTitle(boardDto.getTitle());
         if (!board.getContent().equals(boardDto.getContent()))
-            board.changeContent(board.getContent());
-        if (!Objects.equals(board.getStartTime(), formattedStartTime)) {
-            board.changeStartTime(formattedStartTime);
+            board.changeContent(boardDto.getContent());
+        if(!board.getStartTimeString().equals(boardDto.getStartTimeString()))
             board.changeStartTimeString(boardDto.getStartTimeString());
-        }
-        if (!Objects.equals(board.getEndTime(), formattedEndTime)) {
-            board.changeEndTime(formattedEndTime);
+        if(!board.getEndTimeString().equals(boardDto.getEndTimeString()))
             board.changeEndTimeString(boardDto.getEndTimeString());
-        }
         if (!board.getAddress().equals(boardDto.getAddress()))
             board.changeAddress(boardDto.getAddress());
         if (!board.getPrice().equals(boardDto.getPrice()))
