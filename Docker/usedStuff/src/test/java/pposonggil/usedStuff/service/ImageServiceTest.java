@@ -5,11 +5,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import pposonggil.usedStuff.domain.Board;
 import pposonggil.usedStuff.domain.Image;
@@ -24,18 +24,17 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
-@AutoConfigureMockMvc
 @SpringBootTest
 @Transactional
+@ActiveProfiles("test")
+@Import(MockS3Config.class)
 class ImageServiceTest {
-
-    @Autowired
-    MockMvc mockMvc;
     @Autowired
     ImageService imageService;
     @Autowired
@@ -142,16 +141,14 @@ class ImageServiceTest {
                 });
     }
 
-//    @Test
-//    public void 사진_삭제() throws Exception {
-//        // when
-//        imageService.deleteImage(imageId1);
-//        List<Image> images = imageService.findImages();
-//
-//        // then
-//        assertEquals(1, images.size());
-//        assertThrows(NoSuchElementException.class, () -> imageService.findOne(imageId1));
-//    }
+    @Test
+    public void 사진_삭제() throws Exception {
+        // when
+        imageService.deleteImage(imageId1);
+
+        // then
+        assertThrows(NoSuchElementException.class, () -> imageService.findOne(imageId1));
+    }
 
     public Long createMember(String name, String nickName, String phone) {
         MemberDto memberDto = MemberDto.builder()
@@ -162,7 +159,6 @@ class ImageServiceTest {
 
         return memberService.createMember(memberDto);
     }
-
 
     public Long createBoard(Long savedId, String title, String content, LocalDateTime startTime, LocalDateTime endTime,
                             TransactionAddress address, Long price, boolean isFreebie) {

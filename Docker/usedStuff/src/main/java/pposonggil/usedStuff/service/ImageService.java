@@ -63,7 +63,7 @@ public class ImageService {
         Optional<Image> imageOptional = imageRepository.findById(imageId);
         if (imageOptional.isPresent())
             return imageOptional.get();
-        else throw new IllegalArgumentException("해당 이미지가 존재하지 않습니다.");
+        else throw new NoSuchElementException("해당 이미지가 존재하지 않습니다.");
     }
 
     /**

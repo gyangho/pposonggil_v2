@@ -38,15 +38,40 @@ public class MessageApiController {
     }
 
     /**
-     * 메시지 & 송신자 & 채팅방 조회
-     * @return 송신자, 채팅방 정보를 포함한 메시지 Dto 리스트
+     * 채팅방 아이디로 메시지 조회
+     * @param chatRoomId : 조회할 채팅방 아이디
+     * @return 채팅방 아이디가 동일한 메시지 Dto 리스트
      */
-    @GetMapping("/api/messages/with-member-chatroom")
-    public List<MessageDto> getMessageWithMemberChatRoom() {
-        List<Message> messages = messageService.findAllWithMemberChatRoom();
+    @GetMapping("/api/messages/by-chatroom/{chatRoomId}")
+    public List<MessageDto> getMessagesByChatRoomId(@PathVariable Long chatRoomId) {
+        List<Message> messages = messageService.findMessagesByChatRoomId(chatRoomId);
         return messages.stream()
                 .map(MessageDto::fromEntity)
                 .collect(Collectors.toList());
     }
 
+    /**
+     * 송신자 아이디로 메시지 조회
+     * @param senderId : 조회할 송신자 아이디
+     * @return 송신자 아이디가 동일한 메시지 Dto 리스트
+     */
+    @GetMapping("/api/messages/by-sender/{senderId}")
+    public List<MessageDto> getMessagesBySenderId(@PathVariable Long senderId) {
+        List<Message> messages = messageService.findMessagesBySenderId(senderId);
+        return messages.stream()
+                .map(MessageDto::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * 송신자 & 채팅방 & 메시지 조회
+     * @return 송신자, 채팅방 정보를 포함한 메시지 Dto 리스트
+     */
+    @GetMapping("/api/messages/with-member-chatroom")
+    public List<MessageDto> getMessagesWithMemberChatRoom() {
+        List<Message> messages = messageService.findAllWithMemberChatRoom();
+        return messages.stream()
+                .map(MessageDto::fromEntity)
+                .collect(Collectors.toList());
+    }
 }

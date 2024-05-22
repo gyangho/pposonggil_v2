@@ -6,7 +6,6 @@ import java.util.List;
 
 public interface CustomReportRepository {
     List<Report> findAllWithMember();
-
     List<Report> findReportsBySubjectId(Long subjectId);
     List<Report> findReportsByObjectId(Long objectId);
 }

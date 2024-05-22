@@ -33,8 +33,8 @@ public class Review extends BaseEntity {
 
     @JsonIgnore
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "chat_room_id")
-    private ChatRoom reviewChatRoom;
+    @JoinColumn(name = "trade_id")
+    private Trade reviewTrade;
 
     private Long score;
     private String content;
@@ -49,9 +49,9 @@ public class Review extends BaseEntity {
         member.getReviewObjects().add(this);
     }
 
-    public void setReviewChatRoom(ChatRoom chatRoom) {
-        this.reviewChatRoom = chatRoom;
-        chatRoom.getReviews().add(this);
+    public void setReviewTrade(Trade trade) {
+        this.reviewTrade = trade;
+        trade.getReviews().add(this);
     }
 
     public static ReviewBuilder builder(Member reviewSubject, Member reviewObject, Long score) {

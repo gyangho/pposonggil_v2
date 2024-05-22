@@ -37,7 +37,7 @@ public class BoardService {
      * 작성자 아이디로 게시글 조회
      */
     public List<Board> findBoardsByWriterId(Long writerId) {
-        return boardRepository.findBoardsByWriterId(writerId);
+        return boardRepository.findBoardsByMember(writerId);
     }
 
     /**

@@ -27,4 +27,15 @@ public class CustomImageRepositoryImpl implements CustomImageRepository{
                 .limit(1000)
                 .fetch();
     }
+
+    @Override
+    public List<Image> findImagesByImageBoardId(Long boardId){
+        return query
+                .select(image)
+                .from(image)
+                .join(image.imageBoard, board).fetchJoin()
+                .where(image.imageBoard.id.eq(boardId))
+                .limit(1000)
+                .fetch();
+    }
 }

@@ -66,10 +66,10 @@ public class ReportApiController {
     }
 
     /**
-     * 신고 & 신고자 & 피신고자 조회
+     * 신고자 & 피신고자 & 신고 조회
      * @return 신고자, 피신고자를 포함한 신고 Dto 리스트
      */
-    @GetMapping("/api/reports/with-subject-object")
+    @GetMapping("/api/reports/with-member")
     public List<ReportDto> getReportWithMember() {
         List<Report> reports = reportService.findAllWithMember();
         return reports.stream()

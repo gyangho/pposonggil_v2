@@ -32,8 +32,8 @@ public class MessageService {
         ChatRoom messageChatRoom = chatRoomRepository.findById(messageDto.getMessageChatRoomId())
                 .orElseThrow(() -> new NoSuchElementException("ChatRoom not found with id: " + messageDto.getMessageChatRoomId()));
 
-        if (!messageChatRoom.getChatMember().getId().equals(messageDto.getSenderId()) &&
-                !messageChatRoom.getChatBoard().getWriter().getId().equals(messageDto.getSenderId())) {
+        if (!messageChatRoom.getChatTrade().getTradeSubject().getId().equals(messageDto.getSenderId()) &&
+                !messageChatRoom.getChatTrade().getTradeObject().getId().equals(messageDto.getSenderId())) {
             throw new IllegalArgumentException("Sender가 채팅방 멤버가 아닙니다.");
         }
 
@@ -56,9 +56,23 @@ public class MessageService {
     }
 
     /**
-     * 메시지 & 송신자 & 채팅방 조회
+     * 송신자 & 채팅방 & 메시지 조회
      */
     public List<Message> findAllWithMemberChatRoom() {
         return messageRepository.findAllWithMemberChatRoom();
+    }
+
+    /**
+     * 채팅방 아이디로 메시지 조회
+     */
+    public List<Message> findMessagesByChatRoomId(Long chatRoomId){
+        return messageRepository.findMessagesByChatRoomId(chatRoomId);
+    }
+
+    /**
+     * 송신자 아이디로 메시지 조회
+     */
+    public List<Message> findMessagesBySenderId(Long senderId) {
+        return messageRepository.findMessagesBySenderId(senderId);
     }
 }

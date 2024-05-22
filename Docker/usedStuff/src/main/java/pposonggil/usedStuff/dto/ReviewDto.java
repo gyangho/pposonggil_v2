@@ -16,7 +16,7 @@ public class ReviewDto {
     private Long reviewId;
     private Long subjectId;
     private Long objectId;
-    private Long chatRoomId;
+    private Long tradeId;
     private String subjectNickName;
     private String objectNickName;
     private Long score;
@@ -28,7 +28,7 @@ public class ReviewDto {
                 .reviewId(review.getId())
                 .subjectId(review.getReviewSubject().getId())
                 .objectId(review.getReviewObject().getId())
-                .chatRoomId(review.getReviewChatRoom().getId())
+                .tradeId(review.getReviewTrade().getId())
                 .subjectNickName(review.getReviewSubject().getNickName())
                 .objectNickName(review.getReviewObject().getNickName())
                 .score(review.getScore())

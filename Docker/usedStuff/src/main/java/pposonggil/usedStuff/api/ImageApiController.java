@@ -36,7 +36,7 @@ public class ImageApiController {
      * @param imageId : 조회할 이미지 아이디
      * @return 조회한 이미지 Dto
      */
-    @GetMapping("api/image/{imageId}")
+    @GetMapping("api/image/by-image/{imageId}")
     public ImageDto getImageByImageId(@PathVariable Long imageId) {
         Image image = imageService.findOne(imageId);
         return ImageDto.fromEntity(image);
