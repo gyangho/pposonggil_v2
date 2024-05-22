@@ -40,25 +40,23 @@ public class ChatRoomApiController {
     }
 
     /**
-     * 회원 아이디로 채팅방 조회
-     * @param memberId : 회원 아이디
-     * @return 해당 회원이 참가중인 모든 채팅방 Dto 리스트
+     * 거래 아이디로 채팅방 조회
+     * @param tradeId : 회원 아이디
+     * @return 거래 아이디가 일치하는 채팅방 Dto
      */
-    @GetMapping("/api/chatrooms/{memberId}")
-    public List<ChatRoomDto> getChatRoomsByMemberId(@PathVariable Long memberId) {
-        List<ChatRoom> chatRooms = chatRoomService.findChatRoomsByMemberId(memberId);
-        return chatRooms.stream()
-                .map(ChatRoomDto::fromEntity)
-                .collect(Collectors.toList());
+    @GetMapping("/api/chatroom/{tradeId}")
+    public ChatRoomDto getChatRoomsByTradeId(@PathVariable Long tradeId) {
+        ChatRoom chatRoom = chatRoomService.findChatRoomByTradeId(tradeId);
+        return ChatRoomDto.fromEntity(chatRoom);
     }
 
     /**
-     * 채팅방 & 게시글 & 회원 조회
-     * @return 게시글, 회원 정보를 포함한 채팅방 Dto 리스트
+     * 거래 & 채팅방 조회
+     * @return 거래 정보를 포함한 채팅방 Dto 리스트
      */
-    @GetMapping("/api/chatrooms/with-board-member")
-    public List<ChatRoomDto> getChatRoomsWithBoardMember() {
-        List<ChatRoom> chatRooms = chatRoomService.findChatRoomsWithBoardMember();
+    @GetMapping("/api/chatrooms/with-trade")
+    public List<ChatRoomDto> getChatRoomsWithTrade() {
+            List<ChatRoom> chatRooms = chatRoomService.findChatRoomsWithTrade();
         return chatRooms.stream()
                 .map(ChatRoomDto::fromEntity)
                 .collect(Collectors.toList());

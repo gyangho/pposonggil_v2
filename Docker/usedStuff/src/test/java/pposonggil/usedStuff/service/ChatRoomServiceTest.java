@@ -7,13 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
-import pposonggil.usedStuff.domain.Board;
-import pposonggil.usedStuff.domain.ChatRoom;
-import pposonggil.usedStuff.domain.Member;
-import pposonggil.usedStuff.domain.TransactionAddress;
+import pposonggil.usedStuff.domain.*;
 import pposonggil.usedStuff.dto.BoardDto;
 import pposonggil.usedStuff.dto.ChatRoomDto;
 import pposonggil.usedStuff.dto.MemberDto;
+import pposonggil.usedStuff.dto.TradeDto;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -30,12 +28,15 @@ class ChatRoomServiceTest {
     @Autowired
     ChatRoomService chatRoomService;
     @Autowired
-    BoardService boardService;
+    TradeService tradeService;
     @Autowired
     MemberService memberService;
+    @Autowired
+    BoardService boardService;
 
     private Long memberId1, memberId2, memberId3;
     private Long boardId1, boardId2, boardId3;
+    private Long tradeId1, tradeId2, tradeId3;
     private Long chatRoomId1, chatRoomId2, chatRoomId3;
 
     @BeforeEach
@@ -53,13 +54,21 @@ class ChatRoomServiceTest {
         boardId3 = createBoard(memberId3, "title3", "우산 팔아요3", LocalDateTime.now(), LocalDateTime.now().plusHours(2),
                 new TransactionAddress("숭실대3", 37.0600, 126.9600, "주소3"), 3000L, false);
 
+        // 거래 1, 2, 3 생성
+        // 거래 1 : 거래1(회원1) - 회원3
+        // 거래 2 : 거래2(회원2) - 회원3
+        // 거래 3 : 거래3(회원3) - 회원1
+        tradeId1 = createTrade(boardId1, memberId1, memberId3);
+        tradeId2 = createTrade(boardId2, memberId2, memberId3);
+        tradeId3 = createTrade(boardId3, memberId3, memberId1);
+
         // 채팅방 1, 2, 3생성
-        // 채팅방 1 : 게시글1(회원1) - 회원3
-        // 채팅방 2 : 게시글2(회원2) - 회원3
-        // 채팅방 3 : 게시글3(회원3) - 회원1
-        chatRoomId1 = createChatRoom(boardId1, memberId3);
-        chatRoomId2 = createChatRoom(boardId2, memberId3);
-        chatRoomId3 = createChatRoom(boardId3, memberId1);
+        // 채팅방 1 : 거래1(회원1) - 회원3
+        // 채팅방 2 : 거래2(회원2) - 회원3
+        // 채팅방 3 : 거래3(회원3) - 회원1
+        chatRoomId1 = createChatRoom(tradeId1);
+        chatRoomId2 = createChatRoom(tradeId2);
+        chatRoomId3 = createChatRoom(tradeId3);
     }
 
     @Test
@@ -68,34 +77,49 @@ class ChatRoomServiceTest {
         Member member1 = memberService.findOne(memberId1);
         Member member3 = memberService.findOne(memberId3);
         Board board1 = boardService.findOne(boardId1);
+        Trade trade1 = tradeService.findOne(tradeId1);
 
         // then
         ChatRoom chatRoom1 = chatRoomService.findOne(chatRoomId1);
 
         Optional.of(chatRoom1)
-                .filter(chatRoom -> chatRoom.getChatBoard().getWriter().equals(member1) &&
-                        chatRoom.getChatMember().equals(member3) &&
-                        chatRoom.getChatBoard().equals(board1))
+                .filter(chatRoom -> chatRoom.getChatTrade().equals(trade1))
                 .ifPresent(chatRoom -> assertAll("채팅방 정보 검증",
-                        () -> assertEquals("name1", chatRoom.getChatBoard().getWriter().getName(), "게시글 작성자 이름 불일치"),
-                        () -> assertEquals("nickName1", chatRoom.getChatBoard().getWriter().getNickName(), "게시글 작성자 닉네임 불일치"),
-                        () -> assertEquals("01011111111", chatRoom.getChatBoard().getWriter().getPhone(), "게시글 작성자 전화번호 불일치"),
-                        () -> assertEquals("name3", chatRoom.getChatMember().getName(), "거래 요청자 이름 불일치"),
-                        () -> assertEquals("nickName3", chatRoom.getChatMember().getNickName(), "거래 요청자 닉네임 불일치"),
-                        () -> assertEquals("01033333333", chatRoom.getChatMember().getPhone(), "거래 요청자 전화번호 불일치"),
-                        () -> assertEquals("title1", chatRoom.getChatBoard().getTitle(), "게시글 제목 불일치"),
-                        () -> assertEquals("우산 팔아요1", chatRoom.getChatBoard().getContent(), "게시글 내용 불일치"),
-                        () -> assertEquals("숭실대1", chatRoom.getChatBoard().getAddress().getName(), "게시글 주소 장소 이름 불일치"),
-                        () -> assertEquals(37.4958, chatRoom.getChatBoard().getAddress().getLatitude(), "게시글 주소 장소 위도 불일치"),
-                        () -> assertEquals(126.9583, chatRoom.getChatBoard().getAddress().getLongitude(), "게시글 주소 장소 경도 불일치"),
-                        () -> assertEquals("주소1", chatRoom.getChatBoard().getAddress().getStreet(), "게시글 주소 장소 도로명 주소 불일치"),
-                        () -> assertEquals(1000L, chatRoom.getChatBoard().getPrice(), "게시글 가격 불일치"),
-                        () -> assertFalse(chatRoom.getChatBoard().isFreebie(), "게시글 나눔여부 불일치")
+                        () -> assertEquals(board1, chatRoom.getChatTrade().getTradeBoard(), "거래 게시글 불일치"),
+                        () -> assertEquals(member1, chatRoom.getChatTrade().getTradeSubject(), "거래 주체 회원 불일치"),
+                        () -> assertEquals(member3, chatRoom.getChatTrade().getTradeObject(), "거래 요청 회원 불일치"),
+                        () -> assertEquals("숭실대1", chatRoom.getChatTrade().getAddress().getName(), "거래 주소 장소 이름 불일치"),
+                        () -> assertEquals(37.4958, chatRoom.getChatTrade().getAddress().getLatitude(), "거래 주소 장소 위도 불일치"),
+                        () -> assertEquals(126.9583, chatRoom.getChatTrade().getAddress().getLongitude(), "거래 주소 장소 경도 불일치"),
+                        () -> assertEquals("주소1", chatRoom.getChatTrade().getAddress().getStreet(), "거래 주소 장소 도로명 주소 불일치")
                 ));
     }
 
     @Test
-    public void 게시글정보와_회원정보를_포함한_채팅방_조회() throws Exception {
+    public void 거래아이디로_채팅방_조회() throws Exception {
+        // when
+        Member member1 = memberService.findOne(memberId1);
+        Member member3 = memberService.findOne(memberId3);
+        Board board1 = boardService.findOne(boardId1);
+        Trade trade1 = tradeService.findOne(tradeId1);
+
+        // then
+        ChatRoom chatRoom1 = chatRoomService.findChatRoomByTradeId(tradeId1);
+        Optional.of(chatRoom1)
+                .filter(chatRoom -> chatRoom.getChatTrade().equals(trade1))
+                .ifPresent(chatRoom -> assertAll("채팅방 정보 검증",
+                        () -> assertEquals(board1, chatRoom.getChatTrade().getTradeBoard(), "거래 게시글 불일치"),
+                        () -> assertEquals(member1, chatRoom.getChatTrade().getTradeSubject(), "거래 주체 회원 불일치"),
+                        () -> assertEquals(member3, chatRoom.getChatTrade().getTradeObject(), "거래 요청 회원 불일치"),
+                        () -> assertEquals("숭실대1", chatRoom.getChatTrade().getAddress().getName(), "거래 주소 장소 이름 불일치"),
+                        () -> assertEquals(37.4958, chatRoom.getChatTrade().getAddress().getLatitude(), "거래 주소 장소 위도 불일치"),
+                        () -> assertEquals(126.9583, chatRoom.getChatTrade().getAddress().getLongitude(), "거래 주소 장소 경도 불일치"),
+                        () -> assertEquals("주소1", chatRoom.getChatTrade().getAddress().getStreet(), "거래 주소 장소 도로명 주소 불일치")
+                ));
+    }
+
+    @Test
+    public void 거래정보와_회원정보를_포함한_채팅방_조회() throws Exception {
         // when
         Member member1 = memberService.findOne(memberId1);
         Member member2 = memberService.findOne(memberId2);
@@ -103,85 +127,66 @@ class ChatRoomServiceTest {
         Board board1 = boardService.findOne(boardId1);
         Board board2 = boardService.findOne(boardId2);
         Board board3 = boardService.findOne(boardId3);
+        Trade trade1 = tradeService.findOne(tradeId1);
+        Trade trade2 = tradeService.findOne(tradeId2);
+        Trade trade3 = tradeService.findOne(tradeId3);
+
 
         // then
-        List<ChatRoom> chatRooms = chatRoomService.findChatRoomsWithBoardMember();
+        List<ChatRoom> chatRooms = chatRoomService.findChatRoomsWithTrade();
         assertEquals(3, chatRooms.size());
 
         // 첫 번째 채팅방 검증
         chatRooms.stream()
-                .filter(chatRoom -> chatRoom.getChatBoard().getWriter().equals(member1) &&
-                        chatRoom.getChatMember().equals(member3) &&
-                        chatRoom.getChatBoard().equals(board1))
+                .filter(chatRoom -> chatRoom.getChatTrade().equals(trade1))
                 .findFirst()
-                .ifPresent(chatRoom -> {
-                    assertAll("게시글 정보, 회원 정보를 포함한 채팅방 조회 검증(채팅방1)",
-                            () -> assertEquals("name1", chatRoom.getChatBoard().getWriter().getName(), "게시글 작성자 이름 불일치"),
-                            () -> assertEquals("nickName1", chatRoom.getChatBoard().getWriter().getNickName(), "게시글 작성자 닉네임 불일치"),
-                            () -> assertEquals("01011111111", chatRoom.getChatBoard().getWriter().getPhone(), "게시글 작성자 전화번호 불일치"),
-                            () -> assertEquals("name3", chatRoom.getChatMember().getName(), "거래 요청자 이름 불일치"),
-                            () -> assertEquals("nickName3", chatRoom.getChatMember().getNickName(), "거래 요청자 닉네임 불일치"),
-                            () -> assertEquals("01033333333", chatRoom.getChatMember().getPhone(), "거래 요청자 전화번호 불일치"),
-                            () -> assertEquals("title1", chatRoom.getChatBoard().getTitle(), "게시글 제목 불일치"),
-                            () -> assertEquals("우산 팔아요1", chatRoom.getChatBoard().getContent(), "게시글 내용 불일치"),
-                            () -> assertEquals("숭실대1", chatRoom.getChatBoard().getAddress().getName(), "게시글 주소 장소 이름 불일치"),
-                            () -> assertEquals(37.4958, chatRoom.getChatBoard().getAddress().getLatitude(), "게시글 주소 장소 위도 불일치"),
-                            () -> assertEquals(126.9583, chatRoom.getChatBoard().getAddress().getLongitude(), "게시글 주소 장소 경도 불일치"),
-                            () -> assertEquals("주소1", chatRoom.getChatBoard().getAddress().getStreet(), "게시글 주소 장소 도로명 주소 불일치"),
-                            () -> assertEquals(1000L, chatRoom.getChatBoard().getPrice(), "게시글 가격 불일치"),
-                            () -> assertFalse(chatRoom.getChatBoard().isFreebie(), "게시글 나눔여부 불일치")
-                    );
-                });
+                .ifPresent(chatRoom -> assertAll("거래 정보를 포함한 채팅방 조회 검증(채팅방1)",
+                        () -> assertEquals(board1, chatRoom.getChatTrade().getTradeBoard(), "거래 게시글 불일치"),
+                        () -> assertEquals(member1, chatRoom.getChatTrade().getTradeSubject(), "거래 주체 회원 불일치"),
+                        () -> assertEquals(member3, chatRoom.getChatTrade().getTradeObject(), "거래 요청 회원 불일치"),
+                        () -> assertEquals("숭실대1", chatRoom.getChatTrade().getAddress().getName(), "거래 주소 장소 이름 불일치"),
+                        () -> assertEquals(37.4958, chatRoom.getChatTrade().getAddress().getLatitude(), "거래 주소 장소 위도 불일치"),
+                        () -> assertEquals(126.9583, chatRoom.getChatTrade().getAddress().getLongitude(), "거래 주소 장소 경도 불일치"),
+                        () -> assertEquals("주소1", chatRoom.getChatTrade().getAddress().getStreet(), "거래 주소 장소 도로명 주소 불일치")
+                ));
+
 
         // 두 번째 채팅방 검증
         chatRooms.stream()
-                .filter(chatRoom -> chatRoom.getChatBoard().getWriter().equals(member2) &&
-                        chatRoom.getChatMember().equals(member3) &&
-                        chatRoom.getChatBoard().equals(board2))
+                .filter(chatRoom -> chatRoom.getChatTrade().equals(trade2))
                 .findFirst()
-                .ifPresent(chatRoom -> {
-                    assertAll("게시글 정보, 회원 정보를 포함한 채팅방 조회 검증(채팅방2)",
-                            () -> assertEquals("name2", chatRoom.getChatBoard().getWriter().getName(), "게시글 작성자 이름 불일치"),
-                            () -> assertEquals("nickName2", chatRoom.getChatBoard().getWriter().getNickName(), "게시글 작성자 닉네임 불일치"),
-                            () -> assertEquals("01022222222", chatRoom.getChatBoard().getWriter().getPhone(), "게시글 작성자 전화번호 불일치"),
-                            () -> assertEquals("name3", chatRoom.getChatMember().getName(), "거래 요청자 이름 불일치"),
-                            () -> assertEquals("nickName3", chatRoom.getChatMember().getNickName(), "거래 요청자 닉네임 불일치"),
-                            () -> assertEquals("01033333333", chatRoom.getChatMember().getPhone(), "거래 요청자 전화번호 불일치"),
-                            () -> assertEquals("title2", chatRoom.getChatBoard().getTitle(), "게시글 제목 불일치"),
-                            () -> assertEquals("우산 팔아요2", chatRoom.getChatBoard().getContent(), "게시글 내용 불일치"),
-                            () -> assertEquals("숭실대2", chatRoom.getChatBoard().getAddress().getName(), "게시글 주소 장소 이름 불일치"),
-                            () -> assertEquals(37.5000, chatRoom.getChatBoard().getAddress().getLatitude(), "게시글 주소 장소 위도 불일치"),
-                            () -> assertEquals(126.9500, chatRoom.getChatBoard().getAddress().getLongitude(), "게시글 주소 장소 경도 불일치"),
-                            () -> assertEquals("주소2", chatRoom.getChatBoard().getAddress().getStreet(), "게시글 주소 장소 도로명 주소 불일치"),
-                            () -> assertEquals(2000L, chatRoom.getChatBoard().getPrice(), "게시글 가격 불일치"),
-                            () -> assertFalse(chatRoom.getChatBoard().isFreebie(), "게시글 나눔여부 불일치")
-                    );
-                });
+                .ifPresent(chatRoom -> assertAll("거래 정보를 포함한 채팅방 조회 검증(채팅방2)",
+                        () -> assertEquals(board2, chatRoom.getChatTrade().getTradeBoard(), "거래 게시글 불일치"),
+                        () -> assertEquals(member2, chatRoom.getChatTrade().getTradeSubject(), "거래 주체 회원 불일치"),
+                        () -> assertEquals(member3, chatRoom.getChatTrade().getTradeObject(), "거래 요청 회원 불일치"),
+                        () -> assertEquals("숭실대2", chatRoom.getChatTrade().getAddress().getName(), "거래 주소 장소 이름 불일치"),
+                        () -> assertEquals(37.5000, chatRoom.getChatTrade().getAddress().getLatitude(), "거래 주소 장소 위도 불일치"),
+                        () -> assertEquals(126.9500, chatRoom.getChatTrade().getAddress().getLongitude(), "거래 주소 장소 경도 불일치"),
+                        () -> assertEquals("주소2", chatRoom.getChatTrade().getAddress().getStreet(), "거래 주소 장소 도로명 주소 불일치")
+                ));
 
         // 세 번째 채팅방 검증
         chatRooms.stream()
-                .filter(chatRoom -> chatRoom.getChatBoard().getWriter().equals(member3) &&
-                        chatRoom.getChatMember().equals(member1) &&
-                        chatRoom.getChatBoard().equals(board3))
+                .filter(chatRoom -> chatRoom.getChatTrade().equals(trade3))
                 .findFirst()
-                .ifPresent(chatRoom -> {
-                    assertAll("게시글 정보, 회원 정보를 포함한 채팅방 조회 검증(채팅방3)",
-                            () -> assertEquals("name3", chatRoom.getChatBoard().getWriter().getName(), "게시글 작성자 이름 불일치"),
-                            () -> assertEquals("nickName3", chatRoom.getChatBoard().getWriter().getNickName(), "게시글 작성자 닉네임 불일치"),
-                            () -> assertEquals("01033333333", chatRoom.getChatBoard().getWriter().getPhone(), "게시글 작성자 전화번호 불일치"),
-                            () -> assertEquals("name1", chatRoom.getChatMember().getName(), "거래 요청자 이름 불일치"),
-                            () -> assertEquals("nickName1", chatRoom.getChatMember().getNickName(), "거래 요청자 닉네임 불일치"),
-                            () -> assertEquals("01011111111", chatRoom.getChatMember().getPhone(), "거래 요청자 전화번호 불일치"),
-                            () -> assertEquals("title3", chatRoom.getChatBoard().getTitle(), "게시글 제목 불일치"),
-                            () -> assertEquals("우산 팔아요3", chatRoom.getChatBoard().getContent(), "게시글 내용 불일치"),
-                            () -> assertEquals("숭실대3", chatRoom.getChatBoard().getAddress().getName(), "게시글 주소 장소 이름 불일치"),
-                            () -> assertEquals(37.0600, chatRoom.getChatBoard().getAddress().getLatitude(), "게시글 주소 장소 위도 불일치"),
-                            () -> assertEquals(126.9600, chatRoom.getChatBoard().getAddress().getLongitude(), "게시글 주소 장소 경도 불일치"),
-                            () -> assertEquals("주소3", chatRoom.getChatBoard().getAddress().getStreet(), "게시글 주소 장소 도로명 주소 불일치"),
-                            () -> assertEquals(3000L, chatRoom.getChatBoard().getPrice(), "게시글 가격 불일치"),
-                            () -> assertFalse(chatRoom.getChatBoard().isFreebie(), "게시글 나눔여부 불일치")
-                    );
-                });
+                .ifPresent(chatRoom -> assertAll("거래 정보를 포함한 채팅방 조회 검증(채팅방3)",
+                        () -> assertEquals(board3, chatRoom.getChatTrade().getTradeBoard(), "거래 게시글 불일치"),
+                        () -> assertEquals(member3, chatRoom.getChatTrade().getTradeSubject(), "거래 주체 회원 불일치"),
+                        () -> assertEquals(member1, chatRoom.getChatTrade().getTradeObject(), "거래 요청 회원 불일치"),
+                        () -> assertEquals("숭실대3", chatRoom.getChatTrade().getAddress().getName(), "거래 주소 장소 이름 불일치"),
+                        () -> assertEquals(37.0600, chatRoom.getChatTrade().getAddress().getLatitude(), "거래 주소 장소 위도 불일치"),
+                        () -> assertEquals(126.9600, chatRoom.getChatTrade().getAddress().getLongitude(), "거래 주소 장소 경도 불일치"),
+                        () -> assertEquals("주소3", chatRoom.getChatTrade().getAddress().getStreet(), "거래 주소 장소 도로명 주소 불일치")
+                ));
+    }
+
+    @Test
+    public void 하나의_거래에는_하나의_채팅방만_생성가능하다() throws Exception {
+        // then
+        // 거래1(회원 1 - 회원 3)의 채팅방을 이미 생성했으나 하나 더 생성하려는 상황
+        assertThrows(IllegalArgumentException.class, () ->{
+            createChatRoom(tradeId1);
+        });
     }
 
     @Test
@@ -193,7 +198,6 @@ class ChatRoomServiceTest {
         List<ChatRoom> chatRooms = chatRoomService.findChatRooms();
         assertEquals(2, chatRooms.size());
         assertThrows(NoSuchElementException.class, () -> chatRoomService.findOne(chatRoomId1));
-
     }
 
     public Long createMember(String name, String nickName, String phone) {
@@ -226,21 +230,19 @@ class ChatRoomServiceTest {
         return boardService.createBoard(boardDto);
     }
 
-    public Long createChatRoom(Long boardId, Long memberId) {
-        Member member = memberService.findOne(memberId);
-        Board board = boardService.findOne(boardId);
-
-        ChatRoomDto chatRoomDto = ChatRoomDto.builder()
-                .chatBoardId(boardId)
-                .writerId(board.getWriter().getId())
-                .writerNickName(board.getWriter().getNickName())
-                .chatMemberId(memberId)
-                .chatMemberNickName(member.getNickName())
-                .startTimeString(board.getStartTimeString())
-                .endTimeString(board.getEndTimeString())
-                .address(board.getAddress())
+    public Long createTrade(Long boardId, Long subjectId, Long objectId) {
+        TradeDto tradeDto = TradeDto.builder()
+                .tradeBoardId(boardId)
+                .tradeSubjectId(subjectId)
+                .tradeObjectId(objectId)
                 .build();
+        return tradeService.createTrade(tradeDto);
+    }
 
+    public Long createChatRoom(Long tradeId) {
+        ChatRoomDto chatRoomDto = ChatRoomDto.builder()
+                .chatTradeId(tradeId)
+                .build();
         return chatRoomService.createChatRoom(chatRoomDto);
     }
 }

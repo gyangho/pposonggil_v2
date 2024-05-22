@@ -69,7 +69,7 @@ public class BlockService {
             throw new IllegalArgumentException("자기 자신을 차단할 수는 없습니다.");
         }
 
-        blockRepository.findByBlockSubjectAndBlockObject(blockSubject, blockObject)
+        blockRepository.findByBlockSubjectAndBlockObject(blockDto.getSubjectId(), blockDto.getObjectId())
                 .ifPresent(block -> {
                     throw new IllegalArgumentException("이미 차단한 사용자 입니다.");
                 });

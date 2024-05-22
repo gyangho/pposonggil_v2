@@ -42,8 +42,12 @@ public class Member extends BaseEntity {
     private List<Board> boards = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "chatMember")
-    private List<ChatRoom> chatRooms = new ArrayList<>();
+    @OneToMany(mappedBy = "tradeSubject")
+    private List<Trade> tradeSubjects = new ArrayList<>();
+
+    @Builder.Default
+    @OneToMany(mappedBy = "tradeObject")
+    private List<Trade> tradeObjects = new ArrayList<>();
 
     @Builder.Default
     @OneToMany(mappedBy = "sender")

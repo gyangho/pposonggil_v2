@@ -68,13 +68,13 @@ public class ReviewApiController {
     }
 
     /**
-     * 채팅방 아이디로 리뷰 조회
-     * @param chatRoomId 조회할 채팅방 아이디
-     * @return 채팅방 아이디가 일치하는 리뷰 리스트 (2개)
+     * 회원 아이디와 연관된 모든 리뷰 조회
+     * @param memberId 조회할 회원 아이디
+     * @return 회원 아이디가 일치하는 리뷰 리스트
      */
-    @GetMapping("/api/reviews/by-chatRoomId/{chatRoomId}")
-    public List<ReviewDto> getReviewByChatRoomId(@PathVariable Long chatRoomId) {
-        List<Review> reviews = reviewService.findReviewsByChatRoomId(chatRoomId);
+    @GetMapping("/api/reviews/by-member/{memberId}")
+    public List<ReviewDto> getReviewByMemberId(@PathVariable Long memberId) {
+        List<Review> reviews = reviewService.findReviewsByMemberId(memberId);
 
         return reviews.stream()
                 .map(ReviewDto::fromEntity)
@@ -82,8 +82,22 @@ public class ReviewApiController {
     }
 
     /**
-     * 리뷰 & 회원 & 채팅방 조회
-     * @return 회원, 채팅방 정보를 포함한 리뷰 Dto 리스트
+     * 거래 아이디로 리뷰 조회
+     * @param tradeId 조회할 거래 아이디
+     * @return 거래 아이디가 일치하는 리뷰 리스트 (2개)
+     */
+    @GetMapping("/api/reviews/by-trade/{tradeId}")
+    public List<ReviewDto> getReviewByChatRoomId(@PathVariable Long tradeId) {
+        List<Review> reviews = reviewService.findReviewsByTradeId(tradeId);
+
+        return reviews.stream()
+                .map(ReviewDto::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * 회원 & 거래 & 리뷰 조회
+     * @return 회원, 거래 정보를 포함한 리뷰 Dto 리스트
      */
     @GetMapping("/api/reviews/with-member-chatroom")
     public List<ReviewDto> getReviewsWithMemberChatRoom() {

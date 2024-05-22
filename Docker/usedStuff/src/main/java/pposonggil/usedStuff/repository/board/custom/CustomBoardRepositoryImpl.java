@@ -27,5 +27,16 @@ public class CustomBoardRepositoryImpl implements CustomBoardRepository {
                 .limit(1000)
                 .fetch();
     }
+
+    @Override
+    public List<Board> findBoardsByMember(Long writeId) {
+        return query
+                .select(board)
+                .from(board)
+                .join(board.writer, member).fetchJoin()
+                .where(board.writer.id.eq(writeId))
+                .limit(1000)
+                .fetch();
+    }
 }
 
