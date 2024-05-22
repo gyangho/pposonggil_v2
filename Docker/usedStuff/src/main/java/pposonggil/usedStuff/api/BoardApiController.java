@@ -44,7 +44,7 @@ public class BoardApiController {
      * @param memberId : 조회할 회원 아이디
      * @return 회원 아이디로 조회한 게시글 Dto 리스트
      */
-    @GetMapping("/api/boards/{memberId}")
+    @GetMapping("/api/boards/by-member/{memberId}")
     public List<BoardDto> getBoardsByMemberId(@PathVariable Long memberId) {
         List<Board> boards = boardService.findBoardsByWriterId(memberId);
         return boards.stream()
@@ -66,7 +66,7 @@ public class BoardApiController {
 
     /**
      * 게시글 작성
-     * @param boardDto
+     * @param boardDto : 작성할 내용이 담긴 게시글 Dto
      * @return 성공 --> "Created board with ID: " + boardId
      */
     @PostMapping("/api/board")

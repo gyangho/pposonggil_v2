@@ -111,7 +111,7 @@ class BoardServiceTest {
         assertEquals(2, boards.size());
 
         boards.stream()
-                .filter(board -> board.getId().equals(boardId1))
+                .filter(board -> board.getWriter().equals(member1))
                 .findFirst()
                 .ifPresent(board -> {
                     assertAll("작성자 정보를 포함한 게시글 조회 검증(게시글1)",
