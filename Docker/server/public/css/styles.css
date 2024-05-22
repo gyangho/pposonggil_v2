@@ -21,6 +21,11 @@
 @import "screens/home.css";
 @import "screens/welcome.css";
 @import "screens/newhome.css";
+
+/* screens 내부의 secondhand */
+@import "screens/secondhand/list.css";
+@import "screens/secondhand/write.css";
+@import "screens/secondhand/show.css";
 /*@import "screens/pposong.css";*/
 
 body {
