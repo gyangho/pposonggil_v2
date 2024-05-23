@@ -12,6 +12,7 @@ import pposonggil.usedStuff.repository.trade.TradeRepository;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -23,31 +24,41 @@ public class ChatRoomService {
     /**
      * 전체 채팅방 조회
      */
-    public List<ChatRoom> findChatRooms() {
-        return chatRoomRepository.findAll();
+    public List<ChatRoomDto> findChatRooms() {
+        List<ChatRoom> chatRooms = chatRoomRepository.findAll();
+        return chatRooms.stream()
+                .map(ChatRoomDto::fromEntity)
+                .collect(Collectors.toList());
     }
 
     /**
      * 채팅방 상세 조회
      */
-    public ChatRoom findOne(Long chatRoomId) {
-        return chatRoomRepository.findById(chatRoomId)
+    public ChatRoomDto findOne(Long chatRoomId) {
+        ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId)
                 .orElseThrow(NoSuchElementException::new);
+        return ChatRoomDto.fromEntity(chatRoom);
     }
 
     /**
      * 거래 아이디로 채팅방 조회
      */
-    public ChatRoom findChatRoomByTradeId(Long tradeId) {
-        return chatRoomRepository.findChatRoomByTradeId(tradeId)
+    public ChatRoomDto findChatRoomByTradeId(Long tradeId) {
+        ChatRoom chatRoom = chatRoomRepository.findChatRoomByTradeId(tradeId)
                 .orElseThrow(() -> new NoSuchElementException("ChatRoom not found with tradeId: " + tradeId));
+
+        return ChatRoomDto.fromEntity(chatRoom);
     }
 
     /**
-     * 거래 & 채팅방조회
+     * 거래 & 메시지 & 채팅방조회
      */
-    public List<ChatRoom> findChatRoomsWithTrade() {
-        return chatRoomRepository.findChatRoomsWithTrade();
+    public List<ChatRoomDto> findChatRoomsWithTrade() {
+        List<ChatRoom> chatRooms = chatRoomRepository.findChatRoomsWithTrade();
+
+        return chatRooms.stream()
+                .map(ChatRoomDto::fromEntity)
+                .collect(Collectors.toList());
     }
 
     /**

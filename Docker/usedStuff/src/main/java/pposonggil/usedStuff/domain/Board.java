@@ -79,7 +79,7 @@ public class Board extends BaseEntity{
     }
 
     public static BoardBuilder builder(Member member, String title, String startTimeString, String endTimeString,
-                                       TransactionAddress address, Long price) {
+                                       TransactionAddress address, Long price, boolean isFreebie) {
         if (member == null || title == null || startTimeString == null || endTimeString == null
                 || address == null || price == null)
             throw new IllegalArgumentException("필수 파라미터 누락");
@@ -89,12 +89,12 @@ public class Board extends BaseEntity{
                 .startTimeString(startTimeString)
                 .endTimeString(endTimeString)
                 .address(address)
-                .price(price);
+                .price(price)
+                .isFreebie(isFreebie);
     }
     public static Board buildBoard(Member writer, String title, String content, String startTimeString, String endTimeString, TransactionAddress address, Long price, boolean isFreebie) {
-        return Board.builder(writer, title, startTimeString, endTimeString, address, price)
+        return Board.builder(writer, title, startTimeString, endTimeString, address, price, isFreebie)
                 .content(content)
-                .isFreebie(isFreebie)
                 .build();
     }
 }

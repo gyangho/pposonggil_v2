@@ -6,11 +6,13 @@ import org.springframework.transaction.annotation.Transactional;
 import pposonggil.usedStuff.domain.Board;
 import pposonggil.usedStuff.domain.Member;
 import pposonggil.usedStuff.dto.BoardDto;
+import pposonggil.usedStuff.dto.BoardImagesDto;
 import pposonggil.usedStuff.repository.board.BoardRepository;
 import pposonggil.usedStuff.repository.member.MemberRepository;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -22,29 +24,41 @@ public class BoardService {
     /**
      * 전체 게시글 조회
      */
-    public List<Board> findBoards() {
-        return boardRepository.findAll();
+    public List<BoardDto> findBoards() {
+        List<Board> boards = boardRepository.findAll();
+        return boards.stream()
+                .map(BoardDto::fromEntity)
+                .collect(Collectors.toList());
     }
 
     /**
      * 게시글 상세 조회
      */
-    public Board findOne(Long boardId) {
-        return boardRepository.findById(boardId).orElseThrow(NoSuchElementException::new);
+    public BoardImagesDto findOne(Long boardId) {
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(NoSuchElementException::new);
+        return BoardImagesDto.fromEntity(board);
     }
 
     /**
      * 작성자 아이디로 게시글 조회
      */
-    public List<Board> findBoardsByWriterId(Long writerId) {
-        return boardRepository.findBoardsByMember(writerId);
+    public List<BoardImagesDto> findImageBoardsWithMemberImagesByWriterId(Long writerId) {
+        List<Board> boards = boardRepository.findBoardsWithMemberImagesByMember(writerId);
+
+        return boards.stream()
+                .map(BoardImagesDto::fromEntity)
+                .collect(Collectors.toList());
     }
 
     /**
      * 작성자 & 이미지 & 게시글 조회
      */
-    public List<Board> findAllWithMemberImage() {
-        return boardRepository.findAllWithMemberImage();
+    public List<BoardImagesDto> findAllWithMember() {
+        List<Board> boards = boardRepository.findAllWithMemberImages();
+        return boards.stream()
+                .map(BoardImagesDto::fromEntity)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -71,7 +85,7 @@ public class BoardService {
     public void updateBoard(BoardDto boardDto) {
         Board board = boardRepository.findById(boardDto.getBoardId())
                 .orElseThrow(NoSuchElementException::new);
-
+System.out.println("????" + board.isFreebie());
         if (!board.getTitle().equals(boardDto.getTitle()))
             board.changeTitle(boardDto.getTitle());
         if (!board.getContent().equals(boardDto.getContent()))
@@ -86,6 +100,8 @@ public class BoardService {
             board.changePrice(boardDto.getPrice());
         if (board.isFreebie() != boardDto.isFreebie())
             board.changeIsFreebie(boardDto.isFreebie());
+        System.out.println("????" + board.isFreebie());
+        System.out.println("????" + boardDto.isFreebie());
 
         boardRepository.save(board);
     }
@@ -99,5 +115,4 @@ public class BoardService {
                 .orElseThrow(NoSuchElementException::new);
         boardRepository.delete(board);
     }
-
 }

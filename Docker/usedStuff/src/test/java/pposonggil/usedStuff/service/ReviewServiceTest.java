@@ -68,76 +68,50 @@ class ReviewServiceTest {
     @Test
     public void 리뷰_생성() throws Exception {
         // when
-        Member member1 = memberService.findOne(memberId1);
-        Member member3 = memberService.findOne(memberId3);
-        Trade trade1 = tradeService.findOne(tradeId1);
+        ReviewDto reviewDto1 = reviewService.findOne(reviewId1);
 
         // then
-        Review review1 = reviewService.findOne(reviewId1);
-
-        Optional.of(review1)
-                .filter(review -> review.getReviewSubject().equals(member1) && review.getReviewObject().equals(member3) &&
-                        review.getReviewTrade().equals(trade1))
-                .ifPresent(review -> assertAll("리뷰 생성 검증",
-                        () -> assertEquals("name1", review.getReviewSubject().getName(), "리뷰 남긴 회원의 이름 불일치"),
-                        () -> assertEquals("nickName1", review.getReviewSubject().getNickName(), "리뷰 남긴 회원의 불일치"),
-                        () -> assertEquals("01011111111", review.getReviewSubject().getPhone(), "리뷰 남긴 회원의 불일치"),
-                        () -> assertEquals("name3", review.getReviewObject().getName(), "리뷰 당한 회원의 이름 불일치"),
-                        () -> assertEquals("nickName3", review.getReviewObject().getNickName(), "리뷰 당한 회원의 불일치"),
-                        () -> assertEquals("01033333333", review.getReviewObject().getPhone(), "리뷰 당한 회원의 불일치"),
-                        () -> assertEquals("숭실대1", review.getReviewTrade().getAddress().getName(), "거래 장소 이름 불일치"),
-                        () -> assertEquals(37.4958, review.getReviewTrade().getAddress().getLatitude(), "거래 장소 위도 불일치"),
-                        () -> assertEquals(126.9583, review.getReviewTrade().getAddress().getLongitude(), "거래  장소 경도 불일치"),
-                        () -> assertEquals("주소1", review.getReviewTrade().getAddress().getStreet(), "거래 장소 도로명 주소 불일치"),
-                        () -> assertEquals(5L, review.getScore(), "리뷰 점수 불일치")
+        Optional.of(reviewDto1)
+                .filter(reviewDto -> reviewDto.getSubjectId().equals(memberId1) && reviewDto.getObjectId().equals(memberId3) &&
+                        reviewDto.getTradeId().equals(tradeId1))
+                .ifPresent(reviewDto -> assertAll("리뷰 생성 검증",
+                        () -> assertEquals("nickName1", reviewDto.getSubjectNickName(), "리뷰 남긴 회원의 닉네임 불일치"),
+                        () -> assertEquals("nickName3", reviewDto.getObjectNickName(), "리뷰 당한 회원의 불일치"),
+                        () -> assertEquals(5L, reviewDto.getScore(), "리뷰 점수 불일치")
                 ));
     }
 
     @Test
     public void 리뷰남긴_사람의_아이디로_모든리뷰_조회() throws Exception {
         // when
-        Member member1 = memberService.findOne(memberId1);
-        Member member2 = memberService.findOne(memberId2);
-        Member member3 = memberService.findOne(memberId3);
-
-        Trade trade1 = tradeService.findOne(tradeId1);
-        Trade trade2 = tradeService.findOne(tradeId2);
+        List<ReviewDto> reviewDtos = reviewService.findReviewsBySubjectId(memberId3);
 
         // then
-        List<Review> reviews = reviewService.findReviewsBySubjectId(memberId3);
-        assertEquals(2, reviews.size());
+        assertEquals(2, reviewDtos.size());
 
         // 리뷰 2 검증
-        reviews.stream()
-                .filter(review -> review.getReviewSubject().equals(member3) && review.getReviewObject().equals(member1) &&
-                        review.getReviewTrade().equals(trade1))
+        reviewDtos.stream()
+                .filter(reviewDto -> reviewDto.getSubjectId().equals(memberId3) && reviewDto.getObjectId().equals(memberId1) &&
+                        reviewDto.getTradeId().equals(tradeId1))
                 .findFirst()
-                .ifPresent(review -> {
+                .ifPresent(reviewDto -> {
                     assertAll("리뷰 남긴 회원의 아이디로 리뷰 조회 검증(거래1)",
-                            () -> assertEquals("name3", review.getReviewSubject().getName(), "리뷰 남긴 회원의 이름 불일치"),
-                            () -> assertEquals("nickName3", review.getReviewSubject().getNickName(), "리뷰 남긴 회원의 불일치"),
-                            () -> assertEquals("01033333333", review.getReviewSubject().getPhone(), "리뷰 남긴 회원의 불일치"),
-                            () -> assertEquals("name1", review.getReviewObject().getName(), "리뷰 당한 회원의 이름 불일치"),
-                            () -> assertEquals("nickName1", review.getReviewObject().getNickName(), "리뷰 당한 회원의 불일치"),
-                            () -> assertEquals("01011111111", review.getReviewObject().getPhone(), "리뷰 당한 회원의 불일치"),
-                            () -> assertEquals(4L, review.getScore(), "리뷰 점수 불일치")
+                            () -> assertEquals("nickName3", reviewDto.getSubjectNickName(), "리뷰 남긴 회원의 불일치"),
+                            () -> assertEquals("nickName1", reviewDto.getObjectNickName(), "리뷰 당한 회원의 불일치"),
+                            () -> assertEquals(4L, reviewDto.getScore(), "리뷰 점수 불일치")
                     );
                 });
 
         // 리뷰 4 검증
-        reviews.stream()
-                .filter(review -> review.getReviewSubject().equals(member3) && review.getReviewObject().equals(member2) &&
-                        review.getReviewTrade().equals(trade2))
+        reviewDtos.stream()
+                .filter(reviewDto -> reviewDto.getSubjectId().equals(memberId3) && reviewDto.getObjectId().equals(memberId2) &&
+                        reviewDto.getTradeId().equals(tradeId2))
                 .findFirst()
-                .ifPresent(review -> {
+                .ifPresent(reviewDto -> {
                     assertAll("리뷰 남긴 회원의 아이디로 리뷰 조회 검증(거래2)",
-                            () -> assertEquals("name3", review.getReviewSubject().getName(), "리뷰 남긴 회원의 이름 불일치"),
-                            () -> assertEquals("nickName3", review.getReviewSubject().getNickName(), "리뷰 남긴 회원의 불일치"),
-                            () -> assertEquals("01033333333", review.getReviewSubject().getPhone(), "리뷰 남긴 회원의 불일치"),
-                            () -> assertEquals("name2", review.getReviewObject().getName(), "리뷰 당한 회원의 이름 불일치"),
-                            () -> assertEquals("nickName2", review.getReviewObject().getNickName(), "리뷰 당한 회원의 불일치"),
-                            () -> assertEquals("01022222222", review.getReviewObject().getPhone(), "리뷰 당한 회원의 불일치"),
-                            () -> assertEquals(0L, review.getScore(), "리뷰 점수 불일치")
+                            () -> assertEquals("nickName3", reviewDto.getSubjectNickName(), "리뷰 남긴 회원의 불일치"),
+                            () -> assertEquals("nickName2", reviewDto.getObjectNickName(), "리뷰 당한 회원의 불일치"),
+                            () -> assertEquals(0L, reviewDto.getScore(), "리뷰 점수 불일치")
                     );
                 });
     }
@@ -145,48 +119,34 @@ class ReviewServiceTest {
     @Test
     public void 리뷰당한_사람의_아이디로_모든리뷰_조회() throws Exception {
         // when
-        Member member1 = memberService.findOne(memberId1);
-        Member member2 = memberService.findOne(memberId2);
-        Member member3 = memberService.findOne(memberId3);
-
-        Trade trade1 = tradeService.findOne(tradeId1);
-        Trade trade2 = tradeService.findOne(tradeId2);
+        List<ReviewDto> reviewDtos = reviewService.findReviewsByObjectId(memberId3);
 
         // then
-        List<Review> reviews = reviewService.findReviewsByObjectId(memberId3);
-        assertEquals(2, reviews.size());
+        assertEquals(2, reviewDtos.size());
 
         // 리뷰 1 검증
-        reviews.stream()
-                .filter(review -> review.getReviewSubject().equals(member1) && review.getReviewObject().equals(member3) &&
-                        review.getReviewTrade().equals(trade1))
+        reviewDtos.stream()
+                .filter(reviewDto -> reviewDto.getSubjectId().equals(memberId1) && reviewDto.getObjectId().equals(memberId3) &&
+                        reviewDto.getTradeId().equals(tradeId1))
                 .findFirst()
-                .ifPresent(review -> {
+                .ifPresent(reviewDto -> {
                     assertAll("리뷰 남긴 회원의 아이디로 리뷰 조회 검증(거래1)",
-                            () -> assertEquals("name1", review.getReviewSubject().getName(), "리뷰 남긴 회원의 이름 불일치"),
-                            () -> assertEquals("nickName1", review.getReviewSubject().getNickName(), "리뷰 남긴 회원의 불일치"),
-                            () -> assertEquals("01011111111", review.getReviewSubject().getPhone(), "리뷰 남긴 회원의 불일치"),
-                            () -> assertEquals("name3", review.getReviewObject().getName(), "리뷰 당한 회원의 이름 불일치"),
-                            () -> assertEquals("nickName3", review.getReviewObject().getNickName(), "리뷰 당한 회원의 불일치"),
-                            () -> assertEquals("01033333333", review.getReviewObject().getPhone(), "리뷰 당한 회원의 불일치"),
-                            () -> assertEquals(5L, review.getScore(), "리뷰 점수 불일치")
+                            () -> assertEquals("nickName1", reviewDto.getSubjectNickName(), "리뷰 남긴 회원의 불일치"),
+                            () -> assertEquals("nickName3", reviewDto.getObjectNickName(), "리뷰 당한 회원의 불일치"),
+                            () -> assertEquals(5L, reviewDto.getScore(), "리뷰 점수 불일치")
                     );
                 });
 
         // 리뷰 3 검증
-        reviews.stream()
-                .filter(review -> review.getReviewSubject().equals(member2) && review.getReviewObject().equals(member3) &&
-                        review.getReviewTrade().equals(trade2))
+        reviewDtos.stream()
+                .filter(reviewDto -> reviewDto.getSubjectId().equals(memberId2) && reviewDto.getObjectId().equals(memberId3) &&
+                        reviewDto.getTradeId().equals(tradeId2))
                 .findFirst()
-                .ifPresent(review -> {
+                .ifPresent(reviewDto -> {
                     assertAll("리뷰 남긴 회원의 아이디로 리뷰 조회 검증(거래2)",
-                            () -> assertEquals("name2", review.getReviewSubject().getName(), "리뷰 남긴 회원의 이름 불일치"),
-                            () -> assertEquals("nickName2", review.getReviewSubject().getNickName(), "리뷰 남긴 회원의 불일치"),
-                            () -> assertEquals("01022222222", review.getReviewSubject().getPhone(), "리뷰 남긴 회원의 불일치"),
-                            () -> assertEquals("name3", review.getReviewObject().getName(), "리뷰 당한 회원의 이름 불일치"),
-                            () -> assertEquals("nickName3", review.getReviewObject().getNickName(), "리뷰 당한 회원의 불일치"),
-                            () -> assertEquals("01033333333", review.getReviewObject().getPhone(), "리뷰 당한 회원의 불일치"),
-                            () -> assertEquals(2L, review.getScore(), "리뷰 점수 불일치")
+                            () -> assertEquals("nickName2", reviewDto.getSubjectNickName(), "리뷰 남긴 회원의 불일치"),
+                            () -> assertEquals("nickName3", reviewDto.getObjectNickName(), "리뷰 당한 회원의 불일치"),
+                            () -> assertEquals(2L, reviewDto.getScore(), "리뷰 점수 불일치")
                     );
                 });
     }
@@ -194,41 +154,34 @@ class ReviewServiceTest {
     @Test
     public void 회원_아이디로_연관된_리뷰_조회() throws Exception {
         // when
-        Member member1 = memberService.findOne(memberId1);
-        Member member3 = memberService.findOne(memberId3);
-        Trade trade1 = tradeService.findOne(tradeId1);
+        List<ReviewDto> reviewDtos = reviewService.findReviewsByMemberId(memberId1);
 
         // then
-        List<Review> reviews = reviewService.findReviewsByMemberId(memberId1);
-        assertEquals(2, reviews.size());
+        assertEquals(2, reviewDtos.size());
 
         // 리뷰 1 검증
-        reviews.stream()
-                .filter(review -> review.getReviewSubject().equals(member1) && review.getReviewObject().equals(member3) &&
-                        review.getReviewTrade().equals(trade1))
+        reviewDtos.stream()
+                .filter(reviewDto -> reviewDto.getSubjectId().equals(memberId1) && reviewDto.getObjectId().equals(memberId3) &&
+                        reviewDto.getTradeId().equals(tradeId1))
                 .findFirst()
-                .ifPresent(review -> {
+                .ifPresent(reviewDto -> {
                     assertAll("거래 아이디로 리뷰 조회 검증(거래1)",
-                            () -> assertEquals("숭실대1", review.getReviewTrade().getAddress().getName(), "거래 장소 이름 불일치"),
-                            () -> assertEquals(37.4958, review.getReviewTrade().getAddress().getLatitude(), "거래 장소 위도 불일치"),
-                            () -> assertEquals(126.9583, review.getReviewTrade().getAddress().getLongitude(), "거래  장소 경도 불일치"),
-                            () -> assertEquals("주소1", review.getReviewTrade().getAddress().getStreet(), "거래 장소 도로명 주소 불일치"),
-                            () -> assertEquals(5L, review.getScore(), "리뷰 점수 불일치")
+                            () -> assertEquals("nickName1", reviewDto.getSubjectNickName(), "리뷰 남긴 회원의 불일치"),
+                            () -> assertEquals("nickName3", reviewDto.getObjectNickName(), "리뷰 당한 회원의 불일치"),
+                            () -> assertEquals(5L, reviewDto.getScore(), "리뷰 점수 불일치")
                     );
                 });
 
         // 리뷰 2 검증
-        reviews.stream()
-                .filter(review -> review.getReviewSubject().equals(member3) && review.getReviewObject().equals(member1) &&
-                        review.getReviewTrade().equals(trade1))
+        reviewDtos.stream()
+                .filter(reviewDto -> reviewDto.getSubjectId().equals(memberId3) && reviewDto.getObjectId().equals(memberId1) &&
+                        reviewDto.getTradeId().equals(tradeId1))
                 .findFirst()
-                .ifPresent(review -> {
+                .ifPresent(reviewDto -> {
                     assertAll("거래 아이디로 거래 리뷰 검증(거래2)",
-                            () -> assertEquals("숭실대1", review.getReviewTrade().getAddress().getName(), "거래 장소 이름 불일치"),
-                            () -> assertEquals(37.4958, review.getReviewTrade().getAddress().getLatitude(), "거래 장소 위도 불일치"),
-                            () -> assertEquals(126.9583, review.getReviewTrade().getAddress().getLongitude(), "거래  장소 경도 불일치"),
-                            () -> assertEquals("주소1", review.getReviewTrade().getAddress().getStreet(), "거래 장소 도로명 주소 불일치"),
-                            () -> assertEquals(4L, review.getScore(), "리뷰 점수 불일치")
+                            () -> assertEquals("nickName3", reviewDto.getSubjectNickName(), "리뷰 남긴 회원의 불일치"),
+                            () -> assertEquals("nickName1", reviewDto.getObjectNickName(), "리뷰 당한 회원의 불일치"),
+                            () -> assertEquals(4L, reviewDto.getScore(), "리뷰 점수 불일치")
                     );
                 });
     }
@@ -236,148 +189,95 @@ class ReviewServiceTest {
     @Test
     public void 거래_아이디로_모든리뷰_조회() throws Exception {
         // when
-        Member member1 = memberService.findOne(memberId1);
-        Member member3 = memberService.findOne(memberId3);
-        Trade trade1 = tradeService.findOne(tradeId1);
 
         // then
-        List<Review> reviews = reviewService.findReviewsByTradeId(tradeId1);
-        assertEquals(2, reviews.size());
+        List<ReviewDto> reviewDtos = reviewService.findReviewsByTradeId(tradeId1);
+        assertEquals(2, reviewDtos.size());
 
         // 리뷰 1 검증
-        reviews.stream()
-                .filter(review -> review.getReviewSubject().equals(member1) && review.getReviewObject().equals(member3) &&
-                        review.getReviewTrade().equals(trade1))
+        reviewDtos.stream()
+                .filter(reviewDto -> reviewDto.getSubjectId().equals(memberId1) && reviewDto.getObjectId().equals(memberId3) &&
+                        reviewDto.getTradeId().equals(tradeId1))
                 .findFirst()
-                .ifPresent(review -> {
+                .ifPresent(reviewDto -> {
                     assertAll("거래 아이디로 리뷰 조회 검증(거래1)",
-                            () -> assertEquals("숭실대1", review.getReviewTrade().getAddress().getName(), "거래 장소 이름 불일치"),
-                            () -> assertEquals(37.4958, review.getReviewTrade().getAddress().getLatitude(), "거래 장소 위도 불일치"),
-                            () -> assertEquals(126.9583, review.getReviewTrade().getAddress().getLongitude(), "거래  장소 경도 불일치"),
-                            () -> assertEquals("주소1", review.getReviewTrade().getAddress().getStreet(), "거래 장소 도로명 주소 불일치"),
-                            () -> assertEquals(5L, review.getScore(), "리뷰 점수 불일치")
+                            () -> assertEquals("nickName1", reviewDto.getSubjectNickName(), "리뷰 남긴 회원의 불일치"),
+                            () -> assertEquals("nickName3", reviewDto.getObjectNickName(), "리뷰 당한 회원의 불일치"),
+                            () -> assertEquals(5L, reviewDto.getScore(), "리뷰 점수 불일치")
                     );
                 });
 
         // 리뷰 2 검증
-        reviews.stream()
-                .filter(review -> review.getReviewSubject().equals(member3) && review.getReviewObject().equals(member1) &&
-                        review.getReviewTrade().equals(trade1))
+        reviewDtos.stream()
+                .filter(reviewDto -> reviewDto.getSubjectId().equals(memberId3) && reviewDto.getObjectId().equals(memberId1) &&
+                        reviewDto.getTradeId().equals(tradeId1))
                 .findFirst()
-                .ifPresent(review -> {
+                .ifPresent(reviewDto -> {
                     assertAll("거래 아이디로 거래 리뷰 검증(거래2)",
-                            () -> assertEquals("숭실대1", review.getReviewTrade().getAddress().getName(), "거래 장소 이름 불일치"),
-                            () -> assertEquals(37.4958, review.getReviewTrade().getAddress().getLatitude(), "거래 장소 위도 불일치"),
-                            () -> assertEquals(126.9583, review.getReviewTrade().getAddress().getLongitude(), "거래  장소 경도 불일치"),
-                            () -> assertEquals("주소1", review.getReviewTrade().getAddress().getStreet(), "거래 장소 도로명 주소 불일치"),
-                            () -> assertEquals(4L, review.getScore(), "리뷰 점수 불일치")
-                    );
+                            () -> assertEquals(4L, reviewDto.getScore(), "리뷰 점수 불일치"),
+                            () -> assertEquals("nickName3", reviewDto.getSubjectNickName(), "리뷰 남긴 회원의 불일치"),
+                            () -> assertEquals("nickName1", reviewDto.getObjectNickName(), "리뷰 당한 회원의 불일치")
+                            );
                 });
     }
 
     @Test
     public void 회원정보_거래을_포함한_리뷰_조회() throws Exception {
         // when
-        Member member1 = memberService.findOne(memberId1);
-        Member member2 = memberService.findOne(memberId2);
-        Member member3 = memberService.findOne(memberId3);
-
-        Trade trade1 = tradeService.findOne(tradeId1);
-        Trade trade2 = tradeService.findOne(tradeId2);
+        List<ReviewDto> reviewDtos = reviewService.findAllWithMemberChatRoom();
 
         // then
-        List<Review> reviews = reviewService.findAllWithMemberChatRoom();
-        assertEquals(4, reviews.size());
+        assertEquals(4, reviewDtos.size());
 
         // 첫번째 리뷰 검증
-        reviews.stream()
-                .filter(review -> review.getReviewSubject().equals(member1) && review.getReviewObject().equals(member3) &&
-                        review.getReviewTrade().equals(trade1))
+        reviewDtos.stream()
+                .filter(reviewDto -> reviewDto.getSubjectId().equals(memberId1) && reviewDto.getObjectId().equals(memberId3) &&
+                        reviewDto.getTradeId().equals(tradeId1))
                 .findFirst()
-                .ifPresent(review -> {
+                .ifPresent(reviewDto -> {
                     assertAll("회원 정보, 거래 정보를 포함한 리뷰 조회 검증 (리뷰 1)",
-                            () -> assertEquals("name1", review.getReviewSubject().getName(), "게시글 작성자 이름 불일치"),
-                            () -> assertEquals("nickName1", review.getReviewSubject().getNickName(), "게시글 작성자 닉네임 불일치"),
-                            () -> assertEquals("01011111111", review.getReviewSubject().getPhone(), "게시글 작성자 전화번호 불일치"),
-                            () -> assertEquals("name3", review.getReviewObject().getName(), "거래 요청자 이름 불일치"),
-                            () -> assertEquals("nickName3", review.getReviewObject().getNickName(), "거래 요청자 닉네임 불일치"),
-                            () -> assertEquals("01033333333", review.getReviewObject().getPhone(), "거래 요청자 전화번호 불일치"),
-                            () -> assertEquals(trade1.getStartTimeString(), review.getReviewTrade().getStartTimeString(), "거래 시작 시각 불일치"),
-                            () -> assertEquals(trade1.getEndTimeString(), review.getReviewTrade().getEndTimeString(), "거래 종료 시각 불일치"),
-                            () -> assertEquals("숭실대1", review.getReviewTrade().getAddress().getName(), "거래 장소 이름 불일치"),
-                            () -> assertEquals(37.4958, review.getReviewTrade().getAddress().getLatitude(), "거래 장소 위도 불일치"),
-                            () -> assertEquals(126.9583, review.getReviewTrade().getAddress().getLongitude(), "거래  장소 경도 불일치"),
-                            () -> assertEquals("주소1", review.getReviewTrade().getAddress().getStreet(), "거래 장소 도로명 주소 불일치"),
-                            () -> assertEquals(5L, review.getScore(), "리뷰 점수 불일치")
+                            () -> assertEquals("nickName1", reviewDto.getSubjectNickName(), "게시글 작성자 닉네임 불일치"),
+                            () -> assertEquals("nickName3", reviewDto.getObjectNickName(), "리뷰 당한 회원의 불일치"),
+                            () -> assertEquals(5L, reviewDto.getScore(), "리뷰 점수 불일치")
                     );
                 });
 
         // 두번째 리뷰 검증
-        reviews.stream()
-                .filter(review -> review.getReviewSubject().equals(member3) && review.getReviewObject().equals(member1) &&
-                        review.getReviewTrade().equals(trade1))
+        reviewDtos.stream()
+                .filter(reviewDto -> reviewDto.getSubjectId().equals(memberId3) && reviewDto.getObjectId().equals(memberId1) &&
+                        reviewDto.getTradeId().equals(tradeId1))
                 .findFirst()
-                .ifPresent(review -> {
+                .ifPresent(reviewDto -> {
                     assertAll("회원 정보, 거래 정보를 포함한 리뷰 조회 검증 (리뷰 2)",
-                            () -> assertEquals("name3", review.getReviewSubject().getName(), "게시글 작성자 이름 불일치"),
-                            () -> assertEquals("nickName3", review.getReviewSubject().getNickName(), "게시글 작성자 닉네임 불일치"),
-                            () -> assertEquals("01033333333", review.getReviewSubject().getPhone(), "게시글 작성자 전화번호 불일치"),
-                            () -> assertEquals("name1", review.getReviewObject().getName(), "거래 요청자 이름 불일치"),
-                            () -> assertEquals("nickName1", review.getReviewObject().getNickName(), "거래 요청자 닉네임 불일치"),
-                            () -> assertEquals("01011111111", review.getReviewObject().getPhone(), "거래 요청자 전화번호 불일치"),
-                            () -> assertEquals(trade1.getStartTimeString(), review.getReviewTrade().getStartTimeString(), "거래 시작 시각 불일치"),
-                            () -> assertEquals(trade1.getEndTimeString(), review.getReviewTrade().getEndTimeString(), "거래 종료 시각 불일치"),
-                            () -> assertEquals("숭실대1", review.getReviewTrade().getAddress().getName(), "거래 장소 이름 불일치"),
-                            () -> assertEquals(37.4958, review.getReviewTrade().getAddress().getLatitude(), "거래 장소 위도 불일치"),
-                            () -> assertEquals(126.9583, review.getReviewTrade().getAddress().getLongitude(), "거래  장소 경도 불일치"),
-                            () -> assertEquals("주소1", review.getReviewTrade().getAddress().getStreet(), "거래 장소 도로명 주소 불일치"),
-                            () -> assertEquals(4L, review.getScore(), "리뷰 점수 불일치")
+                            () -> assertEquals("nickName3", reviewDto.getSubjectNickName(), "게시글 작성자 닉네임 불일치"),
+                            () -> assertEquals("nickName1", reviewDto.getObjectNickName(), "거래 요청자 닉네임 불일치"),
+                            () -> assertEquals(4L, reviewDto.getScore(), "리뷰 점수 불일치")
                     );
                 });
 
         // 세번째 리뷰 검증
-        reviews.stream()
-                .filter(review -> review.getReviewSubject().equals(member2) && review.getReviewObject().equals(member3) &&
-                        review.getReviewTrade().equals(trade2))
+        reviewDtos.stream()
+                .filter(reviewDto -> reviewDto.getSubjectId().equals(memberId2) && reviewDto.getObjectId().equals(memberId3) &&
+                        reviewDto.getTradeId().equals(tradeId2))
                 .findFirst()
-                .ifPresent(review -> {
+                .ifPresent(reviewDto -> {
                     assertAll("회원 정보, 거래 정보를 포함한 리뷰 조회 검증 (리뷰 3)",
-                            () -> assertEquals("name2", review.getReviewSubject().getName(), "게시글 작성자 이름 불일치"),
-                            () -> assertEquals("nickName2", review.getReviewSubject().getNickName(), "게시글 작성자 닉네임 불일치"),
-                            () -> assertEquals("01022222222", review.getReviewSubject().getPhone(), "게시글 작성자 전화번호 불일치"),
-                            () -> assertEquals("name3", review.getReviewObject().getName(), "거래 요청자 이름 불일치"),
-                            () -> assertEquals("nickName3", review.getReviewObject().getNickName(), "거래 요청자 닉네임 불일치"),
-                            () -> assertEquals("01033333333", review.getReviewObject().getPhone(), "거래 요청자 전화번호 불일치"),
-                            () -> assertEquals(trade2.getStartTimeString(), review.getReviewTrade().getStartTimeString(), "거래 시작 시각 불일치"),
-                            () -> assertEquals(trade2.getEndTimeString(), review.getReviewTrade().getEndTimeString(), "거래 종료 시각 불일치"),
-                            () -> assertEquals("숭실대2", review.getReviewTrade().getAddress().getName(), "거래 장소 이름 불일치"),
-                            () -> assertEquals(37.5000, review.getReviewTrade().getAddress().getLatitude(), "거래 장소 위도 불일치"),
-                            () -> assertEquals(126.9500, review.getReviewTrade().getAddress().getLongitude(), "거래  장소 경도 불일치"),
-                            () -> assertEquals("주소2", review.getReviewTrade().getAddress().getStreet(), "거래 장소 도로명 주소 불일치"),
-                            () -> assertEquals(2L, review.getScore(), "리뷰 점수 불일치")
+                            () -> assertEquals("nickName2", reviewDto.getSubjectNickName(), "게시글 작성자 닉네임 불일치"),
+                            () -> assertEquals("nickName3", reviewDto.getObjectNickName(), "거래 요청자 닉네임 불일치"),
+                            () -> assertEquals(2L, reviewDto.getScore(), "리뷰 점수 불일치")
                     );
                 });
 
         // 네번째 리뷰 검증
-        reviews.stream()
-                .filter(review -> review.getReviewSubject().equals(member3) && review.getReviewObject().equals(member2) &&
-                        review.getReviewTrade().equals(trade2))
+        reviewDtos.stream()
+                .filter(reviewDto -> reviewDto.getSubjectId().equals(memberId3) && reviewDto.getObjectId().equals(memberId2) &&
+                        reviewDto.getTradeId().equals(tradeId2))
                 .findFirst()
-                .ifPresent(review -> {
+                .ifPresent(reviewDto -> {
                     assertAll("회원 정보, 거래 정보를 포함한 리뷰 조회 검증 (리뷰 4)",
-                            () -> assertEquals("name3", review.getReviewSubject().getName(), "게시글 작성자 이름 불일치"),
-                            () -> assertEquals("nickName3", review.getReviewSubject().getNickName(), "게시글 작성자 닉네임 불일치"),
-                            () -> assertEquals("01033333333", review.getReviewSubject().getPhone(), "게시글 작성자 전화번호 불일치"),
-                            () -> assertEquals("name2", review.getReviewObject().getName(), "거래 요청자 이름 불일치"),
-                            () -> assertEquals("nickName2", review.getReviewObject().getNickName(), "거래 요청자 닉네임 불일치"),
-                            () -> assertEquals("01022222222", review.getReviewObject().getPhone(), "거래 요청자 전화번호 불일치"),
-                            () -> assertEquals(trade2.getStartTimeString(), review.getReviewTrade().getStartTimeString(), "거래 시작 시각 불일치"),
-                            () -> assertEquals(trade2.getEndTimeString(), review.getReviewTrade().getEndTimeString(), "거래 종료 시각 불일치"),
-                            () -> assertEquals("숭실대2", review.getReviewTrade().getAddress().getName(), "거래 장소 이름 불일치"),
-                            () -> assertEquals(37.5000, review.getReviewTrade().getAddress().getLatitude(), "거래 장소 위도 불일치"),
-                            () -> assertEquals(126.9500, review.getReviewTrade().getAddress().getLongitude(), "거래  장소 경도 불일치"),
-                            () -> assertEquals("주소2", review.getReviewTrade().getAddress().getStreet(), "거래 장소 도로명 주소 불일치"),
-                            () -> assertEquals(0L, review.getScore(), "리뷰 점수 불일치")
+                            () -> assertEquals("nickName3", reviewDto.getSubjectNickName(), "게시글 작성자 닉네임 불일치"),
+                            () -> assertEquals("nickName2", reviewDto.getObjectNickName(), "거래 요청자 닉네임 불일치"),
+                            () -> assertEquals(0L, reviewDto.getScore(), "리뷰 점수 불일치")
                     );
                 });
     }
@@ -385,27 +285,15 @@ class ReviewServiceTest {
     @Test
     public void 거래_리뷰주체_리뷰객체_아이디로_거래조회() throws Exception {
         // when
-        Member member1 = memberService.findOne(memberId1);
-        Member member3 = memberService.findOne(memberId3);
-        Trade trade1 = tradeService.findOne(tradeId1);
+        ReviewDto reviewDto1 = reviewService.findBySubjectIdAndObjectIdAndTradeId(memberId1, memberId3, tradeId1);
 
-        Review review1 = reviewService.findBySubjectIdAndObjectIdAndTradeId(memberId1, memberId3, tradeId1);
-
-        Optional.of(review1)
-                .filter(review -> review.getReviewSubject().equals(member1) && review.getReviewObject().equals(member3) &&
-                        review.getReviewTrade().equals(trade1))
-                .ifPresent(review -> assertAll("리뷰 생성 검증",
-                        () -> assertEquals("name1", review.getReviewSubject().getName(), "리뷰 남긴 회원의 이름 불일치"),
-                        () -> assertEquals("nickName1", review.getReviewSubject().getNickName(), "리뷰 남긴 회원의 불일치"),
-                        () -> assertEquals("01011111111", review.getReviewSubject().getPhone(), "리뷰 남긴 회원의 불일치"),
-                        () -> assertEquals("name3", review.getReviewObject().getName(), "리뷰 당한 회원의 이름 불일치"),
-                        () -> assertEquals("nickName3", review.getReviewObject().getNickName(), "리뷰 당한 회원의 불일치"),
-                        () -> assertEquals("01033333333", review.getReviewObject().getPhone(), "리뷰 당한 회원의 불일치"),
-                        () -> assertEquals("숭실대1", review.getReviewTrade().getAddress().getName(), "거래 장소 이름 불일치"),
-                        () -> assertEquals(37.4958, review.getReviewTrade().getAddress().getLatitude(), "거래 장소 위도 불일치"),
-                        () -> assertEquals(126.9583, review.getReviewTrade().getAddress().getLongitude(), "거래  장소 경도 불일치"),
-                        () -> assertEquals("주소1", review.getReviewTrade().getAddress().getStreet(), "거래 장소 도로명 주소 불일치"),
-                        () -> assertEquals(5L, review.getScore(), "리뷰 점수 불일치")
+        Optional.of(reviewDto1)
+                .filter(reviewDto -> reviewDto.getSubjectId().equals(memberId1) && reviewDto.getObjectId().equals(memberId3) &&
+                        reviewDto.getTradeId().equals(tradeId1))
+                .ifPresent(reviewDto -> assertAll("리뷰 생성 검증",
+                        () -> assertEquals("nickName1", reviewDto.getSubjectNickName(), "리뷰 남긴 회원의 불일치"),
+                        () -> assertEquals("nickName3", reviewDto.getObjectNickName(), "리뷰 당한 회원의 불일치"),
+                        () -> assertEquals(5L, reviewDto.getScore(), "리뷰 점수 불일치")
                 ));
     }
 
@@ -486,8 +374,8 @@ class ReviewServiceTest {
     public Long createTrade(Long boardId, Long subjectId, Long objectId) {
         TradeDto tradeDto = TradeDto.builder()
                 .tradeBoardId(boardId)
-                .tradeSubjectId(subjectId)
-                .tradeObjectId(objectId)
+                .subjectId(subjectId)
+                .objectId(objectId)
                 .build();
         return tradeService.createTrade(tradeDto);
     }

@@ -48,6 +48,7 @@ public class BoardImagesDto {
                 .createdAt(board.getCreatedAt())
                 .updateAt(board.getUpdateAt())
                 .price(board.getPrice())
+                .isFreebie(board.isFreebie())
                 .images(board.getImages().stream()
                         .map(ImageDto::fromEntity)
                         .collect(Collectors.toList()))

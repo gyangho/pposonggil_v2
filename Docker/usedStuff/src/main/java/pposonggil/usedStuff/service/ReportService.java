@@ -11,6 +11,7 @@ import pposonggil.usedStuff.repository.report.ReportRepository;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -22,37 +23,50 @@ public class ReportService {
     /**
      * 전체 신고 조회
      */
-    public List<Report> findReports(){
-        return reportRepository.findAll();
+    public List<ReportDto> findReports(){
+        List<Report> report = reportRepository.findAll();
+        return report.stream()
+                .map(ReportDto::fromEntity)
+                .collect(Collectors.toList());
     }
 
     /**
      * 신고 상세 조회
      */
-    public Report findOne(Long reportId){
-        return reportRepository.findById(reportId)
+    public ReportDto findOne(Long reportId){
+        Report report = reportRepository.findById(reportId)
                 .orElseThrow(NoSuchElementException::new);
+        return ReportDto.fromEntity(report);
     }
 
     /**
      * 신고자 아이디로 신고 조회
      */
-    public List<Report> findReportsBySubjectId(Long subjectId){
-        return reportRepository.findReportsBySubjectId(subjectId);
+    public List<ReportDto> findReportsBySubjectId(Long subjectId){
+        List<Report> reports = reportRepository.findReportsBySubjectId(subjectId);
+        return reports.stream()
+                .map(ReportDto::fromEntity)
+                .collect(Collectors.toList());
     }
 
     /**
      * 피신고자 아이디로 신고 조회
      */
-    public List<Report> findReportsByObjectId(Long objectId){
-        return reportRepository.findReportsByObjectId(objectId);
+    public List<ReportDto> findReportsByObjectId(Long objectId){
+        List<Report> reports = reportRepository.findReportsByObjectId(objectId);
+        return reports.stream()
+                .map(ReportDto::fromEntity)
+                .collect(Collectors.toList());
     }
 
     /**
      * 신조 & 신고자 & 피신고자 조회
      */
-    public List<Report> findAllWithMember() {
-        return reportRepository.findAllWithMember();
+    public List<ReportDto> findAllWithMember() {
+        List<Report> reports = reportRepository.findAllWithMember();
+        return reports.stream()
+                .map(ReportDto::fromEntity)
+                .collect(Collectors.toList());
     }
 
     /**

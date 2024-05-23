@@ -45,6 +45,7 @@ public class BoardDto {
                 .createdAt(board.getCreatedAt())
                 .updateAt(board.getUpdateAt())
                 .price(board.getPrice())
+                .isFreebie(board.isFreebie())
                 .build();
     }
 }

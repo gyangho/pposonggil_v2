@@ -62,121 +62,79 @@ class TradeServiceTest {
     @Test
     public void 거래_생성() throws Exception {
         // when
-        Member member1 = memberService.findOne(memberId1);
-        Member member3 = memberService.findOne(memberId3);
-        Board board1 = boardService.findOne(boardId1);
+        TradeDto tradeDto1 = tradeService.findOne(tradeId1);
 
         //then
-        Trade trade1 = tradeService.findOne(tradeId1);
-
-        Optional.of(trade1)
-                .filter(trade -> trade.getTradeSubject().equals(member1) &&
-                        trade.getTradeObject().equals(member3) &&
-                        trade.getTradeBoard().equals(board1))
-                .ifPresent(trade -> assertAll("거래 정보 검증",
-                        () -> assertEquals("name1", trade.getTradeSubject().getName(), "게시글 작성자 이름 불일치"),
-                        () -> assertEquals("nickName1", trade.getTradeSubject().getNickName(), "게시글 작성자 닉네임 불일치"),
-                        () -> assertEquals("01011111111", trade.getTradeSubject().getPhone(), "게시글 작성자 전화번호 불일치"),
-                        () -> assertEquals("name3", trade.getTradeObject().getName(), "거래 요청자 이름 불일치"),
-                        () -> assertEquals("nickName3", trade.getTradeObject().getNickName(), "거래 요청자 닉네임 불일치"),
-                        () -> assertEquals("01033333333", trade.getTradeObject().getPhone(), "거래 요청자 전화번호 불일치"),
-                        () -> assertEquals("title1", trade.getTradeBoard().getTitle(), "게시글 제목 불일치"),
-                        () -> assertEquals("우산 팔아요1", trade.getTradeBoard().getContent(), "게시글 내용 불일치"),
-                        () -> assertEquals("숭실대1", trade.getTradeBoard().getAddress().getName(), "게시글 장소 이름 불일치"),
-                        () -> assertEquals(37.4958, trade.getTradeBoard().getAddress().getLatitude(), "게시글 장소 위도 불일치"),
-                        () -> assertEquals(126.9583, trade.getTradeBoard().getAddress().getLongitude(), "게시글 장소 경도 불일치"),
-                        () -> assertEquals("주소1", trade.getTradeBoard().getAddress().getStreet(), "게시글 장소 도로명 주소 불일치"),
-                        () -> assertEquals(1000L, trade.getTradeBoard().getPrice(), "게시글 가격 불일치"),
-                        () -> assertFalse(trade.getTradeBoard().isFreebie(), "게시글 나눔여부 불일치")
+        Optional.of(tradeDto1)
+                .filter(tradeDto -> tradeDto.getSubjectId().equals(memberId1) &&
+                        tradeDto.getObjectId().equals(memberId3) &&
+                        tradeDto.getTradeBoardId().equals(boardId1))
+                .ifPresent(tradeDto -> assertAll("거래 정보 검증",
+                        () -> assertEquals("nickName1", tradeDto.getSubjectNickName(), "게시글 작성자 닉네임 불일치"),
+                        () -> assertEquals("nickName3", tradeDto.getObjectNickName(), "거래 요청자 닉네임 불일치"),
+                        () -> assertEquals("숭실대1", tradeDto.getAddress().getName(), "게시글 장소 이름 불일치"),
+                        () -> assertEquals(37.4958, tradeDto.getAddress().getLatitude(), "게시글 장소 위도 불일치"),
+                        () -> assertEquals(126.9583, tradeDto.getAddress().getLongitude(), "게시글 장소 경도 불일치"),
+                        () -> assertEquals("주소1", tradeDto.getAddress().getStreet(), "게시글 장소 도로명 주소 불일치")
                 ));
     }
 
     @Test
     public void 게시글정보와_회원정보를_포함한_거래_조회() throws Exception {
         // when
-        Member member1 = memberService.findOne(memberId1);
-        Member member2 = memberService.findOne(memberId2);
-        Member member3 = memberService.findOne(memberId3);
-        Board board1 = boardService.findOne(boardId1);
-        Board board2 = boardService.findOne(boardId2);
-        Board board3 = boardService.findOne(boardId3);
+        List<TradeDto> tradeDtos = tradeService.findTradesWithBoardMember();
 
         // then
-        List<Trade> trades = tradeService.findTradesWithBoardMember();
-        assertEquals(3, trades.size());
+        assertEquals(3, tradeDtos.size());
 
         // 첫 번째 거래 검증
-        trades.stream()
-                .filter(trade -> trade.getTradeSubject().equals(member1) &&
-                        trade.getTradeObject().equals(member3) &&
-                        trade.getTradeBoard().equals(board1))
+        tradeDtos.stream()
+                .filter(tradeDto -> tradeDto.getSubjectId().equals(memberId1) &&
+                        tradeDto.getObjectId().equals(memberId3) &&
+                        tradeDto.getTradeBoardId().equals(boardId1))
                 .findFirst()
-                .ifPresent(trade -> {
+                .ifPresent(tradeDto -> {
                     assertAll("게시글 정보, 회원 정보를 포함한 거래 조회 검증(거래1)",
-                            () -> assertEquals("name1", trade.getTradeSubject().getName(), "게시글 작성자 이름 불일치"),
-                            () -> assertEquals("nickName1", trade.getTradeSubject().getNickName(), "게시글 작성자 닉네임 불일치"),
-                            () -> assertEquals("01011111111", trade.getTradeSubject().getPhone(), "게시글 작성자 전화번호 불일치"),
-                            () -> assertEquals("name3", trade.getTradeObject().getName(), "거래 요청자 이름 불일치"),
-                            () -> assertEquals("nickName3", trade.getTradeObject().getNickName(), "거래 요청자 닉네임 불일치"),
-                            () -> assertEquals("01033333333", trade.getTradeObject().getPhone(), "거래 요청자 전화번호 불일치"),
-                            () -> assertEquals("title1", trade.getTradeBoard().getTitle(), "게시글 제목 불일치"),
-                            () -> assertEquals("우산 팔아요1", trade.getTradeBoard().getContent(), "게시글 내용 불일치"),
-                            () -> assertEquals("숭실대1", trade.getTradeBoard().getAddress().getName(), "게시글 장소 이름 불일치"),
-                            () -> assertEquals(37.4958, trade.getTradeBoard().getAddress().getLatitude(), "게시글 장소 위도 불일치"),
-                            () -> assertEquals(126.9583, trade.getTradeBoard().getAddress().getLongitude(), "게시글 장소 경도 불일치"),
-                            () -> assertEquals("주소1", trade.getTradeBoard().getAddress().getStreet(), "게시글 장소 도로명 주소 불일치"),
-                            () -> assertEquals(1000L, trade.getTradeBoard().getPrice(), "게시글 가격 불일치"),
-                            () -> assertFalse(trade.getTradeBoard().isFreebie(), "게시글 나눔여부 불일치")
+                            () -> assertEquals("nickName1", tradeDto.getSubjectNickName(), "게시글 작성자 닉네임 불일치"),
+                            () -> assertEquals("nickName3", tradeDto.getObjectNickName(), "거래 요청자 닉네임 불일치"),
+                            () -> assertEquals("숭실대1", tradeDto.getAddress().getName(), "게시글 장소 이름 불일치"),
+                            () -> assertEquals(37.4958, tradeDto.getAddress().getLatitude(), "게시글 장소 위도 불일치"),
+                            () -> assertEquals(126.9583, tradeDto.getAddress().getLongitude(), "게시글 장소 경도 불일치"),
+                            () -> assertEquals("주소1", tradeDto.getAddress().getStreet(), "게시글 장소 도로명 주소 불일치")
                     );
                 });
 
         // 두 번째 거래 검증
-        trades.stream()
-                .filter(trade -> trade.getTradeSubject().equals(member2) &&
-                        trade.getTradeObject().equals(member3) &&
-                        trade.getTradeBoard().equals(board2))
+        tradeDtos.stream()
+                .filter(tradeDto -> tradeDto.getSubjectId().equals(memberId2) &&
+                        tradeDto.getObjectId().equals(memberId3) &&
+                        tradeDto.getTradeBoardId().equals(boardId2))
                 .findFirst()
-                .ifPresent(trade -> {
+                .ifPresent(tradeDto -> {
                     assertAll("게시글 정보, 회원 정보를 포함한 거래 조회 검증(거래2)",
-                            () -> assertEquals("name2", trade.getTradeSubject().getName(), "게시글 작성자 이름 불일치"),
-                            () -> assertEquals("nickName2", trade.getTradeSubject().getNickName(), "게시글 작성자 닉네임 불일치"),
-                            () -> assertEquals("01022222222", trade.getTradeSubject().getPhone(), "게시글 작성자 전화번호 불일치"),
-                            () -> assertEquals("name3", trade.getTradeObject().getName(), "거래 요청자 이름 불일치"),
-                            () -> assertEquals("nickName3", trade.getTradeObject().getNickName(), "거래 요청자 닉네임 불일치"),
-                            () -> assertEquals("01033333333", trade.getTradeObject().getPhone(), "거래 요청자 전화번호 불일치"),
-                            () -> assertEquals("title2", trade.getTradeBoard().getTitle(), "게시글 제목 불일치"),
-                            () -> assertEquals("우산 팔아요2", trade.getTradeBoard().getContent(), "게시글 내용 불일치"),
-                            () -> assertEquals("숭실대2", trade.getTradeBoard().getAddress().getName(), "게시글 장소 이름 불일치"),
-                            () -> assertEquals(37.5000, trade.getTradeBoard().getAddress().getLatitude(), "게시글 장소 위도 불일치"),
-                            () -> assertEquals(126.9500, trade.getTradeBoard().getAddress().getLongitude(), "게시글 장소 경도 불일치"),
-                            () -> assertEquals("주소2", trade.getTradeBoard().getAddress().getStreet(), "게시글 장소 도로명 주소 불일치"),
-                            () -> assertEquals(2000L, trade.getTradeBoard().getPrice(), "게시글 가격 불일치"),
-                            () -> assertFalse(trade.getTradeBoard().isFreebie(), "게시글 나눔여부 불일치")
+                            () -> assertEquals("nickName2", tradeDto.getSubjectNickName(), "게시글 작성자 닉네임 불일치"),
+                            () -> assertEquals("nickName3", tradeDto.getObjectNickName(), "거래 요청자 닉네임 불일치"),
+                            () -> assertEquals("숭실대2", tradeDto.getAddress().getName(), "게시글 장소 이름 불일치"),
+                            () -> assertEquals(37.5000, tradeDto.getAddress().getLatitude(), "게시글 장소 위도 불일치"),
+                            () -> assertEquals(126.9500, tradeDto.getAddress().getLongitude(), "게시글 장소 경도 불일치"),
+                            () -> assertEquals("주소2", tradeDto.getAddress().getStreet(), "게시글 장소 도로명 주소 불일치")
                     );
                 });
 
         // 세 번째 거래 검증
-        trades.stream()
-                .filter(trade -> trade.getTradeSubject().equals(member3) &&
-                        trade.getTradeObject().equals(member1) &&
-                        trade.getTradeBoard().equals(board3))
+        tradeDtos.stream()
+                .filter(tradeDto -> tradeDto.getSubjectId().equals(memberId3) &&
+                        tradeDto.getObjectId().equals(memberId1) &&
+                        tradeDto.getTradeBoardId().equals(boardId3))
                 .findFirst()
-                .ifPresent(trade -> {
+                .ifPresent(tradeDto -> {
                     assertAll("게시글 정보, 회원 정보를 포함한 거래 조회 검증(거래3)",
-                            () -> assertEquals("name3", trade.getTradeSubject().getName(), "게시글 작성자 이름 불일치"),
-                            () -> assertEquals("nickName3", trade.getTradeSubject().getNickName(), "게시글 작성자 닉네임 불일치"),
-                            () -> assertEquals("01033333333", trade.getTradeSubject().getPhone(), "게시글 작성자 전화번호 불일치"),
-                            () -> assertEquals("name1", trade.getTradeObject().getName(), "거래 요청자 이름 불일치"),
-                            () -> assertEquals("nickName1", trade.getTradeObject().getNickName(), "거래 요청자 닉네임 불일치"),
-                            () -> assertEquals("01011111111", trade.getTradeObject().getPhone(), "거래 요청자 전화번호 불일치"),
-                            () -> assertEquals("title3", trade.getTradeBoard().getTitle(), "게시글 제목 불일치"),
-                            () -> assertEquals("우산 팔아요3", trade.getTradeBoard().getContent(), "게시글 내용 불일치"),
-                            () -> assertEquals("숭실대3", trade.getTradeBoard().getAddress().getName(), "게시글 장소 이름 불일치"),
-                            () -> assertEquals(37.0600, trade.getTradeBoard().getAddress().getLatitude(), "게시글 장소 위도 불일치"),
-                            () -> assertEquals(126.9600, trade.getTradeBoard().getAddress().getLongitude(), "게시글 장소 경도 불일치"),
-                            () -> assertEquals("주소3", trade.getTradeBoard().getAddress().getStreet(), "게시글 장소 도로명 주소 불일치"),
-                            () -> assertEquals(3000L, trade.getTradeBoard().getPrice(), "게시글 가격 불일치"),
-                            () -> assertFalse(trade.getTradeBoard().isFreebie(), "게시글 나눔여부 불일치")
+                            () -> assertEquals("nickName3", tradeDto.getSubjectNickName(), "게시글 작성자 닉네임 불일치"),
+                            () -> assertEquals("nickName1", tradeDto.getObjectNickName(), "거래 요청자 닉네임 불일치"),
+                            () -> assertEquals("숭실대3", tradeDto.getAddress().getName(), "게시글 장소 이름 불일치"),
+                            () -> assertEquals(37.0600, tradeDto.getAddress().getLatitude(), "게시글 장소 위도 불일치"),
+                            () -> assertEquals(126.9600, tradeDto.getAddress().getLongitude(), "게시글 장소 경도 불일치"),
+                            () -> assertEquals("주소3", tradeDto.getAddress().getStreet(), "게시글 장소 도로명 주소 불일치")
                     );
                 });
     }
@@ -192,62 +150,41 @@ class TradeServiceTest {
         Long trade4 = createTrade(boardId4, memberId1, memberId2);
 
         // when
-        Member member1 = memberService.findOne(memberId1);
-        Member member2 = memberService.findOne(memberId2);
-        Member member3 = memberService.findOne(memberId3);
-        Board board1 = boardService.findOne(boardId1);
-        Board board4 = boardService.findOne(boardId4);
-        List<Trade> trades = tradeService.findTradesBySubjectId(memberId1);
+        List<TradeDto> tradeDtos = tradeService.findTradesBySubjectId(memberId1);
 
         // then
-        assertEquals(2, trades.size());
+        assertEquals(2, tradeDtos.size());
         // 첫 번째 거래 검증
-        trades.stream()
-                .filter(trade -> trade.getTradeSubject().equals(member1) &&
-                        trade.getTradeObject().equals(member3) &&
-                        trade.getTradeBoard().equals(board1))
+        tradeDtos.stream()
+                .filter(tradeDto -> tradeDto.getSubjectId().equals(memberId1) &&
+                        tradeDto.getObjectId().equals(memberId3) &&
+                        tradeDto.getTradeBoardId().equals(boardId1))
                 .findFirst()
-                .ifPresent(trade -> {
+                .ifPresent(tradeDto -> {
                     assertAll("게시글 정보, 회원 정보를 포함한 거래 조회 검증(거래1)",
-                            () -> assertEquals("name1", trade.getTradeSubject().getName(), "게시글 작성자 이름 불일치"),
-                            () -> assertEquals("nickName1", trade.getTradeSubject().getNickName(), "게시글 작성자 닉네임 불일치"),
-                            () -> assertEquals("01011111111", trade.getTradeSubject().getPhone(), "게시글 작성자 전화번호 불일치"),
-                            () -> assertEquals("name3", trade.getTradeObject().getName(), "거래 요청자 이름 불일치"),
-                            () -> assertEquals("nickName3", trade.getTradeObject().getNickName(), "거래 요청자 닉네임 불일치"),
-                            () -> assertEquals("01033333333", trade.getTradeObject().getPhone(), "거래 요청자 전화번호 불일치"),
-                            () -> assertEquals("title1", trade.getTradeBoard().getTitle(), "게시글 제목 불일치"),
-                            () -> assertEquals("우산 팔아요1", trade.getTradeBoard().getContent(), "게시글 내용 불일치"),
-                            () -> assertEquals("숭실대1", trade.getTradeBoard().getAddress().getName(), "게시글 장소 이름 불일치"),
-                            () -> assertEquals(37.4958, trade.getTradeBoard().getAddress().getLatitude(), "게시글 장소 위도 불일치"),
-                            () -> assertEquals(126.9583, trade.getTradeBoard().getAddress().getLongitude(), "게시글 장소 경도 불일치"),
-                            () -> assertEquals("주소1", trade.getTradeBoard().getAddress().getStreet(), "게시글 장소 도로명 주소 불일치"),
-                            () -> assertEquals(1000L, trade.getTradeBoard().getPrice(), "게시글 가격 불일치"),
-                            () -> assertFalse(trade.getTradeBoard().isFreebie(), "게시글 나눔여부 불일치")
+                            () -> assertEquals("nickName1", tradeDto.getSubjectNickName(), "게시글 작성자 닉네임 불일치"),
+                            () -> assertEquals("nickName3", tradeDto.getObjectNickName(), "거래 요청자 닉네임 불일치"),
+                            () -> assertEquals("숭실대1", tradeDto.getAddress().getName(), "게시글 장소 이름 불일치"),
+                            () -> assertEquals(37.4958, tradeDto.getAddress().getLatitude(), "게시글 장소 위도 불일치"),
+                            () -> assertEquals(126.9583, tradeDto.getAddress().getLongitude(), "게시글 장소 경도 불일치"),
+                            () -> assertEquals("주소1", tradeDto.getAddress().getStreet(), "게시글 장소 도로명 주소 불일치")
                     );
                 });
 
         // 네 번째 거래 검증
-        trades.stream()
-                .filter(trade -> trade.getTradeSubject().equals(member1) &&
-                        trade.getTradeObject().equals(member2) &&
-                        trade.getTradeBoard().equals(board4))
+        tradeDtos.stream()
+                .filter(tradeDto -> tradeDto.getSubjectId().equals(memberId1) &&
+                        tradeDto.getObjectId().equals(memberId2) &&
+                        tradeDto.getTradeBoardId().equals(boardId4))
                 .findFirst()
-                .ifPresent(trade -> {
+                .ifPresent(tradeDto -> {
                     assertAll("게시글 정보, 회원 정보를 포함한 거래 조회 검증(거래1)",
-                            () -> assertEquals("name1", trade.getTradeSubject().getName(), "게시글 작성자 이름 불일치"),
-                            () -> assertEquals("nickName1", trade.getTradeSubject().getNickName(), "게시글 작성자 닉네임 불일치"),
-                            () -> assertEquals("01011111111", trade.getTradeSubject().getPhone(), "게시글 작성자 전화번호 불일치"),
-                            () -> assertEquals("name2", trade.getTradeObject().getName(), "거래 요청자 이름 불일치"),
-                            () -> assertEquals("nickName2", trade.getTradeObject().getNickName(), "거래 요청자 닉네임 불일치"),
-                            () -> assertEquals("01022222222", trade.getTradeObject().getPhone(), "거래 요청자 전화번호 불일치"),
-                            () -> assertEquals("title4", trade.getTradeBoard().getTitle(), "게시글 제목 불일치"),
-                            () -> assertEquals("우산 팔아요4", trade.getTradeBoard().getContent(), "게시글 내용 불일치"),
-                            () -> assertEquals("숭실대4", trade.getTradeBoard().getAddress().getName(), "게시글 장소 이름 불일치"),
-                            () -> assertEquals(37.4000, trade.getTradeBoard().getAddress().getLatitude(), "게시글 장소 위도 불일치"),
-                            () -> assertEquals(126.9400, trade.getTradeBoard().getAddress().getLongitude(), "게시글 장소 경도 불일치"),
-                            () -> assertEquals("주소4", trade.getTradeBoard().getAddress().getStreet(), "게시글 장소 도로명 주소 불일치"),
-                            () -> assertEquals(4000L, trade.getTradeBoard().getPrice(), "게시글 가격 불일치"),
-                            () -> assertFalse(trade.getTradeBoard().isFreebie(), "게시글 나눔여부 불일치")
+                            () -> assertEquals("nickName1", tradeDto.getSubjectNickName(), "게시글 작성자 닉네임 불일치"),
+                            () -> assertEquals("nickName2", tradeDto.getObjectNickName(), "거래 요청자 닉네임 불일치"),
+                            () -> assertEquals("숭실대4", tradeDto.getAddress().getName(), "게시글 장소 이름 불일치"),
+                            () -> assertEquals(37.4000, tradeDto.getAddress().getLatitude(), "게시글 장소 위도 불일치"),
+                            () -> assertEquals(126.9400, tradeDto.getAddress().getLongitude(), "게시글 장소 경도 불일치"),
+                            () -> assertEquals("주소4", tradeDto.getAddress().getStreet(), "게시글 장소 도로명 주소 불일치")
                     );
                 });
     }
@@ -255,62 +192,41 @@ class TradeServiceTest {
     @Test
     public void 게시글_작성하지_않은_회원의_아이디로_거래_조회() {
         // when
-        Member member1 = memberService.findOne(memberId1);
-        Member member2 = memberService.findOne(memberId2);
-        Member member3 = memberService.findOne(memberId3);
-        Board board1 = boardService.findOne(boardId1);
-        Board board2 = boardService.findOne(boardId2);
+        List<TradeDto> tradeDtos = tradeService.findTradesByObjectId(memberId3);
 
         // then
-        List<Trade> trades = tradeService.findTradesByObjectId(memberId3);
-        assertEquals(2, trades.size());
+        assertEquals(2, tradeDtos.size());
         // 첫 번째 거래 검증
-        trades.stream()
-                .filter(trade -> trade.getTradeSubject().equals(member1) &&
-                        trade.getTradeObject().equals(member3) &&
-                        trade.getTradeBoard().equals(board1))
+        tradeDtos.stream()
+                .filter(tradeDto -> tradeDto.getSubjectId().equals(memberId1) &&
+                        tradeDto.getObjectId().equals(memberId3) &&
+                        tradeDto.getTradeBoardId().equals(boardId1))
                 .findFirst()
-                .ifPresent(trade -> {
+                .ifPresent(tradeDto -> {
                     assertAll("게시글 정보, 회원 정보를 포함한 거래 조회 검증(거래1)",
-                            () -> assertEquals("name1", trade.getTradeSubject().getName(), "게시글 작성자 이름 불일치"),
-                            () -> assertEquals("nickName1", trade.getTradeSubject().getNickName(), "게시글 작성자 닉네임 불일치"),
-                            () -> assertEquals("01011111111", trade.getTradeSubject().getPhone(), "게시글 작성자 전화번호 불일치"),
-                            () -> assertEquals("name3", trade.getTradeObject().getName(), "거래 요청자 이름 불일치"),
-                            () -> assertEquals("nickName3", trade.getTradeObject().getNickName(), "거래 요청자 닉네임 불일치"),
-                            () -> assertEquals("01033333333", trade.getTradeObject().getPhone(), "거래 요청자 전화번호 불일치"),
-                            () -> assertEquals("title1", trade.getTradeBoard().getTitle(), "게시글 제목 불일치"),
-                            () -> assertEquals("우산 팔아요1", trade.getTradeBoard().getContent(), "게시글 내용 불일치"),
-                            () -> assertEquals("숭실대1", trade.getTradeBoard().getAddress().getName(), "게시글 장소 이름 불일치"),
-                            () -> assertEquals(37.4958, trade.getTradeBoard().getAddress().getLatitude(), "게시글 장소 위도 불일치"),
-                            () -> assertEquals(126.9583, trade.getTradeBoard().getAddress().getLongitude(), "게시글 장소 경도 불일치"),
-                            () -> assertEquals("주소1", trade.getTradeBoard().getAddress().getStreet(), "게시글 장소 도로명 주소 불일치"),
-                            () -> assertEquals(1000L, trade.getTradeBoard().getPrice(), "게시글 가격 불일치"),
-                            () -> assertFalse(trade.getTradeBoard().isFreebie(), "게시글 나눔여부 불일치")
+                            () -> assertEquals("nickName1", tradeDto.getSubjectNickName(), "게시글 작성자 닉네임 불일치"),
+                            () -> assertEquals("nickName3", tradeDto.getObjectNickName(), "거래 요청자 닉네임 불일치"),
+                            () -> assertEquals("숭실대1", tradeDto.getAddress().getName(), "게시글 장소 이름 불일치"),
+                            () -> assertEquals(37.4958, tradeDto.getAddress().getLatitude(), "게시글 장소 위도 불일치"),
+                            () -> assertEquals(126.9583, tradeDto.getAddress().getLongitude(), "게시글 장소 경도 불일치"),
+                            () -> assertEquals("주소1", tradeDto.getAddress().getStreet(), "게시글 장소 도로명 주소 불일치")
                     );
                 });
 
         // 두 번째 거래 검증
-        trades.stream()
-                .filter(trade -> trade.getTradeSubject().equals(member2) &&
-                        trade.getTradeObject().equals(member3) &&
-                        trade.getTradeBoard().equals(board2))
+        tradeDtos.stream()
+                .filter(tradeDto -> tradeDto.getSubjectId().equals(memberId2) &&
+                        tradeDto.getObjectId().equals(memberId3) &&
+                        tradeDto.getTradeBoardId().equals(boardId2))
                 .findFirst()
-                .ifPresent(trade -> {
+                .ifPresent(tradeDto -> {
                     assertAll("게시글 정보, 회원 정보를 포함한 거래 조회 검증(거래1)",
-                            () -> assertEquals("name2", trade.getTradeSubject().getName(), "게시글 작성자 이름 불일치"),
-                            () -> assertEquals("nickName2", trade.getTradeSubject().getNickName(), "게시글 작성자 닉네임 불일치"),
-                            () -> assertEquals("01022222222", trade.getTradeSubject().getPhone(), "게시글 작성자 전화번호 불일치"),
-                            () -> assertEquals("name3", trade.getTradeObject().getName(), "거래 요청자 이름 불일치"),
-                            () -> assertEquals("nickName3", trade.getTradeObject().getNickName(), "거래 요청자 닉네임 불일치"),
-                            () -> assertEquals("01033333333", trade.getTradeObject().getPhone(), "거래 요청자 전화번호 불일치"),
-                            () -> assertEquals("title2", trade.getTradeBoard().getTitle(), "게시글 제목 불일치"),
-                            () -> assertEquals("우산 팔아요2", trade.getTradeBoard().getContent(), "게시글 내용 불일치"),
-                            () -> assertEquals("숭실대2", trade.getTradeBoard().getAddress().getName(), "게시글 장소 이름 불일치"),
-                            () -> assertEquals(37.5000, trade.getTradeBoard().getAddress().getLatitude(), "게시글 장소 위도 불일치"),
-                            () -> assertEquals(126.9500, trade.getTradeBoard().getAddress().getLongitude(), "게시글 장소 경도 불일치"),
-                            () -> assertEquals("주소2", trade.getTradeBoard().getAddress().getStreet(), "게시글 장소 도로명 주소 불일치"),
-                            () -> assertEquals(2000L, trade.getTradeBoard().getPrice(), "게시글 가격 불일치"),
-                            () -> assertFalse(trade.getTradeBoard().isFreebie(), "게시글 나눔여부 불일치")
+                            () -> assertEquals("nickName2", tradeDto.getSubjectNickName(), "게시글 작성자 닉네임 불일치"),
+                            () -> assertEquals("nickName3", tradeDto.getObjectNickName(), "거래 요청자 닉네임 불일치"),
+                            () -> assertEquals("숭실대2", tradeDto.getAddress().getName(), "게시글 장소 이름 불일치"),
+                            () -> assertEquals(37.5000, tradeDto.getAddress().getLatitude(), "게시글 장소 위도 불일치"),
+                            () -> assertEquals(126.9500, tradeDto.getAddress().getLongitude(), "게시글 장소 경도 불일치"),
+                            () -> assertEquals("주소2", tradeDto.getAddress().getStreet(), "게시글 장소 도로명 주소 불일치")
                     );
                 });
     }
@@ -318,62 +234,42 @@ class TradeServiceTest {
     @Test
     public void 회원_아이디로_참가중인_거래_조회() throws Exception{
         // when
-        Member member1 = memberService.findOne(memberId1);
-        Member member3 = memberService.findOne(memberId3);
-        Board board1 = boardService.findOne(boardId1);
-        Board board3 = boardService.findOne(boardId3);
+        List<TradeDto> tradeDtos = tradeService.findTradesByMemberId(memberId1);
 
         // then
-        List<Trade> trades = tradeService.findTradesByMemberId(memberId1);
-        assertEquals(2, trades.size());
+        assertEquals(2, tradeDtos.size());
 
         // 첫 번째 거래 검증
-        trades.stream()
-                .filter(trade -> trade.getTradeSubject().equals(member1) &&
-                        trade.getTradeObject().equals(member3) &&
-                        trade.getTradeBoard().equals(board1))
+        tradeDtos.stream()
+                .filter(tradeDto -> tradeDto.getSubjectId().equals(memberId1) &&
+                        tradeDto.getObjectId().equals(memberId3) &&
+                        tradeDto.getTradeBoardId().equals(boardId1))
                 .findFirst()
-                .ifPresent(trade -> {
+                .ifPresent(tradeDto -> {
                     assertAll("게시글 정보, 회원 정보를 포함한 거래 조회 검증(거래1)",
-                            () -> assertEquals("name1", trade.getTradeSubject().getName(), "게시글 작성자 이름 불일치"),
-                            () -> assertEquals("nickName1", trade.getTradeSubject().getNickName(), "게시글 작성자 닉네임 불일치"),
-                            () -> assertEquals("01011111111", trade.getTradeSubject().getPhone(), "게시글 작성자 전화번호 불일치"),
-                            () -> assertEquals("name3", trade.getTradeObject().getName(), "거래 요청자 이름 불일치"),
-                            () -> assertEquals("nickName3", trade.getTradeObject().getNickName(), "거래 요청자 닉네임 불일치"),
-                            () -> assertEquals("01033333333", trade.getTradeObject().getPhone(), "거래 요청자 전화번호 불일치"),
-                            () -> assertEquals("title1", trade.getTradeBoard().getTitle(), "게시글 제목 불일치"),
-                            () -> assertEquals("우산 팔아요1", trade.getTradeBoard().getContent(), "게시글 내용 불일치"),
-                            () -> assertEquals("숭실대1", trade.getTradeBoard().getAddress().getName(), "게시글 장소 이름 불일치"),
-                            () -> assertEquals(37.4958, trade.getTradeBoard().getAddress().getLatitude(), "게시글 장소 위도 불일치"),
-                            () -> assertEquals(126.9583, trade.getTradeBoard().getAddress().getLongitude(), "게시글 장소 경도 불일치"),
-                            () -> assertEquals("주소1", trade.getTradeBoard().getAddress().getStreet(), "게시글 장소 도로명 주소 불일치"),
-                            () -> assertEquals(1000L, trade.getTradeBoard().getPrice(), "게시글 가격 불일치"),
-                            () -> assertFalse(trade.getTradeBoard().isFreebie(), "게시글 나눔여부 불일치")
+                            () -> assertEquals("nickName1", tradeDto.getSubjectNickName(), "게시글 작성자 닉네임 불일치"),
+                            () -> assertEquals("nickName3", tradeDto.getObjectNickName(), "거래 요청자 닉네임 불일치"),
+                            () -> assertEquals("숭실대1", tradeDto.getAddress().getName(), "게시글 장소 이름 불일치"),
+                            () -> assertEquals(37.4958, tradeDto.getAddress().getLatitude(), "게시글 장소 위도 불일치"),
+                            () -> assertEquals(126.9583, tradeDto.getAddress().getLongitude(), "게시글 장소 경도 불일치"),
+                            () -> assertEquals("주소1", tradeDto.getAddress().getStreet(), "게시글 장소 도로명 주소 불일치")
                     );
                 });
 
         // 세 번째 거래 검증
-        trades.stream()
-                .filter(trade -> trade.getTradeSubject().equals(member3) &&
-                        trade.getTradeObject().equals(member1) &&
-                        trade.getTradeBoard().equals(board3))
+        tradeDtos.stream()
+                .filter(tradeDto -> tradeDto.getSubjectId().equals(memberId3) &&
+                        tradeDto.getObjectId().equals(memberId1) &&
+                        tradeDto.getTradeBoardId().equals(boardId3))
                 .findFirst()
-                .ifPresent(trade -> {
+                .ifPresent(tradeDto -> {
                     assertAll("게시글 정보, 회원 정보를 포함한 거래 조회 검증(거래3)",
-                            () -> assertEquals("name3", trade.getTradeSubject().getName(), "게시글 작성자 이름 불일치"),
-                            () -> assertEquals("nickName3", trade.getTradeSubject().getNickName(), "게시글 작성자 닉네임 불일치"),
-                            () -> assertEquals("01033333333", trade.getTradeSubject().getPhone(), "게시글 작성자 전화번호 불일치"),
-                            () -> assertEquals("name1", trade.getTradeObject().getName(), "거래 요청자 이름 불일치"),
-                            () -> assertEquals("nickName1", trade.getTradeObject().getNickName(), "거래 요청자 닉네임 불일치"),
-                            () -> assertEquals("01011111111", trade.getTradeObject().getPhone(), "거래 요청자 전화번호 불일치"),
-                            () -> assertEquals("title3", trade.getTradeBoard().getTitle(), "게시글 제목 불일치"),
-                            () -> assertEquals("우산 팔아요3", trade.getTradeBoard().getContent(), "게시글 내용 불일치"),
-                            () -> assertEquals("숭실대3", trade.getTradeBoard().getAddress().getName(), "게시글 장소 이름 불일치"),
-                            () -> assertEquals(37.0600, trade.getTradeBoard().getAddress().getLatitude(), "게시글 장소 위도 불일치"),
-                            () -> assertEquals(126.9600, trade.getTradeBoard().getAddress().getLongitude(), "게시글 장소 경도 불일치"),
-                            () -> assertEquals("주소3", trade.getTradeBoard().getAddress().getStreet(), "게시글 장소 도로명 주소 불일치"),
-                            () -> assertEquals(3000L, trade.getTradeBoard().getPrice(), "게시글 가격 불일치"),
-                            () -> assertFalse(trade.getTradeBoard().isFreebie(), "게시글 나눔여부 불일치")
+                            () -> assertEquals("nickName3", tradeDto.getSubjectNickName(), "게시글 작성자 닉네임 불일치"),
+                            () -> assertEquals("nickName1", tradeDto.getObjectNickName(), "거래 요청자 닉네임 불일치"),
+                            () -> assertEquals("숭실대3", tradeDto.getAddress().getName(), "게시글 장소 이름 불일치"),
+                            () -> assertEquals(37.0600, tradeDto.getAddress().getLatitude(), "게시글 장소 위도 불일치"),
+                            () -> assertEquals(126.9600, tradeDto.getAddress().getLongitude(), "게시글 장소 경도 불일치"),
+                            () -> assertEquals("주소3", tradeDto.getAddress().getStreet(), "게시글 장소 도로명 주소 불일치")
                     );
                 });
     }
@@ -381,32 +277,20 @@ class TradeServiceTest {
     @Test
     public void 게시글_아이디로_거래_조회() throws Exception {
         // when
-        Member member1 = memberService.findOne(memberId1);
-        Member member3 = memberService.findOne(memberId3);
-        Board board1 = boardService.findOne(boardId1);
-        Board board3 = boardService.findOne(boardId3);
+        TradeDto tradeDto1 = tradeService.findTradeByBoardId(boardId1);
 
         // then
-        Trade trade1 = tradeService.findTradeByBoardId(boardId1);
-        Optional.of(trade1)
-                .filter(trade -> trade.getTradeSubject().equals(member1) &&
-                        trade.getTradeObject().equals(member3) &&
-                        trade.getTradeBoard().equals(board1))
-                .ifPresent(trade -> assertAll("게시글 아이디로 조회한 거래 정보 검증",
-                        () -> assertEquals("name1", trade.getTradeSubject().getName(), "게시글 작성자 이름 불일치"),
-                        () -> assertEquals("nickName1", trade.getTradeSubject().getNickName(), "게시글 작성자 닉네임 불일치"),
-                        () -> assertEquals("01011111111", trade.getTradeSubject().getPhone(), "게시글 작성자 전화번호 불일치"),
-                        () -> assertEquals("name3", trade.getTradeObject().getName(), "거래 요청자 이름 불일치"),
-                        () -> assertEquals("nickName3", trade.getTradeObject().getNickName(), "거래 요청자 닉네임 불일치"),
-                        () -> assertEquals("01033333333", trade.getTradeObject().getPhone(), "거래 요청자 전화번호 불일치"),
-                        () -> assertEquals("title1", trade.getTradeBoard().getTitle(), "게시글 제목 불일치"),
-                        () -> assertEquals("우산 팔아요1", trade.getTradeBoard().getContent(), "게시글 내용 불일치"),
-                        () -> assertEquals("숭실대1", trade.getTradeBoard().getAddress().getName(), "게시글 장소 이름 불일치"),
-                        () -> assertEquals(37.4958, trade.getTradeBoard().getAddress().getLatitude(), "게시글 장소 위도 불일치"),
-                        () -> assertEquals(126.9583, trade.getTradeBoard().getAddress().getLongitude(), "게시글 장소 경도 불일치"),
-                        () -> assertEquals("주소1", trade.getTradeBoard().getAddress().getStreet(), "게시글 장소 도로명 주소 불일치"),
-                        () -> assertEquals(1000L, trade.getTradeBoard().getPrice(), "게시글 가격 불일치"),
-                        () -> assertFalse(trade.getTradeBoard().isFreebie(), "게시글 나눔여부 불일치")
+        Optional.of(tradeDto1)
+                .filter(tradeDto -> tradeDto.getSubjectId().equals(memberId1) &&
+                        tradeDto.getObjectId().equals(memberId3) &&
+                        tradeDto.getTradeBoardId().equals(boardId1))
+                .ifPresent(tradeDto -> assertAll("게시글 아이디로 조회한 거래 정보 검증",
+                        () -> assertEquals("nickName1", tradeDto.getSubjectNickName(), "게시글 작성자 닉네임 불일치"),
+                        () -> assertEquals("nickName3", tradeDto.getObjectNickName(), "거래 요청자 닉네임 불일치"),
+                        () -> assertEquals("숭실대1", tradeDto.getAddress().getName(), "게시글 장소 이름 불일치"),
+                        () -> assertEquals(37.4958, tradeDto.getAddress().getLatitude(), "게시글 장소 위도 불일치"),
+                        () -> assertEquals(126.9583, tradeDto.getAddress().getLongitude(), "게시글 장소 경도 불일치"),
+                        () -> assertEquals("주소1", tradeDto.getAddress().getStreet(), "게시글 장소 도로명 주소 불일치")
                 ));
     }
 
@@ -453,8 +337,8 @@ class TradeServiceTest {
         tradeService.deleteTrade(tradeId1);
 
         // then
-        List<Trade> trades = tradeService.findTrades();
-        assertEquals(2, trades.size());
+        List<TradeDto> tradeDtos = tradeService.findTrades();
+        assertEquals(2, tradeDtos.size());
         assertThrows(NoSuchElementException.class, () -> tradeService.findOne(tradeId1));
 
     }
@@ -493,8 +377,8 @@ class TradeServiceTest {
     public Long createTrade(Long boardId, Long subjectId, Long objectId) {
         TradeDto tradeDto = TradeDto.builder()
                 .tradeBoardId(boardId)
-                .tradeSubjectId(subjectId)
-                .tradeObjectId(objectId)
+                .subjectId(subjectId)
+                .objectId(objectId)
                 .build();
         return tradeService.createTrade(tradeDto);
     }

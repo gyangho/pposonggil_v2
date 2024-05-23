@@ -5,6 +5,6 @@ import pposonggil.usedStuff.domain.Board;
 import java.util.List;
 
 public interface CustomBoardRepository {
-    List<Board> findAllWithMemberImage();
-    List<Board> findBoardsByMember(Long writeId);
+    List<Board> findAllWithMemberImages();
+    List<Board> findBoardsWithMemberImagesByMember(Long writeId);
 }

@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
-import pposonggil.usedStuff.domain.Block;
-import pposonggil.usedStuff.domain.Member;
 import pposonggil.usedStuff.dto.BlockDto;
 import pposonggil.usedStuff.dto.MemberDto;
 
@@ -50,107 +48,75 @@ class BlockServiceTest {
     @Test
     public void 차단_생성() throws Exception {
         // when
-        Member member1 = memberService.findOne(memberId1);
-        Member member3 = memberService.findOne(memberId3);
-        Block block1 = blockService.findOne(blockId1);
+        BlockDto blockDto1 = blockService.findOne(blockId1);
 
         // then
-        Optional.of(block1)
-                .filter(block -> block.getBlockSubject().equals(member1) && block.getBlockObject().equals(member3))
-                .ifPresent(block -> assertAll("차단 정보 검증",
-                        () -> assertEquals("name1", block.getBlockSubject().getName(), "차단자 이름 불일치"),
-                        () -> assertEquals("nickName1", block.getBlockSubject().getNickName(), "차단자 닉네임 불일치"),
-                        () -> assertEquals("01011111111", block.getBlockSubject().getPhone(), "차단자 전화번호 불일치"),
-                        () -> assertEquals("name3", block.getBlockObject().getName(), "피차단자 이름 불일치"),
-                        () -> assertEquals("nickName3", block.getBlockObject().getNickName(), "피차단자 닉네임 불일치"),
-                        () -> assertEquals("01033333333", block.getBlockObject().getPhone(), "피차단자 전화번호 불일치")
+        Optional.of(blockDto1)
+                .filter(blockDto -> blockDto.getSubjectId().equals(memberId1) && blockDto.getObjectId().equals(memberId3))
+                .ifPresent(blockDto -> assertAll("차단 정보 검증",
+                        () -> assertEquals("nickName1", blockDto.getSubjectNickName(), "차단자 닉네임 불일치"),
+                        () -> assertEquals("nickName3", blockDto.getObjectNickName(), "피차단자 닉네임 불일치")
                 ));
     }
 
     @Test
-    void  차단자의_아이디로_모든_차단_조회() throws Exception {
+    void 차단자의_아이디로_모든_차단_조회() throws Exception {
         // given
         Long blockId4 = createBlock(memberId1, memberId2);
 
         // when
-        Member member1 = memberService.findOne(memberId1);
-        Member member2 = memberService.findOne(memberId2);
-        Member member3 = memberService.findOne(memberId3);
 
         // then
-        List<Block> blocks = blockService.findBlocksBySubjectId(memberId1);
-        assertEquals(2, blocks.size());
+        List<BlockDto> blockDtos = blockService.findBlocksBySubjectId(memberId1);
+        assertEquals(2, blockDtos.size());
 
         // 첫번째 차단 검증
-        blocks.stream()
-                .filter(block -> block.getBlockSubject().equals(member1) && block.getBlockObject().equals(member3))
+        blockDtos.stream()
+                .filter(blockDto -> blockDto.getSubjectId().equals(memberId1) && blockDto.getObjectId().equals(memberId3))
                 .findFirst()
-                .ifPresent(block -> {
-                    assertAll("차단 정보 검증",
-                            () -> assertEquals("name1", block.getBlockSubject().getName(), "차단자 이름 불일치"),
-                            () -> assertEquals("nickName1", block.getBlockSubject().getNickName(), "차단자 닉네임 불일치"),
-                            () -> assertEquals("01011111111", block.getBlockSubject().getPhone(), "차단자 전화번호 불일치"),
-                            () -> assertEquals("name3", block.getBlockObject().getName(), "피차단자 이름 불일치"),
-                            () -> assertEquals("nickName3", block.getBlockObject().getNickName(), "피차단자 닉네임 불일치"),
-                            () -> assertEquals("01033333333", block.getBlockObject().getPhone(), "피차단자 전화번호 불일치")
-                    );
+                .ifPresent(blockDto -> {
+                    assertAll("차단 정보 검증 (차단 1)",
+                            () -> assertEquals("nickName1", blockDto.getSubjectNickName(), "차단자 닉네임 불일치"),
+                            () -> assertEquals("nickName3", blockDto.getObjectNickName(), "피차단자 닉네임 불일치"));
                 });
 
         // 두번째 차단 검증
-        blocks.stream()
-                .filter(block -> block.getBlockSubject().equals(member1) && block.getBlockObject().equals(member2))
+        blockDtos.stream()
+                .filter(blockDto -> blockDto.getSubjectId().equals(memberId1) && blockDto.getObjectId().equals(memberId2))
                 .findFirst()
-                .ifPresent(block -> {
-                    assertAll("차단 정보 검증",
-                            () -> assertEquals("name1", block.getBlockSubject().getName(), "차단자 이름 불일치"),
-                            () -> assertEquals("nickName1", block.getBlockSubject().getNickName(), "차단자 닉네임 불일치"),
-                            () -> assertEquals("01011111111", block.getBlockSubject().getPhone(), "차단자 전화번호 불일치"),
-                            () -> assertEquals("name2", block.getBlockObject().getName(), "피차단자 이름 불일치"),
-                            () -> assertEquals("nickName2", block.getBlockObject().getNickName(), "피차단자 닉네임 불일치"),
-                            () -> assertEquals("01022222222", block.getBlockObject().getPhone(), "피차단자 전화번호 불일치")
-                    );
+                .ifPresent(blockDto -> {
+                    assertAll("차단 정보 검증 (차단 2)",
+                            () -> assertEquals("nickName1", blockDto.getSubjectNickName(), "차단자 닉네임 불일치"),
+                            () -> assertEquals("nickName2", blockDto.getObjectNickName(), "피차단자 닉네임 불일치"));
                 });
     }
 
     @Test
-    void  피차단자의_아이디로_모든_차단_조회() throws Exception {
+    void 피차단자의_아이디로_모든_차단_조회() throws Exception {
         // when
-        Member member1 = memberService.findOne(memberId1);
-        Member member2 = memberService.findOne(memberId2);
-        Member member3 = memberService.findOne(memberId3);
+        List<BlockDto> blockDtos = blockService.findBlocksByObjectId(memberId3);
 
         // then
-        List<Block> blocks = blockService.findBlocksByObjectId(memberId3);
-        assertEquals(2, blocks.size());
+        assertEquals(2, blockDtos.size());
 
         // 첫번째 차단 검증
-        blocks.stream()
-                .filter(block -> block.getBlockSubject().equals(member1) && block.getBlockObject().equals(member3))
+        blockDtos.stream()
+                .filter(blockDto -> blockDto.getSubjectId().equals(memberId1) && blockDto.getObjectId().equals(memberId3))
                 .findFirst()
-                .ifPresent(block -> {
-                    assertAll("차단 정보 검증",
-                            () -> assertEquals("name1", block.getBlockSubject().getName(), "차단자 이름 불일치"),
-                            () -> assertEquals("nickName1", block.getBlockSubject().getNickName(), "차단자 닉네임 불일치"),
-                            () -> assertEquals("01011111111", block.getBlockSubject().getPhone(), "차단자 전화번호 불일치"),
-                            () -> assertEquals("name3", block.getBlockObject().getName(), "피차단자 이름 불일치"),
-                            () -> assertEquals("nickName3", block.getBlockObject().getNickName(), "피차단자 닉네임 불일치"),
-                            () -> assertEquals("01033333333", block.getBlockObject().getPhone(), "피차단자 전화번호 불일치")
-                    );
+                .ifPresent(blockDto -> {
+                    assertAll("차단 정보 검증 (차단 1)",
+                            () -> assertEquals("nickName1", blockDto.getSubjectNickName(), "차단자 닉네임 불일치"),
+                            () -> assertEquals("nickName3", blockDto.getObjectNickName(), "피차단자 닉네임 불일치"));
                 });
 
         // 두번째 차단 검증
-        blocks.stream()
-                .filter(block -> block.getBlockSubject().equals(member2) && block.getBlockObject().equals(member3))
+        blockDtos.stream()
+                .filter(blockDto -> blockDto.getSubjectId().equals(memberId2) && blockDto.getObjectId().equals(memberId3))
                 .findFirst()
-                .ifPresent(block -> {
-                    assertAll("차단 정보 검증",
-                            () -> assertEquals("name2", block.getBlockSubject().getName(), "차단자 이름 불일치"),
-                            () -> assertEquals("nickName2", block.getBlockSubject().getNickName(), "차단자 닉네임 불일치"),
-                            () -> assertEquals("01022222222", block.getBlockSubject().getPhone(), "차단자 전화번호 불일치"),
-                            () -> assertEquals("name3", block.getBlockObject().getName(), "피차단자 이름 불일치"),
-                            () -> assertEquals("nickName3", block.getBlockObject().getNickName(), "피차단자 닉네임 불일치"),
-                            () -> assertEquals("01033333333", block.getBlockObject().getPhone(), "피차단자 전화번호 불일치")
-                    );
+                .ifPresent(blockDto -> {
+                    assertAll("차단 정보 검증 (차단 2)",
+                            () -> assertEquals("nickName2", blockDto.getSubjectNickName(), "차단자 닉네임 불일치"),
+                            () -> assertEquals("nickName3", blockDto.getObjectNickName(), "피차단자 닉네임 불일치"));
                 });
     }
 
@@ -162,8 +128,8 @@ class BlockServiceTest {
         });
 
         // then
-        List<Block> blocks = blockService.findBlocks();
-        assertEquals(3, blocks.size());
+        List<BlockDto> blockDtos = blockService.findBlocks();
+        assertEquals(3, blockDtos.size());
     }
 
     @Test
@@ -174,64 +140,47 @@ class BlockServiceTest {
         });
 
         // then
-        List<Block> blocks = blockService.findBlocks();
-        assertEquals(3, blocks.size());
+        List<BlockDto> blockDtos = blockService.findBlocks();
+        assertEquals(3, blockDtos.size());
     }
 
     @Test
     public void 차단자_피차단자_정보와_함께_모든차단_조회() throws Exception {
         // when
-        Member member1 = memberService.findOne(memberId1);
-        Member member2 = memberService.findOne(memberId2);
-        Member member3 = memberService.findOne(memberId3);
 
         // then
-        List<Block> blocks = blockService.findALlWithMember();
-        assertEquals(3, blocks.size());
+        List<BlockDto> blockDtos = blockService.findALlWithMember();
+        assertEquals(3, blockDtos.size());
 
         // 첫번째 차단 검증
-        blocks.stream()
-                .filter(block -> block.getBlockSubject().equals(member1) && block.getBlockObject().equals(member3))
+        blockDtos.stream()
+                .filter(blockDto -> blockDto.getSubjectId().equals(memberId1) && blockDto.getObjectId().equals(memberId3))
                 .findFirst()
-                .ifPresent(block -> {
-                    assertAll("차단 정보 검증",
-                            () -> assertEquals("name1", block.getBlockSubject().getName(), "차단자 이름 불일치"),
-                            () -> assertEquals("nickName1", block.getBlockSubject().getNickName(), "차단자 닉네임 불일치"),
-                            () -> assertEquals("01011111111", block.getBlockSubject().getPhone(), "차단자 전화번호 불일치"),
-                            () -> assertEquals("name3", block.getBlockObject().getName(), "피차단자 이름 불일치"),
-                            () -> assertEquals("nickName3", block.getBlockObject().getNickName(), "피차단자 닉네임 불일치"),
-                            () -> assertEquals("01033333333", block.getBlockObject().getPhone(), "피차단자 전화번호 불일치")
-                    );
+                .ifPresent(blockDto -> {
+                    assertAll("차단 정보 검증 (차단 1)",
+                            () -> assertEquals("nickName1", blockDto.getSubjectNickName(), "차단자 닉네임 불일치"),
+                            () -> assertEquals("nickName3", blockDto.getObjectNickName(), "피차단자 닉네임 불일치"));
                 });
 
         // 두번째 차단 검증
-        blocks.stream()
-                .filter(block -> block.getBlockSubject().equals(member2) && block.getBlockObject().equals(member3))
+        blockDtos.stream()
+                .filter(blockDto -> blockDto.getSubjectId().equals(memberId2) && blockDto.getObjectId().equals(memberId3))
                 .findFirst()
-                .ifPresent(block -> {
-                    assertAll("차단 정보 검증",
-                            () -> assertEquals("name2", block.getBlockSubject().getName(), "차단자 이름 불일치"),
-                            () -> assertEquals("nickName2", block.getBlockSubject().getNickName(), "차단자 닉네임 불일치"),
-                            () -> assertEquals("01022222222", block.getBlockSubject().getPhone(), "차단자 전화번호 불일치"),
-                            () -> assertEquals("name3", block.getBlockObject().getName(), "피차단자 이름 불일치"),
-                            () -> assertEquals("nickName3", block.getBlockObject().getNickName(), "피차단자 닉네임 불일치"),
-                            () -> assertEquals("01033333333", block.getBlockObject().getPhone(), "피차단자 전화번호 불일치")
-                    );
+                .ifPresent(blockDto -> {
+                    assertAll("차단 정보 검증 (차단 2)",
+                            () -> assertEquals("nickName2", blockDto.getSubjectNickName(), "차단자 닉네임 불일치"),
+                            () -> assertEquals("nickName3", blockDto.getObjectNickName(), "피차단자 닉네임 불일치"));
                 });
 
+
         // 세번째 차단 검증
-        blocks.stream()
-                .filter(block -> block.getBlockSubject().equals(member3) && block.getBlockObject().equals(member1))
+        blockDtos.stream()
+                .filter(blockDto -> blockDto.getSubjectId().equals(memberId3) && blockDto.getObjectId().equals(memberId1))
                 .findFirst()
-                .ifPresent(block -> {
-                    assertAll("차단 정보 검증",
-                            () -> assertEquals("name3", block.getBlockSubject().getName(), "차단자 이름 불일치"),
-                            () -> assertEquals("nickName3", block.getBlockSubject().getNickName(), "차단자 닉네임 불일치"),
-                            () -> assertEquals("01033333333", block.getBlockSubject().getPhone(), "차단자 전화번호 불일치"),
-                            () -> assertEquals("name1", block.getBlockObject().getName(), "피차단자 이름 불일치"),
-                            () -> assertEquals("nickName1", block.getBlockObject().getNickName(), "피차단자 닉네임 불일치"),
-                            () -> assertEquals("01011111111", block.getBlockObject().getPhone(), "피차단자 전화번호 불일치")
-                    );
+                .ifPresent(blockDto -> {
+                    assertAll("차단 정보 검증 (차단 2)",
+                            () -> assertEquals("nickName3", blockDto.getSubjectNickName(), "차단자 닉네임 불일치"),
+                            () -> assertEquals("nickName1", blockDto.getObjectNickName(), "피차단자 닉네임 불일치"));
                 });
     }
 
@@ -239,10 +188,10 @@ class BlockServiceTest {
     public void 차단_해제() throws Exception {
         // when
         blockService.deleteBlock(blockId1);
-        List<Block> blocks = blockService.findBlocks();
+        List<BlockDto> blockDtos = blockService.findBlocks();
 
         // then
-        assertEquals(2, blocks.size());
+        assertEquals(2, blockDtos.size());
         assertThrows(NoSuchElementException.class, () -> blockService.findOne(blockId1));
     }
 

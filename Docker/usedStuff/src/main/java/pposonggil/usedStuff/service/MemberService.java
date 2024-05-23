@@ -9,6 +9,7 @@ import pposonggil.usedStuff.repository.member.MemberRepository;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -46,16 +47,22 @@ public class MemberService {
     /**
      * 전체 회원 조회
      */
-    public List<Member> findMembers() {
-        return memberRepository.findAll();
+    public List<MemberDto> findMembers() {
+        List<Member> members = memberRepository.findAll();
+
+        return members.stream()
+                .map(MemberDto::fromEntity)
+                .collect(Collectors.toList());
     }
 
     /**
      * 회원 아이디로 조회
      */
-    public Member findOne(Long memberId) {
-        return memberRepository.findById(memberId)
+    public MemberDto findOne(Long memberId) {
+        Member member = memberRepository.findById(memberId)
                 .orElseThrow(NoSuchElementException::new);
+
+        return MemberDto.fromEntity(member);
     }
 
     /**

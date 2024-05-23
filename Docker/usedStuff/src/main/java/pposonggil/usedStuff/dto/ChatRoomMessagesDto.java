@@ -1,9 +1,14 @@
 package pposonggil.usedStuff.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import pposonggil.usedStuff.domain.ChatRoom;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
@@ -12,20 +17,22 @@ import static lombok.AccessLevel.PROTECTED;
 @Builder
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PRIVATE)
-public class ChatRoomDto {
+public class ChatRoomMessagesDto {
     private Long chatRoomId;
     private Long chatTradeId;
-    private String addressName;
     private LocalDateTime createdAt;
     private LocalDateTime updateAt;
+    private List<MessageDto> messages;
 
-    public static ChatRoomDto fromEntity(ChatRoom chatRoom) {
-        return ChatRoomDto.builder()
+    public static ChatRoomMessagesDto fromEntity(ChatRoom chatRoom) {
+        return ChatRoomMessagesDto.builder()
                 .chatRoomId(chatRoom.getId())
                 .chatTradeId(chatRoom.getChatTrade().getId())
                 .createdAt(chatRoom.getCreatedAt())
                 .updateAt(chatRoom.getUpdateAt())
-                .addressName(chatRoom.getChatTrade().getAddress().getName())
+                .messages(chatRoom.getMessages().stream()
+                        .map(MessageDto::fromEntity)
+                        .collect(Collectors.toList()))
                 .build();
     }
 }

@@ -6,13 +6,14 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import pposonggil.usedStuff.domain.Board;
 import pposonggil.usedStuff.domain.Image;
+import pposonggil.usedStuff.dto.ImageDto;
 import pposonggil.usedStuff.repository.board.BoardRepository;
 import pposonggil.usedStuff.repository.image.ImageRepository;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -22,8 +23,11 @@ public class ImageService {
     private final AwsS3 awsS3;
     private final ImageRepository imageRepository;
 
-    public List<Image> findImages() {
-        return imageRepository.findAll();
+    public List<ImageDto> findImages() {
+        List<Image> images = imageRepository.findAll();
+        return images.stream()
+                .map(ImageDto::fromEntity)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -55,25 +59,26 @@ public class ImageService {
 
     /**
      * 이미지 상세 조회
-     *
      * @param imageId : 사진 아이디
-     * @return 사진
+     * @return 이미지 Dto
      */
-    public Image findOne(Long imageId) {
-        Optional<Image> imageOptional = imageRepository.findById(imageId);
-        if (imageOptional.isPresent())
-            return imageOptional.get();
-        else throw new NoSuchElementException("해당 이미지가 존재하지 않습니다.");
+    public ImageDto findOne(Long imageId) {
+        Image image = imageRepository.findById(imageId)
+                .orElseThrow(NoSuchElementException::new);
+
+        return ImageDto.fromEntity(image);
     }
 
     /**
      * 게시글 아이디로 이미지 조회
-     *
      * @param boardId 조회할 게시글 아이디
-     * @return 게시글 아이디가 일치하는 이미지 리스트
+     * @return 게시글 아이디가 일치하는 이미지 Dto 리스트
      */
-    public List<Image> findByBoardId(Long boardId) {
-        return imageRepository.findImagesByImageBoardId(boardId);
+    public List<ImageDto> findByBoardId(Long boardId) {
+        List<Image> images = imageRepository.findImagesByImageBoardId(boardId);
+        return images.stream()
+                .map(ImageDto::fromEntity)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -81,8 +86,11 @@ public class ImageService {
      *
      * @return 게시글 아이디가 일치하는 이미지 리스트
      */
-    public List<Image> findAllWithBoard() {
-        return imageRepository.findAllWithBoard();
+    public List<ImageDto> findAllWithBoard() {
+        List<Image> images = imageRepository.findAllWithBoard();
+        return images.stream()
+                .map(ImageDto::fromEntity)
+                .collect(Collectors.toList());
     }
 
     /**

@@ -3,12 +3,10 @@ package pposonggil.usedStuff.api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pposonggil.usedStuff.domain.ChatRoom;
 import pposonggil.usedStuff.dto.ChatRoomDto;
 import pposonggil.usedStuff.service.ChatRoomService;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,11 +19,7 @@ public class ChatRoomApiController {
      */
     @GetMapping("/api/chatrooms")
     public List<ChatRoomDto> chatRooms() {
-        List<ChatRoom> chatRooms = chatRoomService.findChatRooms();
-
-        return chatRooms.stream()
-                .map(ChatRoomDto::fromEntity)
-                .collect(Collectors.toList());
+        return chatRoomService.findChatRooms();
     }
 
     /**
@@ -35,8 +29,7 @@ public class ChatRoomApiController {
      */
     @GetMapping("/api/chatroom/{chatRoomId}")
     public ChatRoomDto getChatRoomByChatRoomId(@PathVariable Long chatRoomId) {
-        ChatRoom chatRoom = chatRoomService.findOne(chatRoomId);
-        return ChatRoomDto.fromEntity(chatRoom);
+        return chatRoomService.findOne(chatRoomId);
     }
 
     /**
@@ -46,8 +39,7 @@ public class ChatRoomApiController {
      */
     @GetMapping("/api/chatroom/{tradeId}")
     public ChatRoomDto getChatRoomsByTradeId(@PathVariable Long tradeId) {
-        ChatRoom chatRoom = chatRoomService.findChatRoomByTradeId(tradeId);
-        return ChatRoomDto.fromEntity(chatRoom);
+        return chatRoomService.findChatRoomByTradeId(tradeId);
     }
 
     /**
@@ -56,10 +48,7 @@ public class ChatRoomApiController {
      */
     @GetMapping("/api/chatrooms/with-trade")
     public List<ChatRoomDto> getChatRoomsWithTrade() {
-            List<ChatRoom> chatRooms = chatRoomService.findChatRoomsWithTrade();
-        return chatRooms.stream()
-                .map(ChatRoomDto::fromEntity)
-                .collect(Collectors.toList());
+        return chatRoomService.findChatRoomsWithTrade();
     }
 
     /**

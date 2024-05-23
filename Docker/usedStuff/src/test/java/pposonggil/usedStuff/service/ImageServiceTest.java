@@ -11,10 +11,9 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
-import pposonggil.usedStuff.domain.Board;
-import pposonggil.usedStuff.domain.Image;
 import pposonggil.usedStuff.domain.TransactionAddress;
 import pposonggil.usedStuff.dto.BoardDto;
+import pposonggil.usedStuff.dto.ImageDto;
 import pposonggil.usedStuff.dto.MemberDto;
 
 import java.io.IOException;
@@ -63,11 +62,11 @@ class ImageServiceTest {
 
         Path path1 = Paths.get("src/test/resources/test1.png");
         byte[] content1 = Files.readAllBytes(path1.toAbsolutePath().normalize());
-        MockMultipartFile mockMultipartFile1 = new MockMultipartFile("file1", "test1.png", "image/png", content1);
+        MockMultipartFile mockMultipartFile1 = new MockMultipartFile("file1", "test1.png", "imageDto/png", content1);
 
         Path path2 = Paths.get("src/test/resources/test2.HEIC");
         byte[] content2 = Files.readAllBytes(path1.toAbsolutePath().normalize());
-        MockMultipartFile mockMultipartFile2 = new MockMultipartFile("file2", "test2.HEIC", "image/HEIC", content2);
+        MockMultipartFile mockMultipartFile2 = new MockMultipartFile("file2", "test2.HEIC", "imageDto/HEIC", content2);
 
         imageId1 = imageService.uploadImage(boardId1, mockMultipartFile1, "test");
         imageId2 = imageService.uploadImage(boardId1, mockMultipartFile2, "test");
@@ -76,67 +75,41 @@ class ImageServiceTest {
     @Test
     public void 이미지_등록() throws Exception {
         // when
-        Image image1 = imageService.findOne(imageId1);
-        Board board1 = boardService.findOne(boardId1);
+        ImageDto imageDto1 = imageService.findOne(imageId1);
 
         // then
-        Optional.of(image1)
-                .filter(image -> image.getImageBoard().equals(board1))
-                .ifPresent(image -> assertAll("이미지 등록 검증",
-                        () -> assertEquals("test1.png", image.getFileName(), "이미지 파일 이름 불일치"),
-                        () -> assertEquals("title1", image.getImageBoard().getTitle(), "게시글 제목 불일치"),
-                        () -> assertEquals("우산 팔아요1", image.getImageBoard().getContent(), "게시글 내용 불일치"),
-                        () -> assertEquals("숭실대1", image.getImageBoard().getAddress().getName(), "게시글 주소 장소 이름 불일치"),
-                        () -> assertEquals(37.4958, image.getImageBoard().getAddress().getLatitude(), "게시글 주소 장소 위도 불일치"),
-                        () -> assertEquals(126.9583, image.getImageBoard().getAddress().getLongitude(), "게시글 주소 장소 경도 불일치"),
-                        () -> assertEquals("주소1", image.getImageBoard().getAddress().getStreet(), "게시글 주소 장소 도로명 주소 불일치"),
-                        () -> assertEquals(1000L, image.getImageBoard().getPrice(), "게시글 가격 불일치"),
-                        () -> assertFalse(image.getImageBoard().isFreebie(), "게시글 나눔여부 불일치")
+        Optional.of(imageDto1)
+                .filter(imageDto -> imageDto.getBoardId().equals(boardId1))
+                .ifPresent(imageDto -> assertAll("이미지 등록 검증",
+                        () -> assertEquals("test1.png", imageDto.getFileName(), "이미지 파일 이름 불일치")
                 ));
     }
 
     @Test
     public void 게시글_정보와_함께_모든_이미지_조회() throws Exception {
         // when
-        Board board1 = boardService.findOne(boardId1);
+        List<ImageDto> imageDtos = imageService.findImages();
 
         // then
-        List<Image> images = imageService.findImages();
-        assertEquals(2, images.size());
+        assertEquals(2, imageDtos.size());
 
-        images.stream()
-                .filter(image -> image.getId().equals(imageId1) &&
-                        image.getImageBoard().equals(board1))
+        imageDtos.stream()
+                .filter(imageDto -> imageDto.getImageId().equals(imageId1) &&
+                        imageDto.getBoardId().equals(boardId1))
                 .findFirst()
-                .ifPresent(image -> {
+                .ifPresent(imageDto -> {
                         assertAll("게시글 정보를 포함한 이미지 조회(이미지1)",
-                                () -> assertEquals("test1.png", image.getFileName(), "이미지 파일 이름 불일치"),
-                                () -> assertEquals("title1", image.getImageBoard().getTitle(), "게시글 제목 불일치"),
-                                () -> assertEquals("우산 팔아요1", image.getImageBoard().getContent(), "게시글 내용 불일치"),
-                                () -> assertEquals("숭실대1", image.getImageBoard().getAddress().getName(), "게시글 주소 장소 이름 불일치"),
-                                () -> assertEquals(37.4958, image.getImageBoard().getAddress().getLatitude(), "게시글 주소 장소 위도 불일치"),
-                                () -> assertEquals(126.9583, image.getImageBoard().getAddress().getLongitude(), "게시글 주소 장소 경도 불일치"),
-                                () -> assertEquals("주소1", image.getImageBoard().getAddress().getStreet(), "게시글 주소 장소 도로명 주소 불일치"),
-                                () -> assertEquals(1000L, image.getImageBoard().getPrice(), "게시글 가격 불일치"),
-                                () -> assertFalse(image.getImageBoard().isFreebie(), "게시글 나눔여부 불일치")
+                                () -> assertEquals("test1.png", imageDto.getFileName(), "이미지 파일 이름 불일치")
                         );
                 });
 
-        images.stream()
-                .filter(image -> image.getId().equals(imageId2) &&
-                        image.getImageBoard().equals(board1))
+        imageDtos.stream()
+                .filter(imageDto -> imageDto.getImageId().equals(imageId2) &&
+                        imageDto.getBoardId().equals(boardId1))
                 .findFirst()
-                .ifPresent(image -> {
+                .ifPresent(imageDto -> {
                     assertAll("게시글 정보를 포함한 이미지 조회(이미지2)",
-                            () -> assertEquals("test2.HEIC", image.getFileName(), "이미지 파일 이름 불일치"),
-                            () -> assertEquals("title1", image.getImageBoard().getTitle(), "게시글 제목 불일치"),
-                            () -> assertEquals("우산 팔아요1", image.getImageBoard().getContent(), "게시글 내용 불일치"),
-                            () -> assertEquals("숭실대1", image.getImageBoard().getAddress().getName(), "게시글 주소 장소 이름 불일치"),
-                            () -> assertEquals(37.4958, image.getImageBoard().getAddress().getLatitude(), "게시글 주소 장소 위도 불일치"),
-                            () -> assertEquals(126.9583, image.getImageBoard().getAddress().getLongitude(), "게시글 주소 장소 경도 불일치"),
-                            () -> assertEquals("주소1", image.getImageBoard().getAddress().getStreet(), "게시글 주소 장소 도로명 주소 불일치"),
-                            () -> assertEquals(1000L, image.getImageBoard().getPrice(), "게시글 가격 불일치"),
-                            () -> assertFalse(image.getImageBoard().isFreebie(), "게시글 나눔여부 불일치")
+                            () -> assertEquals("test2.HEIC", imageDto.getFileName(), "이미지 파일 이름 불일치")
                     );
                 });
     }

@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
-import pposonggil.usedStuff.domain.Member;
-import pposonggil.usedStuff.domain.Report;
 import pposonggil.usedStuff.domain.ReportType;
 import pposonggil.usedStuff.dto.MemberDto;
 import pposonggil.usedStuff.dto.ReportDto;
@@ -50,22 +48,16 @@ class ReportServiceTest {
     @Test
     public void 신고_생성() throws Exception {
         // when
-        Member member1 = memberService.findOne(memberId1);
-        Member member3 = memberService.findOne(memberId3);
-        Report report1 = reportService.findOne(reportId1);
+        ReportDto reportDto1 = reportService.findOne(reportId1);
 
         // then
-        Optional.of(report1)
-                .filter(report -> report.getReportSubject().equals(member1) && report.getReportObject().equals(member3))
-                .ifPresent(report -> assertAll("신고 1 검증",
-                        () -> assertEquals("name1", report.getReportSubject().getName(), "신고자 이름 불일치"),
-                        () -> assertEquals("nickName1", report.getReportSubject().getNickName(), "신고자 닉네임 불일치"),
-                        () -> assertEquals("01011111111", report.getReportSubject().getPhone(), "신고자 전화번호 불일치"),
-                        () -> assertEquals("name3", report.getReportObject().getName(), "피신고자 이름 불일치"),
-                        () -> assertEquals("nickName3", report.getReportObject().getNickName(), "피신고자 닉네임 불일치"),
-                        () -> assertEquals("01033333333", report.getReportObject().getPhone(), "피신고자 전화번호 불일치"),
-                        () -> assertEquals(ReportType.ABUSE.getKrName(), report.getReportType().getKrName()),
-                        () -> assertEquals("욕해요", report.getContent())
+        Optional.of(reportDto1)
+                .filter(reportDto -> reportDto.getSubjectId().equals(memberId1) && reportDto.getSubjectId().equals(memberId3))
+                .ifPresent(reportDto -> assertAll("신고 1 검증",
+                        () -> assertEquals("nickName1", reportDto.getSubjectNickName(), "신고자 닉네임 불일치"),
+                        () -> assertEquals("nickName3", reportDto.getObjectNickName(), "피신고자 닉네임 불일치"),
+                        () -> assertEquals(ReportType.ABUSE.getKrName(), reportDto.getReportType()),
+                        () -> assertEquals("욕해요", reportDto.getContent())
                 ));
     }
 
@@ -75,92 +67,69 @@ class ReportServiceTest {
         Long reportId4 = createReport(memberId1, memberId2, ReportType.NOSHOW.getKrName(), "노쇼 했어요");
 
         // when
-        Member member1 = memberService.findOne(memberId1);
-        Member member2 = memberService.findOne(memberId2);
-        Member member3 = memberService.findOne(memberId3);
+        List<ReportDto> reportDtos = reportService.findReportsBySubjectId(memberId1);
 
         // then
-        List<Report> reports = reportService.findReportsBySubjectId(memberId1);
-        assertEquals(2, reports.size());
+        assertEquals(2, reportDtos.size());
 
         // 첫번째 신고 검증
-        reports.stream()
-                .filter(report -> report.getReportSubject().equals(member1) && report.getReportObject().equals(member3))
+        reportDtos.stream()
+                .filter(reportDto -> reportDto.getSubjectId().equals(memberId1) && reportDto.getObjectId().equals(memberId3))
                 .findFirst()
-                .ifPresent(report -> {
-                    assertAll("신고 정보 검증",
-                            () -> assertEquals("name1", report.getReportSubject().getName(), "신고자 이름 불일치"),
-                            () -> assertEquals("nickName1", report.getReportSubject().getNickName(), "신고자 닉네임 불일치"),
-                            () -> assertEquals("01011111111", report.getReportSubject().getPhone(), "신고자 전화번호 불일치"),
-                            () -> assertEquals("name3", report.getReportObject().getName(), "피신고자 이름 불일치"),
-                            () -> assertEquals("nickName3", report.getReportObject().getNickName(), "피신고자 닉네임 불일치"),
-                            () -> assertEquals("01033333333", report.getReportObject().getPhone(), "피신고자 전화번호 불일치"),
-                            () -> assertEquals(ReportType.ABUSE.getKrName(), report.getReportType().getKrName()),
-                            () -> assertEquals("욕해요", report.getContent())
+                .ifPresent(reportDto -> {
+                    assertAll("신고 정보 검증 (신고 1)",
+                            () -> assertEquals("nickName1", reportDto.getSubjectNickName(), "신고자 닉네임 불일치"),
+                            () -> assertEquals("nickName3", reportDto.getObjectNickName(), "피신고자 닉네임 불일치"),
+                            () -> assertEquals(ReportType.ABUSE.getKrName(), reportDto.getReportType()),
+                            () -> assertEquals("욕해요", reportDto.getContent())
                     );
                 });
 
         // 두번째 신고 검증
-        reports.stream()
-                .filter(report -> report.getReportSubject().equals(member1) && report.getReportObject().equals(member2))
+        reportDtos.stream()
+                .filter(reportDto -> reportDto.getSubjectId().equals(memberId1) && reportDto.getObjectId().equals(memberId2))
                 .findFirst()
-                .ifPresent(report -> {
-                    assertAll("신고 정보 검증",
-                            () -> assertEquals("name1", report.getReportSubject().getName(), "신고자 이름 불일치"),
-                            () -> assertEquals("nickName1", report.getReportSubject().getNickName(), "신고자 닉네임 불일치"),
-                            () -> assertEquals("01011111111", report.getReportSubject().getPhone(), "신고자 전화번호 불일치"),
-                            () -> assertEquals("name2", report.getReportObject().getName(), "피신고자 이름 불일치"),
-                            () -> assertEquals("nickName2", report.getReportObject().getNickName(), "피신고자 닉네임 불일치"),
-                            () -> assertEquals("01022222222", report.getReportObject().getPhone(), "피신고자 전화번호 불일치"),
-                            () -> assertEquals(ReportType.NOSHOW.getKrName(), report.getReportType().getKrName()),
-                            () -> assertEquals("노쇼 했어요", report.getContent())
+                .ifPresent(reportDto -> {
+                    assertAll("신고 정보 검증 (신고 2)",
+                            () -> assertEquals("nickName1", reportDto.getSubjectNickName(), "신고자 닉네임 불일치"),
+                            () -> assertEquals("nickName2", reportDto.getObjectNickName(), "피신고자 닉네임 불일치"),
+                            () -> assertEquals(ReportType.NOSHOW.getKrName(), reportDto.getReportType()),
+                            () -> assertEquals("노쇼 했어요", reportDto.getContent())
                     );
                 });
     }
 
-
     @Test
     public void 피신고자의_아이디로_모든_신고_조회() throws Exception {
         // when
-        Member member1 = memberService.findOne(memberId1);
-        Member member2 = memberService.findOne(memberId2);
-        Member member3 = memberService.findOne(memberId3);
+        List<ReportDto> reportDtos = reportService.findReportsByObjectId(memberId3);
 
         // then
-        List<Report> reports = reportService.findReportsByObjectId(memberId3);
-        assertEquals(2, reports.size());
+        assertEquals(2, reportDtos.size());
 
         // 첫번째 신고 검증
-        reports.stream()
-                .filter(report -> report.getReportSubject().equals(member3) && report.getReportObject().equals(member1))
+        reportDtos.stream()
+                .filter(reportDto -> reportDto.getSubjectId().equals(memberId1) && reportDto.getObjectId().equals(memberId3))
                 .findFirst()
-                .ifPresent(report -> {
-                    assertAll("신고 정보 검증",
-                            () -> assertEquals("name3", report.getReportSubject().getName(), "신고자 이름 불일치"),
-                            () -> assertEquals("nickName3", report.getReportSubject().getNickName(), "신고자 닉네임 불일치"),
-                            () -> assertEquals("01033333333", report.getReportSubject().getPhone(), "신고자 전화번호 불일치"),
-                            () -> assertEquals("name1", report.getReportObject().getName(), "피신고자 이름 불일치"),
-                            () -> assertEquals("nickName1", report.getReportObject().getNickName(), "피신고자 닉네임 불일치"),
-                            () -> assertEquals("01011111111", report.getReportObject().getPhone(), "피신고자 전화번호 불일치"),
-                            () -> assertEquals(ReportType.ABUSE.getKrName(), report.getReportType().getKrName()),
-                            () -> assertEquals("욕해요", report.getContent())
+                .ifPresent(reportDto -> {
+                    assertAll("신고 정보 검증 (신고 1)",
+                            () -> assertEquals("nickName1", reportDto.getSubjectNickName(), "신고자 닉네임 불일치"),
+                            () -> assertEquals("nickName3", reportDto.getObjectNickName(), "피신고자 닉네임 불일치"),
+                            () -> assertEquals(ReportType.ABUSE.getKrName(), reportDto.getReportType()),
+                            () -> assertEquals("욕해요", reportDto.getContent())
                     );
                 });
 
         // 두번째 신고 검증
-        reports.stream()
-                .filter(report -> report.getReportSubject().equals(member3) && report.getReportObject().equals(member2))
+        reportDtos.stream()
+                .filter(reportDto -> reportDto.getSubjectId().equals(memberId2) && reportDto.getReportId().equals(memberId3))
                 .findFirst()
-                .ifPresent(report -> {
-                    assertAll("신고 정보 검증",
-                            () -> assertEquals("name3", report.getReportSubject().getName(), "신고자 이름 불일치"),
-                            () -> assertEquals("nickName3", report.getReportSubject().getNickName(), "신고자 닉네임 불일치"),
-                            () -> assertEquals("01033333333", report.getReportSubject().getPhone(), "신고자 전화번호 불일치"),
-                            () -> assertEquals("name2", report.getReportObject().getName(), "피신고자 이름 불일치"),
-                            () -> assertEquals("nickName2", report.getReportObject().getNickName(), "피신고자 닉네임 불일치"),
-                            () -> assertEquals("01022222222", report.getReportObject().getPhone(), "피신고자 전화번호 불일치"),
-                            () -> assertEquals(ReportType.DEFECTIVEUMBRELLA.getKrName(), report.getReportType().getKrName()),
-                            () -> assertEquals("불량 우산이에요", report.getContent())
+                .ifPresent(reportDto -> {
+                    assertAll("신고 정보 검증 (신고 2)",
+                            () -> assertEquals("nickName2", reportDto.getSubjectNickName(), "신고자 이름 불일치"),
+                            () -> assertEquals("nickName3", reportDto.getObjectNickName(), "피신고자 닉네임 불일치"),
+                            () -> assertEquals(ReportType.DEFECTIVEUMBRELLA.getKrName(), reportDto.getReportType()),
+                            () -> assertEquals("불량 우산이에요", reportDto.getContent())
                     );
                 });
     }
@@ -173,64 +142,51 @@ class ReportServiceTest {
         });
 
         // then
-        List<Report> reports = reportService.findReports();
-        assertEquals(3, reports.size());
+        List<ReportDto> reportDtos = reportService.findReports();
+        assertEquals(3, reportDtos.size());
     }
 
     @Test
     public void 신고자_피신고자_정보와_함께_모든신고_조회() throws Exception {
         // when
-        Member member1 = memberService.findOne(memberId1);
-        Member member2 = memberService.findOne(memberId2);
-        Member member3 = memberService.findOne(memberId3);
+        List<ReportDto> reportDtos = reportService.findAllWithMember();
 
         // then
-        List<Report> reports = reportService.findAllWithMember();
-        assertEquals(3, reports.size());
+        assertEquals(3, reportDtos.size());
 
         // 첫번째 신고 검증
-        reports.stream()
-                .filter(report -> report.getReportSubject().equals(member1) && report.getReportObject().equals(member3))
+        reportDtos.stream()
+                .filter(reportDto -> reportDto.getSubjectId().equals(memberId1) && reportDto.getObjectId().equals(memberId3))
                 .findFirst()
-                .ifPresent(report -> assertAll("신고 1 검증",
-                        () -> assertEquals("name1", report.getReportSubject().getName(), "신고자 이름 불일치"),
-                        () -> assertEquals("nickName1", report.getReportSubject().getNickName(), "신고자 닉네임 불일치"),
-                        () -> assertEquals("01011111111", report.getReportSubject().getPhone(), "신고자 전화번호 불일치"),
-                        () -> assertEquals("name3", report.getReportObject().getName(), "피신고자 이름 불일치"),
-                        () -> assertEquals("nickName3", report.getReportObject().getNickName(), "피신고자 닉네임 불일치"),
-                        () -> assertEquals("01033333333", report.getReportObject().getPhone(), "피신고자 전화번호 불일치"),
-                        () -> assertEquals(ReportType.ABUSE.getKrName(), report.getReportType().getKrName()),
-                        () -> assertEquals("욕해요", report.getContent())
-                ));
+                .ifPresent(reportDto -> {
+                    assertAll("신고 정보 검증 (신고 1)",
+                            () -> assertEquals("nickName1", reportDto.getSubjectNickName(), "신고자 닉네임 불일치"),
+                            () -> assertEquals("nickName3", reportDto.getObjectNickName(), "피신고자 닉네임 불일치"),
+                            () -> assertEquals(ReportType.ABUSE.getKrName(), reportDto.getReportType()),
+                            () -> assertEquals("욕해요", reportDto.getContent())
+                    );
+                });
 
         // 두번째 신고 검증
-        reports.stream()
-                .filter(report -> report.getReportSubject().equals(member2) && report.getReportObject().equals(member3))
+        reportDtos.stream()
+                .filter(reportDto -> reportDto.getSubjectId().equals(memberId2) && reportDto.getObjectId().equals(memberId3))
                 .findFirst()
-                .ifPresent(report -> assertAll("신고 2 검증",
-                        () -> assertEquals("name2", report.getReportSubject().getName(), "신고자 이름 불일치"),
-                        () -> assertEquals("nickName2", report.getReportSubject().getNickName(), "신고자 닉네임 불일치"),
-                        () -> assertEquals("01022222222", report.getReportSubject().getPhone(), "신고자 전화번호 불일치"),
-                        () -> assertEquals("name3", report.getReportObject().getName(), "피신고자 이름 불일치"),
-                        () -> assertEquals("nickName3", report.getReportObject().getNickName(), "피신고자 닉네임 불일치"),
-                        () -> assertEquals("01033333333", report.getReportObject().getPhone(), "피신고자 전화번호 불일치"),
-                        () -> assertEquals(ReportType.DEFECTIVEUMBRELLA.getKrName(), report.getReportType().getKrName()),
-                        () -> assertEquals("불량 우산이에요", report.getContent())
+                .ifPresent(reportDto -> assertAll("신고 2 검증",
+                        () -> assertEquals("nickName2", reportDto.getSubjectNickName(), "신고자 닉네임 불일치"),
+                        () -> assertEquals("nickName3", reportDto.getObjectNickName(), "피신고자 닉네임 불일치"),
+                        () -> assertEquals(ReportType.DEFECTIVEUMBRELLA.getKrName(), reportDto.getReportType()),
+                        () -> assertEquals("불량 우산이에요", reportDto.getContent())
                 ));
 
         // 세번째 신고 검증
-        reports.stream()
-                .filter(report -> report.getReportSubject().equals(member3) && report.getReportObject().equals(member1))
+        reportDtos.stream()
+                .filter(reportDto -> reportDto.getSubjectId().equals(memberId3) && reportDto.getObjectId().equals(memberId1))
                 .findFirst()
-                .ifPresent(report -> assertAll("신고 3 검증",
-                        () -> assertEquals("name3", report.getReportSubject().getName(), "신고자 이름 불일치"),
-                        () -> assertEquals("nickName3", report.getReportSubject().getNickName(), "신고자 닉네임 불일치"),
-                        () -> assertEquals("01033333333", report.getReportSubject().getPhone(), "신고자 전화번호 불일치"),
-                        () -> assertEquals("name1", report.getReportObject().getName(), "피신고자 이름 불일치"),
-                        () -> assertEquals("nickName1", report.getReportObject().getNickName(), "피신고자 닉네임 불일치"),
-                        () -> assertEquals("01011111111", report.getReportObject().getPhone(), "피신고자 전화번호 불일치"),
-                        () -> assertEquals(ReportType.ADVERTISEMENT.getKrName(), report.getReportType().getKrName()),
-                        () -> assertEquals("광고같아요", report.getContent())
+                .ifPresent(reportDto -> assertAll("신고 3 검증",
+                        () -> assertEquals("nickName3", reportDto.getSubjectNickName(), "신고자 닉네임 불일치"),
+                        () -> assertEquals("nickName1", reportDto.getObjectNickName(), "피신고자 닉네임 불일치"),
+                        () -> assertEquals(ReportType.ADVERTISEMENT.getKrName(), reportDto.getReportType()),
+                        () -> assertEquals("광고같아요", reportDto.getContent())
                 ));
     }
 

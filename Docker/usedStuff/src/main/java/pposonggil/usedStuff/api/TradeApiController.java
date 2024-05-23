@@ -3,12 +3,10 @@ package pposonggil.usedStuff.api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pposonggil.usedStuff.domain.Trade;
 import pposonggil.usedStuff.dto.TradeDto;
 import pposonggil.usedStuff.service.TradeService;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,11 +19,7 @@ public class TradeApiController {
      */
     @GetMapping("/api/trades")
     public List<TradeDto> Trades() {
-        List<Trade> trades = tradeService.findTrades();
-
-        return trades.stream()
-                .map(TradeDto::fromEntity)
-                .collect(Collectors.toList());
+        return tradeService.findTrades();
     }
 
     /**
@@ -35,8 +29,7 @@ public class TradeApiController {
      */
     @GetMapping("/api/trade/{tradeId}")
     public TradeDto getTradeByTradeId(@PathVariable Long tradeId) {
-        Trade trade = tradeService.findOne(tradeId);
-        return TradeDto.fromEntity(trade);
+        return tradeService.findOne(tradeId);
     }
 
     /**
@@ -46,10 +39,8 @@ public class TradeApiController {
      */
     @GetMapping("/api/trades/by-member/{memberId}")
     public List<TradeDto> getTradesByMemberId(@PathVariable Long memberId) {
-        List<Trade> trades = tradeService.findTradesByMemberId(memberId);
-        return trades.stream()
-                .map(TradeDto::fromEntity)
-                .collect(Collectors.toList());
+        return tradeService.findTradesByMemberId(memberId);
+
     }
 
     /**
@@ -59,10 +50,8 @@ public class TradeApiController {
      */
     @GetMapping("/api/trades/by-subject/{subjectId}")
     public List<TradeDto> getTradesBySubjectId(@PathVariable Long memberId) {
-        List<Trade> trades = tradeService.findTradesBySubjectId(memberId);
-        return trades.stream()
-                .map(TradeDto::fromEntity)
-                .collect(Collectors.toList());
+        return tradeService.findTradesBySubjectId(memberId);
+
     }
 
     /**
@@ -72,10 +61,8 @@ public class TradeApiController {
      */
     @GetMapping("/api/trades/by-object/{objectId}")
     public List<TradeDto> getTradesByObjectId(@PathVariable Long memberId) {
-        List<Trade> trades = tradeService.findTradesByObjectId(memberId);
-        return trades.stream()
-                .map(TradeDto::fromEntity)
-                .collect(Collectors.toList());
+        return tradeService.findTradesByObjectId(memberId);
+
     }
 
     /**
@@ -84,10 +71,8 @@ public class TradeApiController {
      */
     @GetMapping("/api/trades/with-board-member")
     public List<TradeDto> getTradesWithBoardMember() {
-        List<Trade> trades = tradeService.findTradesWithBoardMember();
-        return trades.stream()
-                .map(TradeDto::fromEntity)
-                .collect(Collectors.toList());
+        return tradeService.findTradesWithBoardMember();
+
     }
 
     /**

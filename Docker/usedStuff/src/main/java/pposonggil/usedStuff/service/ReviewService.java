@@ -13,6 +13,7 @@ import pposonggil.usedStuff.repository.trade.TradeRepository;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -25,60 +26,88 @@ public class ReviewService {
     /**
      * 전체 리뷰 조회
      */
-    public List<Review> findReviews() {
-        return reviewRepository.findAll();
+    public List<ReviewDto> findReviews() {
+        List<Review> reviews = reviewRepository.findAll();
+
+        return reviews.stream()
+                .map(ReviewDto::fromEntity)
+                .collect(Collectors.toList());
     }
 
     /**
      * 리뷰 상세 조회
      */
-    public Review findOne(Long reviewId) {
-        return reviewRepository.findById(reviewId)
+    public ReviewDto findOne(Long reviewId) {
+        Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(NoSuchElementException::new);
+
+        return ReviewDto.fromEntity(review);
     }
 
     /**
      * 리뷰 남긴 사람 아이디로 리뷰 조회
      */
-    public List<Review> findReviewsBySubjectId(Long subjectId) {
-        return reviewRepository.findReviewsBySubjectId(subjectId);
+    public List<ReviewDto> findReviewsBySubjectId(Long subjectId) {
+        List<Review> reviews = reviewRepository.findReviewsBySubjectId(subjectId);
+
+        return reviews.stream()
+                .map(ReviewDto::fromEntity)
+                .collect(Collectors.toList());
     }
 
     /**
      * 리뷰 당한 사람 아이디로 리뷰 조회
      */
-    public List<Review> findReviewsByObjectId(Long objectId) {
-        return reviewRepository.findReviewsByObjectId(objectId);
+    public List<ReviewDto> findReviewsByObjectId(Long objectId) {
+        List<Review> reviews = reviewRepository.findReviewsByObjectId(objectId);
+
+        return reviews.stream()
+                .map(ReviewDto::fromEntity)
+                .collect(Collectors.toList());
     }
 
     /**
      * 회원 아이디로 연관된 모든 리뷰 조회
      */
-    public List<Review> findReviewsByMemberId(Long memberId) {
-        return reviewRepository.findReviewsByMemberId(memberId);
+    public List<ReviewDto> findReviewsByMemberId(Long memberId) {
+        List<Review> reviews = reviewRepository.findReviewsByMemberId(memberId);
+
+        return reviews.stream()
+                .map(ReviewDto::fromEntity)
+                .collect(Collectors.toList());
     }
 
     /**
      * 거래 아이디로 리뷰 조회
      */
-    public List<Review> findReviewsByTradeId(Long tradeId) {
-        return reviewRepository.findReviewsByTradeId(tradeId);
+    public List<ReviewDto> findReviewsByTradeId(Long tradeId) {
+        List<Review> reviews = reviewRepository.findReviewsByTradeId(tradeId);
+
+        return reviews.stream()
+                .map(ReviewDto::fromEntity)
+                .collect(Collectors.toList());
     }
 
     /**
      * 거래, 리뷰주체, 리뷰 객체 아이디로 리뷰 조회
      */
-    public Review findBySubjectIdAndObjectIdAndTradeId(Long subjectId, Long objectId, Long tradeId) {
-        return reviewRepository.findBySubjectIdAndObjectIdAndTradeId(subjectId, objectId, tradeId)
+    public ReviewDto findBySubjectIdAndObjectIdAndTradeId(Long subjectId, Long objectId, Long tradeId) {
+        Review review = reviewRepository.findBySubjectIdAndObjectIdAndTradeId(subjectId, objectId, tradeId)
                 .orElseThrow(() -> new NoSuchElementException("Review not found with subjectId, objectId, tradeId: "
                         + subjectId + ", " + objectId + ", " + tradeId));
+
+        return ReviewDto.fromEntity(review);
     }
 
     /**
      * 리뷰 남긴 사람 & 리뷰 당한 사람 & 거래 & 리뷰 조회
      */
-    public List<Review> findAllWithMemberChatRoom() {
-        return reviewRepository.findAllWithMemberTrade();
+    public List<ReviewDto> findAllWithMemberChatRoom() {
+        List<Review> reviews = reviewRepository.findAllWithMemberTrade();
+
+        return reviews.stream()
+                .map(ReviewDto::fromEntity)
+                .collect(Collectors.toList());
     }
 
     /**
