@@ -81,7 +81,7 @@ public class Member extends BaseEntity {
     private String nickName;
     private String phone;
 
-    @ColumnDefault(value = "10")
+    @ColumnDefault(value = "5")
     private Double ratingScore;
 
     private boolean isActivated;
@@ -109,7 +109,7 @@ public class Member extends BaseEntity {
         return Member.builder(nickName)
                 .name(name)
                 .phone(phone)
-                .ratingScore(10.0)
+                .ratingScore(5.0)
                 .isActivated(true)
                 .build();
     }

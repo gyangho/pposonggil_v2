@@ -5,13 +5,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import pposonggil.usedStuff.domain.Image;
 import pposonggil.usedStuff.dto.ImageDto;
 import pposonggil.usedStuff.service.ImageService;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,39 +18,34 @@ public class ImageApiController {
 
     /**
      * 전체 이미지 조회
+     *
      * @return 이미지 Dto 리스트
      */
     @GetMapping("/api/images")
     public List<ImageDto> images() {
-        List<Image> images = imageService.findImages();
-
-        return images.stream()
-                .map(ImageDto::fromEntity)
-                .collect(Collectors.toList());
+        return imageService.findImages();
     }
 
     /**
      * 이미지 아이디로 이미지 조회
+     *
      * @param imageId : 조회할 이미지 아이디
      * @return 조회한 이미지 Dto
      */
     @GetMapping("api/image/by-image/{imageId}")
     public ImageDto getImageByImageId(@PathVariable Long imageId) {
-        Image image = imageService.findOne(imageId);
-        return ImageDto.fromEntity(image);
+        return imageService.findOne(imageId);
     }
 
     /**
      * 게시글 & 이미지 조회
+     *
      * @return 이미지 Dto 리스트
      */
     @GetMapping("/api/images/with-boards")
-public List<ImageDto> getImagesWithBoard() {
-    List<Image> images = imageService.findAllWithBoard();
-    return images.stream()
-            .map(ImageDto::fromEntity)
-            .collect(Collectors.toList());
-}
+    public List<ImageDto> getImagesWithBoard() {
+        return imageService.findAllWithBoard();
+    }
 
     /**
      * 이미지 등록

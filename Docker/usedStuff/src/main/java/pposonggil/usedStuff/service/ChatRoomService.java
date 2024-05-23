@@ -3,53 +3,62 @@ package pposonggil.usedStuff.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pposonggil.usedStuff.domain.Board;
 import pposonggil.usedStuff.domain.ChatRoom;
-import pposonggil.usedStuff.domain.Member;
 
+import pposonggil.usedStuff.domain.Trade;
 import pposonggil.usedStuff.dto.ChatRoomDto;
-import pposonggil.usedStuff.repository.board.BoardRepository;
 import pposonggil.usedStuff.repository.chatroom.ChatRoomRepository;
-import pposonggil.usedStuff.repository.member.MemberRepository;
+import pposonggil.usedStuff.repository.trade.TradeRepository;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class ChatRoomService {
     private final ChatRoomRepository chatRoomRepository;
-    private final BoardRepository boardRepository;
-    private final MemberRepository memberRepository;
+    private final TradeRepository tradeRepository;
 
     /**
      * 전체 채팅방 조회
      */
-    public List<ChatRoom> findChatRooms() {
-        return chatRoomRepository.findAll();
+    public List<ChatRoomDto> findChatRooms() {
+        List<ChatRoom> chatRooms = chatRoomRepository.findAll();
+        return chatRooms.stream()
+                .map(ChatRoomDto::fromEntity)
+                .collect(Collectors.toList());
     }
 
     /**
      * 채팅방 상세 조회
      */
-    public ChatRoom findOne(Long chatRoomId) {
-        return chatRoomRepository.findById(chatRoomId)
+    public ChatRoomDto findOne(Long chatRoomId) {
+        ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId)
                 .orElseThrow(NoSuchElementException::new);
+        return ChatRoomDto.fromEntity(chatRoom);
     }
 
     /**
-     * 회원 아이디로 채팅방 조회
+     * 거래 아이디로 채팅방 조회
      */
-    public List<ChatRoom> findChatRoomsByMemberId(Long memberId) {
-        return chatRoomRepository.findChatRoomsByMemberId(memberId);
+    public ChatRoomDto findChatRoomByTradeId(Long tradeId) {
+        ChatRoom chatRoom = chatRoomRepository.findChatRoomByTradeId(tradeId)
+                .orElseThrow(() -> new NoSuchElementException("ChatRoom not found with tradeId: " + tradeId));
+
+        return ChatRoomDto.fromEntity(chatRoom);
     }
 
     /**
-     * 채팅방 & 게시글 & 회원 조회
+     * 거래 & 메시지 & 채팅방조회
      */
-    public List<ChatRoom> findChatRoomsWithBoardMember() {
-        return chatRoomRepository.findChatRoomsWithBoardMember();
+    public List<ChatRoomDto> findChatRoomsWithTrade() {
+        List<ChatRoom> chatRooms = chatRoomRepository.findChatRoomsWithTrade();
+
+        return chatRooms.stream()
+                .map(ChatRoomDto::fromEntity)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -57,16 +66,17 @@ public class ChatRoomService {
      */
     @Transactional
     public Long createChatRoom(ChatRoomDto chatRoomDto) {
-        Board chatBoard = boardRepository.findById(chatRoomDto.getChatBoardId())
-                .orElseThrow(NoSuchElementException::new);
-        Member chatMember = memberRepository.findById(chatRoomDto.getChatMemberId())
-                .orElseThrow(() -> new NoSuchElementException("Member not found with id: " + chatRoomDto.getChatMemberId()));
+        Trade chatTrade = tradeRepository.findById(chatRoomDto.getChatTradeId())
+                .orElseThrow(() -> new NoSuchElementException("Trade not found with id: " + chatRoomDto.getChatTradeId()));
 
-        ChatRoom chatRoom = ChatRoom.buildChatRoom(chatBoard, chatMember);
+        chatRoomRepository.findChatRoomByTradeId(chatRoomDto.getChatTradeId())
+                .ifPresent(chatRoom -> {
+                    throw new IllegalArgumentException("이미 채팅방이 생성됐습니다.");
+                });
 
-        chatRoom.setChatBoard(chatBoard);
-        chatRoom.setChatMember(chatMember);
+        ChatRoom chatRoom = new ChatRoom(chatTrade);
 
+        chatRoom.setChatTrade(chatTrade);
         chatRoomRepository.save(chatRoom);
 
         return chatRoom.getId();

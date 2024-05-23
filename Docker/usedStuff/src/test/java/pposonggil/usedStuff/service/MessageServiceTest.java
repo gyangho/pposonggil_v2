@@ -77,201 +77,123 @@ class MessageServiceTest {
     @Test
     public void 채팅_송신() throws Exception {
         // when
-        Member member1 = memberService.findOne(memberId1);
-        Member member3 = memberService.findOne(memberId3);
-        ChatRoom chatRoom1 = chatRoomService.findOne(chatRoomId1);
-        Message message1 = messageService.findOne(messageId1);
-        Message message2 = messageService.findOne(messageId2);
+        MessageDto messageDto1 = messageService.findOne(messageId1);
+        MessageDto messageDto2 = messageService.findOne(messageId2);
 
         // then
         // 채팅 1
-        Optional.of(message1)
-                .filter(message -> message.getSender().equals(member1) && message.getMessageChatRoom().equals(chatRoom1))
-                .ifPresent(message -> assertAll("채팅 1 송신 검증",
-                        () -> assertEquals("name1", message.getSender().getName(), "채팅 송신자 이름 불일치"),
-                        () -> assertEquals("nickName1", message.getSender().getNickName(), "채팅 송신자 닉네임 불일치"),
-                        () -> assertEquals("01011111111", message.getSender().getPhone(), "채팅 송신자 전화번호 불일치"),
-                        () -> assertEquals(chatRoom1.getChatTrade(), message.getMessageChatRoom().getChatTrade(), "게시글 객체 불일치"),
-                        () -> assertEquals("우산 팔아요", message.getContent())
+        Optional.of(messageDto1)
+                .filter(messageDto -> messageDto.getSenderId().equals(memberId1) && messageDto.getMessageChatRoomId().equals(chatRoomId1))
+                .ifPresent(messageDto -> assertAll("채팅 1 송신 검증",
+                        () -> assertEquals("nickName1", messageDto.getSenderNickName(), "채팅 송신자 닉네임 불일치"),
+                        () -> assertEquals("우산 팔아요", messageDto.getContent())
                 ));
 
         // 채팅 2
-        Optional.of(message2)
-                .filter(message -> message.getSender().equals(member3) && message.getMessageChatRoom().equals(chatRoom1))
-                .ifPresent(message -> assertAll("채팅 2 송신 검증",
-                        () -> assertEquals("name3", message.getSender().getName(), "채팅 송신자 이름 불일치"),
-                        () -> assertEquals("nickName3", message.getSender().getNickName(), "채팅 송신자 닉네임 불일치"),
-                        () -> assertEquals("01033333333", message.getSender().getPhone(), "채팅 송신자 전화번호 불일치"),
-                        () -> assertEquals(chatRoom1.getChatTrade(), message.getMessageChatRoom().getChatTrade(), "게시글 객체 불일치"),
-                        () -> assertEquals("우산 살래요", message.getContent())
+        Optional.of(messageDto2)
+                .filter(messageDto -> messageDto.getSenderId().equals(memberId3) && messageDto.getMessageChatRoomId().equals(chatRoomId1))
+                .ifPresent(messageDto -> assertAll("채팅 2 송신 검증",
+                        () -> assertEquals("nickName3", messageDto.getSenderNickName(), "채팅 송신자 닉네임 불일치"),
+                        () -> assertEquals("우산 살래요", messageDto.getContent())
                 ));
     }
 
     @Test
     public void 채팅방정보와_송신자정보를_포함한_메시지_조회() throws Exception {
         // when
-        Member member1 = memberService.findOne(memberId1);
-        Member member2 = memberService.findOne(memberId2);
-        Member member3 = memberService.findOne(memberId3);
-
-        ChatRoom chatRoom1 = chatRoomService.findOne(chatRoomId1);
-        ChatRoom chatRoom2 = chatRoomService.findOne(chatRoomId2);
+        List<MessageDto> messageDtos = messageService.findAllWithMemberChatRoom();
 
         // then
-        List<Message> messages = messageService.findAllWithMemberChatRoom();
-        assertEquals(4, messages.size());
+        assertEquals(4, messageDtos.size());
 
         // 첫번째 메시지 검증
-        messages.stream()
-                .filter(message -> message.getSender().equals(member1) && message.getMessageChatRoom().equals(chatRoom1))
+        messageDtos.stream()
+                .filter(messageDto -> messageDto.getSenderId().equals(memberId1) && messageDto.getMessageChatRoomId().equals(chatRoomId1))
                 .findFirst()
-                .ifPresent(message -> assertAll("채팅 1 송신 검증",
-                        () -> assertEquals("name1", message.getSender().getName(), "채팅 송신자 이름 불일치"),
-                        () -> assertEquals("nickName1", message.getSender().getNickName(), "채팅 송신자 닉네임 불일치"),
-                        () -> assertEquals("01011111111", message.getSender().getPhone(), "채팅 송신자 전화번호 불일치"),
-                        () -> assertEquals(chatRoom1.getChatTrade(), message.getMessageChatRoom().getChatTrade(), "거래 객체 불일치"),
-                        () -> assertEquals("숭실대1", message.getMessageChatRoom().getChatTrade().getAddress().getName(), "주소 이름 불일치"),
-                        () -> assertEquals(37.4958, message.getMessageChatRoom().getChatTrade().getAddress().getLatitude(), "주소 위도 불일치"),
-                        () -> assertEquals(126.9583, message.getMessageChatRoom().getChatTrade().getAddress().getLongitude(), "주소 경도 불일치"),
-                        () -> assertEquals("주소1", message.getMessageChatRoom().getChatTrade().getAddress().getStreet(), "주소 도로명 불일치"),
-                        () -> assertEquals("우산 팔아요", message.getContent())
+                .ifPresent(messageDto -> assertAll("채팅 1 송신 검증",
+                        () -> assertEquals("nickName1", messageDto.getSenderNickName(), "채팅 송신자 닉네임 불일치"),
+                        () -> assertEquals("우산 팔아요", messageDto.getContent())
                 ));
 
         // 두번째 메시지 검증
-        messages.stream()
-                .filter(message -> message.getSender().equals(member3) && message.getMessageChatRoom().equals(chatRoom1))
+        messageDtos.stream()
+                .filter(messageDto -> messageDto.getSenderId().equals(memberId3) && messageDto.getMessageChatRoomId().equals(chatRoomId1))
                 .findFirst()
-                .ifPresent(message -> assertAll("채팅 2 송신 검증",
-                        () -> assertEquals("name3", message.getSender().getName(), "채팅 송신자 이름 불일치"),
-                        () -> assertEquals("nickName3", message.getSender().getNickName(), "채팅 송신자 닉네임 불일치"),
-                        () -> assertEquals("01033333333", message.getSender().getPhone(), "채팅 송신자 전화번호 불일치"),
-                        () -> assertEquals(chatRoom1.getChatTrade(), message.getMessageChatRoom().getChatTrade(), "거래 객체 불일치"),
-                        () -> assertEquals("숭실대1", message.getMessageChatRoom().getChatTrade().getAddress().getName(), "주소 이름 불일치"),
-                        () -> assertEquals(37.4958, message.getMessageChatRoom().getChatTrade().getAddress().getLatitude(), "주소 위도 불일치"),
-                        () -> assertEquals(126.9583, message.getMessageChatRoom().getChatTrade().getAddress().getLongitude(), "주소 경도 불일치"),
-                        () -> assertEquals("주소1", message.getMessageChatRoom().getChatTrade().getAddress().getStreet(), "주소 도로명 불일치"),
-                        () -> assertEquals("우산 살래요", message.getContent())
+                .ifPresent(messageDto -> assertAll("채팅 2 송신 검증",
+                        () -> assertEquals("nickName3", messageDto.getSenderNickName(), "채팅 송신자 닉네임 불일치"),
+                        () -> assertEquals("우산 살래요", messageDto.getContent())
                 ));
 
         // 세번째 메시지 검증
-        messages.stream()
-                .filter(message -> message.getSender().equals(member2) && message.getMessageChatRoom().equals(chatRoom2))
+        messageDtos.stream()
+                .filter(messageDto -> messageDto.getSenderId().equals(memberId2) && messageDto.getMessageChatRoomId().equals(chatRoomId2))
                 .findFirst()
-                .ifPresent(message -> assertAll("채팅 3 송신 검증",
-                        () -> assertEquals("name2", message.getSender().getName(), "채팅 송신자 이름 불일치"),
-                        () -> assertEquals("nickName2", message.getSender().getNickName(), "채팅 송신자 닉네임 불일치"),
-                        () -> assertEquals("01022222222", message.getSender().getPhone(), "채팅 송신자 전화번호 불일치"),
-                        () -> assertEquals(chatRoom2.getChatTrade(), message.getMessageChatRoom().getChatTrade(), "거래 객체 불일치"),
-                        () -> assertEquals("숭실대2", message.getMessageChatRoom().getChatTrade().getAddress().getName(), "주소 이름 불일치"),
-                        () -> assertEquals(37.5000, message.getMessageChatRoom().getChatTrade().getAddress().getLatitude(), "주소 위도 불일치"),
-                        () -> assertEquals(126.9500, message.getMessageChatRoom().getChatTrade().getAddress().getLongitude(), "주소 경도 불일치"),
-                        () -> assertEquals("주소2", message.getMessageChatRoom().getChatTrade().getAddress().getStreet(), "주소 도로명 불일치"),
-                        () -> assertEquals("만나요", message.getContent())
+                .ifPresent(messageDto -> assertAll("채팅 3 송신 검증",
+                        () -> assertEquals("nickName2", messageDto.getSenderNickName(), "채팅 송신자 닉네임 불일치"),
+                        () -> assertEquals("만나요", messageDto.getContent())
                 ));
 
         // 네번째 메시지 검증
-        messages.stream()
-                .filter(message -> message.getSender().equals(member3) && message.getMessageChatRoom().equals(chatRoom2))
+        messageDtos.stream()
+                .filter(messageDto -> messageDto.getSenderId().equals(memberId3) && messageDto.getMessageChatRoomId().equals(chatRoomId2))
                 .findFirst()
-                .ifPresent(message -> assertAll("채팅 4 송신 검증",
-                        () -> assertEquals("name3", message.getSender().getName(), "채팅 송신자 이름 불일치"),
-                        () -> assertEquals("nickName3", message.getSender().getNickName(), "채팅 송신자 닉네임 불일치"),
-                        () -> assertEquals("01033333333", message.getSender().getPhone(), "채팅 송신자 전화번호 불일치"),
-                        () -> assertEquals(chatRoom2.getChatTrade(), message.getMessageChatRoom().getChatTrade(), "거래 객체 불일치"),
-                        () -> assertEquals("숭실대2", message.getMessageChatRoom().getChatTrade().getAddress().getName(), "주소 이름 불일치"),
-                        () -> assertEquals(37.5000, message.getMessageChatRoom().getChatTrade().getAddress().getLatitude(), "주소 위도 불일치"),
-                        () -> assertEquals(126.9500, message.getMessageChatRoom().getChatTrade().getAddress().getLongitude(), "주소 경도 불일치"),
-                        () -> assertEquals("주소2", message.getMessageChatRoom().getChatTrade().getAddress().getStreet(), "주소 도로명 불일치"),
-                        () -> assertEquals("싫어요", message.getContent())
+                .ifPresent(messageDto -> assertAll("채팅 4 송신 검증",
+                        () -> assertEquals("nickName3", messageDto.getSenderNickName(), "채팅 송신자 닉네임 불일치"),
+                        () -> assertEquals("싫어요", messageDto.getContent())
                 ));
     }
 
     @Test
     public void 채팅방_아이디로_메시지_조회() throws Exception {
         // when
-        Member member1 = memberService.findOne(memberId1);
-        Member member3 = memberService.findOne(memberId3);
-        ChatRoom chatRoom1 = chatRoomService.findOne(chatRoomId1);
+        List<MessageDto> messageDtos = messageService.findMessagesByChatRoomId(chatRoomId1);
 
         // then
-        List<Message> messages = messageService.findMessagesByChatRoomId(chatRoomId1);
-        assertEquals(2, messages.size());
+        assertEquals(2, messageDtos.size());
 
         // 첫번째 메시지 검증
-        messages.stream()
-                .filter(message -> message.getSender().equals(member1) && message.getMessageChatRoom().equals(chatRoom1))
+        messageDtos.stream()
+                .filter(messageDto -> messageDto.getSenderId().equals(memberId1) && messageDto.getMessageChatRoomId().equals(chatRoomId1))
                 .findFirst()
-                .ifPresent(message -> assertAll("채팅 1 송신 검증",
-                        () -> assertEquals("name1", message.getSender().getName(), "채팅 송신자 이름 불일치"),
-                        () -> assertEquals("nickName1", message.getSender().getNickName(), "채팅 송신자 닉네임 불일치"),
-                        () -> assertEquals("01011111111", message.getSender().getPhone(), "채팅 송신자 전화번호 불일치"),
-                        () -> assertEquals(chatRoom1.getChatTrade(), message.getMessageChatRoom().getChatTrade(), "거래 객체 불일치"),
-                        () -> assertEquals("숭실대1", message.getMessageChatRoom().getChatTrade().getAddress().getName(), "주소 이름 불일치"),
-                        () -> assertEquals(37.4958, message.getMessageChatRoom().getChatTrade().getAddress().getLatitude(), "주소 위도 불일치"),
-                        () -> assertEquals(126.9583, message.getMessageChatRoom().getChatTrade().getAddress().getLongitude(), "주소 경도 불일치"),
-                        () -> assertEquals("주소1", message.getMessageChatRoom().getChatTrade().getAddress().getStreet(), "주소 도로명 불일치"),
-                        () -> assertEquals("우산 팔아요", message.getContent())
+                .ifPresent(messageDto -> assertAll("채팅 1 송신 검증",
+                        () -> assertEquals("nickName1", messageDto.getSenderNickName(), "채팅 송신자 닉네임 불일치"), 
+                        () -> assertEquals("우산 팔아요", messageDto.getContent())
                 ));
 
         // 두번째 메시지 검증
-        messages.stream()
-                .filter(message -> message.getSender().equals(member3) && message.getMessageChatRoom().equals(chatRoom1))
+        messageDtos.stream()
+                .filter(messageDto -> messageDto.getSenderId().equals(memberId3) && messageDto.getMessageChatRoomId().equals(chatRoomId1))
                 .findFirst()
-                .ifPresent(message -> assertAll("채팅 2 송신 검증",
-                        () -> assertEquals("name3", message.getSender().getName(), "채팅 송신자 이름 불일치"),
-                        () -> assertEquals("nickName3", message.getSender().getNickName(), "채팅 송신자 닉네임 불일치"),
-                        () -> assertEquals("01033333333", message.getSender().getPhone(), "채팅 송신자 전화번호 불일치"),
-                        () -> assertEquals(chatRoom1.getChatTrade(), message.getMessageChatRoom().getChatTrade(), "거래 객체 불일치"),
-                        () -> assertEquals("숭실대1", message.getMessageChatRoom().getChatTrade().getAddress().getName(), "주소 이름 불일치"),
-                        () -> assertEquals(37.4958, message.getMessageChatRoom().getChatTrade().getAddress().getLatitude(), "주소 위도 불일치"),
-                        () -> assertEquals(126.9583, message.getMessageChatRoom().getChatTrade().getAddress().getLongitude(), "주소 경도 불일치"),
-                        () -> assertEquals("주소1", message.getMessageChatRoom().getChatTrade().getAddress().getStreet(), "주소 도로명 불일치"),
-                        () -> assertEquals("우산 살래요", message.getContent())
+                .ifPresent(messageDto -> assertAll("채팅 2 송신 검증",
+                        () -> assertEquals("nickName3", messageDto.getSenderNickName(), "채팅 송신자 닉네임 불일치"),
+                        () -> assertEquals("우산 살래요", messageDto.getContent())
                 ));
     }
 
     @Test
     public void 송신자_아이디로_메시지_조회() throws Exception {
         // when
-        Member member1 = memberService.findOne(memberId1);
-        Member member3 = memberService.findOne(memberId3);
-        ChatRoom chatRoom1 = chatRoomService.findOne(chatRoomId1);
-        ChatRoom chatRoom2 = chatRoomService.findOne(chatRoomId2);
+        List<MessageDto> messageDtos = messageService.findMessagesBySenderId(memberId3);
 
         // then
-        List<Message> messages = messageService.findMessagesBySenderId(memberId3);
-        assertEquals(2, messages.size());
+        assertEquals(2, messageDtos.size());
 
         // 두번째 메시지 검증
-        messages.stream()
-                .filter(message -> message.getSender().equals(member3) && message.getMessageChatRoom().equals(chatRoom1))
+        messageDtos.stream()
+                .filter(messageDto -> messageDto.getSenderId().equals(memberId3) && messageDto.getMessageChatRoomId().equals(chatRoomId1))
                 .findFirst()
-                .ifPresent(message -> assertAll("채팅 2 송신 검증",
-                        () -> assertEquals("name3", message.getSender().getName(), "채팅 송신자 이름 불일치"),
-                        () -> assertEquals("nickName3", message.getSender().getNickName(), "채팅 송신자 닉네임 불일치"),
-                        () -> assertEquals("01033333333", message.getSender().getPhone(), "채팅 송신자 전화번호 불일치"),
-                        () -> assertEquals(chatRoom1.getChatTrade(), message.getMessageChatRoom().getChatTrade(), "거래 객체 불일치"),
-                        () -> assertEquals("숭실대1", message.getMessageChatRoom().getChatTrade().getAddress().getName(), "주소 이름 불일치"),
-                        () -> assertEquals(37.4958, message.getMessageChatRoom().getChatTrade().getAddress().getLatitude(), "주소 위도 불일치"),
-                        () -> assertEquals(126.9583, message.getMessageChatRoom().getChatTrade().getAddress().getLongitude(), "주소 경도 불일치"),
-                        () -> assertEquals("주소1", message.getMessageChatRoom().getChatTrade().getAddress().getStreet(), "주소 도로명 불일치"),
-                        () -> assertEquals("우산 살래요", message.getContent())
+                .ifPresent(messageDto -> assertAll("채팅 2 송신 검증",
+                        () -> assertEquals("nickName3", messageDto.getSenderNickName(), "채팅 송신자 닉네임 불일치"),
+                        () -> assertEquals("우산 살래요", messageDto.getContent())
                 ));
 
         // 네번째 메시지 검증
-        messages.stream()
-                .filter(message -> message.getSender().equals(member3) && message.getMessageChatRoom().equals(chatRoom2))
+        messageDtos.stream()
+                .filter(messageDto -> messageDto.getSenderId().equals(memberId3) && messageDto.getMessageChatRoomId().equals(chatRoomId2))
                 .findFirst()
-                .ifPresent(message -> assertAll("채팅 4 송신 검증",
-                        () -> assertEquals("name3", message.getSender().getName(), "채팅 송신자 이름 불일치"),
-                        () -> assertEquals("nickName3", message.getSender().getNickName(), "채팅 송신자 닉네임 불일치"),
-                        () -> assertEquals("01033333333", message.getSender().getPhone(), "채팅 송신자 전화번호 불일치"),
-                        () -> assertEquals(chatRoom2.getChatTrade(), message.getMessageChatRoom().getChatTrade(), "거래 객체 불일치"),
-                        () -> assertEquals("숭실대2", message.getMessageChatRoom().getChatTrade().getAddress().getName(), "주소 이름 불일치"),
-                        () -> assertEquals(37.5000, message.getMessageChatRoom().getChatTrade().getAddress().getLatitude(), "주소 위도 불일치"),
-                        () -> assertEquals(126.9500, message.getMessageChatRoom().getChatTrade().getAddress().getLongitude(), "주소 경도 불일치"),
-                        () -> assertEquals("주소2", message.getMessageChatRoom().getChatTrade().getAddress().getStreet(), "주소 도로명 불일치"),
-                        () -> assertEquals("싫어요", message.getContent())
+                .ifPresent(messageDto -> assertAll("채팅 4 송신 검증",
+                        () -> assertEquals("nickName3", messageDto.getSenderNickName(), "채팅 송신자 닉네임 불일치"),
+                        () -> assertEquals("싫어요", messageDto.getContent())
                 ));
     }
 
@@ -317,8 +239,8 @@ class MessageServiceTest {
     public Long createTrade(Long boardId, Long subjectId, Long objectId) {
         TradeDto tradeDto = TradeDto.builder()
                 .tradeBoardId(boardId)
-                .tradeSubjectId(subjectId)
-                .tradeObjectId(objectId)
+                .subjectId(subjectId)
+                .objectId(objectId)
                 .build();
         return tradeService.createTrade(tradeDto);
     }

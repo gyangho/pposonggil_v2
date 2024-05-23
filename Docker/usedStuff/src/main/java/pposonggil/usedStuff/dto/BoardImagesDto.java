@@ -8,6 +8,8 @@ import pposonggil.usedStuff.domain.Board;
 import pposonggil.usedStuff.domain.TransactionAddress;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
@@ -16,7 +18,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Builder
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PRIVATE)
-public class BoardDto {
+public class BoardImagesDto {
     private Long boardId;
     private Long writerId;
     private String writerNickName;
@@ -30,9 +32,10 @@ public class BoardDto {
     private LocalDateTime updateAt;
     private Long price;
     private boolean isFreebie;
+    private List<ImageDto> images;
 
-    public static BoardDto fromEntity(Board board) {
-        return BoardDto.builder()
+    public static BoardImagesDto fromEntity(Board board) {
+        return BoardImagesDto.builder()
                 .boardId(board.getId())
                 .writerId(board.getWriter().getId())
                 .writerNickName(board.getWriter().getNickName())
@@ -46,6 +49,10 @@ public class BoardDto {
                 .updateAt(board.getUpdateAt())
                 .price(board.getPrice())
                 .isFreebie(board.isFreebie())
+                .images(board.getImages().stream()
+                        .map(ImageDto::fromEntity)
+                        .collect(Collectors.toList()))
                 .build();
     }
+
 }

@@ -11,6 +11,7 @@ import pposonggil.usedStuff.repository.member.MemberRepository;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -22,37 +23,53 @@ public class BlockService {
     /**
      * 전체 차단 조회
      */
-    public List<Block> findBlocks() {
-        return blockRepository.findAll();
+    public List<BlockDto> findBlocks() {
+        List<Block> blocks = blockRepository.findAll();
+        return blocks.stream()
+                .map(BlockDto::fromEntity)
+                .collect(Collectors.toList());
     }
 
     /**
      * 차단 상세 조회
      */
-    public Block findOne(Long blockId) {
-        return blockRepository.findById(blockId)
+    public BlockDto findOne(Long blockId) {
+        Block block = blockRepository.findById(blockId)
                 .orElseThrow(NoSuchElementException::new);
+
+        return BlockDto.fromEntity(block);
     }
 
     /**
      * 차단자 아이디로 차단 조회
      */
-    public List<Block> findBlocksBySubjectId(Long subjectId) {
-        return blockRepository.findBlocksBySubjectId(subjectId);
+    public List<BlockDto> findBlocksBySubjectId(Long subjectId) {
+        List<Block> blocks = blockRepository.findBlocksBySubjectId(subjectId);
+
+        return blocks.stream()
+                .map(BlockDto::fromEntity)
+                .collect(Collectors.toList());
     }
 
     /**
      * 피차단자 아이디로 차단 조회
      */
-    public List<Block> findBlocksByObjectId(Long objectId) {
-        return blockRepository.findBlocksByObjectId(objectId);
+    public List<BlockDto> findBlocksByObjectId(Long objectId) {
+        List<Block> blocks = blockRepository.findBlocksByObjectId(objectId);
+
+        return blocks.stream()
+                .map(BlockDto::fromEntity)
+                .collect(Collectors.toList());
     }
 
     /**
      * 차단 & 차단자 & 피차단자 조회
      */
-    public List<Block> findALlWithMember() {
-        return blockRepository.findAllWithMember();
+    public List<BlockDto> findALlWithMember() {
+        List<Block> blocks = blockRepository.findAllWithMember();
+        return blocks.stream()
+                .map(BlockDto::fromEntity)
+                .collect(Collectors.toList());
     }
 
     /**

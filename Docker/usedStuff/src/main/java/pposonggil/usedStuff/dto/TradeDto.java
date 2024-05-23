@@ -16,10 +16,10 @@ import static lombok.AccessLevel.PROTECTED;
 public class TradeDto {
     private Long tradeId;
     private Long tradeBoardId;
-    private Long tradeSubjectId;
-    private String tradeSubjectNickName;
-    private Long tradeObjectId;
-    private String tradeObjectNickName;
+    private Long subjectId;
+    private String subjectNickName;
+    private Long objectId;
+    private String objectNickName;
     private String startTimeString;
     private String endTimeString;
     private TransactionAddress address;
@@ -30,10 +30,10 @@ public class TradeDto {
         return TradeDto.builder()
                 .tradeId(trade.getId())
                 .tradeBoardId(trade.getTradeBoard().getId())
-                .tradeSubjectId(trade.getTradeSubject().getId())
-                .tradeSubjectNickName(trade.getTradeSubject().getNickName())
-                .tradeObjectId(trade.getTradeObject().getId())
-                .tradeObjectNickName(trade.getTradeObject().getNickName())
+                .subjectId(trade.getTradeSubject().getId())
+                .subjectNickName(trade.getTradeSubject().getNickName())
+                .objectId(trade.getTradeObject().getId())
+                .objectNickName(trade.getTradeObject().getNickName())
                 .startTimeString(trade.getStartTimeString())
                 .endTimeString(trade.getEndTimeString())
                 .address(trade.getAddress())

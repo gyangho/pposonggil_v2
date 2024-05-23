@@ -13,6 +13,7 @@ import pposonggil.usedStuff.repository.message.MessageRepository;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -26,7 +27,7 @@ public class MessageService {
      * 메시지 송신
      */
     @Transactional
-    public Long createMessage(MessageDto messageDto){
+    public Long createMessage(MessageDto messageDto) {
         Member sender = memberRepository.findById(messageDto.getSenderId())
                 .orElseThrow(() -> new NoSuchElementException("Member not found with id: " + messageDto.getSenderId()));
         ChatRoom messageChatRoom = chatRoomRepository.findById(messageDto.getMessageChatRoomId())
@@ -50,29 +51,42 @@ public class MessageService {
     /**
      * 메시지 조회
      */
-    public Message findOne(Long messageId) {
-        return messageRepository.findById(messageId)
+    public MessageDto findOne(Long messageId) {
+        Message message = messageRepository.findById(messageId)
                 .orElseThrow(NoSuchElementException::new);
+        return MessageDto.fromEntity(message);
     }
 
     /**
      * 송신자 & 채팅방 & 메시지 조회
      */
-    public List<Message> findAllWithMemberChatRoom() {
-        return messageRepository.findAllWithMemberChatRoom();
+    public List<MessageDto> findAllWithMemberChatRoom() {
+        List<Message> messages = messageRepository.findAllWithMemberChatRoom();
+
+        return messages.stream()
+                .map(MessageDto::fromEntity)
+                .collect(Collectors.toList());
     }
 
     /**
      * 채팅방 아이디로 메시지 조회
      */
-    public List<Message> findMessagesByChatRoomId(Long chatRoomId){
-        return messageRepository.findMessagesByChatRoomId(chatRoomId);
+    public List<MessageDto> findMessagesByChatRoomId(Long chatRoomId) {
+        List<Message> messages = messageRepository.findMessagesByChatRoomId(chatRoomId);
+
+        return messages.stream()
+                .map(MessageDto::fromEntity)
+                .collect(Collectors.toList());
     }
 
     /**
      * 송신자 아이디로 메시지 조회
      */
-    public List<Message> findMessagesBySenderId(Long senderId) {
-        return messageRepository.findMessagesBySenderId(senderId);
+    public List<MessageDto> findMessagesBySenderId(Long senderId) {
+        List<Message> messages = messageRepository.findMessagesBySenderId(senderId);
+
+        return messages.stream()
+                .map(MessageDto::fromEntity)
+                .collect(Collectors.toList());
     }
 }

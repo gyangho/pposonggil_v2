@@ -3,12 +3,10 @@ package pposonggil.usedStuff.api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pposonggil.usedStuff.domain.Block;
 import pposonggil.usedStuff.dto.BlockDto;
 import pposonggil.usedStuff.service.BlockService;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,11 +19,7 @@ public class BlockApiController {
      */
     @GetMapping("/api/blocks")
     public List<BlockDto> blocks() {
-        List<Block> blocks = blockService.findBlocks();
-
-        return blocks.stream()
-                .map(BlockDto::fromEntity)
-                .collect(Collectors.toList());
+        return blockService.findBlocks();
     }
 
     /**
@@ -35,8 +29,7 @@ public class BlockApiController {
      */
     @GetMapping("/api/block/{blockId}")
     public BlockDto getBlockByBlockId(@PathVariable Long blockId) {
-        Block block = blockService.findOne(blockId);
-        return BlockDto.fromEntity(block);
+        return blockService.findOne(blockId);
     }
 
     /**
@@ -46,10 +39,7 @@ public class BlockApiController {
      */
     @GetMapping("/api/blocks/by-subject/{subjectId}")
     public List<BlockDto> getBlocksBySubjectId(@PathVariable Long subjectId) {
-        List<Block> blocks = blockService.findBlocksBySubjectId(subjectId);
-        return blocks.stream()
-                .map(BlockDto::fromEntity)
-                .collect(Collectors.toList());
+        return blockService.findBlocksBySubjectId(subjectId);
     }
 
     /**
@@ -59,10 +49,7 @@ public class BlockApiController {
      */
     @GetMapping("/api/blocks/by-object/{objectId}")
     public List<BlockDto> getBlocksByObjectId(@PathVariable Long objectId) {
-        List<Block> blocks = blockService.findBlocksByObjectId(objectId);
-        return blocks.stream()
-                .map(BlockDto::fromEntity)
-                .collect(Collectors.toList());
+        return blockService.findBlocksByObjectId(objectId);
     }
 
     /**
@@ -71,10 +58,7 @@ public class BlockApiController {
      */
     @GetMapping("/api/blocks/with-member")
     public List<BlockDto> getBlocksWithMember() {
-        List<Block> blocks = blockService.findALlWithMember();
-        return blocks.stream()
-                .map(BlockDto::fromEntity)
-                .collect(Collectors.toList());
+        return blockService.findALlWithMember();
     }
 
     /**

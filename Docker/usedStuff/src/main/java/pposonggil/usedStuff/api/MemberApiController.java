@@ -3,12 +3,10 @@ package pposonggil.usedStuff.api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pposonggil.usedStuff.domain.Member;
 import pposonggil.usedStuff.dto.MemberDto;
 import pposonggil.usedStuff.service.MemberService;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,11 +30,7 @@ public class MemberApiController {
      */
     @GetMapping("/api/members")
     public List<MemberDto> members() {
-        List<Member> members = memberService.findMembers();
-
-        return members.stream()
-                .map(MemberDto::fromEntity)
-                .collect(Collectors.toList());
+        return memberService.findMembers();
     }
 
     /**
@@ -45,12 +39,8 @@ public class MemberApiController {
      * @return 회원 Dto
      */
     @GetMapping("api/member/{memberId}")
-    public ResponseEntity<MemberDto> getMember(@PathVariable Long memberId) {
-        Member member = memberService.findOne(memberId);
-        if (member == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(MemberDto.fromEntity(member));
+    public MemberDto getMember(@PathVariable Long memberId) {
+        return memberService.findOne(memberId);
     }
 
     /**
@@ -61,11 +51,11 @@ public class MemberApiController {
      */
     @PutMapping("/api/member/{memberId}")
     public ResponseEntity<String> updateMember(@PathVariable Long memberId, @RequestBody MemberDto memberDto) {
-        Member member = memberService.findOne(memberId);
-        if (member == null) {
+        MemberDto updateMemberDto = memberService.findOne(memberId);
+        if (updateMemberDto == null) {
             return ResponseEntity.notFound().build();
         }
-        memberService.updateMember(memberDto);
+        memberService.updateMember(updateMemberDto);
 
         return ResponseEntity.ok("회원 정보를 업데이트 하였습니다.");
     }

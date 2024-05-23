@@ -3,12 +3,10 @@ package pposonggil.usedStuff.api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pposonggil.usedStuff.domain.Review;
 import pposonggil.usedStuff.dto.ReviewDto;
 import pposonggil.usedStuff.service.ReviewService;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,11 +19,7 @@ public class ReviewApiController {
      */
     @GetMapping("/api/reviews")
     public List<ReviewDto> reviews() {
-        List<Review> reviews = reviewService.findReviews();
-
-        return reviews.stream()
-                .map(ReviewDto::fromEntity)
-                .collect(Collectors.toList());
+        return reviewService.findReviews();
     }
 
     /**
@@ -35,8 +29,7 @@ public class ReviewApiController {
      */
     @GetMapping("/api/review/{reviewId}")
     public ReviewDto getReviewReviewId(@PathVariable Long reviewId) {
-        Review review = reviewService.findOne(reviewId);
-        return ReviewDto.fromEntity(review);
+        return reviewService.findOne(reviewId);
     }
 
     /**
@@ -46,11 +39,7 @@ public class ReviewApiController {
      */
     @GetMapping("/api/reviews/by-subject/{subjectId}")
     public List<ReviewDto> getReviewsBySubjectId(@PathVariable Long subjectId){
-        List<Review> reviews = reviewService.findReviewsBySubjectId(subjectId);
-
-        return reviews.stream()
-                .map(ReviewDto::fromEntity)
-                .collect(Collectors.toList());
+        return reviewService.findReviewsBySubjectId(subjectId);
     }
 
     /**
@@ -60,11 +49,7 @@ public class ReviewApiController {
      */
     @GetMapping("/api/reviews/by-object/{objectId}")
     public List<ReviewDto> getReviewsByObjectId(@PathVariable Long objectId) {
-        List<Review> reviews = reviewService.findReviewsByObjectId(objectId);
-
-        return reviews.stream()
-                .map(ReviewDto::fromEntity)
-                .collect(Collectors.toList());
+        return reviewService.findReviewsByObjectId(objectId);
     }
 
     /**
@@ -74,11 +59,7 @@ public class ReviewApiController {
      */
     @GetMapping("/api/reviews/by-member/{memberId}")
     public List<ReviewDto> getReviewByMemberId(@PathVariable Long memberId) {
-        List<Review> reviews = reviewService.findReviewsByMemberId(memberId);
-
-        return reviews.stream()
-                .map(ReviewDto::fromEntity)
-                .collect(Collectors.toList());
+        return reviewService.findReviewsByMemberId(memberId);
     }
 
     /**
@@ -88,11 +69,7 @@ public class ReviewApiController {
      */
     @GetMapping("/api/reviews/by-trade/{tradeId}")
     public List<ReviewDto> getReviewByChatRoomId(@PathVariable Long tradeId) {
-        List<Review> reviews = reviewService.findReviewsByTradeId(tradeId);
-
-        return reviews.stream()
-                .map(ReviewDto::fromEntity)
-                .collect(Collectors.toList());
+        return reviewService.findReviewsByTradeId(tradeId);
     }
 
     /**
@@ -101,11 +78,7 @@ public class ReviewApiController {
      */
     @GetMapping("/api/reviews/with-member-chatroom")
     public List<ReviewDto> getReviewsWithMemberChatRoom() {
-        List<Review> reviews = reviewService.findAllWithMemberChatRoom();
-
-        return reviews.stream()
-                .map(ReviewDto::fromEntity)
-                .collect(Collectors.toList());
+        return reviewService.findAllWithMemberChatRoom();
     }
 
     /**

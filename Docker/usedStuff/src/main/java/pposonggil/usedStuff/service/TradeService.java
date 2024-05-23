@@ -13,6 +13,7 @@ import pposonggil.usedStuff.repository.trade.TradeRepository;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -25,52 +26,74 @@ public class TradeService {
     /**
      * 전체 거래 조회
      */
-    public List<Trade> findTrades() {
-        return tradeRepository.findAll();
+    public List<TradeDto> findTrades() {
+        List<Trade> trades = tradeRepository.findAll();
+        return trades.stream()
+                .map(TradeDto::fromEntity)
+                .collect(Collectors.toList());
     }
 
     /**
      * 거래 상세 조회
      */
-    public Trade findOne(Long tradeId) {
-        return tradeRepository.findById(tradeId)
+    public TradeDto findOne(Long tradeId) {
+        Trade trade = tradeRepository.findById(tradeId)
                 .orElseThrow(NoSuchElementException::new);
+        return TradeDto.fromEntity(trade);
     }
 
     /**
      * 게시글 작성한 회원 아이디로 거래 조회
      */
-    public List<Trade> findTradesBySubjectId(Long memberId) {
-        return tradeRepository.findTradesBySubjectId(memberId);
+    public List<TradeDto> findTradesBySubjectId(Long memberId) {
+        List<Trade> trades = tradeRepository.findTradesBySubjectId(memberId);
+
+        return trades.stream()
+                .map(TradeDto::fromEntity)
+                .collect(Collectors.toList());
     }
 
     /**
      * 게시글 작성하지 않은 회원 아이디로 거래 조회
      */
-    public List<Trade> findTradesByObjectId(Long memberId) {
-        return tradeRepository.findTradesByObjectId(memberId);
+    public List<TradeDto> findTradesByObjectId(Long memberId) {
+        List<Trade> trades = tradeRepository.findTradesByObjectId(memberId);
+
+        return trades.stream()
+                .map(TradeDto::fromEntity)
+                .collect(Collectors.toList());
     }
 
     /**
      * 회원 아이디로 참가중인 거래 조회
      */
-    public List<Trade> findTradesByMemberId(Long memberId) {
-        return tradeRepository.findTradesByMemberId(memberId);
+    public List<TradeDto> findTradesByMemberId(Long memberId) {
+        List<Trade> trades = tradeRepository.findTradesByMemberId(memberId);
+
+        return trades.stream()
+                .map(TradeDto::fromEntity)
+                .collect(Collectors.toList());
     }
 
     /**
      * 게시글 아이디로 거래 조회
      */
-    public Trade findTradeByBoardId(Long boardId) {
-        return tradeRepository.findTradeByBoardId(boardId)
+    public TradeDto findTradeByBoardId(Long boardId) {
+        Trade trade = tradeRepository.findTradeByBoardId(boardId)
                 .orElseThrow(() -> new NoSuchElementException("Trade not found with boardId: " + boardId));
+
+        return TradeDto.fromEntity(trade);
     }
 
     /**
      * 게시글 & 회원 & 거래 조회
      */
-    public List<Trade> findTradesWithBoardMember() {
-        return tradeRepository.findTradesWithBoardMember();
+    public List<TradeDto> findTradesWithBoardMember() {
+        List<Trade> trades = tradeRepository.findTradesWithBoardMember();
+
+        return trades.stream()
+                .map(TradeDto::fromEntity)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -80,10 +103,10 @@ public class TradeService {
     public Long createTrade(TradeDto tradeDto) {
         Board tradeBoard = boardRepository.findById(tradeDto.getTradeBoardId())
                 .orElseThrow(() -> new NoSuchElementException("Board not found with id: " + tradeDto.getTradeBoardId()));
-        Member tradeSubject = memberRepository.findById(tradeDto.getTradeSubjectId())
-                .orElseThrow(() -> new NoSuchElementException("Member not found with id: " + tradeDto.getTradeSubjectId()));
-        Member tradeObject = memberRepository.findById(tradeDto.getTradeObjectId())
-                .orElseThrow(() -> new NoSuchElementException("Member not found with id: " + tradeDto.getTradeObjectId()));
+        Member tradeSubject = memberRepository.findById(tradeDto.getSubjectId())
+                .orElseThrow(() -> new NoSuchElementException("Member not found with id: " + tradeDto.getSubjectId()));
+        Member tradeObject = memberRepository.findById(tradeDto.getObjectId())
+                .orElseThrow(() -> new NoSuchElementException("Member not found with id: " + tradeDto.getObjectId()));
 
 
         if (tradeBoard.getWriter() != tradeSubject) {

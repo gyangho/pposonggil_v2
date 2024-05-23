@@ -7,10 +7,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import pposonggil.usedStuff.domain.Board;
-import pposonggil.usedStuff.domain.Member;
 import pposonggil.usedStuff.domain.TransactionAddress;
 import pposonggil.usedStuff.dto.BoardDto;
+import pposonggil.usedStuff.dto.BoardImagesDto;
 import pposonggil.usedStuff.dto.MemberDto;
 
 import java.time.LocalDateTime;
@@ -49,102 +48,89 @@ class BoardServiceTest {
     @Test
     public void 전체_게시글_조회() throws Exception {
         // when
-        Member member1 = memberService.findOne(memberId1);
-        Member member2 = memberService.findOne(memberId2);
-        Board board1 = boardService.findOne(boardId1);
-        Board board2 = boardService.findOne(boardId2);
+        List<BoardDto> boardDtos = boardService.findBoards();
 
         // then
-        List<Board> boards = boardService.findBoards();
-        assertEquals(2, boards.size());
+        assertEquals(2, boardDtos.size());
 
-        boards.stream()
-                .filter(board -> board.getWriter().equals(member1))
+        boardDtos.stream()
+                .filter(boardDto -> boardDto.getWriterId().equals(memberId1))
                 .findFirst()
-                .ifPresent(board -> {
+                .ifPresent(boardDto -> {
                     assertAll("게시글 조회 검증(게시글1)",
-                            () -> assertEquals("name1", board.getWriter().getName(), "작성자 이름 불일치"),
-                            () -> assertEquals("nickName1", board.getWriter().getNickName(), "작성자 닉네임 불일치"),
-                            () -> assertEquals("01011111111", board.getWriter().getPhone(), "작성자 전화번호 불일치"),
-                            () -> assertEquals("title1", board.getTitle(), "게시글 제목 불일치"),
-                            () -> assertEquals("우산 팔아요1", board.getContent(), "게시글 내용 불일치"),
-                            () -> assertEquals("숭실대1", board.getAddress().getName(), "게시글 주소 장소 이름 불일치"),
-                            () -> assertEquals(37.4958, board.getAddress().getLatitude(), "게시글 주소 장소 위도 불일치"),
-                            () -> assertEquals(126.9583, board.getAddress().getLongitude(), "게시글 주소 장소 경도 불일치"),
-                            () -> assertEquals("주소1", board.getAddress().getStreet(), "게시글 주소 장소 도로명 주소 불일치"),
-                            () -> assertEquals(1000L, board.getPrice(), "게시글 가격 불일치"),
-                            () -> assertFalse(board.isFreebie(), "게시글 나눔여부 불일치")
+                            () -> assertEquals("nickName1", boardDto.getWriterNickName(), "작성자 닉네임 불일치"),
+                            () -> assertEquals(5, boardDto.getRatingScore(), "작성자 온도 불일치"),
+                            () -> assertEquals("title1", boardDto.getTitle(), "게시글 제목 불일치"),
+                            () -> assertEquals("우산 팔아요1", boardDto.getContent(), "게시글 내용 불일치"),
+                            () -> assertEquals("숭실대1", boardDto.getAddress().getName(), "게시글 주소 장소 이름 불일치"),
+                            () -> assertEquals(37.4958, boardDto.getAddress().getLatitude(), "게시글 주소 장소 위도 불일치"),
+                            () -> assertEquals(126.9583, boardDto.getAddress().getLongitude(), "게시글 주소 장소 경도 불일치"),
+                            () -> assertEquals("주소1", boardDto.getAddress().getStreet(), "게시글 주소 장소 도로명 주소 불일치"),
+                            () -> assertEquals(1000L, boardDto.getPrice(), "게시글 가격 불일치"),
+                            () -> assertFalse(boardDto.isFreebie(), "게시글 나눔여부 불일치")
                     );
                 });
 
-        boards.stream()
-                .filter(board -> board.getWriter().equals(member2))
+        boardDtos.stream()
+                .filter(boardDto -> boardDto.getWriterId().equals(memberId2))
                 .findFirst()
-                .ifPresent(board -> {
+                .ifPresent(boardDto -> {
                     assertAll("게시글 조회 검증(게시글2)",
-                            () -> assertEquals("name2", board.getWriter().getName(), "작성자 이름 불일치"),
-                            () -> assertEquals("nickName2", board.getWriter().getNickName(), "작성자 닉네임 불일치"),
-                            () -> assertEquals("01022222222", board.getWriter().getPhone(), "작성자 전화번호 불일치"),
-                            () -> assertEquals("title2", board.getTitle(), "게시글 제목 불일치"),
-                            () -> assertEquals("우산 팔아요2", board.getContent(), "게시글 내용 불일치"),
-                            () -> assertEquals("숭실대2", board.getAddress().getName(), "게시글 주소 장소 이름 불일치"),
-                            () -> assertEquals(37.5000, board.getAddress().getLatitude(), "게시글 주소 장소 위도 불일치"),
-                            () -> assertEquals(126.9500, board.getAddress().getLongitude(), "게시글 주소 장소 경도 불일치"),
-                            () -> assertEquals("주소2", board.getAddress().getStreet(), "게시글 주소 장소 도로명 주소 불일치"),
-                            () -> assertEquals(2000L, board.getPrice(), "게시글 가격 불일치"),
-                            () -> assertFalse(board.isFreebie(), "게시글 나눔여부 불일치")
+                            () -> assertEquals("nickName2", boardDto.getWriterNickName(), "작성자 닉네임 불일치"),
+                            () -> assertEquals(5, boardDto.getRatingScore(), "작성자 온도 불일치"),
+                            () -> assertEquals("title2", boardDto.getTitle(), "게시글 제목 불일치"),
+                            () -> assertEquals("우산 팔아요2", boardDto.getContent(), "게시글 내용 불일치"),
+                            () -> assertEquals("숭실대2", boardDto.getAddress().getName(), "게시글 주소 장소 이름 불일치"),
+                            () -> assertEquals(37.5000, boardDto.getAddress().getLatitude(), "게시글 주소 장소 위도 불일치"),
+                            () -> assertEquals(126.9500, boardDto.getAddress().getLongitude(), "게시글 주소 장소 경도 불일치"),
+                            () -> assertEquals("주소2", boardDto.getAddress().getStreet(), "게시글 주소 장소 도로명 주소 불일치"),
+                            () -> assertEquals(2000L, boardDto.getPrice(), "게시글 가격 불일치"),
+                            () -> assertFalse(boardDto.isFreebie(), "게시글 나눔여부 불일치")
                     );
                 });
     }
 
     @Test
-    public void 작성자_정보와_함께_모든_게시글_조회() throws Exception {
+    public void 작성자_정보_이미지와_함께_모든_게시글_조회() throws Exception {
         // when
-        Member member1 = memberService.findOne(memberId1);
-        Member member2 = memberService.findOne(memberId2);
-
-        Board board1 = boardService.findOne(boardId1);
-        Board board2 = boardService.findOne(boardId2);
+        List<BoardImagesDto> boardImagesDtos = boardService.findAllWithMember();
 
         // then
-        List<Board> boards = boardService.findAllWithMember();
-        assertEquals(2, boards.size());
+        assertEquals(2, boardImagesDtos.size());
 
-        boards.stream()
-                .filter(board -> board.getWriter().equals(member1))
+        boardImagesDtos.stream()
+                .filter(boardImageDto -> boardImageDto.getWriterId().equals(memberId1))
                 .findFirst()
-                .ifPresent(board -> {
-                    assertAll("작성자 정보를 포함한 게시글 조회 검증(게시글1)",
-                            () -> assertEquals("name1", board.getWriter().getName(), "작성자 이름 불일치"),
-                            () -> assertEquals("nickName1", board.getWriter().getNickName(), "작성자 닉네임 불일치"),
-                            () -> assertEquals("01011111111", board.getWriter().getPhone(), "작성자 전화번호 불일치"),
-                            () -> assertEquals("title1", board.getTitle(), "게시글 제목 불일치"),
-                            () -> assertEquals("우산 팔아요1", board.getContent(), "게시글 내용 불일치"),
-                            () -> assertEquals("숭실대1", board.getAddress().getName(), "게시글 주소 장소 이름 불일치"),
-                            () -> assertEquals(37.4958, board.getAddress().getLatitude(), "게시글 주소 장소 위도 불일치"),
-                            () -> assertEquals(126.9583, board.getAddress().getLongitude(), "게시글 주소 장소 경도 불일치"),
-                            () -> assertEquals("주소1", board.getAddress().getStreet(), "게시글 주소 장소 도로명 주소 불일치"),
-                            () -> assertEquals(1000L, board.getPrice(), "게시글 가격 불일치"),
-                            () -> assertFalse(board.isFreebie(), "게시글 나눔여부 불일치")
+                .ifPresent(boardImageDto -> {
+                    assertAll("작성자, 이미지 정보를 포함한 게시글 조회 검증(게시글1)",
+                            () -> assertEquals("nickName1", boardImageDto.getWriterNickName(), "작성자 닉네임 불일치"),
+                            () -> assertEquals(5, boardImageDto.getRatingScore(), "작성자 온도 불일치"),
+                            () -> assertEquals("title1", boardImageDto.getTitle(), "게시글 제목 불일치"),
+                            () -> assertEquals("우산 팔아요1", boardImageDto.getContent(), "게시글 내용 불일치"),
+                            () -> assertEquals("숭실대1", boardImageDto.getAddress().getName(), "게시글 주소 장소 이름 불일치"),
+                            () -> assertEquals(37.4958, boardImageDto.getAddress().getLatitude(), "게시글 주소 장소 위도 불일치"),
+                            () -> assertEquals(126.9583, boardImageDto.getAddress().getLongitude(), "게시글 주소 장소 경도 불일치"),
+                            () -> assertEquals("주소1", boardImageDto.getAddress().getStreet(), "게시글 주소 장소 도로명 주소 불일치"),
+                            () -> assertEquals(1000L, boardImageDto.getPrice(), "게시글 가격 불일치"),
+                            () -> assertFalse(boardImageDto.isFreebie(), "게시글 나눔여부 불일치")
                     );
                 });
 
-        boards.stream()
-                .filter(board -> board.getWriter().equals(member2))
+        boardImagesDtos.stream()
+                .filter(boardImageDto -> boardImageDto.getWriterId().equals(memberId2))
                 .findFirst()
-                .ifPresent(board -> {
-                    assertAll("작성자 정보를 포함한 게시글 조회 검증(게시글2)",
-                            () -> assertEquals("name2", board.getWriter().getName(), "작성자 이름 불일치"),
-                            () -> assertEquals("nickName2", board.getWriter().getNickName(), "작성자 닉네임 불일치"),
-                            () -> assertEquals("01022222222", board.getWriter().getPhone(), "작성자 전화번호 불일치"),
-                            () -> assertEquals("title2", board.getTitle(), "게시글 제목 불일치"),
-                            () -> assertEquals("우산 팔아요2", board.getContent(), "게시글 내용 불일치"),
-                            () -> assertEquals("숭실대2", board.getAddress().getName(), "게시글 주소 장소 이름 불일치"),
-                            () -> assertEquals(37.5000, board.getAddress().getLatitude(), "게시글 주소 장소 위도 불일치"),
-                            () -> assertEquals(126.9500, board.getAddress().getLongitude(), "게시글 주소 장소 경도 불일치"),
-                            () -> assertEquals("주소2", board.getAddress().getStreet(), "게시글 주소 장소 도로명 주소 불일치"),
-                            () -> assertEquals(2000L, board.getPrice(), "게시글 가격 불일치"),
-                            () -> assertFalse(board.isFreebie(), "게시글 나눔여부 불일치")
+                .ifPresent(boardImageDto -> {
+                    assertAll("작성자, 이미지정보를 포함한 게시글 조회 검증(게시글2)",
+                            () -> assertEquals("nickName2", boardImageDto.getWriterNickName(), "작성자 닉네임 불일치"),
+                            () -> assertEquals(5, boardImageDto.getRatingScore(), "작성자 온도 불일치"),
+                            () -> assertEquals("title2", boardImageDto.getTitle(), "게시글 제목 불일치"),
+                            () -> assertEquals("우산 팔아요2", boardImageDto.getContent(), "게시글 내용 불일치"),
+                            () -> assertEquals("숭실대2", boardImageDto.getAddress().getName(), "게시글 주소 장소 이름 불일치"),
+                            () -> assertEquals(37.5000, boardImageDto.getAddress().getLatitude(), "게시글 주소 장소 위도 불일치"),
+                            () -> assertEquals(126.9500, boardImageDto.getAddress().getLongitude(), "게시글 주소 장소 경도 불일치"),
+                            () -> assertEquals("주소2", boardImageDto.getAddress().getStreet(), "게시글 주소 장소 도로명 주소 불일치"),
+                            () -> assertEquals(2000L, boardImageDto.getPrice(), "게시글 가격 불일치"),
+                            () -> assertFalse(boardImageDto.isFreebie(), "게시글 나눔여부 불일치")
                     );
                 });
     }
@@ -152,25 +138,23 @@ class BoardServiceTest {
     @Test
     public void 게시글_작성() throws Exception {
         // when
-        Member member1 = memberService.findOne(memberId1);
-        Board board1 = boardService.findOne(boardId1);
+        BoardImagesDto boardImageDto1 = boardService.findOne(boardId1);
 
         // then
-        Optional.of(board1)
-                .filter(board -> board.getWriter().equals(member1))
-                .ifPresent(board -> assertAll("게시글 작성 검증",
-                        () -> assertNotNull((board1), "게시글 생성 확인"),
-                        () -> assertEquals("name1", board.getWriter().getName(), "작성자 이름 불일치"),
-                        () -> assertEquals("nickName1", board.getWriter().getNickName(), "작성자 닉네임 불일치"),
-                        () -> assertEquals("01011111111", board.getWriter().getPhone(), "작성자 전화번호 불일치"),
-                        () -> assertEquals("title1", board.getTitle(), "게시글 제목 불일치"),
-                        () -> assertEquals("우산 팔아요1", board.getContent(), "게시글 내용 불일치"),
-                        () -> assertEquals("숭실대1", board.getAddress().getName(), "게시글 주소 장소 이름 불일치"),
-                        () -> assertEquals(37.4958, board.getAddress().getLatitude(), "게시글 주소 장소 위도 불일치"),
-                        () -> assertEquals(126.9583, board.getAddress().getLongitude(), "게시글 주소 장소 경도 불일치"),
-                        () -> assertEquals("주소1", board.getAddress().getStreet(), "게시글 주소 장소 도로명 주소 불일치"),
-                        () -> assertEquals(1000L, board.getPrice(), "게시글 가격 불일치"),
-                        () -> assertFalse(board.isFreebie(), "게시글 나눔여부 불일치")
+        Optional.of(boardImageDto1)
+                .filter(boardDto -> boardDto.getWriterId().equals(memberId1))
+                .ifPresent(boardDto -> assertAll("게시글 작성 검증",
+                        () -> assertNotNull((boardImageDto1), "게시글 생성 확인"),
+                        () -> assertEquals("nickName1", boardDto.getWriterNickName(), "작성자 닉네임 불일치"),
+                        () -> assertEquals(5, boardDto.getRatingScore(), "작성자 온도 불일치"),
+                        () -> assertEquals("title1", boardDto.getTitle(), "게시글 제목 불일치"),
+                        () -> assertEquals("우산 팔아요1", boardDto.getContent(), "게시글 내용 불일치"),
+                        () -> assertEquals("숭실대1", boardDto.getAddress().getName(), "게시글 주소 장소 이름 불일치"),
+                        () -> assertEquals(37.4958, boardDto.getAddress().getLatitude(), "게시글 주소 장소 위도 불일치"),
+                        () -> assertEquals(126.9583, boardDto.getAddress().getLongitude(), "게시글 주소 장소 경도 불일치"),
+                        () -> assertEquals("주소1", boardDto.getAddress().getStreet(), "게시글 주소 장소 도로명 주소 불일치"),
+                        () -> assertEquals(1000L, boardDto.getPrice(), "게시글 가격 불일치"),
+                        () -> assertFalse(boardDto.isFreebie(), "게시글 나눔여부 불일치")
                 ));
     }
 
@@ -190,8 +174,9 @@ class BoardServiceTest {
         String updateFormatStartTime = updateStartTime.format(formatter);
         String updateFormatEndTime = updateEndTime.format(formatter);
 
+        BoardImagesDto a = boardService.findOne(boardId1);
+
         // when
-        Member member1 = memberService.findOne(memberId1);
         BoardDto boardDto = BoardDto.builder()
                 .boardId(boardId1)
                 .writerId(memberId1)
@@ -206,26 +191,26 @@ class BoardServiceTest {
 
         boardService.updateBoard(boardDto);
 
-        // then
-        Board updateBoard = boardService.findOne(boardId1);
+        BoardImagesDto updateImageBoardDto1 = boardService.findOne(boardId1);
 
-        Optional.of(updateBoard)
-                .filter(board -> board.getWriter().equals(member1))
-                .ifPresent(board -> assertAll("게시글 수정 검증",
-                        () -> assertNotNull((updateBoard), "게시글 생성 확인"),
-                        () -> assertEquals("name1", updateBoard.getWriter().getName(), "작성자 이름 불일치"),
-                        () -> assertEquals("nickName1", updateBoard.getWriter().getNickName(), "작성자 이름 불일치"),
-                        () -> assertEquals("01011111111", updateBoard.getWriter().getPhone(), "작성자 이름 불일치"),
-                        () -> assertEquals(updateTitle, updateBoard.getTitle(), "게시글 제목 불일치"),
-                        () -> assertEquals(updateContent, updateBoard.getContent(), "게시글 내용 불일치"),
-                        () -> assertEquals(updateFormatStartTime, updateBoard.getStartTimeString(), "게시글 시작 시각(String) 불일치"),
-                        () -> assertEquals(updateFormatEndTime, updateBoard.getEndTimeString(), "게시글 종료 시각(String) 불일치"),
-                        () -> assertEquals("숭숭숭", updateBoard.getAddress().getName(), "게시글 주소 이름 불일치"),
-                        () -> assertEquals(37.5000, updateBoard.getAddress().getLatitude(), "게시글 주소 위도 불일치"),
-                        () -> assertEquals(126.9555, updateBoard.getAddress().getLongitude(), "게시글 주소 경도 불일치"),
-                        () -> assertEquals("주소2", updateBoard.getAddress().getStreet(), "게시글 주소 도로명 불일치"),
-                        () -> assertEquals(updatePrice, updateBoard.getPrice(), "게시글 가격 불일치"),
-                        () -> assertTrue(updateBoard.isFreebie(), "게시글 나눔여부 불일치")
+        // then
+
+        Optional.of(updateImageBoardDto1)
+                .filter(updateBoardDto -> updateBoardDto.getWriterId().equals(memberId1))
+                .ifPresent(updateBoardDto -> assertAll("게시글 수정 검증",
+                        () -> assertNotNull((updateBoardDto), "게시글 생성 확인"),
+                        () -> assertEquals("nickName1", updateBoardDto.getWriterNickName(), "작성자 닉네임 불일치"),
+                        () -> assertEquals(5, updateBoardDto.getRatingScore(), "작성자 온도 불일치"),
+                        () -> assertEquals(updateTitle, updateBoardDto.getTitle(), "게시글 제목 불일치"),
+                        () -> assertEquals(updateContent, updateBoardDto.getContent(), "게시글 내용 불일치"),
+                        () -> assertEquals(updateFormatStartTime, updateBoardDto.getStartTimeString(), "게시글 시작 시각(String) 불일치"),
+                        () -> assertEquals(updateFormatEndTime, updateBoardDto.getEndTimeString(), "게시글 종료 시각(String) 불일치"),
+                        () -> assertEquals("숭숭숭", updateBoardDto.getAddress().getName(), "게시글 주소 이름 불일치"),
+                        () -> assertEquals(37.5000, updateBoardDto.getAddress().getLatitude(), "게시글 주소 위도 불일치"),
+                        () -> assertEquals(126.9555, updateBoardDto.getAddress().getLongitude(), "게시글 주소 경도 불일치"),
+                        () -> assertEquals("주소2", updateBoardDto.getAddress().getStreet(), "게시글 주소 도로명 불일치"),
+                        () -> assertEquals(updatePrice, updateBoardDto.getPrice(), "게시글 가격 불일치"),
+                        () -> assertTrue(updateBoardDto.isFreebie(), "게시글 나눔여부 불일치")
                 ));
     }
 
@@ -233,10 +218,10 @@ class BoardServiceTest {
     public void 게시판_삭제() throws Exception {
         // when
         boardService.deleteBoard(boardId1);
-        List<Board> boards = boardService.findBoards();
+        List<BoardDto> boardDtos = boardService.findBoards();
 
         // then
-        assertEquals(1, boards.size());
+        assertEquals(1, boardDtos.size());
         assertThrows(NoSuchElementException.class, () -> boardService.findOne(memberId1));
     }
 
