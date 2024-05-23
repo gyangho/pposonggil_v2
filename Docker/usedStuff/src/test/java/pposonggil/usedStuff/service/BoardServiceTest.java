@@ -107,7 +107,7 @@ class BoardServiceTest {
         Board board2 = boardService.findOne(boardId2);
 
         // then
-        List<Board> boards = boardService.findAllWithMember();
+        List<Board> boards = boardService.findAllWithMemberImage();
         assertEquals(2, boards.size());
 
         boards.stream()

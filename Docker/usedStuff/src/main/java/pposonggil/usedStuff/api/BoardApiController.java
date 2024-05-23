@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pposonggil.usedStuff.domain.Board;
 import pposonggil.usedStuff.dto.BoardDto;
+import pposonggil.usedStuff.dto.BoardImagesDto;
 import pposonggil.usedStuff.service.BoardService;
 
 import java.util.List;
@@ -31,12 +32,12 @@ public class BoardApiController {
     /**
      * 특정 게시글 상세 조회
      * @param boardId : 조회할 게시글 아이디
-     * @return 게시글 아이디로 조회한 게시글 Dto
+     * @return 게시글 아이디로 조회한 이미지 게시글 Dto
      */
     @GetMapping("/api/board/{boardId}")
-    public BoardDto getBoarByBoardId(@PathVariable Long boardId) {
+    public BoardImagesDto getBoarByBoardId(@PathVariable Long boardId) {
         Board board = boardService.findOne(boardId);
-        return BoardDto.fromEntity(board);
+        return BoardImagesDto.fromEntity(board);
     }
 
     /**
@@ -53,14 +54,14 @@ public class BoardApiController {
     }
 
     /**
-     * * 게시글 & 작성자 조회
-     * @return 게시글 Dto 리스트
+     * 작성자 & 이미지 & 게시글 조회
+     * @return 이미지 게시글 Dto 리스트
      */
-    @GetMapping("/api/boards/with-member")
-    public List<BoardDto> getBoardsWithMember() {
-        List<Board> boards = boardService.findAllWithMember();
+    @GetMapping("/api/boards/with-member-image")
+    public List<BoardImagesDto> getBoardsWithMember() {
+        List<Board> boards = boardService.findAllWithMemberImage();
         return boards.stream()
-                .map(BoardDto::fromEntity)
+                .map(BoardImagesDto::fromEntity)
                 .collect(Collectors.toList());
     }
 

@@ -41,10 +41,10 @@ public class BoardService {
     }
 
     /**
-     * 게시글 & 작성자 조회
+     * 작성자 & 이미지 & 게시글 조회
      */
-    public List<Board> findAllWithMember() {
-        return boardRepository.findAllWithMember();
+    public List<Board> findAllWithMemberImage() {
+        return boardRepository.findAllWithMemberImage();
     }
 
     /**

@@ -19,7 +19,7 @@ public class CustomBoardRepositoryImpl implements CustomBoardRepository {
     }
 
     @Override
-    public List<Board> findAllWithMember() {
+    public List<Board> findAllWithMemberImage() {
         return query
                 .select(board)
                 .from(board)
