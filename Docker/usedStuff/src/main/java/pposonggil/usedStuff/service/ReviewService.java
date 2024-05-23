@@ -3,13 +3,13 @@ package pposonggil.usedStuff.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pposonggil.usedStuff.domain.ChatRoom;
 import pposonggil.usedStuff.domain.Member;
 import pposonggil.usedStuff.domain.Review;
+import pposonggil.usedStuff.domain.Trade;
 import pposonggil.usedStuff.dto.ReviewDto;
-import pposonggil.usedStuff.repository.chatroom.ChatRoomRepository;
 import pposonggil.usedStuff.repository.member.MemberRepository;
 import pposonggil.usedStuff.repository.review.ReviewRepository;
+import pposonggil.usedStuff.repository.trade.TradeRepository;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -20,7 +20,7 @@ import java.util.NoSuchElementException;
 public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final MemberRepository memberRepository;
-    private final ChatRoomRepository chatRoomRepository;
+    private final TradeRepository tradeRepository;
 
     /**
      * 전체 리뷰 조회
@@ -32,7 +32,7 @@ public class ReviewService {
     /**
      * 리뷰 상세 조회
      */
-    public Review findOne(Long reviewId){
+    public Review findOne(Long reviewId) {
         return reviewRepository.findById(reviewId)
                 .orElseThrow(NoSuchElementException::new);
     }
@@ -52,17 +52,33 @@ public class ReviewService {
     }
 
     /**
-     * 채팅방 아이디로 리뷰 조회
+     * 회원 아이디로 연관된 모든 리뷰 조회
      */
-    public List<Review> findReviewsByChatRoomId(Long chatRoomId) {
-        return reviewRepository.findReviewsByChatRoomId(chatRoomId);
+    public List<Review> findReviewsByMemberId(Long memberId) {
+        return reviewRepository.findReviewsByMemberId(memberId);
     }
 
     /**
-     * 리뷰 & 리뷰 남긴 사람 & 리뷰 당한 사람 & 채팅방 조회
+     * 거래 아이디로 리뷰 조회
+     */
+    public List<Review> findReviewsByTradeId(Long tradeId) {
+        return reviewRepository.findReviewsByTradeId(tradeId);
+    }
+
+    /**
+     * 거래, 리뷰주체, 리뷰 객체 아이디로 리뷰 조회
+     */
+    public Review findBySubjectIdAndObjectIdAndTradeId(Long subjectId, Long objectId, Long tradeId) {
+        return reviewRepository.findBySubjectIdAndObjectIdAndTradeId(subjectId, objectId, tradeId)
+                .orElseThrow(() -> new NoSuchElementException("Review not found with subjectId, objectId, tradeId: "
+                        + subjectId + ", " + objectId + ", " + tradeId));
+    }
+
+    /**
+     * 리뷰 남긴 사람 & 리뷰 당한 사람 & 거래 & 리뷰 조회
      */
     public List<Review> findAllWithMemberChatRoom() {
-        return reviewRepository.findAllWithMemberChatRoom();
+        return reviewRepository.findAllWithMemberTrade();
     }
 
     /**
@@ -74,19 +90,19 @@ public class ReviewService {
                 .orElseThrow(() -> new NoSuchElementException("Member not found with id: " + reviewDto.getSubjectId()));
         Member reviewObject = memberRepository.findById(reviewDto.getObjectId())
                 .orElseThrow(() -> new NoSuchElementException("Member not found with id: " + reviewDto.getObjectId()));
-        ChatRoom reviewChatRoom = chatRoomRepository.findById(reviewDto.getChatRoomId())
-                .orElseThrow(() -> new NoSuchElementException("ChatRoom not found with id: " + reviewDto.getChatRoomId()));
+        Trade reviewTrade = tradeRepository.findById(reviewDto.getTradeId())
+                .orElseThrow(() -> new NoSuchElementException("Trade not found with id: " + reviewDto.getTradeId()));
 
-        if((reviewChatRoom.getChatMember() != reviewSubject && reviewChatRoom.getChatMember() != reviewObject) ||
-                (reviewChatRoom.getChatBoard().getWriter() != reviewSubject && reviewChatRoom.getChatBoard().getWriter() != reviewObject)){
-            throw new IllegalArgumentException("채팅방에 포함되지 않은 사용자를 리뷰할 수 없습니다.");
+        if ((reviewTrade.getTradeSubject() != reviewSubject && reviewTrade.getTradeSubject() != reviewObject) ||
+                (reviewTrade.getTradeObject() != reviewObject && reviewTrade.getTradeObject() != reviewSubject)) {
+            throw new IllegalArgumentException("거래에 포함되지 않은 사용자를 리뷰할 수 없습니다.");
         }
 
         if (reviewSubject.equals(reviewObject)) {
             throw new IllegalArgumentException("자기 자신을 리뷰할 수는 없습니다.");
         }
 
-        reviewRepository.findByReviewSubjectAndReviewObjectAndReviewChatRoom(reviewSubject, reviewObject, reviewChatRoom)
+        reviewRepository.findBySubjectIdAndObjectIdAndTradeId(reviewSubject.getId(), reviewObject.getId(), reviewTrade.getId())
                 .ifPresent(block -> {
                     throw new IllegalArgumentException("해당 사용자과의 거래를 이전에 리뷰했습니다.");
                 });
@@ -95,7 +111,7 @@ public class ReviewService {
 
         review.setReviewSubject(reviewSubject);
         review.setReviewObject(reviewObject);
-        review.setReviewChatRoom(reviewChatRoom);
+        review.setReviewTrade(reviewTrade);
         reviewRepository.save(review);
 
         return review.getId();
