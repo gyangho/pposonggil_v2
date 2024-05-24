@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
-import pposonggil.usedStuff.dto.BlockDto;
-import pposonggil.usedStuff.dto.MemberDto;
+import pposonggil.usedStuff.dto.Block.BlockDto;
+import pposonggil.usedStuff.dto.Member.MemberDto;
+import pposonggil.usedStuff.service.Block.BlockService;
+import pposonggil.usedStuff.service.Member.MemberService;
 
 import java.util.List;
 import java.util.NoSuchElementException;

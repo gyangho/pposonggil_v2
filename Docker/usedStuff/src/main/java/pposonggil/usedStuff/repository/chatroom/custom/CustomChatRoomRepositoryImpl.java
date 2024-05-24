@@ -29,12 +29,11 @@ public class CustomChatRoomRepositoryImpl implements CustomChatRoomRepository{
     }
 
     @Override
-    public Optional<ChatRoom> findChatRoomByTradeId(Long tradeId){
-        return Optional.ofNullable(query
-                .select(chatRoom)
-                .from(chatRoom)
-                .join(chatRoom.chatTrade, trade).fetchJoin()
-                .where(chatRoom.chatTrade.id.eq(tradeId))
-                .fetchOne());
+    public Optional<ChatRoom> findChatRoomWithTradeByTradeId(Long tradeId){
+        List<ChatRoom> chatRooms = findChatRoomsWithTrade();
+
+        return chatRooms.stream()
+                .filter(chatRoom -> chatRoom.getChatTrade().getId().equals(tradeId))
+                .findFirst();
     }
 }

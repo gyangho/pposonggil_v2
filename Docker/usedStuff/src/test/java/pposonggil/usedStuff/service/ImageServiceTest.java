@@ -12,9 +12,12 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import pposonggil.usedStuff.domain.TransactionAddress;
-import pposonggil.usedStuff.dto.BoardDto;
-import pposonggil.usedStuff.dto.ImageDto;
-import pposonggil.usedStuff.dto.MemberDto;
+import pposonggil.usedStuff.dto.Board.BoardDto;
+import pposonggil.usedStuff.dto.Image.ImageDto;
+import pposonggil.usedStuff.dto.Member.MemberDto;
+import pposonggil.usedStuff.service.Board.BoardService;
+import pposonggil.usedStuff.service.Image.ImageService;
+import pposonggil.usedStuff.service.Member.MemberService;
 
 import java.io.IOException;
 import java.nio.file.Files;

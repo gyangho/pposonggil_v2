@@ -8,7 +8,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import pposonggil.usedStuff.domain.*;
-import pposonggil.usedStuff.dto.*;
+import pposonggil.usedStuff.dto.Board.BoardDto;
+import pposonggil.usedStuff.dto.Member.MemberDto;
+import pposonggil.usedStuff.dto.Review.ReviewDto;
+import pposonggil.usedStuff.dto.Trade.TradeDto;
+import pposonggil.usedStuff.service.Board.BoardService;
+import pposonggil.usedStuff.service.Member.MemberService;
+import pposonggil.usedStuff.service.Review.ReviewService;
+import pposonggil.usedStuff.service.Trade.TradeService;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

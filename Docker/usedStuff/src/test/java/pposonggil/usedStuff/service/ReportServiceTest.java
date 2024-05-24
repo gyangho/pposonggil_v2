@@ -8,8 +8,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import pposonggil.usedStuff.domain.ReportType;
-import pposonggil.usedStuff.dto.MemberDto;
-import pposonggil.usedStuff.dto.ReportDto;
+import pposonggil.usedStuff.dto.Member.MemberDto;
+import pposonggil.usedStuff.dto.Report.ReportDto;
+import pposonggil.usedStuff.service.Member.MemberService;
+import pposonggil.usedStuff.service.Report.ReportService;
 
 import java.util.List;
 import java.util.Optional;
