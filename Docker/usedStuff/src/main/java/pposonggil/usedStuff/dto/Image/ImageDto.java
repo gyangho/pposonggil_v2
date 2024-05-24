@@ -1,4 +1,4 @@
-package pposonggil.usedStuff.dto;
+package pposonggil.usedStuff.dto.Image;
 
 import lombok.*;
 import pposonggil.usedStuff.domain.Image;
@@ -15,7 +15,6 @@ public class ImageDto {
     private Long boardId;
     private String fileName;
     private String imageUrl;
-
 
     public static ImageDto fromEntity(Image image) {
         return ImageDto.builder()

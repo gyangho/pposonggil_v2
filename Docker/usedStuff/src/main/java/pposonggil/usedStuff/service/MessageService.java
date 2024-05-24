@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pposonggil.usedStuff.domain.ChatRoom;
 import pposonggil.usedStuff.domain.Member;
 import pposonggil.usedStuff.domain.Message;
-import pposonggil.usedStuff.dto.MessageDto;
+import pposonggil.usedStuff.dto.Message.MessageDto;
 import pposonggil.usedStuff.repository.chatroom.ChatRoomRepository;
 import pposonggil.usedStuff.repository.member.MemberRepository;
 import pposonggil.usedStuff.repository.message.MessageRepository;

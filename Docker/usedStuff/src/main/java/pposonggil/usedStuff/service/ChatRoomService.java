@@ -6,7 +6,8 @@ import org.springframework.transaction.annotation.Transactional;
 import pposonggil.usedStuff.domain.ChatRoom;
 
 import pposonggil.usedStuff.domain.Trade;
-import pposonggil.usedStuff.dto.ChatRoomDto;
+import pposonggil.usedStuff.dto.ChatRoom.ChatRoomDto;
+import pposonggil.usedStuff.dto.ChatRoom.ChatRoomMessagesDto;
 import pposonggil.usedStuff.repository.chatroom.ChatRoomRepository;
 import pposonggil.usedStuff.repository.trade.TradeRepository;
 
@@ -34,30 +35,31 @@ public class ChatRoomService {
     /**
      * 채팅방 상세 조회
      */
-    public ChatRoomDto findOne(Long chatRoomId) {
+    public ChatRoomMessagesDto findOne(Long chatRoomId) {
         ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId)
                 .orElseThrow(NoSuchElementException::new);
-        return ChatRoomDto.fromEntity(chatRoom);
+        return ChatRoomMessagesDto.fromEntity(chatRoom);
     }
 
     /**
-     * 거래 아이디로 채팅방 조회
+     * 거래 아이디로 메시지 포함한 채팅방 조회
      */
-    public ChatRoomDto findChatRoomByTradeId(Long tradeId) {
-        ChatRoom chatRoom = chatRoomRepository.findChatRoomByTradeId(tradeId)
+    public ChatRoomMessagesDto findChatRoomWithTradeByTradeId(Long tradeId) {
+        ChatRoom chatRoom = chatRoomRepository.findChatRoomWithTradeByTradeId(tradeId)
                 .orElseThrow(() -> new NoSuchElementException("ChatRoom not found with tradeId: " + tradeId));
 
-        return ChatRoomDto.fromEntity(chatRoom);
+        return ChatRoomMessagesDto.fromEntity(chatRoom);
     }
+
 
     /**
      * 거래 & 메시지 & 채팅방조회
      */
-    public List<ChatRoomDto> findChatRoomsWithTrade() {
+    public List<ChatRoomMessagesDto> findChatRoomsWithTrade() {
         List<ChatRoom> chatRooms = chatRoomRepository.findChatRoomsWithTrade();
 
         return chatRooms.stream()
-                .map(ChatRoomDto::fromEntity)
+                .map(ChatRoomMessagesDto::fromEntity)
                 .collect(Collectors.toList());
     }
 
@@ -69,7 +71,7 @@ public class ChatRoomService {
         Trade chatTrade = tradeRepository.findById(chatRoomDto.getChatTradeId())
                 .orElseThrow(() -> new NoSuchElementException("Trade not found with id: " + chatRoomDto.getChatTradeId()));
 
-        chatRoomRepository.findChatRoomByTradeId(chatRoomDto.getChatTradeId())
+        chatRoomRepository.findChatRoomWithTradeByTradeId(chatRoomDto.getChatTradeId())
                 .ifPresent(chatRoom -> {
                     throw new IllegalArgumentException("이미 채팅방이 생성됐습니다.");
                 });

@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pposonggil.usedStuff.domain.Board;
 import pposonggil.usedStuff.domain.Member;
 import pposonggil.usedStuff.domain.Trade;
-import pposonggil.usedStuff.dto.TradeDto;
+import pposonggil.usedStuff.dto.Trade.TradeDto;
 import pposonggil.usedStuff.repository.board.BoardRepository;
 import pposonggil.usedStuff.repository.member.MemberRepository;
 import pposonggil.usedStuff.repository.trade.TradeRepository;

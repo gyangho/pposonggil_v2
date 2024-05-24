@@ -1,4 +1,4 @@
-package pposonggil.usedStuff.dto;
+package pposonggil.usedStuff.dto.Board;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import pposonggil.usedStuff.domain.Board;
 import pposonggil.usedStuff.domain.TransactionAddress;
+import pposonggil.usedStuff.dto.Image.ImageDto;
 
 import java.time.LocalDateTime;
 import java.util.List;

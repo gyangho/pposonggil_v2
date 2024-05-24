@@ -1,4 +1,4 @@
-package pposonggil.usedStuff.dto;
+package pposonggil.usedStuff.dto.Board;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

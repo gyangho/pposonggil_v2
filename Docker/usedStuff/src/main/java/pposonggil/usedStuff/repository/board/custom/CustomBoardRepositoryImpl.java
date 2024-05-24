@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static pposonggil.usedStuff.domain.QBoard.board;
-import static pposonggil.usedStuff.domain.QImage.image;
 import static pposonggil.usedStuff.domain.QMember.member;
 
 @Repository
@@ -21,19 +20,18 @@ public class CustomBoardRepositoryImpl implements CustomBoardRepository {
     }
 
     @Override
-    public List<Board> findAllWithMemberImages() {
+    public List<Board> findAllWithMember() {
         return query
                 .select(board)
                 .from(board)
                 .join(board.writer, member).fetchJoin()
-                .leftJoin(board.images, image).fetchJoin()
                 .limit(1000)
                 .fetch();
     }
 
     @Override
-    public List<Board> findBoardsWithMemberImagesByMember(Long writeId) {
-        List<Board> boards = findAllWithMemberImages();
+    public List<Board> findBoardsWithMemberByWriterId(Long writeId) {
+        List<Board> boards = findAllWithMember();
         return boards.stream()
                 .filter(board -> board.getWriter().getId().equals(writeId))
                 .collect(Collectors.toList());

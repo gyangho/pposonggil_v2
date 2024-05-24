@@ -1,4 +1,4 @@
-package pposonggil.usedStuff.dto;
+package pposonggil.usedStuff.dto.Report;
 
 import lombok.*;
 import pposonggil.usedStuff.domain.Report;

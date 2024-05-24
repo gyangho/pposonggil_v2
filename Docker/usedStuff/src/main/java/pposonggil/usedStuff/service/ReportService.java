@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pposonggil.usedStuff.domain.Member;
 import pposonggil.usedStuff.domain.Report;
-import pposonggil.usedStuff.dto.ReportDto;
+import pposonggil.usedStuff.dto.Report.ReportDto;
 import pposonggil.usedStuff.repository.member.MemberRepository;
 import pposonggil.usedStuff.repository.report.ReportRepository;
 

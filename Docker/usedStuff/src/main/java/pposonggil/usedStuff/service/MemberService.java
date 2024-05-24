@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pposonggil.usedStuff.domain.Member;
-import pposonggil.usedStuff.dto.MemberDto;
+import pposonggil.usedStuff.dto.Member.MemberDto;
 import pposonggil.usedStuff.repository.member.MemberRepository;
 
 import java.util.List;

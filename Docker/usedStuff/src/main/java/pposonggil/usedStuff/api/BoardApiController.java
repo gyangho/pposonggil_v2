@@ -3,8 +3,8 @@ package pposonggil.usedStuff.api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pposonggil.usedStuff.dto.BoardDto;
-import pposonggil.usedStuff.dto.BoardImagesDto;
+import pposonggil.usedStuff.dto.Board.BoardDto;
+import pposonggil.usedStuff.dto.Board.BoardImagesDto;
 import pposonggil.usedStuff.service.BoardService;
 
 import java.util.List;
@@ -39,8 +39,8 @@ public class BoardApiController {
      * @return 회원 아이디로 조회한 이미지 게시글 Dto 리스트
      */
     @GetMapping("/api/boards/by-member/{memberId}")
-    public List<BoardImagesDto> getImageBoardsWithMemberImagesByMemberId(@PathVariable Long memberId) {
-        return boardService.findImageBoardsWithMemberImagesByWriterId(memberId);
+    public List<BoardImagesDto> findImageBoardsWithMemberByWriterId(@PathVariable Long memberId) {
+        return boardService.findImageBoardsWithMemberByWriterId(memberId);
     }
 
     /**
@@ -48,7 +48,7 @@ public class BoardApiController {
      * @return 이미지 게시글 Dto 리스트
      */
     @GetMapping("/api/boards/with-member-image")
-    public List<BoardImagesDto> getBoardsWithMemberImage() {
+    public List<BoardImagesDto> getBoardsWithMember() {
         return boardService.findAllWithMember();
     }
 

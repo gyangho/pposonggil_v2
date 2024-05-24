@@ -8,10 +8,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import pposonggil.usedStuff.domain.*;
-import pposonggil.usedStuff.dto.BoardDto;
-import pposonggil.usedStuff.dto.ChatRoomDto;
-import pposonggil.usedStuff.dto.MemberDto;
-import pposonggil.usedStuff.dto.TradeDto;
+import pposonggil.usedStuff.dto.Board.BoardDto;
+import pposonggil.usedStuff.dto.ChatRoom.ChatRoomDto;
+import pposonggil.usedStuff.dto.ChatRoom.ChatRoomMessagesDto;
+import pposonggil.usedStuff.dto.Member.MemberDto;
+import pposonggil.usedStuff.dto.Trade.TradeDto;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -74,61 +75,61 @@ class ChatRoomServiceTest {
     @Test
     public void 채팅방_생성() throws Exception {
         // when
-        ChatRoomDto chatRoomDto1 = chatRoomService.findOne(chatRoomId1);
+        ChatRoomMessagesDto chatRoomMessagesDto1 = chatRoomService.findOne(chatRoomId1);
 
         // then
-        Optional.of(chatRoomDto1)
-                .filter(chatRoomDto -> chatRoomDto.getChatTradeId().equals(tradeId1))
-                .ifPresent(chatRoomDto -> assertAll("채팅방 정보 검증",
-                        () -> assertEquals("숭실대1", chatRoomDto.getAddressName(), "채팅방 주소 장소 이름 불일치")
+        Optional.of(chatRoomMessagesDto1)
+                .filter(chatRoomMessagesDto -> chatRoomMessagesDto.getChatTradeId().equals(tradeId1))
+                .ifPresent(chatRoomMessagesDto -> assertAll("채팅방 정보 검증",
+                        () -> assertEquals("숭실대1", chatRoomMessagesDto.getAddressName(), "채팅방 주소 장소 이름 불일치")
                 ));
     }
 
     @Test
     public void 거래아이디로_채팅방_조회() throws Exception {
         // when
-        ChatRoomDto chatRoomDto1 = chatRoomService.findChatRoomByTradeId(tradeId1);
+        ChatRoomMessagesDto chatRoomMessagesDto1 = chatRoomService.findOne(chatRoomId1);
 
         // then
-        Optional.of(chatRoomDto1)
-                .filter(chatRoomDto -> chatRoomDto.getChatTradeId().equals(tradeId1))
-                .ifPresent(chatRoomDto -> assertAll("채팅방 정보 검증",
-                        () -> assertEquals("숭실대1", chatRoomDto.getAddressName(), "채팅방 주소 장소 이름 불일치")
+        Optional.of(chatRoomMessagesDto1)
+                .filter(chatRoomMessagesDto -> chatRoomMessagesDto.getChatTradeId().equals(tradeId1))
+                .ifPresent(chatRoomMessagesDto -> assertAll("채팅방 정보 검증",
+                        () -> assertEquals("숭실대1", chatRoomMessagesDto.getAddressName(), "채팅방 주소 장소 이름 불일치")
                 ));
     }
 
     @Test
     public void 거래정보와_회원정보를_포함한_채팅방_조회() throws Exception {
         // when
-        List<ChatRoomDto> chatRoomDtos = chatRoomService.findChatRoomsWithTrade();
+        List<ChatRoomMessagesDto> chatRoomMessagesDtos = chatRoomService.findChatRoomsWithTrade();
 
         // then
-        assertEquals(3, chatRoomDtos.size());
+        assertEquals(3, chatRoomMessagesDtos.size());
 
         // 첫 번째 채팅방 검증
-        chatRoomDtos.stream()
-                .filter(chatRoomDto -> chatRoomDto.getChatTradeId().equals(tradeId1))
+        chatRoomMessagesDtos.stream()
+                .filter(chatRoomMessagesDto -> chatRoomMessagesDto.getChatTradeId().equals(tradeId1))
                 .findFirst()
-                .ifPresent(chatRoomDto -> assertAll("거래 정보를 포함한 채팅방 조회 검증(채팅방1)",
-                        () -> assertEquals("숭실대1", chatRoomDto.getAddressName(), "채팅방 주소 장소 이름 불일치")
+                .ifPresent(chatRoomMessagesDto -> assertAll("거래 정보를 포함한 채팅방 조회 검증(채팅방1)",
+                        () -> assertEquals("숭실대1", chatRoomMessagesDto.getAddressName(), "채팅방 주소 장소 이름 불일치")
                 ));
 
 
         // 두 번째 채팅방 검증
-        chatRoomDtos.stream()
-                .filter(chatRoomDto -> chatRoomDto.getChatTradeId().equals(tradeId2))
+        chatRoomMessagesDtos.stream()
+                .filter(chatRoomMessagesDto -> chatRoomMessagesDto.getChatTradeId().equals(tradeId2))
                 .findFirst()
-                .ifPresent(chatRoomDto -> assertAll("거래 정보를 포함한 채팅방 조회 검증(채팅방2)",
-                        () -> assertEquals("숭실대2", chatRoomDto.getAddressName(), "채팅방 주소 장소 이름 불일치")
+                .ifPresent(chatRoomMessagesDto -> assertAll("거래 정보를 포함한 채팅방 조회 검증(채팅방2)",
+                        () -> assertEquals("숭실대2", chatRoomMessagesDto.getAddressName(), "채팅방 주소 장소 이름 불일치")
                 ));
 
 
         // 세 번째 채팅방 검증
-        chatRoomDtos.stream()
-                .filter(chatRoomDto -> chatRoomDto.getChatTradeId().equals(tradeId3))
+        chatRoomMessagesDtos.stream()
+                .filter(chatRoomMessagesDto -> chatRoomMessagesDto.getChatTradeId().equals(tradeId3))
                 .findFirst()
-                .ifPresent(chatRoomDto -> assertAll("거래 정보를 포함한 채팅방 조회 검증(채팅방3)",
-                        () -> assertEquals("숭실대3", chatRoomDto.getAddressName(), "채팅방 주소 장소 이름 불일치")
+                .ifPresent(chatRoomMessagesDto -> assertAll("거래 정보를 포함한 채팅방 조회 검증(채팅방3)",
+                        () -> assertEquals("숭실대3", chatRoomMessagesDto.getAddressName(), "채팅방 주소 장소 이름 불일치")
                 ));
 
     }

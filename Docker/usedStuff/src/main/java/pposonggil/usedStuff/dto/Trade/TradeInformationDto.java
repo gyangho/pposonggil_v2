@@ -1,10 +1,16 @@
-package pposonggil.usedStuff.dto;
+package pposonggil.usedStuff.dto.Trade;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import pposonggil.usedStuff.domain.Trade;
 import pposonggil.usedStuff.domain.TransactionAddress;
+import pposonggil.usedStuff.dto.Information.InformationDto;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
@@ -13,7 +19,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Builder
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PRIVATE)
-public class TradeDto {
+public class TradeInformationDto {
     private Long tradeId;
     private Long tradeBoardId;
     private Long subjectId;
@@ -25,9 +31,10 @@ public class TradeDto {
     private TransactionAddress address;
     private LocalDateTime createdAt;
     private LocalDateTime updateAt;
+    private List<InformationDto> informationDtos;
 
-    public static TradeDto fromEntity(Trade trade) {
-        return TradeDto.builder()
+    public static TradeInformationDto fromEntity(Trade trade) {
+        return TradeInformationDto.builder()
                 .tradeId(trade.getId())
                 .tradeBoardId(trade.getTradeBoard().getId())
                 .subjectId(trade.getTradeSubject().getId())
@@ -39,6 +46,9 @@ public class TradeDto {
                 .address(trade.getAddress())
                 .createdAt(trade.getCreatedAt())
                 .updateAt(trade.getUpdateAt())
+                .informationDtos(trade.getInformations().stream()
+                        .map(InformationDto::fromEntity)
+                        .collect(Collectors.toList()))
                 .build();
     }
 }

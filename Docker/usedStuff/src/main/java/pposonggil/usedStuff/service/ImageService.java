@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import pposonggil.usedStuff.domain.Board;
 import pposonggil.usedStuff.domain.Image;
-import pposonggil.usedStuff.dto.ImageDto;
+import pposonggil.usedStuff.dto.Image.ImageDto;
 import pposonggil.usedStuff.repository.board.BoardRepository;
 import pposonggil.usedStuff.repository.image.ImageRepository;
 

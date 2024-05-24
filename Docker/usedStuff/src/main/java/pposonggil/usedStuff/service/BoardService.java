@@ -5,8 +5,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pposonggil.usedStuff.domain.Board;
 import pposonggil.usedStuff.domain.Member;
-import pposonggil.usedStuff.dto.BoardDto;
-import pposonggil.usedStuff.dto.BoardImagesDto;
+import pposonggil.usedStuff.dto.Board.BoardDto;
+import pposonggil.usedStuff.dto.Board.BoardImagesDto;
 import pposonggil.usedStuff.repository.board.BoardRepository;
 import pposonggil.usedStuff.repository.member.MemberRepository;
 
@@ -43,8 +43,8 @@ public class BoardService {
     /**
      * 작성자 아이디로 게시글 조회
      */
-    public List<BoardImagesDto> findImageBoardsWithMemberImagesByWriterId(Long writerId) {
-        List<Board> boards = boardRepository.findBoardsWithMemberImagesByMember(writerId);
+    public List<BoardImagesDto> findImageBoardsWithMemberByWriterId(Long writerId) {
+        List<Board> boards = boardRepository.findBoardsWithMemberByWriterId(writerId);
 
         return boards.stream()
                 .map(BoardImagesDto::fromEntity)
@@ -55,7 +55,7 @@ public class BoardService {
      * 작성자 & 이미지 & 게시글 조회
      */
     public List<BoardImagesDto> findAllWithMember() {
-        List<Board> boards = boardRepository.findAllWithMemberImages();
+        List<Board> boards = boardRepository.findAllWithMember();
         return boards.stream()
                 .map(BoardImagesDto::fromEntity)
                 .collect(Collectors.toList());
@@ -85,7 +85,7 @@ public class BoardService {
     public void updateBoard(BoardDto boardDto) {
         Board board = boardRepository.findById(boardDto.getBoardId())
                 .orElseThrow(NoSuchElementException::new);
-System.out.println("????" + board.isFreebie());
+
         if (!board.getTitle().equals(boardDto.getTitle()))
             board.changeTitle(boardDto.getTitle());
         if (!board.getContent().equals(boardDto.getContent()))
@@ -100,8 +100,6 @@ System.out.println("????" + board.isFreebie());
             board.changePrice(boardDto.getPrice());
         if (board.isFreebie() != boardDto.isFreebie())
             board.changeIsFreebie(boardDto.isFreebie());
-        System.out.println("????" + board.isFreebie());
-        System.out.println("????" + boardDto.isFreebie());
 
         boardRepository.save(board);
     }

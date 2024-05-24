@@ -8,9 +8,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import pposonggil.usedStuff.domain.*;
-import pposonggil.usedStuff.dto.BoardDto;
-import pposonggil.usedStuff.dto.MemberDto;
-import pposonggil.usedStuff.dto.TradeDto;
+import pposonggil.usedStuff.dto.Board.BoardDto;
+import pposonggil.usedStuff.dto.Member.MemberDto;
+import pposonggil.usedStuff.dto.Trade.TradeDto;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

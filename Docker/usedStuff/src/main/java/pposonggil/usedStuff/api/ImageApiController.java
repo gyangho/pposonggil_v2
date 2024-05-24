@@ -5,7 +5,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import pposonggil.usedStuff.dto.ImageDto;
+import pposonggil.usedStuff.dto.Image.ImageDto;
 import pposonggil.usedStuff.service.ImageService;
 
 import java.io.IOException;

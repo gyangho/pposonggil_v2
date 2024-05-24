@@ -3,7 +3,7 @@ package pposonggil.usedStuff.api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pposonggil.usedStuff.dto.ReviewDto;
+import pposonggil.usedStuff.dto.Review.ReviewDto;
 import pposonggil.usedStuff.service.ReviewService;
 
 import java.util.List;
