@@ -13,6 +13,11 @@ import pposonggil.usedStuff.dto.ChatRoom.ChatRoomDto;
 import pposonggil.usedStuff.dto.Member.MemberDto;
 import pposonggil.usedStuff.dto.Message.MessageDto;
 import pposonggil.usedStuff.dto.Trade.TradeDto;
+import pposonggil.usedStuff.service.Board.BoardService;
+import pposonggil.usedStuff.service.ChatRoom.ChatRoomService;
+import pposonggil.usedStuff.service.Member.MemberService;
+import pposonggil.usedStuff.service.Message.MessageService;
+import pposonggil.usedStuff.service.Trade.TradeService;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

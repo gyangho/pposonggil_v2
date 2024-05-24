@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 import pposonggil.usedStuff.domain.ReportType;
 import pposonggil.usedStuff.dto.Member.MemberDto;
 import pposonggil.usedStuff.dto.Report.ReportDto;
+import pposonggil.usedStuff.service.Member.MemberService;
+import pposonggil.usedStuff.service.Report.ReportService;
 
 import java.util.List;
 import java.util.Optional;

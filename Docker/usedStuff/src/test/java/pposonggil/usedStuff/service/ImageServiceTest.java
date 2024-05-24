@@ -15,6 +15,9 @@ import pposonggil.usedStuff.domain.TransactionAddress;
 import pposonggil.usedStuff.dto.Board.BoardDto;
 import pposonggil.usedStuff.dto.Image.ImageDto;
 import pposonggil.usedStuff.dto.Member.MemberDto;
+import pposonggil.usedStuff.service.Board.BoardService;
+import pposonggil.usedStuff.service.Image.ImageService;
+import pposonggil.usedStuff.service.Member.MemberService;
 
 import java.io.IOException;
 import java.nio.file.Files;

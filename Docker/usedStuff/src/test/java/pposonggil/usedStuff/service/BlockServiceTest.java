@@ -9,6 +9,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import pposonggil.usedStuff.dto.Block.BlockDto;
 import pposonggil.usedStuff.dto.Member.MemberDto;
+import pposonggil.usedStuff.service.Block.BlockService;
+import pposonggil.usedStuff.service.Member.MemberService;
 
 import java.util.List;
 import java.util.NoSuchElementException;
