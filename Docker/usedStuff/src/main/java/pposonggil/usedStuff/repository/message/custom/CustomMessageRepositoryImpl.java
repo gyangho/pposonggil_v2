@@ -29,4 +29,28 @@ public class CustomMessageRepositoryImpl implements  CustomMessageRepository{
                 .limit(1000)
                 .fetch();
     }
+
+    @Override
+    public List<Message> findMessagesByChatRoomId(Long chatRoomId){
+        return query
+                .select(message)
+                .from(message)
+                .join(message.sender, member).fetchJoin()
+                .join(message.messageChatRoom, chatRoom).fetchJoin()
+                .where(message.messageChatRoom.id.eq(chatRoomId))
+                .limit(1000)
+                .fetch();
+    }
+
+    @Override
+    public List<Message> findMessagesBySenderId(Long senderId){
+        return query
+                .select(message)
+                .from(message)
+                .join(message.sender, member).fetchJoin()
+                .join(message.messageChatRoom, chatRoom).fetchJoin()
+                .where(message.sender.id.eq(senderId))
+                .limit(1000)
+                .fetch();
+    }
 }

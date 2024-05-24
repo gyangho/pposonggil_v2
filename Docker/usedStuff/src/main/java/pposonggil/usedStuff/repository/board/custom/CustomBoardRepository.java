@@ -6,6 +6,5 @@ import java.util.List;
 
 public interface CustomBoardRepository {
     List<Board> findAllWithMember();
-
-    List<Board> findBoardsByMember(Long writeId);
+    List<Board> findBoardsWithMemberByWriterId(Long writeId);
 }

@@ -15,7 +15,7 @@ import static lombok.AccessLevel.PROTECTED;
 @DynamicInsert
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PRIVATE)
-public class Information {
+public class Information extends BaseEntity{
     @Id
     @GeneratedValue
     @Column(name = "information_id")

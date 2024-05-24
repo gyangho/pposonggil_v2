@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import pposonggil.usedStuff.domain.Board;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static pposonggil.usedStuff.domain.QBoard.board;
 import static pposonggil.usedStuff.domain.QMember.member;
@@ -29,14 +30,11 @@ public class CustomBoardRepositoryImpl implements CustomBoardRepository {
     }
 
     @Override
-    public List<Board> findBoardsByMember(Long writeId) {
-        return query
-                .select(board)
-                .from(board)
-                .join(board.writer, member).fetchJoin()
-                .where(board.writer.id.eq(writeId))
-                .limit(1000)
-                .fetch();
+    public List<Board> findBoardsWithMemberByWriterId(Long writeId) {
+        List<Board> boards = findAllWithMember();
+        return boards.stream()
+                .filter(board -> board.getWriter().getId().equals(writeId))
+                .collect(Collectors.toList());
     }
 }
 
