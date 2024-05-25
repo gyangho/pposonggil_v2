@@ -29,7 +29,8 @@ dependencies {
 
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	runtimeOnly 'com.h2database:h2'
+	
+	runtimeOnly 'com.mysql:mysql-connector-j'
 
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
@@ -40,6 +41,11 @@ dependencies {
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'io.findify:s3mock_2.12:0.2.4'
+	testImplementation('com.h2database:h2')
+}
+
+jar{
+	enabled = false
 }
 
 tasks.named('test') {

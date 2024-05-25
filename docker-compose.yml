@@ -73,6 +73,24 @@ services:
         source: ./Docker/Keys
         target: /usr/src/app/api_gateway/Keys
 
+  usedStuff:
+    image: gonaging/usedstuff:1.0
+    build:
+      context: ./Docker/usedStuff
+      dockerfile: Dockerfile
+    ports:
+      - "8890:8890"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/Tables_in_nodejs # MySQL 컨테이너에 연결
+      - SPRING_DATASOURCE_USERNAME=pposong
+      - SPRING_DATASOURCE_PASSWORD=000000
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - front-network
+      - back-network
+
   mysql:
     image: gonaging/mysql:8
     restart: unless-stopped
@@ -108,3 +126,4 @@ networks:
   back-network:
     driver: bridge
 
+x-project_name: pposonggil_v2
