@@ -29,7 +29,11 @@ dependencies {
 
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	
+
+	// h2 설정
+	// runtimeOnly 'com.h2database:h2'
+
+	// mysql 설정
 	runtimeOnly 'com.mysql:mysql-connector-j'
 
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
@@ -39,6 +43,7 @@ dependencies {
 	implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.1.RELEASE'
 
+	// 테스트 설정
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'io.findify:s3mock_2.12:0.2.4'
 	testImplementation('com.h2database:h2')
