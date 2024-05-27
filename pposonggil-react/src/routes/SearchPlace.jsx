@@ -267,7 +267,7 @@ function SearchPlace() {
             </AddressBox>
           </Box>
           <MarkerIconBox>
-          <MarkerIcon MarkerIcon={faMagnifyingGlassArrowRight}/>
+            <MarkerIcon icon={faMagnifyingGlassArrowRight}/>
           </MarkerIconBox>
         </Row> 
         </Container>
