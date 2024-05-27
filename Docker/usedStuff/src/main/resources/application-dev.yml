@@ -1,9 +1,13 @@
+## H2 사용
 spring:
+  config:
+    active:
+      on-profile: dev
   datasource:
-    url: jdbc:h2:mem:test
+    url: jdbc:h2:tcp://localhost/~/Desktop/pposonggil_v2/Docker/usedStuff
     username: sa
     password:
-      driver-class-name: org.h2.Driver
+    driver-class-name: org.h2.Driver
   jpa:
     hibernate:
       ddl-auto: create
@@ -16,8 +20,6 @@ spring:
     multipart:
       max-file-size: 50MB
       max-request-size: 50MB
-  profiles:
-    include: secret
 
 cloud:
   aws:

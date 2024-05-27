@@ -81,6 +81,7 @@ services:
     ports:
       - "8080:8080"
     environment:
+      - SPRING_PROFILES_ACTIVE=prod
       - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/Tables_in_nodejs # MySQL 컨테이너에 연결
       - SPRING_DATASOURCE_USERNAME=pposong
       - SPRING_DATASOURCE_PASSWORD=000000

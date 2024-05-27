@@ -1,41 +1,9 @@
 spring:
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://mysql:3306/Tables_in_nodejs
-    username: pposong
-    password: 000000
-  jpa:
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQL8Dialect
-        show_sql: true
-        format_sql: true
-        default_batch_fetch_size: 100
-  servlet:
-    multipart:
-      max-file-size: 50MB
-      max-request-size: 50MB
+  profiles:
+    active: dev
 
-cloud:
-  aws:
-    s3:
-      bucket: pposonggil-bucket
-    region:
-      static: ap-northeast-2
-      auto: false
-    stack:
-      auto: false
-    credentials:
-      access-key: 비밀
-      secret-key: 안알랴줌
-
-server:
-  address: 0.0.0.0
-  port: 8890
-
-logging:
-  level:
-    org.hibernate.SQL: debug
-    org.hibernate.type: trace
+  config:
+    import:
+      - application-secret.yml
+      - application-dev.yml
+      - application-prod.yml
