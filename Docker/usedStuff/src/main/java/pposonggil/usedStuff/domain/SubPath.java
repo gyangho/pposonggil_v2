@@ -27,11 +27,6 @@ public class SubPath extends BaseEntity{
     @Column(name = "subpath_id")
     private Long id;
 
-    @JsonIgnore
-    @OneToOne(fetch = LAZY)
-    @JoinColumn(name = "lane_id")
-    private Lane lane;
-
     @OneToMany(mappedBy = "pointSubPath")
     private List<Point> points = new ArrayList<>();
 
@@ -41,6 +36,9 @@ public class SubPath extends BaseEntity{
     private Path path;
 
     private Long type;
+
+    @Embedded
+    private Lane lane;
 
     @Embedded
     @AttributeOverrides({
@@ -70,10 +68,6 @@ public class SubPath extends BaseEntity{
         path.getSubPaths().add(this);
     }
 
-    public void setLane(Lane lane){
-        this.lane = lane;
-    }
-
     public static SubPathBuilder builder(Path path) {
         if(path == null)
             throw new IllegalArgumentException("필수 파라미터 누락");
@@ -81,7 +75,7 @@ public class SubPath extends BaseEntity{
                 .path(path);
     }
 
-    public static SubPath buildSubPath(Path path, Long type, PointInformation startInfo, PointInformation endInfo, Long distance, Long duration) {
+    public static SubPath buildSubPath(Path path, Long type, Lane lane, PointInformation startInfo, PointInformation endInfo, Long distance, Long duration) {
         return SubPath.builder(path)
                 .type(type)
                 .startInfo(startInfo)
