@@ -30,10 +30,33 @@ public class Path extends BaseEntity{
     private List<SubPath> subPaths  = new ArrayList<>();
 
     @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "name", column = @Column(name = "start_name")),
+            @AttributeOverride(name = "latitude", column = @Column(name = "start_latitude")),
+            @AttributeOverride(name = "longitude", column = @Column(name = "start_longitude")),
+            @AttributeOverride(name = "x", column = @Column(name = "start_x")),
+            @AttributeOverride(name = "y", column = @Column(name = "start_y"))
+    })
     private PointInformation startInfo;
+
     @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "name", column = @Column(name = "end_name")),
+            @AttributeOverride(name = "latitude", column = @Column(name = "end_latitude")),
+            @AttributeOverride(name = "longitude", column = @Column(name = "end_longitude")),
+            @AttributeOverride(name = "x", column = @Column(name = "end_x")),
+            @AttributeOverride(name = "y", column = @Column(name = "end_y"))
+    })
     private PointInformation endInfo;
+
     @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "name", column = @Column(name = "mid_name")),
+            @AttributeOverride(name = "latitude", column = @Column(name = "mid_latitude")),
+            @AttributeOverride(name = "longitude", column = @Column(name = "mid_longitude")),
+            @AttributeOverride(name = "x", column = @Column(name = "mid_x")),
+            @AttributeOverride(name = "y", column = @Column(name = "mid_y"))
+    })
     private PointInformation midInfo;
 
     private Long totalDuration;

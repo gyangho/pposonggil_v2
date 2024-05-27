@@ -43,8 +43,23 @@ public class SubPath extends BaseEntity{
     private Long type;
 
     @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "name", column = @Column(name = "start_name")),
+            @AttributeOverride(name = "latitude", column = @Column(name = "start_latitude")),
+            @AttributeOverride(name = "longitude", column = @Column(name = "start_longitude")),
+            @AttributeOverride(name = "x", column = @Column(name = "start_x")),
+            @AttributeOverride(name = "y", column = @Column(name = "start_y"))
+    })
     private PointInformation startInfo;
+
     @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "name", column = @Column(name = "end_name")),
+            @AttributeOverride(name = "latitude", column = @Column(name = "end_latitude")),
+            @AttributeOverride(name = "longitude", column = @Column(name = "end_longitude")),
+            @AttributeOverride(name = "x", column = @Column(name = "end_x")),
+            @AttributeOverride(name = "y", column = @Column(name = "end_y"))
+    })
     private PointInformation endInfo;
 
     private Long distance;
