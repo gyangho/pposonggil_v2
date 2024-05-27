@@ -3,11 +3,11 @@ package pposonggil.usedStuff.service.Trade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pposonggil.usedStuff.domain.Board;
+import pposonggil.usedStuff.domain.ChatRoom;
 import pposonggil.usedStuff.domain.Member;
 import pposonggil.usedStuff.domain.Trade;
 import pposonggil.usedStuff.dto.Trade.TradeDto;
-import pposonggil.usedStuff.repository.board.BoardRepository;
+import pposonggil.usedStuff.repository.chatroom.ChatRoomRepository;
 import pposonggil.usedStuff.repository.member.MemberRepository;
 import pposonggil.usedStuff.repository.trade.TradeRepository;
 
@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class TradeService {
     private final TradeRepository tradeRepository;
-    private final BoardRepository boardRepository;
+    private final ChatRoomRepository chatRoomRepository;
     private final MemberRepository memberRepository;
 
     /**
@@ -76,11 +76,11 @@ public class TradeService {
     }
 
     /**
-     * 게시글 아이디로 거래 조회
+     * 채팅방 아이디로 거래 조회
      */
-    public TradeDto findTradeByBoardId(Long boardId) {
-        Trade trade = tradeRepository.findTradeByBoardId(boardId)
-                .orElseThrow(() -> new NoSuchElementException("Trade not found with boardId: " + boardId));
+    public TradeDto findTradeByBoardId(Long chatRoomId) {
+        Trade trade = tradeRepository.findTradeByChatRoomId(chatRoomId)
+                .orElseThrow(() -> new NoSuchElementException("Trade not found with boardId: " + chatRoomId));
 
         return TradeDto.fromEntity(trade);
     }
@@ -89,7 +89,7 @@ public class TradeService {
      * 게시글 & 회원 & 거래 조회
      */
     public List<TradeDto> findTradesWithBoardMember() {
-        List<Trade> trades = tradeRepository.findTradesWithBoardMember();
+        List<Trade> trades = tradeRepository.findTradesWithMember();
 
         return trades.stream()
                 .map(TradeDto::fromEntity)
@@ -101,30 +101,25 @@ public class TradeService {
      */
     @Transactional
     public Long createTrade(TradeDto tradeDto) {
-        Board tradeBoard = boardRepository.findById(tradeDto.getTradeBoardId())
-                .orElseThrow(() -> new NoSuchElementException("Board not found with id: " + tradeDto.getTradeBoardId()));
+        ChatRoom tradeChatRoom = chatRoomRepository.findById(tradeDto.getChatRoomId())
+                .orElseThrow(() -> new NoSuchElementException("Board not found with id: " + tradeDto.getChatRoomId()));
         Member tradeSubject = memberRepository.findById(tradeDto.getSubjectId())
                 .orElseThrow(() -> new NoSuchElementException("Member not found with id: " + tradeDto.getSubjectId()));
         Member tradeObject = memberRepository.findById(tradeDto.getObjectId())
                 .orElseThrow(() -> new NoSuchElementException("Member not found with id: " + tradeDto.getObjectId()));
 
-
-        if (tradeBoard.getWriter() != tradeSubject) {
-            throw new IllegalArgumentException("게시글을 작성하지 않은 거래 주체자와 거래할 수 없습니다.");
+        if (!(tradeChatRoom.getChatBoard().getWriter().getId().equals(tradeDto.getSubjectId()) && tradeChatRoom.getRequester().getId().equals(tradeDto.getObjectId())) &&
+                !(tradeChatRoom.getChatBoard().getWriter().getId().equals(tradeDto.getObjectId()) && tradeChatRoom.getRequester().getId().equals(tradeDto.getObjectId()))) {
+            throw new IllegalArgumentException("거래멤버가 채팅방 멤버가 아닙니다.");
         }
 
         if (tradeSubject.equals(tradeObject)) {
             throw new IllegalArgumentException("자기 자신과 거래할 수 없습니다.");
         }
 
-        tradeRepository.findTradeByBoardId(tradeBoard.getId())
-                .ifPresent(trade -> {
-                    throw new IllegalArgumentException("이미 거래가 예약되어 있습니다.");
-                });
+        Trade trade = Trade.buildTrade(tradeChatRoom, tradeSubject, tradeObject);
 
-        Trade trade = Trade.buildTrade(tradeBoard, tradeSubject, tradeObject);
-
-        trade.setChatBoard(tradeBoard);
+        trade.setTradeChatRoom(tradeChatRoom);
         trade.setTradeSubject(tradeSubject);
         trade.setTradeObject(tradeObject);
 

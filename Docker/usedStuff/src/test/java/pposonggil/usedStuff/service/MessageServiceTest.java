@@ -60,17 +60,19 @@ class MessageServiceTest {
         boardId2 = createBoard(memberId2, "title2", "우산 팔아요2", LocalDateTime.now(), LocalDateTime.now().plusHours(1),
                 new TransactionAddress("숭실대2", 37.5000, 126.9500, "주소2"), 2000L, false);
 
-        // 거래 1, 2, 3 생성
-        // 거래 1 : 거래1(회원1) - 회원3
-        // 거래 2 : 거래2(회원2) - 회원3
-        tradeId1 = createTrade(boardId1, memberId1, memberId3);
-        tradeId2 = createTrade(boardId2, memberId2, memberId3);
-
         // 채팅방 1, 2 생성
         // 채팅방 1 : 게시글1(회원1) - 회원3
         // 채팅방 2 : 게시글2(회원2) - 회원3
-        chatRoomId1 = createChatRoom(tradeId1);
-        chatRoomId2 = createChatRoom(tradeId2);
+        chatRoomId1 = createChatRoom(boardId1, memberId3);
+        chatRoomId2 = createChatRoom(boardId2, memberId3);
+
+        // 거래 1, 2, 3 생성
+        // 거래 1 : 채팅방1(회원1) - 회원3
+        // 거래 2 : 채팅방2(회원2) - 회원3
+        tradeId1 = createTrade(chatRoomId1, memberId1, memberId3);
+        tradeId2 = createTrade(chatRoomId2, memberId2, memberId3);
+
+
 
         // 메시지 1, 2, 3, 4 생성
         // 메시지 1 : 채팅방1, 회원1 --> 회원3
@@ -92,7 +94,7 @@ class MessageServiceTest {
         // then
         // 채팅 1
         Optional.of(messageDto1)
-                .filter(messageDto -> messageDto.getSenderId().equals(memberId1) && messageDto.getMessageChatRoomId().equals(chatRoomId1))
+                .filter(messageDto -> messageDto.getSenderId().equals(memberId1) && messageDto.getChatRoomId().equals(chatRoomId1))
                 .ifPresent(messageDto -> assertAll("채팅 1 송신 검증",
                         () -> assertEquals("nickName1", messageDto.getSenderNickName(), "채팅 송신자 닉네임 불일치"),
                         () -> assertEquals("우산 팔아요", messageDto.getContent())
@@ -100,7 +102,7 @@ class MessageServiceTest {
 
         // 채팅 2
         Optional.of(messageDto2)
-                .filter(messageDto -> messageDto.getSenderId().equals(memberId3) && messageDto.getMessageChatRoomId().equals(chatRoomId1))
+                .filter(messageDto -> messageDto.getSenderId().equals(memberId3) && messageDto.getChatRoomId().equals(chatRoomId1))
                 .ifPresent(messageDto -> assertAll("채팅 2 송신 검증",
                         () -> assertEquals("nickName3", messageDto.getSenderNickName(), "채팅 송신자 닉네임 불일치"),
                         () -> assertEquals("우산 살래요", messageDto.getContent())
@@ -117,7 +119,7 @@ class MessageServiceTest {
 
         // 첫번째 메시지 검증
         messageDtos.stream()
-                .filter(messageDto -> messageDto.getSenderId().equals(memberId1) && messageDto.getMessageChatRoomId().equals(chatRoomId1))
+                .filter(messageDto -> messageDto.getSenderId().equals(memberId1) && messageDto.getChatRoomId().equals(chatRoomId1))
                 .findFirst()
                 .ifPresent(messageDto -> assertAll("채팅 1 송신 검증",
                         () -> assertEquals("nickName1", messageDto.getSenderNickName(), "채팅 송신자 닉네임 불일치"),
@@ -126,7 +128,7 @@ class MessageServiceTest {
 
         // 두번째 메시지 검증
         messageDtos.stream()
-                .filter(messageDto -> messageDto.getSenderId().equals(memberId3) && messageDto.getMessageChatRoomId().equals(chatRoomId1))
+                .filter(messageDto -> messageDto.getSenderId().equals(memberId3) && messageDto.getChatRoomId().equals(chatRoomId1))
                 .findFirst()
                 .ifPresent(messageDto -> assertAll("채팅 2 송신 검증",
                         () -> assertEquals("nickName3", messageDto.getSenderNickName(), "채팅 송신자 닉네임 불일치"),
@@ -135,7 +137,7 @@ class MessageServiceTest {
 
         // 세번째 메시지 검증
         messageDtos.stream()
-                .filter(messageDto -> messageDto.getSenderId().equals(memberId2) && messageDto.getMessageChatRoomId().equals(chatRoomId2))
+                .filter(messageDto -> messageDto.getSenderId().equals(memberId2) && messageDto.getChatRoomId().equals(chatRoomId2))
                 .findFirst()
                 .ifPresent(messageDto -> assertAll("채팅 3 송신 검증",
                         () -> assertEquals("nickName2", messageDto.getSenderNickName(), "채팅 송신자 닉네임 불일치"),
@@ -144,7 +146,7 @@ class MessageServiceTest {
 
         // 네번째 메시지 검증
         messageDtos.stream()
-                .filter(messageDto -> messageDto.getSenderId().equals(memberId3) && messageDto.getMessageChatRoomId().equals(chatRoomId2))
+                .filter(messageDto -> messageDto.getSenderId().equals(memberId3) && messageDto.getChatRoomId().equals(chatRoomId2))
                 .findFirst()
                 .ifPresent(messageDto -> assertAll("채팅 4 송신 검증",
                         () -> assertEquals("nickName3", messageDto.getSenderNickName(), "채팅 송신자 닉네임 불일치"),
@@ -162,7 +164,7 @@ class MessageServiceTest {
 
         // 첫번째 메시지 검증
         messageDtos.stream()
-                .filter(messageDto -> messageDto.getSenderId().equals(memberId1) && messageDto.getMessageChatRoomId().equals(chatRoomId1))
+                .filter(messageDto -> messageDto.getSenderId().equals(memberId1) && messageDto.getChatRoomId().equals(chatRoomId1))
                 .findFirst()
                 .ifPresent(messageDto -> assertAll("채팅 1 송신 검증",
                         () -> assertEquals("nickName1", messageDto.getSenderNickName(), "채팅 송신자 닉네임 불일치"), 
@@ -171,7 +173,7 @@ class MessageServiceTest {
 
         // 두번째 메시지 검증
         messageDtos.stream()
-                .filter(messageDto -> messageDto.getSenderId().equals(memberId3) && messageDto.getMessageChatRoomId().equals(chatRoomId1))
+                .filter(messageDto -> messageDto.getSenderId().equals(memberId3) && messageDto.getChatRoomId().equals(chatRoomId1))
                 .findFirst()
                 .ifPresent(messageDto -> assertAll("채팅 2 송신 검증",
                         () -> assertEquals("nickName3", messageDto.getSenderNickName(), "채팅 송신자 닉네임 불일치"),
@@ -189,7 +191,7 @@ class MessageServiceTest {
 
         // 두번째 메시지 검증
         messageDtos.stream()
-                .filter(messageDto -> messageDto.getSenderId().equals(memberId3) && messageDto.getMessageChatRoomId().equals(chatRoomId1))
+                .filter(messageDto -> messageDto.getSenderId().equals(memberId3) && messageDto.getChatRoomId().equals(chatRoomId1))
                 .findFirst()
                 .ifPresent(messageDto -> assertAll("채팅 2 송신 검증",
                         () -> assertEquals("nickName3", messageDto.getSenderNickName(), "채팅 송신자 닉네임 불일치"),
@@ -198,7 +200,7 @@ class MessageServiceTest {
 
         // 네번째 메시지 검증
         messageDtos.stream()
-                .filter(messageDto -> messageDto.getSenderId().equals(memberId3) && messageDto.getMessageChatRoomId().equals(chatRoomId2))
+                .filter(messageDto -> messageDto.getSenderId().equals(memberId3) && messageDto.getChatRoomId().equals(chatRoomId2))
                 .findFirst()
                 .ifPresent(messageDto -> assertAll("채팅 4 송신 검증",
                         () -> assertEquals("nickName3", messageDto.getSenderNickName(), "채팅 송신자 닉네임 불일치"),
@@ -245,26 +247,28 @@ class MessageServiceTest {
         return boardService.createBoard(boardDto);
     }
 
-    public Long createTrade(Long boardId, Long subjectId, Long objectId) {
+    public Long createTrade(Long chatRoomId, Long subjectId, Long objectId) {
         TradeDto tradeDto = TradeDto.builder()
-                .tradeBoardId(boardId)
+                .chatRoomId(chatRoomId)
                 .subjectId(subjectId)
                 .objectId(objectId)
                 .build();
         return tradeService.createTrade(tradeDto);
     }
 
-    public Long createChatRoom(Long tradeId) {
+    public Long createChatRoom(Long boardId, Long requestId) {
         ChatRoomDto chatRoomDto = ChatRoomDto.builder()
-                .chatTradeId(tradeId)
+                .boardId(boardId)
+                .requesterId(requestId)
                 .build();
+
         return chatRoomService.createChatRoom(chatRoomDto);
     }
 
     public Long createChatMessage(Long memberId, Long chatRoomId, String content) {
         MessageDto messageDto = MessageDto.builder()
                 .senderId(memberId)
-                .messageChatRoomId(chatRoomId)
+                .chatRoomId(chatRoomId)
                 .content(content)
                 .build();
 

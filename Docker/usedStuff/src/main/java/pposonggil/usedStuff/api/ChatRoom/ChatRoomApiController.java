@@ -36,13 +36,13 @@ public class ChatRoomApiController {
     }
 
     /**
-     * 거래 아이디로 채팅방 조회
-     * @param tradeId : 회원 아이디
-     * @return 거래 아이디가 일치하는 거래를 포함한 채팅방 Dto
+     * 게시글 아이디로 채팅방 조회
+     * @param boardId : 회원 아이디
+     * @return 게시글 아이디가 일치하는 요청자를 포함한 채팅방 Dto
      */
     @GetMapping("/api/chatroom/{tradeId}")
-    public ChatRoomDto findChatRoomWithTradeByTradeId(@PathVariable Long tradeId) {
-        return chatRoomService.findChatRoomWithTradeByTradeId(tradeId);
+    public ChatRoomDto findChatRoomWithBoardRequesterByBoardId(@PathVariable Long boardId) {
+        return chatRoomService.findChatRoomWithBoardRequesterByBoardId(boardId);
     }
 
     /**

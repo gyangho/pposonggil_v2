@@ -26,8 +26,8 @@ public class Trade extends BaseEntity {
 
     @JsonIgnore
     @OneToOne(fetch = LAZY)
-    @JoinColumn(name = "chat_board_id")
-    private Board tradeBoard;
+    @JoinColumn(name = "chat_room_id")
+    private ChatRoom tradeChatRoom;
 
     @Builder.Default
     @OneToMany(mappedBy = "informationTrade", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -53,8 +53,8 @@ public class Trade extends BaseEntity {
     @Embedded
     private TransactionAddress address;
 
-    public void setChatBoard(Board board) {
-        this.tradeBoard = board;
+    public void setTradeChatRoom(ChatRoom tradeChatRoom) {
+        this.tradeChatRoom = tradeChatRoom;
     }
 
     public void setTradeSubject(Member member) {
@@ -67,24 +67,24 @@ public class Trade extends BaseEntity {
         member.getTradeObjects().add(this);
     }
 
-    public static TradeBuilder builder(Board tradeBoard, Member tradeSubject, Member tradeObject) {
-        if (tradeBoard == null || tradeSubject == null || tradeObject == null) {
+    public static TradeBuilder builder(ChatRoom tradeChatRoom, Member tradeSubject, Member tradeObject) {
+        if (tradeChatRoom == null || tradeSubject == null || tradeObject == null) {
             throw new IllegalArgumentException("필수 파라미터 누락");
         }
         return new TradeBuilder()
-                .tradeBoard(tradeBoard)
+                .tradeChatRoom(tradeChatRoom)
                 .tradeSubject(tradeSubject)
                 .tradeObject(tradeObject);
     }
 
-    public static Trade buildTrade(Board tradeBoard,Member tradeSubject, Member tradeObject) {
-        return Trade.builder(tradeBoard, tradeSubject, tradeObject)
-                .tradeBoard(tradeBoard)
+    public static Trade buildTrade(ChatRoom tradeChatRoom,Member tradeSubject, Member tradeObject) {
+        return Trade.builder(tradeChatRoom, tradeSubject, tradeObject)
+                .tradeChatRoom(tradeChatRoom)
                 .tradeSubject(tradeSubject)
                 .tradeObject(tradeObject)
-                .startTimeString(tradeBoard.getStartTimeString())
-                .endTimeString(tradeBoard.getEndTimeString())
-                .address(tradeBoard.getAddress())
+                .startTimeString(tradeChatRoom.getStartTimeString())
+                .endTimeString(tradeChatRoom.getEndTimeString())
+                .address(tradeChatRoom.getAddress())
                 .build();
     }
 }

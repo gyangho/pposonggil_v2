@@ -26,7 +26,7 @@ public class MemberBoardDto {
     private Double ratingScore;
     private LocalDateTime createdAt;
     private boolean isActivated;
-    private List<BoardDto> blockDtos;
+    private List<BoardDto> boardDtos;
 
     public static MemberBoardDto fromEntity(Member member){
         return MemberBoardDto.builder()
@@ -37,7 +37,7 @@ public class MemberBoardDto {
                 .ratingScore(member.getRatingScore())
                 .createdAt(member.getCreatedAt())
                 .isActivated(member.isActivated())
-                .blockDtos(member.getBoards().stream()
+                .boardDtos(member.getBoards().stream()
                         .map(BoardDto::fromEntity)
                         .collect(Collectors.toList()))
                 .build();

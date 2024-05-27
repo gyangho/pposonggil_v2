@@ -21,7 +21,7 @@ import static lombok.AccessLevel.PROTECTED;
 @AllArgsConstructor(access = PRIVATE)
 public class TradeReviewDto {
     private Long tradeId;
-    private Long tradeBoardId;
+    private Long chatRoomId;
     private Long subjectId;
     private String subjectNickName;
     private Long objectId;
@@ -36,7 +36,7 @@ public class TradeReviewDto {
     public static TradeReviewDto fromEntity(Trade trade) {
         return TradeReviewDto.builder()
                 .tradeId(trade.getId())
-                .tradeBoardId(trade.getTradeBoard().getId())
+                .chatRoomId(trade.getTradeChatRoom().getId())
                 .subjectId(trade.getTradeSubject().getId())
                 .subjectNickName(trade.getTradeSubject().getNickName())
                 .objectId(trade.getTradeObject().getId())

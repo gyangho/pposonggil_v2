@@ -30,11 +30,11 @@ public class MessageService {
     public Long createMessage(MessageDto messageDto) {
         Member sender = memberRepository.findById(messageDto.getSenderId())
                 .orElseThrow(() -> new NoSuchElementException("Member not found with id: " + messageDto.getSenderId()));
-        ChatRoom messageChatRoom = chatRoomRepository.findById(messageDto.getMessageChatRoomId())
-                .orElseThrow(() -> new NoSuchElementException("ChatRoom not found with id: " + messageDto.getMessageChatRoomId()));
+        ChatRoom messageChatRoom = chatRoomRepository.findById(messageDto.getChatRoomId())
+                .orElseThrow(() -> new NoSuchElementException("ChatRoom not found with id: " + messageDto.getChatRoomId()));
 
-        if (!messageChatRoom.getChatTrade().getTradeSubject().getId().equals(messageDto.getSenderId()) &&
-                !messageChatRoom.getChatTrade().getTradeObject().getId().equals(messageDto.getSenderId())) {
+        if (!messageChatRoom.getChatBoard().getWriter().getId().equals(messageDto.getSenderId()) &&
+                !messageChatRoom.getRequester().getId().equals(messageDto.getSenderId())) {
             throw new IllegalArgumentException("Sender가 채팅방 멤버가 아닙니다.");
         }
 
