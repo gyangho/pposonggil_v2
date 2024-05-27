@@ -1,6 +1,6 @@
 .post-detail {
     width: 90%;
-    max-width: 700px;
+    max-width: 800px;
     margin: 20px auto;
     padding: 20px;
     border: 3px solid #5b6fcb;
@@ -29,4 +29,26 @@
     max-width: 100%;
     margin-top: 20px;
     border-radius: 10px;
+}
+
+.buttons-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.buttons-container button {
+    margin: 0 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #5b6fcb;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.buttons-container button:hover {
+    background-color: #333;
 }
