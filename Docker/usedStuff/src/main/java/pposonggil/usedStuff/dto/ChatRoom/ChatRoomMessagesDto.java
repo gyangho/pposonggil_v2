@@ -20,7 +20,11 @@ import static lombok.AccessLevel.PROTECTED;
 @AllArgsConstructor(access = PRIVATE)
 public class ChatRoomMessagesDto {
     private Long chatRoomId;
-    private Long chatTradeId;
+    private Long boardId;
+    private Long writerId;
+    private Long requesterId;
+    private String writerNickName;
+    private String requesterNickName;
     private String addressName;
     private LocalDateTime createdAt;
     private LocalDateTime updateAt;
@@ -29,8 +33,12 @@ public class ChatRoomMessagesDto {
     public static ChatRoomMessagesDto fromEntity(ChatRoom chatRoom) {
         return ChatRoomMessagesDto.builder()
                 .chatRoomId(chatRoom.getId())
-                .chatTradeId(chatRoom.getChatTrade().getId())
-                .addressName(chatRoom.getChatTrade().getAddress().getName())
+                .boardId(chatRoom.getChatBoard().getId())
+                .writerId(chatRoom.getChatBoard().getWriter().getId())
+                .requesterId(chatRoom.getRequester().getId())
+                .writerNickName(chatRoom.getChatBoard().getWriter().getNickName())
+                .requesterNickName(chatRoom.getRequester().getNickName())
+                .addressName(chatRoom.getChatBoard().getAddress().getName())
                 .createdAt(chatRoom.getCreatedAt())
                 .updateAt(chatRoom.getUpdateAt())
                 .messages(chatRoom.getMessages().stream()

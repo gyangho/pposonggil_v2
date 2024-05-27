@@ -70,20 +70,20 @@ public class TradeInformationService {
     }
 
     /**
-     * 게시글 아이디로 정보 포함한 거래 조회
+     * 채팅방 아이디로 정보 포함한 거래 조회
      */
-    public TradeInformationDto findTradeWithInformationByBoardId(Long boardId) {
-        Trade trade = tradeRepository.findTradeByBoardId(boardId)
-                .orElseThrow(() -> new NoSuchElementException("Trade not found with boardId: " + boardId));
+    public TradeInformationDto findTradeByChatRoomId(Long chatRoomId) {
+        Trade trade = tradeRepository.findTradeByChatRoomId(chatRoomId)
+                .orElseThrow(() -> new NoSuchElementException("Trade not found with chatRoomId: " + chatRoomId));
 
         return TradeInformationDto.fromEntity(trade);
     }
 
     /**
-     * 게시글 & 회원 & 정보 & 거래 조회
+     * 회원 & 정보 & 거래 조회
      */
     public List<TradeInformationDto> findTradesWithBoardMemberInformation() {
-        List<Trade> trades = tradeRepository.findTradesWithBoardMember();
+        List<Trade> trades = tradeRepository.findTradesWithMember();
 
         return trades.stream()
                 .map(TradeInformationDto::fromEntity)

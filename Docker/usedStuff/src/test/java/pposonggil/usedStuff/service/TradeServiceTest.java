@@ -9,9 +9,11 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import pposonggil.usedStuff.domain.*;
 import pposonggil.usedStuff.dto.Board.BoardDto;
+import pposonggil.usedStuff.dto.ChatRoom.ChatRoomDto;
 import pposonggil.usedStuff.dto.Member.MemberDto;
 import pposonggil.usedStuff.dto.Trade.TradeDto;
 import pposonggil.usedStuff.service.Board.BoardService;
+import pposonggil.usedStuff.service.ChatRoom.ChatRoomService;
 import pposonggil.usedStuff.service.Member.MemberService;
 import pposonggil.usedStuff.service.Trade.TradeService;
 
@@ -33,9 +35,12 @@ class TradeServiceTest {
     BoardService boardService;
     @Autowired
     MemberService memberService;
+    @Autowired
+    ChatRoomService chatRoomService;
 
     private Long memberId1, memberId2, memberId3;
     private Long boardId1, boardId2, boardId3;
+    private Long chatRoomId1, chatRoomId2, chatRoomId3;
     private Long tradeId1, tradeId2, tradeId3;
 
     @BeforeEach
@@ -53,13 +58,21 @@ class TradeServiceTest {
         boardId3 = createBoard(memberId3, "title3", "우산 팔아요3", LocalDateTime.now(), LocalDateTime.now().plusHours(2),
                 new TransactionAddress("숭실대3", 37.0600, 126.9600, "주소3"), 3000L, false);
 
+        // 채팅방 1, 2, 3생성
+        // 채팅방 1 : 게시글1(회원1) - 회원3
+        // 채팅방 2 : 게시글2(회원2) - 회원3
+        // 채팅방 3 : 게시글3(회원3) - 회원1
+        chatRoomId1 = createChatRoom(boardId1, memberId3);
+        chatRoomId2 = createChatRoom(boardId2, memberId3);
+        chatRoomId3 = createChatRoom(boardId3, memberId1);
+
         // 거래 1, 2, 3생성
-        // 거래 1 : 게시글1(회원1) - 회원3
-        // 거래 2 : 게시글2(회원2) - 회원3
-        // 거래 3 : 게시글3(회원3) - 회원1
-        tradeId1 = createTrade(boardId1, memberId1, memberId3);
-        tradeId2 = createTrade(boardId2, memberId2, memberId3);
-        tradeId3 = createTrade(boardId3, memberId3, memberId1);
+        // 거래 1 : 채팅방1(회원1) - 회원3
+        // 거래 2 : 채팅방2(회원2) - 회원3
+        // 거래 3 : 채팅방3(회원3) - 회원1
+        tradeId1 = createTrade(chatRoomId1, memberId1, memberId3);
+        tradeId2 = createTrade(chatRoomId2, memberId2, memberId3);
+        tradeId3 = createTrade(chatRoomId3, memberId3, memberId1);
     }
 
     @Test
@@ -71,7 +84,7 @@ class TradeServiceTest {
         Optional.of(tradeDto1)
                 .filter(tradeDto -> tradeDto.getSubjectId().equals(memberId1) &&
                         tradeDto.getObjectId().equals(memberId3) &&
-                        tradeDto.getTradeBoardId().equals(boardId1))
+                        tradeDto.getChatRoomId().equals(chatRoomId1))
                 .ifPresent(tradeDto -> assertAll("거래 정보 검증",
                         () -> assertEquals("nickName1", tradeDto.getSubjectNickName(), "게시글 작성자 닉네임 불일치"),
                         () -> assertEquals("nickName3", tradeDto.getObjectNickName(), "거래 요청자 닉네임 불일치"),
@@ -94,7 +107,7 @@ class TradeServiceTest {
         tradeDtos.stream()
                 .filter(tradeDto -> tradeDto.getSubjectId().equals(memberId1) &&
                         tradeDto.getObjectId().equals(memberId3) &&
-                        tradeDto.getTradeBoardId().equals(boardId1))
+                        tradeDto.getChatRoomId().equals(chatRoomId1))
                 .findFirst()
                 .ifPresent(tradeDto -> {
                     assertAll("게시글 정보, 회원 정보를 포함한 거래 조회 검증(거래1)",
@@ -111,7 +124,7 @@ class TradeServiceTest {
         tradeDtos.stream()
                 .filter(tradeDto -> tradeDto.getSubjectId().equals(memberId2) &&
                         tradeDto.getObjectId().equals(memberId3) &&
-                        tradeDto.getTradeBoardId().equals(boardId2))
+                        tradeDto.getChatRoomId().equals(chatRoomId2))
                 .findFirst()
                 .ifPresent(tradeDto -> {
                     assertAll("게시글 정보, 회원 정보를 포함한 거래 조회 검증(거래2)",
@@ -128,7 +141,7 @@ class TradeServiceTest {
         tradeDtos.stream()
                 .filter(tradeDto -> tradeDto.getSubjectId().equals(memberId3) &&
                         tradeDto.getObjectId().equals(memberId1) &&
-                        tradeDto.getTradeBoardId().equals(boardId3))
+                        tradeDto.getChatRoomId().equals(chatRoomId3))
                 .findFirst()
                 .ifPresent(tradeDto -> {
                     assertAll("게시글 정보, 회원 정보를 포함한 거래 조회 검증(거래3)",
@@ -149,8 +162,10 @@ class TradeServiceTest {
         Long boardId4 = createBoard(memberId1, "title4", "우산 팔아요4", LocalDateTime.now(), LocalDateTime.now().plusHours(2),
                 new TransactionAddress("숭실대4", 37.4000, 126.9400, "주소4"), 4000L, false);
 
+        // 채팅방 4 생성(게시글4 (회원1) - 회원2)
+        Long chatRoomId4 = createChatRoom(boardId4, memberId2);
         // 거래 4 생성(회원 1 - 회원 2)
-        Long trade4 = createTrade(boardId4, memberId1, memberId2);
+        Long trade4 = createTrade(chatRoomId4, memberId1, memberId2);
 
         // when
         List<TradeDto> tradeDtos = tradeService.findTradesBySubjectId(memberId1);
@@ -161,7 +176,7 @@ class TradeServiceTest {
         tradeDtos.stream()
                 .filter(tradeDto -> tradeDto.getSubjectId().equals(memberId1) &&
                         tradeDto.getObjectId().equals(memberId3) &&
-                        tradeDto.getTradeBoardId().equals(boardId1))
+                        tradeDto.getChatRoomId().equals(chatRoomId1))
                 .findFirst()
                 .ifPresent(tradeDto -> {
                     assertAll("게시글 정보, 회원 정보를 포함한 거래 조회 검증(거래1)",
@@ -178,7 +193,7 @@ class TradeServiceTest {
         tradeDtos.stream()
                 .filter(tradeDto -> tradeDto.getSubjectId().equals(memberId1) &&
                         tradeDto.getObjectId().equals(memberId2) &&
-                        tradeDto.getTradeBoardId().equals(boardId4))
+                        tradeDto.getChatRoomId().equals(chatRoomId4))
                 .findFirst()
                 .ifPresent(tradeDto -> {
                     assertAll("게시글 정보, 회원 정보를 포함한 거래 조회 검증(거래1)",
@@ -203,7 +218,7 @@ class TradeServiceTest {
         tradeDtos.stream()
                 .filter(tradeDto -> tradeDto.getSubjectId().equals(memberId1) &&
                         tradeDto.getObjectId().equals(memberId3) &&
-                        tradeDto.getTradeBoardId().equals(boardId1))
+                        tradeDto.getChatRoomId().equals(chatRoomId1))
                 .findFirst()
                 .ifPresent(tradeDto -> {
                     assertAll("게시글 정보, 회원 정보를 포함한 거래 조회 검증(거래1)",
@@ -220,7 +235,7 @@ class TradeServiceTest {
         tradeDtos.stream()
                 .filter(tradeDto -> tradeDto.getSubjectId().equals(memberId2) &&
                         tradeDto.getObjectId().equals(memberId3) &&
-                        tradeDto.getTradeBoardId().equals(boardId2))
+                        tradeDto.getChatRoomId().equals(chatRoomId2))
                 .findFirst()
                 .ifPresent(tradeDto -> {
                     assertAll("게시글 정보, 회원 정보를 포함한 거래 조회 검증(거래1)",
@@ -246,7 +261,7 @@ class TradeServiceTest {
         tradeDtos.stream()
                 .filter(tradeDto -> tradeDto.getSubjectId().equals(memberId1) &&
                         tradeDto.getObjectId().equals(memberId3) &&
-                        tradeDto.getTradeBoardId().equals(boardId1))
+                        tradeDto.getChatRoomId().equals(chatRoomId1))
                 .findFirst()
                 .ifPresent(tradeDto -> {
                     assertAll("게시글 정보, 회원 정보를 포함한 거래 조회 검증(거래1)",
@@ -263,7 +278,7 @@ class TradeServiceTest {
         tradeDtos.stream()
                 .filter(tradeDto -> tradeDto.getSubjectId().equals(memberId3) &&
                         tradeDto.getObjectId().equals(memberId1) &&
-                        tradeDto.getTradeBoardId().equals(boardId3))
+                        tradeDto.getChatRoomId().equals(chatRoomId3))
                 .findFirst()
                 .ifPresent(tradeDto -> {
                     assertAll("게시글 정보, 회원 정보를 포함한 거래 조회 검증(거래3)",
@@ -278,15 +293,15 @@ class TradeServiceTest {
     }
 
     @Test
-    public void 게시글_아이디로_거래_조회() throws Exception {
+    public void 채팅방_아이디로_거래_조회() throws Exception {
         // when
-        TradeDto tradeDto1 = tradeService.findTradeByBoardId(boardId1);
+        TradeDto tradeDto1 = tradeService.findTradeByBoardId(chatRoomId1);
 
         // then
         Optional.of(tradeDto1)
                 .filter(tradeDto -> tradeDto.getSubjectId().equals(memberId1) &&
                         tradeDto.getObjectId().equals(memberId3) &&
-                        tradeDto.getTradeBoardId().equals(boardId1))
+                        tradeDto.getChatRoomId().equals(chatRoomId1))
                 .ifPresent(tradeDto -> assertAll("게시글 아이디로 조회한 거래 정보 검증",
                         () -> assertEquals("nickName1", tradeDto.getSubjectNickName(), "게시글 작성자 닉네임 불일치"),
                         () -> assertEquals("nickName3", tradeDto.getObjectNickName(), "거래 요청자 닉네임 불일치"),
@@ -299,15 +314,22 @@ class TradeServiceTest {
 
 
     @Test
-    public void 게시글을_작성하지않은_사람과_거래할_수_없다() throws Exception {
+    public void 채팅방에_없는_사람과_거래할_수_없다() throws Exception {
         // given
         // 회원 4 생성
         Long memberId4 = createMember("name4", "nickName4", "01044444444");
 
+        // 게시글 4 생성
+        Long boardId4 = createBoard(memberId4, "title4", "우산 팔아요4", LocalDateTime.now(), LocalDateTime.now().plusHours(2),
+                new TransactionAddress("숭실대4", 37.4444, 126.4444, "주소4"), 3000L, false);
+
+        // 채팅방4 (게시글4(회원4) - 회원1)
+        Long chatRoomId4 = createChatRoom(boardId4, memberId1);
+
         // then
-        // 거래4(회원4 - 회원1) 생성하려는 상황
+        // 거래4(회원4 - 회원2) 생성하려는 상황
         assertThrows(IllegalArgumentException.class, () ->{
-            createTrade(boardId1, memberId4, memberId1);
+            createTrade(chatRoomId4, memberId4, memberId2);
         });
     }
 
@@ -318,10 +340,13 @@ class TradeServiceTest {
         Long boardId4 = createBoard(memberId1, "title4", "우산 팔아요4", LocalDateTime.now(), LocalDateTime.now().plusHours(2),
                 new TransactionAddress("숭실대4", 37.4000, 126.9400, "주소4"), 4000L, false);
 
+        // 채팅방4 (게시글4(회원1) - 회원2)
+        Long chatRoomId4 = createChatRoom(boardId4, memberId2);
+
         // then
         // 게시글4에 거래(회원 1 - 회원 1)를 생성하려는 상황
         assertThrows(IllegalArgumentException.class, () -> {
-            createTrade(boardId4, memberId1, memberId1);
+            createTrade(chatRoomId4, memberId1, memberId1);
         });
     }
 
@@ -330,7 +355,7 @@ class TradeServiceTest {
         // then
         // 게시글1에 거래1(회원 1 - 회원 3)가 있으나 게시글1의 거래를 하나 더 생성하려는 상황
         assertThrows(IllegalArgumentException.class, () ->{
-            createTrade(boardId1, memberId1, memberId2);
+            createTrade(chatRoomId1, memberId1, memberId2);
         });
     }
 
@@ -376,13 +401,22 @@ class TradeServiceTest {
                 .build();
         return boardService.createBoard(boardDto);
     }
-    
-    public Long createTrade(Long boardId, Long subjectId, Long objectId) {
+
+    public Long createTrade(Long chatRoomId, Long subjectId, Long objectId) {
         TradeDto tradeDto = TradeDto.builder()
-                .tradeBoardId(boardId)
+                .chatRoomId(chatRoomId)
                 .subjectId(subjectId)
                 .objectId(objectId)
                 .build();
         return tradeService.createTrade(tradeDto);
+    }
+
+    public Long createChatRoom(Long boardId, Long requestId) {
+        ChatRoomDto chatRoomDto = ChatRoomDto.builder()
+                .boardId(boardId)
+                .requesterId(requestId)
+                .build();
+
+        return chatRoomService.createChatRoom(chatRoomDto);
     }
 }

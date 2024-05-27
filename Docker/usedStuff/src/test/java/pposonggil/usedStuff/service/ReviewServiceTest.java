@@ -9,10 +9,12 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import pposonggil.usedStuff.domain.*;
 import pposonggil.usedStuff.dto.Board.BoardDto;
+import pposonggil.usedStuff.dto.ChatRoom.ChatRoomDto;
 import pposonggil.usedStuff.dto.Member.MemberDto;
 import pposonggil.usedStuff.dto.Review.ReviewDto;
 import pposonggil.usedStuff.dto.Trade.TradeDto;
 import pposonggil.usedStuff.service.Board.BoardService;
+import pposonggil.usedStuff.service.ChatRoom.ChatRoomService;
 import pposonggil.usedStuff.service.Member.MemberService;
 import pposonggil.usedStuff.service.Review.ReviewService;
 import pposonggil.usedStuff.service.Trade.TradeService;
@@ -35,10 +37,13 @@ class ReviewServiceTest {
     @Autowired
     BoardService boardService;
     @Autowired
+    ChatRoomService chatRoomService;
+    @Autowired
     TradeService tradeService;
 
     private Long memberId1, memberId2, memberId3;
     private Long boardId1, boardId2;
+    private Long chatRoomId1, chatRoomId2;
     private Long tradeId1, tradeId2;
     private Long reviewId1, reviewId2, reviewId3, reviewId4;
 
@@ -55,11 +60,18 @@ class ReviewServiceTest {
         boardId2 = createBoard(memberId2, "title2", "우산 팔아요2", LocalDateTime.now(), LocalDateTime.now().plusHours(1),
                 new TransactionAddress("숭실대2", 37.5000, 126.9500, "주소2"), 2000L, false);
 
+        // 채팅방 1, 2 생성
+        // 채팅방 1 : 게시글1(회원1) - 회원3
+        // 채팅방 2 : 게시글2(회원2) - 회원3
+        chatRoomId1 = createChatRoom(boardId1, memberId3);
+        chatRoomId2 = createChatRoom(boardId2, memberId3);
+
+
         // 거래 1, 2 생성
         // 거래 1 : 게시글1(회원1 - 회원3)
         // 거래 2 : 게시글2(회원2 - 회원3)
-        tradeId1 = createTrade(boardId1, memberId1, memberId3);
-        tradeId2 = createTrade(boardId2, memberId2, memberId3);
+        tradeId1 = createTrade(chatRoomId1, memberId1, memberId3);
+        tradeId2 = createTrade(chatRoomId2, memberId2, memberId3);
 
         // 리뷰 1, 2, 3, 4 생성
         // 리뷰 1 : 거래1, 회원1 --> 회원3, 5점
@@ -338,8 +350,11 @@ class ReviewServiceTest {
         // 게시글 3 생성
         Long boardId3 = createBoard(memberId3, "title3", "우산 팔아요3", LocalDateTime.now(), LocalDateTime.now().plusHours(2),
                 new TransactionAddress("숭실대3", 37.0600, 126.9600, "주소3"), 3000L, false);
+
+        // 채팅방 3 생성
+        Long chatRoomId3 = createChatRoom(boardId3, memberId2);
         // 거래 3 생성
-        Long tradeId3 = createTrade(boardId3, memberId3, memberId1);
+        Long tradeId3 = createTrade(chatRoomId3, memberId3, memberId2);
 
         // when
 
@@ -378,9 +393,18 @@ class ReviewServiceTest {
         return boardService.createBoard(boardDto);
     }
 
-    public Long createTrade(Long boardId, Long subjectId, Long objectId) {
+    public Long createChatRoom(Long boardId, Long requestId) {
+        ChatRoomDto chatRoomDto = ChatRoomDto.builder()
+                .boardId(boardId)
+                .requesterId(requestId)
+                .build();
+
+        return chatRoomService.createChatRoom(chatRoomDto);
+    }
+
+    public Long createTrade(Long chatRoomId, Long subjectId, Long objectId) {
         TradeDto tradeDto = TradeDto.builder()
-                .tradeBoardId(boardId)
+                .chatRoomId(chatRoomId)
                 .subjectId(subjectId)
                 .objectId(objectId)
                 .build();

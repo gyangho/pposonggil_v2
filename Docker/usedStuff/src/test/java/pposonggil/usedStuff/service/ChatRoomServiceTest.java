@@ -11,11 +11,9 @@ import pposonggil.usedStuff.domain.*;
 import pposonggil.usedStuff.dto.Board.BoardDto;
 import pposonggil.usedStuff.dto.ChatRoom.ChatRoomDto;
 import pposonggil.usedStuff.dto.Member.MemberDto;
-import pposonggil.usedStuff.dto.Trade.TradeDto;
 import pposonggil.usedStuff.service.Board.BoardService;
 import pposonggil.usedStuff.service.ChatRoom.ChatRoomService;
 import pposonggil.usedStuff.service.Member.MemberService;
-import pposonggil.usedStuff.service.Trade.TradeService;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -31,8 +29,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class ChatRoomServiceTest {
     @Autowired
     ChatRoomService chatRoomService;
-    @Autowired
-    TradeService tradeService;
     @Autowired
     MemberService memberService;
     @Autowired
@@ -58,21 +54,14 @@ class ChatRoomServiceTest {
         boardId3 = createBoard(memberId3, "title3", "우산 팔아요3", LocalDateTime.now(), LocalDateTime.now().plusHours(2),
                 new TransactionAddress("숭실대3", 37.0600, 126.9600, "주소3"), 3000L, false);
 
-        // 거래 1, 2, 3 생성
-        // 거래 1 : 거래1(회원1) - 회원3
-        // 거래 2 : 거래2(회원2) - 회원3
-        // 거래 3 : 거래3(회원3) - 회원1
-        tradeId1 = createTrade(boardId1, memberId1, memberId3);
-        tradeId2 = createTrade(boardId2, memberId2, memberId3);
-        tradeId3 = createTrade(boardId3, memberId3, memberId1);
 
         // 채팅방 1, 2, 3생성
-        // 채팅방 1 : 거래1(회원1) - 회원3
-        // 채팅방 2 : 거래2(회원2) - 회원3
-        // 채팅방 3 : 거래3(회원3) - 회원1
-        chatRoomId1 = createChatRoom(tradeId1);
-        chatRoomId2 = createChatRoom(tradeId2);
-        chatRoomId3 = createChatRoom(tradeId3);
+        // 채팅방 1 : 게시글1(회원1) - 회원3
+        // 채팅방 2 : 게시글2(회원2) - 회원3
+        // 채팅방 3 : 게시글3(회원3) - 회원1
+        chatRoomId1 = createChatRoom(boardId1, memberId3);
+        chatRoomId2 = createChatRoom(boardId2, memberId3);
+        chatRoomId3 = createChatRoom(boardId3, memberId1);
     }
 
     @Test
@@ -82,9 +71,9 @@ class ChatRoomServiceTest {
 
         // then
         Optional.of(chatRoomMessagesDto1)
-                .filter(chatRoomDto -> chatRoomDto.getChatTradeId().equals(tradeId1))
+                .filter(chatRoomDto -> chatRoomDto.getBoardId().equals(boardId1))
                 .ifPresent(chatRoomDto -> assertAll("채팅방 정보 검증",
-                        () -> assertEquals("숭실대1", chatRoomDto.getAddressName(), "채팅방 주소 장소 이름 불일치")
+                        () -> assertEquals("숭실대1", chatRoomDto.getAddress().getName(), "채팅방 주소 장소 이름 불일치")
                 ));
     }
 
@@ -95,9 +84,9 @@ class ChatRoomServiceTest {
 
         // then
         Optional.of(chatRoomMessagesDto1)
-                .filter(chatRoomDto -> chatRoomDto.getChatTradeId().equals(tradeId1))
+                .filter(chatRoomDto -> chatRoomDto.getBoardId().equals(boardId1))
                 .ifPresent(chatRoomDto -> assertAll("채팅방 정보 검증",
-                        () -> assertEquals("숭실대1", chatRoomDto.getAddressName(), "채팅방 주소 장소 이름 불일치")
+                        () -> assertEquals("숭실대1", chatRoomDto.getAddress().getName(), "채팅방 주소 장소 이름 불일치")
                 ));
     }
 
@@ -111,38 +100,38 @@ class ChatRoomServiceTest {
 
         // 첫 번째 채팅방 검증
         chatRoomMessagesDto.stream()
-                .filter(chatRoomDto -> chatRoomDto.getChatTradeId().equals(tradeId1))
+                .filter(chatRoomDto -> chatRoomDto.getBoardId().equals(boardId1))
                 .findFirst()
                 .ifPresent(chatRoomDto -> assertAll("거래 정보를 포함한 채팅방 조회 검증(채팅방1)",
-                        () -> assertEquals("숭실대1", chatRoomDto.getAddressName(), "채팅방 주소 장소 이름 불일치")
+                        () -> assertEquals("숭실대1", chatRoomDto.getAddress().getName(), "채팅방 주소 장소 이름 불일치")
                 ));
 
 
         // 두 번째 채팅방 검증
         chatRoomMessagesDto.stream()
-                .filter(chatRoomDto -> chatRoomDto.getChatTradeId().equals(tradeId2))
+                .filter(chatRoomDto -> chatRoomDto.getBoardId().equals(boardId2))
                 .findFirst()
                 .ifPresent(chatRoomDto -> assertAll("거래 정보를 포함한 채팅방 조회 검증(채팅방2)",
-                        () -> assertEquals("숭실대2", chatRoomDto.getAddressName(), "채팅방 주소 장소 이름 불일치")
+                        () -> assertEquals("숭실대2", chatRoomDto.getAddress().getName(), "채팅방 주소 장소 이름 불일치")
                 ));
 
 
         // 세 번째 채팅방 검증
         chatRoomMessagesDto.stream()
-                .filter(chatRoomDto -> chatRoomDto.getChatTradeId().equals(tradeId3))
+                .filter(chatRoomDto -> chatRoomDto.getBoardId().equals(boardId3))
                 .findFirst()
                 .ifPresent(chatRoomDto -> assertAll("거래 정보를 포함한 채팅방 조회 검증(채팅방3)",
-                        () -> assertEquals("숭실대3", chatRoomDto.getAddressName(), "채팅방 주소 장소 이름 불일치")
+                        () -> assertEquals("숭실대3", chatRoomDto.getAddress().getName(), "채팅방 주소 장소 이름 불일치")
                 ));
 
     }
 
     @Test
-    public void 하나의_거래에는_하나의_채팅방만_생성가능하다() throws Exception {
+    public void 하나의_게시글에는_하나의_채팅방만_생성가능하다() throws Exception {
         // then
-        // 거래1(회원 1 - 회원 3)의 채팅방을 이미 생성했으나 하나 더 생성하려는 상황
+        // 게시글1(회원 1 - 회원 3)의 채팅방을 이미 생성했으나 하나 더 생성하려는 상황
         assertThrows(IllegalArgumentException.class, () -> {
-            createChatRoom(tradeId1);
+            createChatRoom(boardId1, memberId3);
         });
     }
 
@@ -187,19 +176,12 @@ class ChatRoomServiceTest {
         return boardService.createBoard(boardDto);
     }
 
-    public Long createTrade(Long boardId, Long subjectId, Long objectId) {
-        TradeDto tradeDto = TradeDto.builder()
-                .tradeBoardId(boardId)
-                .subjectId(subjectId)
-                .objectId(objectId)
-                .build();
-        return tradeService.createTrade(tradeDto);
-    }
-
-    public Long createChatRoom(Long tradeId) {
+    public Long createChatRoom(Long boardId, Long requestId) {
         ChatRoomDto chatRoomDto = ChatRoomDto.builder()
-                .chatTradeId(tradeId)
+                .boardId(boardId)
+                .requesterId(requestId)
                 .build();
+
         return chatRoomService.createChatRoom(chatRoomDto);
     }
 }
