@@ -1,4 +1,4 @@
-package pposonggil.usedStuff.domain;
+package pposonggil.usedStuff.domain.Route;
 
 import jakarta.persistence.Embeddable;
 import lombok.Getter;

@@ -2,12 +2,12 @@ package pposonggil.usedStuff.repository.point.custom;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
-import pposonggil.usedStuff.domain.Point;
+import pposonggil.usedStuff.domain.Route.Point;
 
 import java.util.List;
 
-import static pposonggil.usedStuff.domain.QPoint.point;
-import static pposonggil.usedStuff.domain.QSubPath.subPath;
+import static pposonggil.usedStuff.domain.Route.QPoint.point;
+import static pposonggil.usedStuff.domain.Route.QSubPath.subPath;
 
 public class CustomPointRepositoryImpl implements CustomPointRepository{
     private final JPAQueryFactory query;

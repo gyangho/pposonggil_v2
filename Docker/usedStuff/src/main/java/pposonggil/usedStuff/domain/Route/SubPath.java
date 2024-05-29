@@ -1,15 +1,18 @@
-package pposonggil.usedStuff.domain;
+package pposonggil.usedStuff.domain.Route;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
+import pposonggil.usedStuff.domain.BaseEntity;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static jakarta.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
 
@@ -19,15 +22,28 @@ import static lombok.AccessLevel.PROTECTED;
 @Builder
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PRIVATE)
-public class Path extends BaseEntity{
+public class SubPath extends BaseEntity {
     @Id
     @GeneratedValue
-    @Column(name = "path_id")
+    @Column(name = "subpath_id")
     private Long id;
 
-    @Builder.Default
-    @OneToMany(mappedBy = "path", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<SubPath> subPaths  = new ArrayList<>();
+    @OneToMany(mappedBy = "pointSubPath")
+    private List<Point> points = new ArrayList<>();
+
+    @JsonIgnore
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "path_id")
+    private Path path;
+
+    private String type;
+    private Long distance;
+    private Long time;
+    private Long stationCount;
+    private String subwayName;
+    private String busNo;
+    private String subwayColor;
+    private String busColor;
 
     @Embedded
     @AttributeOverrides({
@@ -49,38 +65,31 @@ public class Path extends BaseEntity{
     })
     private PointInformation endInfo;
 
-    @Embedded
-    @AttributeOverrides({
-            @AttributeOverride(name = "name", column = @Column(name = "mid_name")),
-            @AttributeOverride(name = "latitude", column = @Column(name = "mid_latitude")),
-            @AttributeOverride(name = "longitude", column = @Column(name = "mid_longitude")),
-            @AttributeOverride(name = "x", column = @Column(name = "mid_x")),
-            @AttributeOverride(name = "y", column = @Column(name = "mid_y"))
-    })
-    private PointInformation midInfo;
+    public void setPath(Path path) {
+        this.path = path;
+        path.getSubPaths().add(this);
+    }
 
-    private Long totalDuration;
-    private Long price;
-    private Long totalWalkDistance;
-    private Long totalWalkDuration;
-
-    public static PathBuilder builder(PointInformation startInfo, PointInformation endInfo) {
-        if(startInfo == null || endInfo == null)
+    public static SubPathBuilder builder(Path path, PointInformation startInfo, PointInformation endInfo) {
+        if (path == null || startInfo == null || endInfo == null)
             throw new IllegalArgumentException("필수 파라미터 누락");
-        return new PathBuilder()
+        return new SubPathBuilder()
+                .path(path)
                 .startInfo(startInfo)
                 .endInfo(endInfo);
     }
 
-    public static Path buildPath(PointInformation startInfo, PointInformation endInfo, PointInformation midInfo,
-                                 Long totalDuration, Long price, Long totalWalkDistance, Long totalWalkDuration){
-        return Path.builder(startInfo, endInfo)
-                .midInfo(midInfo)
-                .totalDuration(totalDuration)
-                .price(price)
-                .totalWalkDistance(totalWalkDistance)
-                .totalWalkDistance(totalWalkDistance)
+    public static SubPath buildSubPath(Path path, PointInformation startInfo, PointInformation endInfo, String type, Long distance,
+                                       Long time, Long stationCount, String subwayName, String busNo, String subwayColor, String busColor) {
+        return SubPath.builder(path, startInfo, endInfo)
+                .type(type)
+                .distance(distance)
+                .time(time)
+                .stationCount(stationCount)
+                .subwayName(subwayName)
+                .busNo(busNo)
+                .subwayColor(subwayColor)
+                .busColor(busColor)
                 .build();
     }
-
 }

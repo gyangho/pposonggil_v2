@@ -1,6 +1,6 @@
 package pposonggil.usedStuff.repository.subpath.custom;
 
-import pposonggil.usedStuff.domain.SubPath;
+import pposonggil.usedStuff.domain.Route.SubPath;
 
 import java.util.List;
 

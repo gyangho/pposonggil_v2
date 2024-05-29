@@ -1,4 +1,4 @@
-package pposonggil.usedStuff.domain;
+package pposonggil.usedStuff.domain.Route;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -24,6 +24,7 @@ public class Point {
     @JoinColumn(name = "subpath_id")
     private SubPath pointSubPath;
 
+    @Embedded
     private PointInformation pointInfo;
 
     public void setPointSubPath(SubPath pointSubPath){

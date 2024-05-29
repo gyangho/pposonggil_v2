@@ -3,12 +3,12 @@ package pposonggil.usedStuff.repository.subpath.custom;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
-import pposonggil.usedStuff.domain.SubPath;
+import pposonggil.usedStuff.domain.Route.SubPath;
 
 import java.util.List;
 
-import static pposonggil.usedStuff.domain.QPath.path;
-import static pposonggil.usedStuff.domain.QSubPath.subPath;
+import static pposonggil.usedStuff.domain.Route.QPath.path;
+import static pposonggil.usedStuff.domain.Route.QSubPath.subPath;
 
 @Repository
 public class CustomSubPathRepositoryImpl implements CustomSubPathRepository {

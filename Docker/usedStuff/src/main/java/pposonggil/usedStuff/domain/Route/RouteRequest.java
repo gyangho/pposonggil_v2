@@ -1,15 +1,10 @@
-package pposonggil.usedStuff.domain;
+package pposonggil.usedStuff.domain.Route;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
-
-import java.util.ArrayList;
-import java.util.List;
+import pposonggil.usedStuff.domain.*;
 
 import static jakarta.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.PRIVATE;
@@ -21,24 +16,22 @@ import static lombok.AccessLevel.PROTECTED;
 @Builder
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PRIVATE)
-public class SubPath extends BaseEntity{
+@ToString
+public class RouteRequest extends BaseEntity {
     @Id
     @GeneratedValue
-    @Column(name = "subpath_id")
+    @Column(name = "route_request_id")
     private Long id;
 
-    @OneToMany(mappedBy = "pointSubPath")
-    private List<Point> points = new ArrayList<>();
+    @JsonIgnore
+    @OneToOne(fetch = LAZY)
+    @JoinColumn(name = "route_request_path_id")
+    private Path routeRequestPath;
 
     @JsonIgnore
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "path_id")
-    private Path path;
-
-    private Long type;
-
-    @Embedded
-    private Lane lane;
+    @JoinColumn(name = "route_requester_id")
+    private Member routeRequester;
 
     @Embedded
     @AttributeOverrides({
@@ -60,28 +53,26 @@ public class SubPath extends BaseEntity{
     })
     private PointInformation endInfo;
 
-    private Long distance;
-    private Long duration;
-
-    public void setPath(Path path){
-        this.path = path;
-        path.getSubPaths().add(this);
+    public void setRouteRequester(Member member) {
+        this.routeRequester = member;
+        member.getRouteRequests().add(this);
     }
 
-    public static SubPathBuilder builder(Path path) {
-        if(path == null)
+    public static RouteRequest.RouteRequestBuilder builder(Member routeRequester, Path path,
+                                                           PointInformation startInfo, PointInformation endInfo) {
+        if (routeRequester == null || path == null || startInfo == null || endInfo == null)
             throw new IllegalArgumentException("필수 파라미터 누락");
-        return new SubPathBuilder()
-                .path(path);
+        return new RouteRequestBuilder()
+                .routeRequester(routeRequester)
+                .routeRequestPath(path)
+                .startInfo(startInfo)
+                .endInfo(endInfo);
     }
 
-    public static SubPath buildSubPath(Path path, Long type, Lane lane, PointInformation startInfo, PointInformation endInfo, Long distance, Long duration) {
-        return SubPath.builder(path)
-                .type(type)
-                .startInfo(startInfo)
-                .endInfo(endInfo)
-                .distance(distance)
-                .duration(duration)
+    public static RouteRequest buildRouteRequest(Member routeRequester, Path path,
+                                                 PointInformation startInfo, PointInformation endInfo) {
+        return RouteRequest.builder(routeRequester, path, startInfo, endInfo)
                 .build();
     }
+
 }
