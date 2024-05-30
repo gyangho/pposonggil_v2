@@ -1,3 +1,4 @@
+/*원본 코드 */
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { addressState, currentAddressState, gridState, locationBtnState, mapCenterState, markerState } from '../recoil/atoms';
@@ -67,7 +68,6 @@ const KakaoMap = styled.div`
   width: 100%;
   height: 100%;
 `;
-///////////////////////////////////////////////////////
 
 function Map() {
   const [isLoading, setIsLoading] = useState(false);
@@ -85,91 +85,6 @@ function Map() {
   const markerInstance = useRef(null);
   const geocoder = useRef(null);
 
-  // 지도 생성
-  // useEffect(() => {
-  //   setActiveMarker();
-  //   setActiveTracking();
-  //   setActiveGrid();
-    
-  //   const script = document.createElement('script');
-  //   script.async = true;
-  //   script.src = "//dapi.kakao.com/v2/maps/sdk.js?appkey=fa3cd41b575ec5e015970670e786ea86&autoload=false";
-  //   document.head.appendChild(script);
-
-  //   script.onload = () => {
-  //     kakao.maps.load(() => {
-  //       const container = mapRef.current;
-  //       const options = {
-  //         center: new kakao.maps.LatLng(37.566826, 126.9786567),
-  //         level: 8,
-  //       };
-  //       mapInstance.current = new kakao.maps.Map(container, options);
-  //       geocoder.current = new kakao.maps.services.Geocoder();
-
-  //       // 현재 위치 주소 정보 currentAddressState atom에 저장
-  //       if (navigator.geolocation) {
-  //         navigator.geolocation.getCurrentPosition((position) => {
-  //           const lat = position.coords.latitude;
-  //           const lon = position.coords.longitude;
-  //           const locPosition = new kakao.maps.LatLng(lat, lon);
-  //           // 좌표를 주소로 변환
-  //           geocoder.current.coord2Address(lon, lat, (result, status) => {
-  //             if (status === kakao.maps.services.Status.OK) {
-  //               setCurrentAddress({
-  //                 depth2: result[0].address.region_2depth_name,
-  //                 depth3: result[0].address.region_3depth_name,
-  //                 addr: result[0].address.address_name,
-  //                 lat: lat,
-  //                 lon: lon,
-  //               });
-  //             }
-  //           });
-  //         });
-  //       }
-  //       // 지도 이동 이벤트 리스너 등록
-  //       kakao.maps.event.addListener(mapInstance.current, 'idle', () => {
-  //         searchAddrFromCoords(mapInstance.current.getCenter(), displayCenterInfo);
-  //       });
-
-  //       // 지도 클릭 이벤트 리스너 등록(마커 표시 및 지도 중심 이동)
-  //       kakao.maps.event.addListener(mapInstance.current, 'click', (mouseEvent) => {
-  //         const latLon = mouseEvent.latLng;
-  //         searchDetailAddrFromCoords(latLon, (result, status) => {
-  //           if (status === kakao.maps.services.Status.OK) {
-  //             // const roadAddressName = result[0].road_address ? result[0].road_address.address_name : result[0].address.address_name;
-              
-  //             if (markerInstance.current) { //기존 마커 있으면 제거
-  //               markerInstance.current.setMap(null);
-  //               setActiveMarker(false);
-  //             }
-              
-  //             if(result[0].road_address) { // 도로명 주소 있는 경우에만 지도 마크업
-  //               markerInstance.current = new kakao.maps.Marker({
-  //                 position: latLon,
-  //                 map: mapInstance.current,
-  //               });
-  //               setAddress({
-  //                 depth2: result[0].address.region_2depth_name,
-  //                 depth3: result[0].address.region_3depth_name,
-  //                 addr: result[0].address.address_name,
-  //                 roadAddr: result[0].road_address.address_name,
-  //                 lat: markerInstance.current.getPosition().getLat(),
-  //                 lon: markerInstance.current.getPosition().getLng(),
-  //               });
-  //               setActiveTracking(false); //지도 클릭해서 마크업 시 위치 추적 버튼 비활성화
-  //               setActiveMarker(true); //마커 활성화 상태 업데이트
-  //               mapInstance.current.panTo(latLon); //마커 위치로 지도 중심 변경
-  //             } else {
-  //              setActiveMarker(false); 
-  //             }
-  //           }
-  //         });
-  //       });
-        
-  //     });
-  //   };
-  //   console.log("지도 랜더링")
-  // }, []);
   useEffect(() => {
     setActiveMarker(false);
     setActiveTracking(false);
@@ -189,7 +104,7 @@ function Map() {
         }
       });
     };
-  
+    //현재 위치 정보로 지도 생성
     const loadMap = ({ lat, lon }) => {
       const script = document.createElement('script');
       script.async = true;
@@ -228,7 +143,7 @@ function Map() {
             }
           });
   
-          // 지도 이동 이벤트 리스너 등록
+          // 지도 이동 이벤트 리스너 등록(지도 이동 시 지도 중심 위치 정보 상단 검색창에 띄우려는 용도)
           kakao.maps.event.addListener(mapInstance.current, 'idle', () => {
             searchAddrFromCoords(mapInstance.current.getCenter(), displayCenterInfo);
           });
@@ -421,13 +336,17 @@ function Map() {
 }
 
 export default Map;
+/* 여기까지 원본 코드 끝*/
+
+/* grid 표시 함수 추가한 새로운 코드*/
+
+
+/* 새로운 코드 끝 */
 
 
 
 
-
-
-
+/* 카카오맵 react-kakao-maps-sdk 라이브러리 사용한 코드*/
 // import React, { useState, useEffect, useRef, useCallback } from 'react';
 // import { useRecoilState } from 'recoil';
 // import {
