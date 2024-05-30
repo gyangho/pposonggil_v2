@@ -60,20 +60,20 @@ public class TradeReviewService {
     }
 
     /**
-     * 게시글 아이디로 리뷰 포함한 거래 조회
+     * 채팅방 아이디로 리뷰 포함한 거래 조회
      */
-    public TradeReviewDto findTradeWithReviewByBoardId(Long boardId) {
-        Trade trade = tradeRepository.findTradeByBoardId(boardId)
-                .orElseThrow(() -> new NoSuchElementException("Trade not found with boardId: " + boardId));
+    public TradeReviewDto findTradeWithReviewByBoardId(Long chatRoomId) {
+        Trade trade = tradeRepository.findTradeByChatRoomId(chatRoomId)
+                .orElseThrow(() -> new NoSuchElementException("Trade not found with chatRoomId: " + chatRoomId));
 
         return TradeReviewDto.fromEntity(trade);
     }
 
     /**
-     * 게시글 & 회원 & 리뷰 & 거래 조회
+     *  회원 & 리뷰 & 거래 조회
      */
     public List<TradeReviewDto> findTradesWithBoardMemberReview() {
-        List<Trade> trades = tradeRepository.findTradesWithBoardMember();
+        List<Trade> trades = tradeRepository.findTradesWithMember();
 
         return trades.stream()
                 .map(TradeReviewDto::fromEntity)

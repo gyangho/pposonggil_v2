@@ -15,7 +15,7 @@ import static lombok.AccessLevel.PROTECTED;
 public class MessageDto {
     private Long messageId;
     private Long senderId;
-    private Long messageChatRoomId;
+    private Long chatRoomId;
     private String senderNickName;
     private String content;
     private LocalDateTime createdAt;
@@ -24,7 +24,7 @@ public class MessageDto {
         return MessageDto.builder()
                 .messageId(message.getId())
                 .senderId(message.getSender().getId())
-                .messageChatRoomId(message.getMessageChatRoom().getId())
+                .chatRoomId(message.getMessageChatRoom().getId())
                 .senderNickName(message.getSender().getNickName())
                 .content(message.getContent())
                 .createdAt(message.getCreatedAt())

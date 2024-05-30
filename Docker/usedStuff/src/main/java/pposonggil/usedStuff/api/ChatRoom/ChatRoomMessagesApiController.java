@@ -32,21 +32,21 @@ public class ChatRoomMessagesApiController {
     }
 
     /**
-     * 거래 아이디로 채팅 채팅방 조회
-     * @param tradeId : 회원 아이디
-     * @return 거래 아이디가 일치하는 채팅을 포함한 메시지채팅방 Dto
+     * 게시글 아이디로 채팅 채팅방 조회
+     * @param boardId : 게시글 아이디
+     * @return 게시글 아이디가 일치하는 채팅을 포함한 메시지채팅방 Dto
      */
-    @GetMapping("/api/chatroom/with-messages/by-trade/{tradeId}")
-    public ChatRoomMessagesDto findChatRoomWithTradeByTradeId(@PathVariable Long tradeId) {
-        return chatRoomMessagesService.findChatRoomWithMessagesByTradeId(tradeId);
+    @GetMapping("/api/chatroom/with-messages/by-board/{boardId}")
+    public ChatRoomMessagesDto findChatRoomWithBoardRequesterByBoardId(@PathVariable Long boardId) {
+        return chatRoomMessagesService.findChatRoomWithBoardRequesterByBoardId(boardId);
     }
 
     /**
-     * 거래 & 채팅 & 채팅방 조회
-     * @return 거래, 채팅 정보를 포함한 채팅방 Dto 리스트
+     * 게시글 & 채팅 & 요청자 & 채팅방 조회
+     * @return 게시글, 채팅 정보를 포함한 채팅방 Dto 리스트
      */
     @GetMapping("/api/chatrooms/with-trade-messages")
-    public List<ChatRoomMessagesDto> findChatRoomsWithTrade() {
-        return chatRoomMessagesService.findChatRoomsWithTradeMessages();
+    public List<ChatRoomMessagesDto> findChatRoomsWithBoardRequester() {
+        return chatRoomMessagesService.findChatRoomsWithBoardRequester();
     }
 }

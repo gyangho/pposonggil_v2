@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
+import pposonggil.usedStuff.domain.Route.RouteRequest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +41,14 @@ public class Member extends BaseEntity {
     @Builder.Default
     @OneToMany(mappedBy = "writer")
     private List<Board> boards = new ArrayList<>();
+
+    @Builder.Default
+    @OneToMany(mappedBy = "requester")
+    private List<ChatRoom> chatRooms = new ArrayList<>();
+
+    @Builder.Default
+    @OneToMany(mappedBy = "routeRequester")
+    private List<RouteRequest> routeRequests = new ArrayList<>();
 
     @Builder.Default
     @OneToMany(mappedBy = "tradeSubject")

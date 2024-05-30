@@ -16,6 +16,9 @@ spring:
     multipart:
       max-file-size: 50MB
       max-request-size: 50MB
+  profiles:
+    include: secret
+
 cloud:
   aws:
     s3:
@@ -26,8 +29,8 @@ cloud:
     stack:
       auto: false
     credentials:
-      access-key: 비밀
-      secret-key: 안알랴줌
+      access-key: ${api-key.s3-access-key}
+      secret-key: ${api-key.s3-secret-key}
 
 logging:
   level:

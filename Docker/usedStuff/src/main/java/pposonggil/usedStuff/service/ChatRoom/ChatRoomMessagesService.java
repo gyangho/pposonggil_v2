@@ -37,21 +37,21 @@ public class ChatRoomMessagesService {
     }
 
     /**
-     * 거래 아이디로 메시지 포함한 채팅방 조회
+     * 게시글 아이디로 메시지, 요청자 포함한 채팅방 조회
      */
-    public ChatRoomMessagesDto findChatRoomWithMessagesByTradeId(Long tradeId) {
-        ChatRoom chatRoom = chatRoomRepository.findChatRoomWithTradeByTradeId(tradeId)
-                .orElseThrow(() -> new NoSuchElementException("ChatRoom not found with tradeId: " + tradeId));
+    public ChatRoomMessagesDto findChatRoomWithBoardRequesterByBoardId(Long boardID) {
+        ChatRoom chatRoom = chatRoomRepository.findChatRoomWithBoardRequesterByBoardId(boardID)
+                .orElseThrow(() -> new NoSuchElementException("ChatRoom not found with tradeId: " + boardID));
 
         return ChatRoomMessagesDto.fromEntity(chatRoom);
     }
 
 
     /**
-     * 거래 & 메시지 & 채팅방조회
+     * 게시글 & 메시지 & 채팅방조회
      */
-    public List<ChatRoomMessagesDto> findChatRoomsWithTradeMessages() {
-        List<ChatRoom> chatRooms = chatRoomRepository.findChatRoomsWithTrade();
+    public List<ChatRoomMessagesDto> findChatRoomsWithBoardRequester() {
+        List<ChatRoom> chatRooms = chatRoomRepository.findChatRoomsWithBoardRequester();
 
         return chatRooms.stream()
                 .map(ChatRoomMessagesDto::fromEntity)

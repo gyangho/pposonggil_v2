@@ -45,22 +45,6 @@
             </nav>
         </div>
     </header>
-    <!-- <div class="write-box">
-        <form id="writeFrm">
-            <div class="title">제목 : <input id="title-box" type="text" name="subject" placeholder="제목을 입력하세요" /></div>
-            <div class="content">내용 : <input id="content-box" type="text" name="writer" placeholder="내용을 입력하세요" /></div>
-            <div class="image">사진 : <input id="image-box" type="file" class="real-upload" accept="image/*" required
-                    multiple style="display: none;" placeholder="사진을 첨부하세요" />
-                <div class="upload" style="background-color: red; height:30px;"></div>
-                <script>
-                    const realUpload = document.querySelector('.real-upload');
-                    const upload = document.querySelector('.upload');
-                    upload.addEventListener('click', () => realUpload.click());
-                </script>
-            </div>
-            <input type="submit" value="등록" />
-        </form>
-    </div> -->
 
     <div class="write-box">
         <form id="writeFrm">
@@ -68,22 +52,14 @@
                 <input id="title-box" type="text" name="subject" placeholder="제목을 입력하세요" />
             </div>
             <div class="input-container" id="content-container">
+                <!-- <textarea id="content-box" row="3" name="writer" placeholder="내용을 입력하세요"></textarea> -->
                 <input id="content-box" type="text" name="writer" placeholder="내용을 입력하세요" />
             </div>
             <div class="input-container" id="location-container">
                 <input id="location-box" type="text" name="location" placeholder="예상 거래 위치를 입력하세요" />
             </div>
-            <div class="image-container">
-                <div class="image-upload" id="image-upload1">
-                    <i class="fa-solid fa-camera"></i>
-                    <input type="file" id="file-input1" accept="image/*" style="display: none;" />
-                    <img id="preview1" style="display:none; width:100%; height:100%;" />
-                </div>
-                <div class="image-upload" id="image-upload2">
-                    <i class="fa-solid fa-camera"></i>
-                    <input type="file" id="file-input2" accept="image/*" style="display: none;" />
-                    <img id="preview2" style="display:none; width:100%; height:100%;" />
-                </div>
+            <div class="image-container" id="image-container">
+                <!-- 초기에는 이미지 업로드 칸 하나만 생성 -->
             </div>
             <div class="submit-container">
                 <input id="submit-btn" type="submit" value="게시글 등록" />
@@ -94,7 +70,8 @@
 
     <script src="https://kit.fontawesome.com/660f4d6ed1.js" crossorigin="anonymous"></script>
     <script src="/js/back.js"></script>
-    <script src="/js/secondhand/write.js"></script>
+    <script src="/js/secondhand/write.js" type="module"></script>
+    <!-- <script src="/js/secondhand/utils.js"></script> -->
 </body>
 
 </html>
