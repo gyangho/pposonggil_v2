@@ -1,0 +1,32 @@
+{
+  "postList": [
+    {
+      "id": "1",
+      "author": "ooo",
+      "title": "중고 우산 판매해요!",
+      "date": "2024-05-28",
+      "content": "딱 한번 사용했어요~",
+      "price": "2000원",
+      "img": "https://www.wishbucket.io/_next/image?url=https%3A%2F%2Fd2gfz7wkiigkmv.cloudfront.net%2Fpickin%2F2%2F1%2F2%2FFr4m2M5JTemNu--TcHL5MQ&w=1080&q=75"
+    },
+    {
+      "id": "2",
+      "author": "ooo",
+      "title": "1회사용 편의점 우산 팔아요",
+      "date": "2024-05-28",
+      "content": "저렴히 내놓습니당",
+      "price": "1500원",
+      "img": "https://img.danawa.com/prod_img/500000/393/837/img/29837393_1.jpg?_v=20231107131415"
+    },
+    {
+      "id": "3",
+      "author": "ooo",
+      "title": "안쓰는 우산 내놓아요",
+      "date": "2024-05-28",
+      "content": "급히 필요하신 분들 저렴히 가져가세용",
+      "price": "1000원",
+      "img": "https://sitem.ssgcdn.com/35/49/51/item/1000533514935_i1_750.jpg"
+    }
+
+  ]
+}

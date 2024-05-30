@@ -80,8 +80,6 @@ function Map() {
   const [activeTracking, setActiveTracking] = useRecoilState(locationBtnState);
   const [activeMarker, setActiveMarker] = useRecoilState(markerState);
 
-
-  
   const mapRef = useRef(null);
   const mapInstance = useRef(null);
   const markerInstance = useRef(null);
@@ -346,23 +344,6 @@ function Map() {
             markerInstance.current.setMap(mapInstance.current);
           }
           setActiveMarker(true);
-          
-          //현재 위치 주소 정보 currentAddress atom에 저장
-          // geocoder.current.coord2Address(lon, lat, (result, status) => {
-          //   if (status === kakao.maps.services.Status.OK) {
-          //     for (let i = 0; i < result.length; i++) {
-          //       if (result[i].region_type === 'H') {
-          //         setCurrentAddress({
-          //           depth2: result[i].region_2depth_name,
-          //           depth3: result[i].region_3depth_name,
-          //           addressName: result[i].address_name,
-          //         });
-          //         break;
-          //       }
-          //     }
-          //   }
-          // });
-          //
           setIsLoading(false);
         }, () => {
           alert('위치를 가져올 수 없습니다.');
@@ -443,3 +424,503 @@ export default Map;
 
 
 
+
+
+
+
+// import React, { useState, useEffect, useRef, useCallback } from 'react';
+// import { useRecoilState } from 'recoil';
+// import {
+//   addressState, currentAddressState, locationBtnState,
+//   mapCenterState, markerState
+// } from '../recoil/atoms';
+// import styled from 'styled-components';
+// import { motion } from 'framer-motion';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { faLocationCrosshairs, faSpinner, faBorderAll, faCloudShowersHeavy } from '@fortawesome/free-solid-svg-icons';
+// import { Map, MapMarker, useMap } from 'react-kakao-maps-sdk';
+// import SearchBox from './SearchBox';
+
+// const BtnContainer = styled.div`
+//   z-index: 100;
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: flex-end;
+//   align-items: flex-end;
+//   bottom: 20px;
+//   right: 20px;
+//   position: absolute;
+// `;
+
+// const LocationBtn = styled(motion.button)`
+//   all: unset;
+//   margin-top: 20px;
+//   display: flex;
+//   justify-content: flex-end;
+//   align-items: center;
+//   right: 0;
+//   bottom: 0;
+//   z-index: 100;
+//   position: sticky;
+//   border-radius: 50%;
+//   background-color: white;
+//   padding: 12px;
+//   box-shadow: 0px 0px 3px 3px rgba(0, 0, 0, 0.1);
+//   cursor: ${props => (props.isLoading ? 'not-allowed' : 'pointer')};
+// `;
+
+// const GridBtn = styled(LocationBtn)`
+//   cursor: ${props => (props.isGridLoading ? 'not-allowed' : 'pointer')};
+// `;
+
+// const Icon = styled(FontAwesomeIcon)`
+//   width: 22px;
+//   height: 22px;
+//   transition: color 0.2s ease;
+// `;
+
+// const RainBtn = styled(LocationBtn)`
+//   margin: 15px;
+//   display: flex;
+//   justify-content: flex-start;
+//   align-items: center;
+//   left: 0;
+//   bottom: 0;
+//   z-index: 100;
+//   position: sticky;
+//   color: #d1edff;
+//   background-color: gray;
+// `;
+
+// const KakaoMap = styled(Map)`
+//   width: 100%;
+//   height: 100%;
+// `;
+
+// const MapComponent = () => {
+//   const [isLoading, setIsLoading] = useState(false);
+//   const [isGridLoading, setIsGridLoading] = useState(false);
+//   const [activeGrid, setActiveGrid] = useState(false);
+//   const [address, setAddress] = useRecoilState(addressState);
+//   const [currentAddress, setCurrentAddress] = useRecoilState(currentAddressState);
+//   const [mapCenterAddress, setMapCenterAddress] = useRecoilState(mapCenterState);
+//   const [activeTracking, setActiveTracking] = useRecoilState(locationBtnState);
+//   const [activeMarker, setActiveMarker] = useRecoilState(markerState);
+
+//   const [currentPosition, setCurrentPosition] = useState({ lat: 37.566826, lon: 126.9786567 });
+//   const markerInstance = useRef(null);
+
+//   useEffect(() => {
+//     setActiveMarker(false);
+//     setActiveTracking(false);
+//     setActiveGrid(false);
+
+//     if (navigator.geolocation) {
+//       navigator.geolocation.getCurrentPosition((position) => {
+//         const lat = position.coords.latitude;
+//         const lon = position.coords.longitude;
+//         setCurrentPosition({ lat, lon });
+//         setCurrentAddress({ ...currentAddress, lat, lon });
+//       }, () => {
+//         console.error("Error fetching current position");
+//       });
+//     }
+//   }, [setCurrentAddress, setActiveMarker, setActiveTracking, setActiveGrid]);
+
+//   const handleLocationBtn = useCallback(() => {
+//     setIsLoading(true);
+//     if (!activeTracking) {
+//       if (navigator.geolocation) {
+//         navigator.geolocation.getCurrentPosition((position) => {
+//           const lat = position.coords.latitude;
+//           const lon = position.coords.longitude;
+//           setCurrentPosition({ lat, lon });
+//           setActiveTracking(true);
+//           setActiveMarker(true);
+//           setIsLoading(false);
+//         }, () => {
+//           alert('위치를 가져올 수 없습니다.');
+//           setIsLoading(false);
+//         });
+//       } else {
+//         alert('Geolocation을 사용할 수 없습니다.');
+//         setIsLoading(false);
+//       }
+//     } else {
+//       setActiveTracking(false);
+//       setActiveMarker(false);
+//       setIsLoading(false);
+//     }
+//   }, [activeTracking]);
+
+//   const handleGridBtn = useCallback(() => {
+//     setIsGridLoading(true);
+//     setCurrentPosition({ lat: 37.5665, lon: 126.9780 });
+//     setActiveGrid(prev => !prev);
+//     setIsGridLoading(false);
+//   }, []);
+
+//   return (
+//     <KakaoMap
+//       center={{ lat: currentPosition.lat, lng: currentPosition.lon }}
+//       style={{ width: '100%', height: '100%' }}
+//       level={4}
+//       onClick={(_t, mouseEvent) => {
+//         const latLon = mouseEvent.latLng;
+//         setCurrentPosition({ lat: latLon.getLat(), lon: latLon.getLng() });
+//         setActiveTracking(false);
+//         setActiveMarker(true);
+//       }}
+//       onIdle={map => {
+//         const center = map.getCenter();
+//         setMapCenterAddress({
+//           depth2: center.getLat(),
+//           depth3: center.getLng()
+//         });
+//       }}
+//     >
+//       {activeMarker && <MapMarker position={{ lat: currentPosition.lat, lng: currentPosition.lon }} />}
+//       <SearchBox />
+//       <RainBtn><Icon icon={faCloudShowersHeavy} /></RainBtn>
+//       <BtnContainer>
+//         <GridBtn
+//           id="grid"
+//           onClick={handleGridBtn}
+//           isGridLoading={isGridLoading}
+//         >
+//           <Icon
+//             icon={isGridLoading ? faSpinner : faBorderAll}
+//             style={{ color: activeGrid ? "tomato" : "#216CFF" }}
+//           />
+//         </GridBtn>
+//         <LocationBtn
+//           id="location"
+//           onClick={handleLocationBtn}
+//           isLoading={isLoading}
+//           initial={{ rotate: 0 }}
+//           animate={{ rotate: isLoading ? 360 : 0 }}
+//           transition={{ duration: 1, repeat: isLoading ? Infinity : 0 }}
+//         >
+//           <Icon
+//             icon={isLoading ? faSpinner : faLocationCrosshairs}
+//             style={{ color: activeTracking ? "tomato" : "#216CFF" }}
+//           />
+//         </LocationBtn>
+//       </BtnContainer>
+//     </KakaoMap>
+//   );
+// };
+
+// export default MapComponent;
+
+//버튼 애니메이션 사라짐. 그래도 돌아가긴 함
+// import React, { useState, useEffect, useRef, useCallback } from 'react';
+// import { useRecoilState, useSetRecoilState } from 'recoil';
+// import { addressState, currentAddressState, gridState, locationBtnState, mapCenterState, markerState } from '../recoil/atoms';
+
+// import styled from "styled-components";
+// import { motion } from 'framer-motion';
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { faLocationCrosshairs, faSpinner, faBorderAll , faCloudShowersHeavy } from "@fortawesome/free-solid-svg-icons";
+
+// import SearchBox from './SearchBox';
+
+// const { kakao } = window;
+
+// const BtnContainer = styled.div`
+//   z-index: 100;
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: flex-end;
+//   align-items: flex-end;
+//   bottom: 20px;
+//   right: 20px;
+//   position: absolute;
+// `;
+
+// const LocationBtn = styled(motion.button)`
+//   all: unset;
+//   margin-top: 20px;
+//   display: flex;
+//   justify-content: flex-end;
+//   align-items: center;
+//   right: 0;
+//   bottom: 0;
+//   z-index: 100;
+//   position: sticky;
+//   border-radius: 50%;
+//   background-color: white;
+//   padding: 12px;
+//   box-shadow: 0px 0px 3px 3px rgba(0, 0, 0, 0.1);
+//   cursor: ${props => (props.isLoading ? 'not-allowed' : 'pointer')};
+// `;
+
+// const GridBtn = styled(LocationBtn)`
+//   cursor: ${props => (props.isGridLoading ? 'not-allowed' : 'pointer')};
+// `;
+
+// const Icon = styled(FontAwesomeIcon)`
+//   width: 22px;
+//   height: 22px;
+//   transition: color 0.2s ease;
+// `;
+
+// const RainBtn = styled(LocationBtn)`
+//   margin: 15px;
+//   display: flex;
+//   justify-content: flex-start;
+//   align-items: center;
+//   left: 0;
+//   bottom: 0;
+//   z-index: 100;
+//   color: #d1edff;
+//   background-color: gray;
+// `;
+
+// const KakaoMap = styled.div`
+//   width: 100%;
+//   height: 100%;
+// `;
+
+// function Map() {
+//   const [isLoading, setIsLoading] = useState(false);
+//   const [isGridLoading, setIsGridLoading] = useState(false);
+//   const [activeGrid, setActiveGrid] = useState(false);
+
+//   const [address, setAddress] = useRecoilState(addressState);
+//   const [currentAddress, setCurrentAddress] = useRecoilState(currentAddressState);
+//   const [mapCenterAddress, setMapCenterAddress] = useRecoilState(mapCenterState);
+//   const [activeTracking, setActiveTracking] = useRecoilState(locationBtnState);
+//   const [activeMarker, setActiveMarker] = useRecoilState(markerState);
+
+//   const mapRef = useRef(null);
+//   const mapInstance = useRef(null);
+//   const markerInstance = useRef(null);
+//   const geocoder = useRef(null);
+
+//   useEffect(() => {
+//     const initializeMap = async () => {
+//       setActiveMarker(false);
+//       setActiveTracking(false);
+//       setActiveGrid(false);
+
+//       try {
+//         const { lat, lon } = await getCurrentPosition();
+//         loadMap(lat, lon);
+//       } catch (error) {
+//         console.error("Error fetching current position:", error);
+//       }
+//     };
+
+//     const getCurrentPosition = () => {
+//       return new Promise((resolve, reject) => {
+//         if (navigator.geolocation) {
+//           navigator.geolocation.getCurrentPosition(
+//             (position) => {
+//               resolve({
+//                 lat: position.coords.latitude,
+//                 lon: position.coords.longitude,
+//               });
+//             },
+//             (error) => reject(error)
+//           );
+//         } else {
+//           reject(new Error("Geolocation not supported"));
+//         }
+//       });
+//     };
+
+//     const loadMap = (lat, lon) => {
+//       const script = document.createElement('script');
+//       script.async = true;
+//       script.src = "//dapi.kakao.com/v2/maps/sdk.js?appkey=fa3cd41b575ec5e015970670e786ea86&autoload=false";
+//       document.head.appendChild(script);
+
+//       script.onload = () => {
+//         kakao.maps.load(() => {
+//           const container = mapRef.current;
+//           const options = {
+//             center: new kakao.maps.LatLng(lat, lon),
+//             level: 4,
+//           };
+//           mapInstance.current = new kakao.maps.Map(container, options);
+//           geocoder.current = new kakao.maps.services.Geocoder();
+
+//           const locPosition = new kakao.maps.LatLng(lat, lon);
+//           geocoder.current.coord2Address(lon, lat, (result, status) => {
+//             if (status === kakao.maps.services.Status.OK) {
+//               const { address, road_address } = result[0];
+//               setCurrentAddress({
+//                 depth2: address.region_2depth_name,
+//                 depth3: address.region_3depth_name,
+//                 addr: address.address_name,
+//                 roadAddr: road_address ? road_address.address_name : '',
+//                 lat,
+//                 lon,
+//               });
+
+//               markerInstance.current = new kakao.maps.Marker({
+//                 position: locPosition,
+//                 map: mapInstance.current,
+//               });
+//               setActiveTracking(true);
+//             }
+//           });
+
+//           kakao.maps.event.addListener(mapInstance.current, 'idle', () => {
+//             searchAddrFromCoords(mapInstance.current.getCenter(), displayCenterInfo);
+//           });
+
+//           kakao.maps.event.addListener(mapInstance.current, 'click', (mouseEvent) => {
+//             const latLon = mouseEvent.latLng;
+//             searchDetailAddrFromCoords(latLon, (result, status) => {
+//               if (status === kakao.maps.services.Status.OK) {
+//                 if (markerInstance.current) {
+//                   markerInstance.current.setMap(null);
+//                   setActiveMarker(false);
+//                 }
+
+//                 if (result[0].road_address) {
+//                   markerInstance.current = new kakao.maps.Marker({
+//                     position: latLon,
+//                     map: mapInstance.current,
+//                   });
+//                   setAddress({
+//                     depth2: result[0].address.region_2depth_name,
+//                     depth3: result[0].address.region_3depth_name,
+//                     addr: result[0].address.address_name,
+//                     roadAddr: result[0].road_address.address_name,
+//                     lat: markerInstance.current.getPosition().getLat(),
+//                     lon: markerInstance.current.getPosition().getLng(),
+//                   });
+//                   setActiveTracking(false);
+//                   setActiveMarker(true);
+//                   mapInstance.current.panTo(latLon);
+//                 } else {
+//                   setActiveMarker(false);
+//                 }
+//               }
+//             });
+//           });
+//         });
+//       };
+//     };
+
+//     initializeMap();
+//   }, [setActiveMarker, setActiveTracking, setActiveGrid, setCurrentAddress, setAddress]);
+
+//   const searchAddrFromCoords = useCallback((coords, callback) => {
+//     geocoder.current.coord2RegionCode(coords.getLng(), coords.getLat(), callback);
+//   }, []);
+
+//   const searchDetailAddrFromCoords = useCallback((coords, callback) => {
+//     geocoder.current.coord2Address(coords.getLng(), coords.getLat(), callback);
+//   }, []);
+
+//   const displayCenterInfo = useCallback((result, status) => {
+//     if (status === kakao.maps.services.Status.OK) {
+//       for (let i = 0; i < result.length; i++) {
+//         if (result[i].region_type === 'H') {
+//           setMapCenterAddress({
+//             depth2: result[i].region_2depth_name,
+//             depth3: result[i].region_3depth_name,
+//           });
+//           break;
+//         }
+//       }
+//     }
+//   }, [setMapCenterAddress]);
+
+//   const handleLocationBtn = useCallback(() => {
+//     setIsLoading(true);
+//     if (!activeTracking) {
+//       if (navigator.geolocation) {
+//         navigator.geolocation.getCurrentPosition((position) => {
+//           const lat = position.coords.latitude;
+//           const lon = position.coords.longitude;
+//           const curPosition = new kakao.maps.LatLng(lat, lon);
+
+//           mapInstance.current.setCenter(curPosition);
+//           mapInstance.current.setLevel(2);
+//           setActiveTracking(true);
+
+//           geocoder.current.coord2Address(lon, lat, (result, status) => {
+//             if (status === kakao.maps.services.Status.OK) {
+//               setCurrentAddress({
+//                 depth2: result[0].address.region_2depth_name,
+//                 depth3: result[0].address.region_3depth_name,
+//                 addr: result[0].address.address_name,
+//                 roadAddr: result[0].road_address.address_name,
+//                 lat,
+//                 lon,
+//               });
+//             }
+//           });
+
+//           if (!markerInstance.current) {
+//             markerInstance.current = new kakao.maps.Marker({
+//               position: curPosition,
+//               map: mapInstance.current,
+//             });
+//           } else {
+//             markerInstance.current.setPosition(curPosition);
+//             markerInstance.current.setMap(mapInstance.current);
+//           }
+//           setActiveMarker(true);
+//           setIsLoading(false);
+//         }, () => {
+//           alert('위치를 가져올 수 없습니다.');
+//           setIsLoading(false);
+//         });
+//       } else {
+//         alert('Geolocation을 사용할 수 없습니다.');
+//         setIsLoading(false);
+//       }
+//     } else {
+//       if (markerInstance.current) {
+//         markerInstance.current.setMap(null);
+//       }
+//       setActiveTracking(false);
+//       setActiveMarker(false);
+//       setIsLoading(false);
+//     }
+//   }, [activeTracking, setActiveTracking, setCurrentAddress, setActiveMarker]);
+
+//   const handleGridBtn = useCallback(() => {
+//     setActiveGrid(prev => !prev);
+//   }, []);
+
+//   return (
+//     <KakaoMap ref={mapRef}>
+//       <SearchBox />
+
+//       <RainBtn
+//         isRainLoading={false}
+//         whileTap={{ scale: 1.2 }}
+//         onClick={() => console.log("Rain button clicked")}
+//       >
+//         <Icon icon={faCloudShowersHeavy} />
+//       </RainBtn>
+
+//       <BtnContainer>
+//         <LocationBtn
+//           isLoading={isLoading}
+//           whileTap={{ scale: 1.2 }}
+//           onClick={handleLocationBtn}
+//         >
+//           <Icon icon={isLoading ? faSpinner : faLocationCrosshairs} />
+//         </LocationBtn>
+
+//         <GridBtn
+//           isGridLoading={isGridLoading}
+//           whileTap={{ scale: 1.2 }}
+//           onClick={handleGridBtn}
+//         >
+//           <Icon icon={faBorderAll} />
+//         </GridBtn>
+//       </BtnContainer>
+//     </KakaoMap>
+//   );
+// }
+
+// export default Map;

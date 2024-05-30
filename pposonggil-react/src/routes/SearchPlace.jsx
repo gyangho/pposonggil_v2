@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useRecoilState, useSetRecoilState } from 'recoil';
-import { searchPlace, navState, routeInfoState } from '../recoil/atoms';
+import { searchPlace, navState, routeInfoState, currentAddressState } from '../recoil/atoms';
 
 import styled from "styled-components";
 import { motion } from 'framer-motion';
@@ -180,11 +180,12 @@ const Icon = styled(FontAwesomeIcon)`
 
 function SearchPlace() {
   const [place, setPlace] = useRecoilState(searchPlace);
+  const [curAddr, setCurAddr] = useRecoilState(currentAddressState);
   const [routeInfo, setRouteInfo] = useRecoilState(routeInfoState);
   const setNav = useSetRecoilState(navState);
   const navigate = useNavigate();
 
-  setNav("search");
+  // setNav("search");
 
   const onOriginClick = () => {
     const newOrigin = {
@@ -208,11 +209,24 @@ function SearchPlace() {
       lon: place.lon,
     };
 
-    setRouteInfo((prevState) => ({
-      ...prevState,
-      dest: [newDest],
-    }));
+    if(routeInfo.origin) {
+      const newOrigin = {
+        name: curAddr.addr,
+        lat: curAddr.lat,
+        lon: curAddr.lon,
+      };
+      setRouteInfo({
+        origin: [newOrigin],
+        dest: [newDest]
+      })
+    } else {
+      setRouteInfo((prevState) => ({
+        ...prevState,
+        dest: [newDest],
+      }));
+    }
 
+  
     navigate('/search/routes');
   };
 
@@ -256,8 +270,8 @@ function SearchPlace() {
                 지번: {place.address_name} <br/>
                 도로명: {place.road_address_name} <br/>
                 전화번호: {place?.phone} <br/>
-                위도: {place.lat} <br/>
-                경도: {place.lon}
+                {/* 위도: {place.lat} <br/>
+                경도: {place.lon} */}
               </span>
             </Info>
             </AddressBox>

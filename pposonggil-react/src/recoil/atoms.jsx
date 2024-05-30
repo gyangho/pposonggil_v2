@@ -11,7 +11,7 @@ export const mapCenterState = atom({
 
 // 마크업 주소 정보 (도로명 주소 있는 곳만 클릭 가능하게 해놔서 도로명 주소 저장)
 export const addressState = atom({
-  key: "clickedAddress",
+  key: "clickedAddr",
   default: { 
     depth2: "", // 구
     depth3: "", // 동
@@ -24,7 +24,7 @@ export const addressState = atom({
 
 // 햔재 위치 주소 정보
 export const currentAddressState = atom({
-  key: "currentAddress",
+  key: "curAddr",
   default: { 
     depth2: "", // 구
     depth3: "", // 동
@@ -59,7 +59,6 @@ export const navState = atom({
   default: "home",
 })
 
-//경로의 출발지 도착지 저장 atom
 
 
 //검색 장소 정보 저장 atom
@@ -77,26 +76,7 @@ export const searchPlace = atom({
   }
 })
 
-
 //경로의 출발지 도착지 저장 atom
-// export const routeInfo = atom({
-//   key: 'routeInfo',
-//   default: {
-//     origin: [{ 
-//       name: '숭실대학교 정보과학관', 
-//       lat: '', 
-//       lon: '',
-//      }],
-//     destination: [{ 
-//       name: '', 
-//       lat: '', 
-//       lon: '',
-//     }]
-//   }
-// });
-
-
-//Map2 experimental atom
 export const routeInfoState = atom({
   key: 'routeInfo',
   default: {
