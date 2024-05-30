@@ -2,6 +2,7 @@ package pposonggil.usedStuff.domain.Route;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
@@ -27,14 +28,12 @@ public class Point {
     @Embedded
     private PointInformation pointInfo;
 
-    public void setPointSubPath(SubPath pointSubPath){
+    public void setPointSubPath(SubPath pointSubPath) {
         this.pointSubPath = pointSubPath;
-        pointSubPath.getPoints().add(this);
     }
 
-    public Point(SubPath pointSubPath){
-        if(pointSubPath == null)
-            throw new IllegalArgumentException("필수 파라미터 누락");
-        this.pointSubPath = pointSubPath;
+    @Builder
+    public Point(PointInformation pointInfo) {
+        this.pointInfo = pointInfo;
     }
 }

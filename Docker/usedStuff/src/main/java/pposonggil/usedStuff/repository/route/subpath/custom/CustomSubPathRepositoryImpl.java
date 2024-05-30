@@ -1,4 +1,4 @@
-package pposonggil.usedStuff.repository.subpath.custom;
+package pposonggil.usedStuff.repository.route.subpath.custom;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;

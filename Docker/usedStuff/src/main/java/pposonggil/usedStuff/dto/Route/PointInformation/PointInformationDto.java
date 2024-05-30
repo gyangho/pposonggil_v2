@@ -34,6 +34,10 @@ public class PointInformationDto {
                 .build();
     }
 
+    public PointInformation toEntity() {
+        return new PointInformation(this.name, this.latitude, this.longitude, this.x ,this.y);
+    }
+
     public static PointInformationDto fromJsonNode(JsonNode node) {
         Double latitude = Optional.ofNullable(node.get("y")).map(JsonNode::asDouble).orElse(null);
         Double longitude = Optional.ofNullable(node.get("x")).map(JsonNode::asDouble).orElse(null);

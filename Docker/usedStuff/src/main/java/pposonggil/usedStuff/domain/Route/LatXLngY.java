@@ -1,7 +1,5 @@
 package pposonggil.usedStuff.domain.Route;
 
-//LatXLngY tmp = convertGRID_GPS(TO_GRID, Latitude, Longitude);
-
 public class LatXLngY {
     public double lat;
     public double lng;

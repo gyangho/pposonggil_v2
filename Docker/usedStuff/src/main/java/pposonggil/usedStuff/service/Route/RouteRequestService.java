@@ -7,8 +7,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pposonggil.usedStuff.dto.Path.PathDto;
+import pposonggil.usedStuff.domain.Member;
+import pposonggil.usedStuff.domain.Route.Path;
+import pposonggil.usedStuff.domain.Route.RouteRequest;
+import pposonggil.usedStuff.dto.Route.Path.PathDto;
 import pposonggil.usedStuff.dto.Route.PointInformation.PointInformationDto;
+import pposonggil.usedStuff.dto.Route.Request.RouteRequestDto;
+import pposonggil.usedStuff.repository.member.MemberRepository;
+import pposonggil.usedStuff.repository.route.path.PathRepository;
+import pposonggil.usedStuff.repository.route.point.PointRepository;
+import pposonggil.usedStuff.repository.route.routeRequest.RouteRequestRepository;
+import pposonggil.usedStuff.repository.route.subpath.SubPathRepository;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,28 +28,45 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class RouteService {
+public class RouteRequestService {
     @Value("${api-key.ODsay-key}")
     private String apiKey;
 
-//    /**
-//     * 전체 경로 조회
-//     */
-//    public List<PathDto> findPaths() {
-//        List<Path> paths = pathRepository.findAll();
-//        return paths.stream()
-//                .map(PathDto::fromEntity)
-//                .collect(Collectors.toList());
-//    }
+    private final MemberRepository memberRepository;
+    private final RouteRequestRepository routeRequestRepository;
+    private final PathRepository pathRepository;
+    private final SubPathRepository subPathRepository;
+    private final PointRepository pointRepository;
 
-    public List<PathDto> searchPubTransPath(PointInformationDto start, PointInformationDto end) throws IOException {
+    public List<PathDto> createRoutes(PointInformationDto start, PointInformationDto end) throws IOException {
         String urlInfo = buildUrl(start, end);
         StringBuilder sb = getResponse(urlInfo);
         return getPathDtos(sb);
+    }
+
+    @Transactional
+    public Long createRoute(RouteRequestDto requestDto){
+        Member routeRequester = memberRepository.findById(requestDto.getRouteRequesterId())
+                .orElseThrow(() -> new NoSuchElementException("Member not found with id: " +requestDto.getRouteRequesterId()));
+
+        Path path = requestDto.getPathDto().toEntity();
+        pathRepository.save(path);
+
+
+        RouteRequest routeRequest = RouteRequest.buildRouteRequest(routeRequester, requestDto.getPathDto().toEntity(),
+                requestDto.getStart().toEntity(), requestDto.getEnd().toEntity());
+
+
+        routeRequest.setRouteRequester(routeRequester);
+        routeRequest.setRouteRequestPath(path);
+        routeRequestRepository.save(routeRequest);
+
+        return  routeRequest.getId();
     }
 
     private static List<PathDto> getPathDtos(StringBuilder sb) throws JsonProcessingException {

@@ -1,4 +1,4 @@
-package pposonggil.usedStuff.repository.point.custom;
+package pposonggil.usedStuff.repository.route.point.custom;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;

@@ -58,6 +58,12 @@ public class RouteRequest extends BaseEntity {
         member.getRouteRequests().add(this);
     }
 
+    public void setRouteRequestPath(Path path) {
+        this.routeRequestPath = path;
+        if(path != null && path.getRouteRequest() != this)
+            path.setRouteRequest(this);
+    }
+
     public static RouteRequest.RouteRequestBuilder builder(Member routeRequester, Path path,
                                                            PointInformation startInfo, PointInformation endInfo) {
         if (routeRequester == null || path == null || startInfo == null || endInfo == null)

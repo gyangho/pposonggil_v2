@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import pposonggil.usedStuff.domain.Route.Point;
+import pposonggil.usedStuff.domain.Route.SubPath;
 import pposonggil.usedStuff.dto.Route.PointInformation.PointInformationDto;
 
 import static lombok.AccessLevel.PRIVATE;
@@ -17,6 +18,7 @@ import static lombok.AccessLevel.PROTECTED;
 @AllArgsConstructor(access = PRIVATE)
 public class PointDto {
     private PointInformationDto pointInformationDto;
+    private Long subPathId;
 
     public static PointDto fromEntity(Point point) {
         return PointDto.builder()
@@ -24,6 +26,13 @@ public class PointDto {
                 .build();
     }
 
+    public Point toEntity(SubPath subPath) {
+        Point point = Point.builder()
+                .pointInfo(this.pointInformationDto.toEntity())
+                .build();
+        point.setPointSubPath(subPath);
+        return point;
+    }
     public static PointDto fromJsonNode(JsonNode node) {
         return PointDto.builder()
                 .pointInformationDto(PointInformationDto.fromJsonNode(node))

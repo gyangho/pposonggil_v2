@@ -5,11 +5,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import pposonggil.usedStuff.domain.Route.Path;
+import pposonggil.usedStuff.domain.Route.Point;
 import pposonggil.usedStuff.domain.Route.SubPath;
 import pposonggil.usedStuff.dto.Color.BusColor;
 import pposonggil.usedStuff.dto.Color.SubwayColor;
 import pposonggil.usedStuff.dto.Route.Point.PointDto;
-import pposonggil.usedStuff.dto.Route.PointInformation.PointInformationDto;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -36,11 +37,11 @@ public class SubPathDto {
     private String busNo;
     private String subwayColor;
     private String busColor;
-    private PointInformationDto startInfoDto;
-    private PointInformationDto endInfoDto;
+//    private PointInformationDto startInfoDto;
+//    private PointInformationDto endInfoDto;
     private List<PointDto> pointDtos;
 
-    public static SubPathDto fromEntity(SubPath subPath){
+    public static SubPathDto fromEntity(SubPath subPath) {
         return SubPathDto.builder()
                 .subPathId(subPath.getId())
                 .pathId(subPath.getPath().getId())
@@ -52,12 +53,34 @@ public class SubPathDto {
                 .busNo(subPath.getBusNo())
                 .subwayColor(subPath.getSubwayColor())
                 .busColor(subPath.getBusColor())
-                .startInfoDto(PointInformationDto.fromEntity(subPath.getStartInfo()))
-                .endInfoDto(PointInformationDto.fromEntity(subPath.getEndInfo()))
+//                .startInfoDto(PointInformationDto.fromEntity(subPath.getStartInfo()))
+//                .endInfoDto(PointInformationDto.fromEntity(subPath.getEndInfo()))
                 .pointDtos(subPath.getPoints().stream()
                         .map(PointDto::fromEntity)
                         .collect(Collectors.toList()))
                 .build();
+    }
+
+        public SubPath toEntity(Path path) {
+        SubPath subPath = SubPath.builder()
+                .type(this.type)
+                .distance(this.distance)
+                .time(this.time)
+                .stationCount(this.stationCount)
+                .subwayName(this.subwayName)
+                .busNo(this.busNo)
+                .subwayColor(this.subwayColor)
+                .busColor(this.busColor)
+//                .startInfo(this.startInfoDto.toEntity())
+//                .endInfo(this.endInfoDto.toEntity())
+                .build();
+
+        List<Point> points = this.pointDtos.stream()
+                .map(pointDto -> pointDto.toEntity(subPath))
+                .collect(Collectors.toList());
+
+        subPath.setPoints(points);
+        return subPath;
     }
 
     public static SubPathDto fromJsonNode(JsonNode node) {
@@ -68,8 +91,8 @@ public class SubPathDto {
                         .orElse("null"))
                 .distance(node.get("distance").asLong(0L))
                 .time(node.get("sectionTime").asLong(0L))
-                .stationCount(Optional.ofNullable(node.get("stationCount")).map(JsonNode::asLong).orElse(null))
-                        .subwayName(Optional.ofNullable(node.get("lane"))
+                .stationCount(Optional.ofNullable(node.get("stationCount")).map(JsonNode::asLong).orElse(0L))
+                .subwayName(Optional.ofNullable(node.get("lane"))
                         .filter(JsonNode::isArray)
                         .map(laneNode -> laneNode.get(0))
                         .map(laneElement -> laneElement.get("name"))
@@ -89,7 +112,7 @@ public class SubPathDto {
                         .map(SubPathDto::getLaneName)
                         .map(SubwayColor::valueOf)
                         .map(SubwayColor::getColorCode)//  지하철 색
-                        .orElse("null"))
+                        .orElse("#000000"))
                 .busColor(Optional.ofNullable(node.get("lane"))
                         .filter(JsonNode::isArray)
                         .map(laneNode -> laneNode.get(0))
@@ -97,7 +120,9 @@ public class SubPathDto {
                         .map(JsonNode::asInt)
                         .map(BusColor::getByNumber)
                         .map(BusColor::getColorCode)//  지하철 색
-                        .orElse("null"))
+                        .orElse("#000000"))
+//                .startInfoDto("null")
+//                .endInfoDto()
                 .pointDtos(Optional.ofNullable(node.get("passStopList"))
                         .map(passStopList -> passStopList.get("stations"))
                         .filter(JsonNode::isArray)
@@ -147,5 +172,4 @@ public class SubPathDto {
                 throw new IllegalArgumentException("Invalid bus number: " + number);
         }
     }
-
 }

@@ -1,4 +1,4 @@
-package pposonggil.usedStuff.repository.subpath.custom;
+package pposonggil.usedStuff.repository.route.subpath.custom;
 
 import pposonggil.usedStuff.domain.Route.SubPath;
 

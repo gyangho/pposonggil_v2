@@ -1,5 +1,6 @@
 package pposonggil.usedStuff.domain.Route;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,6 +12,7 @@ import pposonggil.usedStuff.domain.BaseEntity;
 import java.util.ArrayList;
 import java.util.List;
 
+import static jakarta.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
 
@@ -37,9 +39,26 @@ public class Path extends BaseEntity {
     private Long busStationCount;
     private Long subwayStationCount;
 
+    @JsonIgnore
+    @OneToOne(mappedBy = "routeRequestPath", fetch = LAZY)
+    private RouteRequest routeRequest;
+
     @Builder.Default
     @OneToMany(mappedBy = "path", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SubPath> subPaths = new ArrayList<>();
+
+    public void setRouteRequest(RouteRequest routeRequest) {
+        this.routeRequest = routeRequest;
+        if(routeRequest != null && routeRequest.getRouteRequestPath() != this)
+            routeRequest.setRouteRequestPath(this);
+    }
+
+    public void setSubPaths(List<SubPath> subPaths) {
+        this.subPaths = subPaths;
+        for(SubPath subPath: subPaths){
+            subPath.setPath(this);
+        }
+    }
 
     public static PathBuilder builder() {
         return new PathBuilder();

@@ -1,4 +1,4 @@
-package pposonggil.usedStuff.dto.Path;
+package pposonggil.usedStuff.dto.Route.Path;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.AllArgsConstructor;
@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import pposonggil.usedStuff.domain.Route.Path;
+import pposonggil.usedStuff.domain.Route.SubPath;
 import pposonggil.usedStuff.dto.Route.SubPath.SubPathDto;
 
 import java.util.*;
@@ -22,6 +23,7 @@ import static lombok.AccessLevel.PROTECTED;
 @AllArgsConstructor(access = PRIVATE)
 public class PathDto {
     private Long pathId;
+    private Long routeRequestId;
     private Long totalTime;
     private Long price;
     private Long totalDistance;
@@ -37,6 +39,7 @@ public class PathDto {
     public static PathDto fromEntity(Path path) {
         return PathDto.builder()
                 .pathId(path.getId())
+                .routeRequestId(path.getRouteRequest().getId())
                 .totalTime(path.getTotalTime())
                 .price(path.getPrice())
                 .totalDistance(path.getTotalDistance())
@@ -53,6 +56,28 @@ public class PathDto {
                 .build();
     }
 
+    public Path toEntity() {
+        Path path = Path.builder()
+                .totalTime(this.totalTime)
+                .price(this.price)
+                .totalDistance(this.totalDistance)
+                .totalWalkDistance(this.totalWalkDistance)
+                .totalWalkTime(this.totalWalkTime)
+                .busTransitCount(this.busTransitCount)
+                .subwayTransitCount(this.subwayTransitCount)
+                .totalTransitCount(this.totalTransitCount)
+                .busStationCount(this.busStationCount)
+                .subwayStationCount(this.subwayStationCount)
+                .build();
+
+        List<SubPath> subPaths = this.subPaths.stream()
+                .map(subPath -> subPath.toEntity(path))
+                .collect(Collectors.toList());
+
+        path.setSubPaths(subPaths);
+
+        return path;
+    }
 
     public static PathDto fromJsonNode(JsonNode node) {
         JsonNode info = node.get("info");
