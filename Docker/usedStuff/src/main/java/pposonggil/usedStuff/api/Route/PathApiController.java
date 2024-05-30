@@ -4,8 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pposonggil.usedStuff.dto.Route.Request.RouteRequestDto;
-import pposonggil.usedStuff.service.Route.RouteRequestService;
+import pposonggil.usedStuff.dto.Route.Path.PathDto;
+import pposonggil.usedStuff.dto.Route.PointInformation.PointInformationDto;
+import pposonggil.usedStuff.service.Route.PathService;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -13,14 +14,15 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-public class RouteRequestApiController {
+public class PathApiController {
 
-    private final RouteRequestService routeRequestService;
+    private final PathService pathService;
 
-    @PostMapping("/api/routes")
-    public ResponseEntity<Object> createRoutes(@RequestBody RouteRequestDto routeRequestDto) {
+    @PostMapping("/api/paths")
+    public ResponseEntity<Object> createPaths(@RequestPart("startDto") PointInformationDto startDto,
+                                              @RequestPart("endDto") PointInformationDto endDto) {
         try {
-            Object response = routeRequestService.createRoutes(routeRequestDto.getStart(), routeRequestDto.getEnd());
+            Object response = pathService.createPaths(startDto, endDto);
             return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (IOException e) {
             e.printStackTrace();
@@ -28,9 +30,9 @@ public class RouteRequestApiController {
         }
     }
 
-    @PostMapping("/api/route")
-    public ResponseEntity<Object> createRoute(@RequestBody RouteRequestDto routeRequestDto) {
-        Long routeId = routeRequestService.createRoute(routeRequestDto);
+    @PostMapping("/api/path")
+    public ResponseEntity<Object> createPath(@RequestBody PathDto pathDto) {
+        Long routeId = pathService.createPath(pathDto);
 
         Map<String, Object> response = new HashMap<>();
         response.put("routeId", routeId);

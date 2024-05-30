@@ -9,14 +9,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pposonggil.usedStuff.domain.Member;
 import pposonggil.usedStuff.domain.Route.Path;
-import pposonggil.usedStuff.domain.Route.RouteRequest;
 import pposonggil.usedStuff.dto.Route.Path.PathDto;
 import pposonggil.usedStuff.dto.Route.PointInformation.PointInformationDto;
-import pposonggil.usedStuff.dto.Route.Request.RouteRequestDto;
 import pposonggil.usedStuff.repository.member.MemberRepository;
 import pposonggil.usedStuff.repository.route.path.PathRepository;
 import pposonggil.usedStuff.repository.route.point.PointRepository;
-import pposonggil.usedStuff.repository.route.routeRequest.RouteRequestRepository;
 import pposonggil.usedStuff.repository.route.subpath.SubPathRepository;
 
 import java.io.BufferedReader;
@@ -33,43 +30,34 @@ import java.util.NoSuchElementException;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class RouteRequestService {
+public class PathService {
     @Value("${api-key.ODsay-key}")
     private String apiKey;
 
     private final MemberRepository memberRepository;
-    private final RouteRequestRepository routeRequestRepository;
     private final PathRepository pathRepository;
     private final SubPathRepository subPathRepository;
     private final PointRepository pointRepository;
 
-    public List<PathDto> createRoutes(PointInformationDto start, PointInformationDto end) throws IOException {
+    public List<PathDto> createPaths(PointInformationDto start, PointInformationDto end) throws IOException {
         String urlInfo = buildUrl(start, end);
         StringBuilder sb = getResponse(urlInfo);
-        return getPathDtos(sb);
+        return getPathDtos(sb, start, end);
     }
 
     @Transactional
-    public Long createRoute(RouteRequestDto requestDto){
-        Member routeRequester = memberRepository.findById(requestDto.getRouteRequesterId())
-                .orElseThrow(() -> new NoSuchElementException("Member not found with id: " +requestDto.getRouteRequesterId()));
+    public Long createPath(PathDto pathDto) {
+        Member routeRequester = memberRepository.findById(pathDto.getRouteRequesterId())
+                .orElseThrow(() -> new NoSuchElementException("Member not found with id: " + pathDto.getRouteRequesterId()));
 
-        Path path = requestDto.getPathDto().toEntity();
+        Path path = pathDto.toEntity();
+        path.setRouteRequester(routeRequester);
         pathRepository.save(path);
 
-
-        RouteRequest routeRequest = RouteRequest.buildRouteRequest(routeRequester, requestDto.getPathDto().toEntity(),
-                requestDto.getStart().toEntity(), requestDto.getEnd().toEntity());
-
-
-        routeRequest.setRouteRequester(routeRequester);
-        routeRequest.setRouteRequestPath(path);
-        routeRequestRepository.save(routeRequest);
-
-        return  routeRequest.getId();
+        return path.getId();
     }
 
-    private static List<PathDto> getPathDtos(StringBuilder sb) throws JsonProcessingException {
+    private static List<PathDto> getPathDtos(StringBuilder sb, PointInformationDto start, PointInformationDto end) throws JsonProcessingException {
         List<PathDto> pathDtos = new ArrayList<>();
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -77,7 +65,7 @@ public class RouteRequestService {
         JsonNode result = jsonNode.get("result");
         JsonNode path = result.get("path");
         for (JsonNode node : path) {
-            PathDto pathDto = PathDto.fromJsonNode(node);
+            PathDto pathDto = PathDto.fromJsonNode(node, start, end);
             pathDtos.add(pathDto);
         }
 

@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import pposonggil.usedStuff.domain.Route.Path;
 import pposonggil.usedStuff.domain.Route.SubPath;
+import pposonggil.usedStuff.dto.Route.PointInformation.PointInformationDto;
 import pposonggil.usedStuff.dto.Route.SubPath.SubPathDto;
 
 import java.util.*;
@@ -23,7 +24,7 @@ import static lombok.AccessLevel.PROTECTED;
 @AllArgsConstructor(access = PRIVATE)
 public class PathDto {
     private Long pathId;
-    private Long routeRequestId;
+    private Long routeRequesterId;
     private Long totalTime;
     private Long price;
     private Long totalDistance;
@@ -34,12 +35,14 @@ public class PathDto {
     private Long totalTransitCount;
     private Long busStationCount;
     private Long subwayStationCount;
-    private List<SubPathDto> subPaths;
+    private PointInformationDto startDto;
+    private PointInformationDto endDto;
+    private List<SubPathDto> subPathDtos;
 
     public static PathDto fromEntity(Path path) {
         return PathDto.builder()
                 .pathId(path.getId())
-                .routeRequestId(path.getRouteRequest().getId())
+                .routeRequesterId(path.getRouteRequester().getId())
                 .totalTime(path.getTotalTime())
                 .price(path.getPrice())
                 .totalDistance(path.getTotalDistance())
@@ -50,14 +53,16 @@ public class PathDto {
                 .totalTransitCount(path.getTotalTransitCount())
                 .busStationCount(path.getBusStationCount())
                 .subwayStationCount(path.getSubwayStationCount())
-                .subPaths(path.getSubPaths().stream()
+                .startDto(PointInformationDto.fromEntity(path.getStart()))
+                .endDto(PointInformationDto.fromEntity(path.getEnd()))
+                .subPathDtos(path.getSubPaths().stream()
                         .map(SubPathDto::fromEntity)
                         .collect(Collectors.toList()))
                 .build();
     }
 
     public Path toEntity() {
-        Path path = Path.builder()
+        Path path = Path.builder(this.startDto.toEntity(), this.endDto.toEntity())
                 .totalTime(this.totalTime)
                 .price(this.price)
                 .totalDistance(this.totalDistance)
@@ -70,7 +75,7 @@ public class PathDto {
                 .subwayStationCount(this.subwayStationCount)
                 .build();
 
-        List<SubPath> subPaths = this.subPaths.stream()
+        List<SubPath> subPaths = this.subPathDtos.stream()
                 .map(subPath -> subPath.toEntity(path))
                 .collect(Collectors.toList());
 
@@ -79,7 +84,7 @@ public class PathDto {
         return path;
     }
 
-    public static PathDto fromJsonNode(JsonNode node) {
+    public static PathDto fromJsonNode(JsonNode node, PointInformationDto start, PointInformationDto end) {
         JsonNode info = node.get("info");
 
         return PathDto.builder()
@@ -94,7 +99,9 @@ public class PathDto {
                         + info.path("subwayTransitCount").asLong(0L))
                 .busStationCount(info.path("busStationCount").asLong(0L))
                 .subwayStationCount(info.path("subwayStationCount").asLong(0L))
-                .subPaths(Optional.ofNullable(node.get("subPath"))
+                .startDto(start)
+                .endDto(end)
+                .subPathDtos(Optional.ofNullable(node.get("subPath"))
                         .map(JsonNode::elements)
                         .map(elements -> StreamSupport.stream(Spliterators.spliteratorUnknownSize(elements, Spliterator.ORDERED), false))
                         .orElseGet(Stream::empty)
