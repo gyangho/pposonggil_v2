@@ -4,8 +4,10 @@ import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import pposonggil.usedStuff.domain.TransactionAddress;
 import pposonggil.usedStuff.dto.Board.BoardDto;
@@ -13,6 +15,9 @@ import pposonggil.usedStuff.dto.Member.MemberDto;
 import pposonggil.usedStuff.service.Board.BoardService;
 import pposonggil.usedStuff.service.Member.MemberService;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -32,9 +37,10 @@ class BoardServiceTest {
 
     private Long memberId1, memberId2;
     private Long boardId1, boardId2;
+    private MockMultipartFile mockMultipartFile1, mockMultipartFile2;
 
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws Exception {
         // 회원 1, 2 생성
         memberId1 = createMember("name1", "nickName1", "01011111111");
         memberId2 = createMember("name2", "nickName2", "01022222222");
@@ -44,6 +50,16 @@ class BoardServiceTest {
                 new TransactionAddress("숭실대1", 37.4958, 126.9583, "주소1"), 1000L, false);
         boardId2 = createBoard(memberId2, "title2", "우산 팔아요2", LocalDateTime.now(), LocalDateTime.now().plusHours(1),
                 new TransactionAddress("숭실대2", 37.5000, 126.9500, "주소2"), 2000L, false);
+
+                MockitoAnnotations.openMocks(this);
+
+        Path path1 = Paths.get("src/test/resources/test1.png");
+        byte[] content1 = Files.readAllBytes(path1.toAbsolutePath().normalize());
+        mockMultipartFile1 = new MockMultipartFile("file1", "test1.png", "imageDto/png", content1);
+
+        Path path2 = Paths.get("src/test/resources/test4.png");
+        byte[] content2 = Files.readAllBytes(path1.toAbsolutePath().normalize());
+        mockMultipartFile2 = new MockMultipartFile("file4", "test4.png", "imageDto/png", content2);
     }
 
     @Test
@@ -92,7 +108,7 @@ class BoardServiceTest {
     }
 
     @Test
-    public void 작성자_정보_이미지와_함께_모든_게시글_조회() throws Exception {
+    public void 작성자_정보와_함께_모든_게시글_조회() throws Exception {
         // when
         List<BoardDto> boardDtos = boardService.findAllWithMember();
 
@@ -190,7 +206,7 @@ class BoardServiceTest {
                 .isFreebie(updateIsFreebie)
                 .build();
 
-        boardService.updateBoard(boardDto);
+        boardService.updateBoard(boardDto, mockMultipartFile1);
 
         BoardDto updateImageBoardDto1 = boardService.findOne(boardId1);
 
@@ -204,6 +220,7 @@ class BoardServiceTest {
                         () -> assertEquals(updateTitle, updateBoardDto.getTitle(), "게시글 제목 불일치"),
                         () -> assertEquals(updateContent, updateBoardDto.getContent(), "게시글 내용 불일치"),
                         () -> assertEquals(updateFormatStartTime, updateBoardDto.getStartTimeString(), "게시글 시작 시각(String) 불일치"),
+                        () -> assertNotNull(updateBoardDto.getImageUrl(), "이미지 등록 실패"),
                         () -> assertEquals(updateFormatEndTime, updateBoardDto.getEndTimeString(), "게시글 종료 시각(String) 불일치"),
                         () -> assertEquals("숭숭숭", updateBoardDto.getAddress().getName(), "게시글 주소 이름 불일치"),
                         () -> assertEquals(37.5000, updateBoardDto.getAddress().getLatitude(), "게시글 주소 위도 불일치"),
@@ -237,7 +254,7 @@ class BoardServiceTest {
 
 
     public Long createBoard(Long savedId, String title, String content, LocalDateTime startTime, LocalDateTime endTime,
-                            TransactionAddress address, Long price, boolean isFreebie) {
+                            TransactionAddress address, Long price, boolean isFreebie) throws Exception {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm");
         String formatStartTime = startTime.format(formatter);
         String formatEndTime = endTime.format(formatter);

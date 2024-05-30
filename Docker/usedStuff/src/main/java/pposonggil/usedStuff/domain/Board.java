@@ -5,9 +5,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static jakarta.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
@@ -24,10 +21,6 @@ public class Board extends BaseEntity{
     @Column(name = "board_id")
     private Long id;
 
-    @Builder.Default
-    @OneToMany(mappedBy = "imageBoard", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Image> images = new ArrayList<>();
-
     @JsonIgnore
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "writer_id")
@@ -38,9 +31,11 @@ public class Board extends BaseEntity{
 
     private String startTimeString;
     private String endTimeString;
+    private String imageUrl;
 
     @Embedded
     private TransactionAddress address;
+
 
     private Long price;
     private boolean isFreebie;
@@ -64,6 +59,10 @@ public class Board extends BaseEntity{
 
     public void changeEndTimeString(String endTimeString) {
         this.endTimeString = endTimeString;
+    }
+
+    public void changeImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public void changeAddress(TransactionAddress address) {
