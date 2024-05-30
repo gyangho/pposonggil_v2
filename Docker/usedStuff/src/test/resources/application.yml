@@ -11,6 +11,26 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
+        default_batch_fetch_size: 100
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+  profiles:
+    include: secret
+
+cloud:
+  aws:
+    s3:
+      bucket: pposonggil-bucket
+    region:
+      static: ap-northeast-2
+      auto: false
+    stack:
+      auto: false
+    credentials:
+      access-key: ${api-key.s3-access-key}
+      secret-key: ${api-key.s3-secret-key}
 
 logging:
   level:

@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,9 +36,6 @@ public class Board extends BaseEntity{
     private String title;
     private String content;
 
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
-
     private String startTimeString;
     private String endTimeString;
 
@@ -70,14 +66,6 @@ public class Board extends BaseEntity{
         this.endTimeString = endTimeString;
     }
 
-    public void changeStartTime(LocalDateTime startTime) {
-        this.startTime = startTime;
-    }
-
-    public void changeEndTime(LocalDateTime endTime) {
-        this.endTime = endTime;
-    }
-
     public void changeAddress(TransactionAddress address) {
         this.address = address;
     }
@@ -90,24 +78,23 @@ public class Board extends BaseEntity{
         this.isFreebie = isFreebie;
     }
 
-    public static BoardBuilder builder(Member member, String title, LocalDateTime startTime,
-                                       LocalDateTime endTime, TransactionAddress address, Long price) {
-        if (member == null || title == null || startTime == null || endTime == null
+    public static BoardBuilder builder(Member member, String title, String startTimeString, String endTimeString,
+                                       TransactionAddress address, Long price, boolean isFreebie) {
+        if (member == null || title == null || startTimeString == null || endTimeString == null
                 || address == null || price == null)
             throw new IllegalArgumentException("필수 파라미터 누락");
         return new BoardBuilder()
                 .writer(member)
                 .title(title)
-                .startTime(startTime)
-                .endTime(endTime)
+                .startTimeString(startTimeString)
+                .endTimeString(endTimeString)
                 .address(address)
-                .price(price);
+                .price(price)
+                .isFreebie(isFreebie);
     }
-    public static Board buildBoard(Member writer, String title, String content, LocalDateTime startTime,
-                                   LocalDateTime endTime, TransactionAddress address, Long price, boolean isFreebie) {
-        return Board.builder(writer, title, startTime, endTime, address, price)
+    public static Board buildBoard(Member writer, String title, String content, String startTimeString, String endTimeString, TransactionAddress address, Long price, boolean isFreebie) {
+        return Board.builder(writer, title, startTimeString, endTimeString, address, price, isFreebie)
                 .content(content)
-                .isFreebie(isFreebie)
                 .build();
     }
 }
