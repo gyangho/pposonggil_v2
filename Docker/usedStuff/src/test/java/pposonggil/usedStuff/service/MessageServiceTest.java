@@ -48,7 +48,7 @@ class MessageServiceTest {
     private Long messageId1, messageId2, messageId3, messageId4;
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws Exception {
         // 회원 1, 2, 3 생성
         memberId1 = createMember("name1", "nickName1", "01011111111");
         memberId2 = createMember("name2", "nickName2", "01022222222");
@@ -229,7 +229,7 @@ class MessageServiceTest {
     }
 
     public Long createBoard(Long savedId, String title, String content, LocalDateTime startTime, LocalDateTime endTime,
-                            TransactionAddress address, Long price, boolean isFreebie) {
+                            TransactionAddress address, Long price, boolean isFreebie) throws Exception {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm");
         String formatStartTime = startTime.format(formatter);
         String formatEndTime = endTime.format(formatter);
