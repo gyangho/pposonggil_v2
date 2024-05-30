@@ -8,7 +8,7 @@ import { currentAddressState, navState } from "../../recoil/atoms";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-//JSON 서버 API URL
+//JSON 서버 API URL로 변경해야 함
 const apiUrl ="http://localhost:3001/postList" 
 
 const Wrapper = styled.div`
@@ -176,11 +176,6 @@ function Board() {
     }
   };
 
-
-
-
-
-
   const onPostClick = (postId) => {
     navigate(`/market/post/${postId}`);
   };
@@ -199,9 +194,6 @@ function Board() {
     //재탐색한 위치에 해당하는 게시글 목록 다시 불러와야 함
     setIsRotating(true);
   };
-
-
-
 
   return (
     <Wrapper>
@@ -228,10 +220,10 @@ function Board() {
             </TextBox>
           </Post>
           ))}
-          <Post id="test" onClick={onPostClick}>
+          <Post id="sample" onClick={onPostClick}>
             <ImgBox><img src="https://via.placeholder.com/110" alt="Example" /></ImgBox>
             <TextBox>
-              <div id="title">테스트용</div>
+              <div id="title">샘플입니다</div>
               <div id="time" style={{color: "gray", fontSize: "16px"}}>2024-05-27</div>
               <br/>
               <div id="price" style={{fontWeight: "800"}}>1억원</div>
