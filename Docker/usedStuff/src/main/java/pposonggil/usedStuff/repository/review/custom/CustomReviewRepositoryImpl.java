@@ -2,35 +2,33 @@ package pposonggil.usedStuff.repository.review.custom;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
-import pposonggil.usedStuff.domain.QChatRoom;
-import pposonggil.usedStuff.domain.QMember;
-import pposonggil.usedStuff.domain.QReview;
-import pposonggil.usedStuff.domain.Review;
+import pposonggil.usedStuff.domain.*;
 
 import java.util.List;
+import java.util.Optional;
+
+import static pposonggil.usedStuff.domain.QReview.review;
+import static pposonggil.usedStuff.domain.QTrade.trade;
 
 public class CustomReviewRepositoryImpl implements CustomReviewRepository {
     private final JPAQueryFactory query;
-
-    QReview review = QReview.review;
-
-    QMember subjectMember = new QMember("subjectMember");
-    QMember objectMember = new QMember("objectMember");
-
-    QChatRoom chatRoom = new QChatRoom("chatRoom");
 
     public CustomReviewRepositoryImpl(EntityManager em) {
         this.query = new JPAQueryFactory(em);
     }
 
+    QMember sMember = new QMember("sMember");
+    QMember oMember = new QMember("oMember");
+
     @Override
-    public List<Review> findAllWithMemberChatRoom() {
+    public List<Review> findAllWithMemberTrade() {
+
         return query
                 .select(review)
                 .from(review)
-                .join(review.reviewSubject, subjectMember).fetchJoin()
-                .join(review.reviewObject, objectMember).fetchJoin()
-                .join(review.reviewChatRoom, chatRoom).fetchJoin()
+                .join(review.reviewSubject, sMember).fetchJoin()
+                .join(review.reviewObject, oMember).fetchJoin()
+                .join(review.reviewTrade, trade).fetchJoin()
                 .limit(1000)
                 .fetch();
     }
@@ -40,8 +38,10 @@ public class CustomReviewRepositoryImpl implements CustomReviewRepository {
         return query
                 .select(review)
                 .from(review)
-                .join(review.reviewSubject, subjectMember).fetchJoin()
-                .where(subjectMember.id.eq(subjectId))
+                .join(review.reviewSubject, sMember).fetchJoin()
+                .join(review.reviewObject, oMember).fetchJoin()
+                .join(review.reviewTrade, trade).fetchJoin()
+                .where(review.reviewSubject.id.eq(subjectId))
                 .limit(1000)
                 .fetch();
     }
@@ -51,20 +51,55 @@ public class CustomReviewRepositoryImpl implements CustomReviewRepository {
         return query
                 .select(review)
                 .from(review)
-                .join(review.reviewObject, objectMember).fetchJoin()
-                .where(objectMember.id.eq(objectId))
+                .join(review.reviewSubject, sMember).fetchJoin()
+                .join(review.reviewObject, oMember).fetchJoin()
+                .join(review.reviewTrade, trade).fetchJoin()
+                .where(review.reviewObject.id.eq(objectId))
                 .limit(1000)
                 .fetch();
     }
 
     @Override
-    public List<Review> findReviewsByChatRoomId(Long chatRoomId) {
+    public List<Review> findReviewsByMemberId(Long memberId) {
         return query
                 .select(review)
                 .from(review)
-                .join(review.reviewChatRoom, chatRoom).fetchJoin()
-                .where(chatRoom.id.eq(chatRoomId))
+                .join(review.reviewSubject, sMember).fetchJoin()
+                .join(review.reviewObject, oMember).fetchJoin()
+                .join(review.reviewTrade, trade).fetchJoin()
+                .where(review.reviewSubject.id.eq(memberId)
+                        .or(review.reviewObject.id.eq(memberId)))
                 .limit(1000)
                 .fetch();
+    }
+
+    @Override
+    public List<Review> findReviewsByTradeId(Long tradeId) {
+        return query
+                .select(review)
+                .from(review)
+                .join(review.reviewSubject, sMember).fetchJoin()
+                .join(review.reviewObject, oMember).fetchJoin()
+                .join(review.reviewTrade, trade).fetchJoin()
+                .where(review.reviewTrade.id.eq(tradeId))
+                .limit(1000)
+                .fetch();
+    }
+
+    @Override
+    public Optional<Review> findBySubjectIdAndObjectIdAndTradeId(Long subjectId, Long objectId, Long tradeId) {
+        QMember sMember = new QMember("sMember");
+        QMember oMember = new QMember("oMember");
+
+        return Optional.ofNullable(query
+                .select(review)
+                .from(review)
+                .join(review.reviewSubject, sMember).fetchJoin()
+                .join(review.reviewObject, oMember).fetchJoin()
+                .join(review.reviewTrade, trade).fetchJoin()
+                .where(review.reviewSubject.id.eq(subjectId)
+                        .and(review.reviewObject.id.eq(objectId)
+                                .and(review.reviewTrade.id.eq(tradeId))))
+                .fetchOne());
     }
 }

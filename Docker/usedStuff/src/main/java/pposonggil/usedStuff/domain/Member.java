@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
+import pposonggil.usedStuff.domain.Route.RouteRequest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,8 +43,20 @@ public class Member extends BaseEntity {
     private List<Board> boards = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "chatMember")
+    @OneToMany(mappedBy = "requester")
     private List<ChatRoom> chatRooms = new ArrayList<>();
+
+    @Builder.Default
+    @OneToMany(mappedBy = "routeRequester")
+    private List<RouteRequest> routeRequests = new ArrayList<>();
+
+    @Builder.Default
+    @OneToMany(mappedBy = "tradeSubject")
+    private List<Trade> tradeSubjects = new ArrayList<>();
+
+    @Builder.Default
+    @OneToMany(mappedBy = "tradeObject")
+    private List<Trade> tradeObjects = new ArrayList<>();
 
     @Builder.Default
     @OneToMany(mappedBy = "sender")
@@ -77,7 +90,7 @@ public class Member extends BaseEntity {
     private String nickName;
     private String phone;
 
-    @ColumnDefault(value = "10")
+    @ColumnDefault(value = "5")
     private Double ratingScore;
 
     private boolean isActivated;
@@ -105,7 +118,7 @@ public class Member extends BaseEntity {
         return Member.builder(nickName)
                 .name(name)
                 .phone(phone)
-                .ratingScore(10.0)
+                .ratingScore(5.0)
                 .isActivated(true)
                 .build();
     }

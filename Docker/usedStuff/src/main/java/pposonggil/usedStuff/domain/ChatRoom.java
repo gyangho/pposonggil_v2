@@ -18,7 +18,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Builder
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PRIVATE)
-public class ChatRoom extends BaseEntity{
+public class ChatRoom extends BaseEntity {
     @Id
     @GeneratedValue
     @Column(name = "chat_room_id")
@@ -26,25 +26,17 @@ public class ChatRoom extends BaseEntity{
 
     @JsonIgnore
     @OneToOne(fetch = LAZY)
-    @JoinColumn(name = "chat_board_id")
+    @JoinColumn(name = "board_id")
     private Board chatBoard;
-
-    @Builder.Default
-    @OneToMany(mappedBy = "distanceChatRoom", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Distance> distances = new ArrayList<>();
 
     @Builder.Default
     @OneToMany(mappedBy = "messageChatRoom")
     private List<Message> messages = new ArrayList<>();
 
-    @Builder.Default
-    @OneToMany(mappedBy = "reviewChatRoom")
-    private List<Review> reviews = new ArrayList<>();
-
     @JsonIgnore
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "member_id")
-    private Member chatMember;
+    @JoinColumn(name = "requester_id")
+    private Member requester;
 
     private String startTimeString;
     private String endTimeString;
@@ -55,30 +47,23 @@ public class ChatRoom extends BaseEntity{
     public void setChatBoard(Board board) {
         this.chatBoard = board;
     }
-
-    public void setChatMember(Member member) {
-        this.chatMember = member;
-        member.getChatRooms().add(this);
+    public void setRequester(Member requester) {
+        this.requester = requester;
+        requester.getChatRooms().add(this);
     }
 
-    public static ChatRoomBuilder builder(Board chatBoard, Member chatMember) {
-        if (chatBoard == null || chatMember == null) {
+    public static ChatRoom.ChatRoomBuilder builder(Board chatBoard, Member requester) {
+        if (chatBoard == null || requester == null)
             throw new IllegalArgumentException("필수 파라미터 누락");
-        }
-
         return new ChatRoomBuilder()
                 .chatBoard(chatBoard)
-                .chatMember(chatMember);
+                .requester(requester);
     }
-
-    public static ChatRoom buildChatRoom(Board chatBoard,Member chatMember) {
-        return ChatRoom.builder(chatBoard, chatMember)
-                .chatMember(chatMember)
-                .chatBoard(chatBoard)
+    public static ChatRoom buildChatRoom(Board chatBoard, Member requester) {
+        return ChatRoom.builder(chatBoard, requester)
                 .startTimeString(chatBoard.getStartTimeString())
                 .endTimeString(chatBoard.getEndTimeString())
                 .address(chatBoard.getAddress())
                 .build();
     }
-
 }
