@@ -9,7 +9,7 @@ import pposonggil.usedStuff.domain.Trade;
 import java.util.List;
 import java.util.Optional;
 
-import static pposonggil.usedStuff.domain.QBoard.board;
+import static pposonggil.usedStuff.domain.QChatRoom.chatRoom;
 import static pposonggil.usedStuff.domain.QTrade.trade;
 
 @Repository
@@ -24,13 +24,12 @@ public class CustomTradeRepositoryImpl implements CustomTradeRepository {
     QMember oMember = new QMember("oMember");
 
     @Override
-    public List<Trade> findTradesWithBoardMember() {
+    public List<Trade> findTradesWithMember() {
         return query
                 .select(trade)
                 .from(trade)
                 .join(trade.tradeSubject, sMember).fetchJoin()
                 .join(trade.tradeObject, oMember).fetchJoin()
-                .join(trade.tradeBoard, board).fetchJoin()
                 .limit(1000)
                 .fetch();
     }
@@ -42,7 +41,6 @@ public class CustomTradeRepositoryImpl implements CustomTradeRepository {
                 .from(trade)
                 .join(trade.tradeSubject, sMember).fetchJoin()
                 .join(trade.tradeObject, oMember).fetchJoin()
-                .join(trade.tradeBoard, board).fetchJoin()
                 .where(trade.tradeSubject.id.eq(subjectId))
                 .limit(1000)
                 .fetch();
@@ -55,7 +53,6 @@ public class CustomTradeRepositoryImpl implements CustomTradeRepository {
                 .from(trade)
                 .join(trade.tradeSubject, sMember).fetchJoin()
                 .join(trade.tradeObject, oMember).fetchJoin()
-                .join(trade.tradeBoard, board).fetchJoin()
                 .where(trade.tradeObject.id.eq(objectId))
                 .limit(1000)
                 .fetch();
@@ -68,7 +65,6 @@ public class CustomTradeRepositoryImpl implements CustomTradeRepository {
                 .from(trade)
                 .join(trade.tradeSubject, sMember).fetchJoin()
                 .join(trade.tradeObject, oMember).fetchJoin()
-                .join(trade.tradeBoard, board).fetchJoin()
                 .where(trade.tradeSubject.id.eq(memberId)
                         .or(trade.tradeObject.id.eq(memberId)))
                 .limit(1000)
@@ -76,14 +72,14 @@ public class CustomTradeRepositoryImpl implements CustomTradeRepository {
     }
 
     @Override
-    public Optional<Trade> findTradeByBoardId(Long boardId) {
+    public Optional<Trade> findTradeByChatRoomId(Long chatRoomId) {
         return Optional.ofNullable(query
                 .select(trade)
                 .from(trade)
                 .join(trade.tradeSubject, sMember).fetchJoin()
                 .join(trade.tradeObject, oMember).fetchJoin()
-                .join(trade.tradeBoard, board).fetchJoin()
-                .where(trade.tradeBoard.id.eq(boardId))
+                .join(trade.tradeChatRoom, chatRoom).fetchJoin()
+                .where(trade.tradeChatRoom.id.eq(chatRoomId))
                 .fetchOne());
     }
 }

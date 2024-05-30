@@ -26,6 +26,8 @@
 @import "screens/secondhand/list.css";
 @import "screens/secondhand/write.css";
 @import "screens/secondhand/show.css";
+@import "screens/secondhand/chat.css";
+@import "screens/secondhand/edit.css";
 /*@import "screens/pposong.css";*/
 
 body {
