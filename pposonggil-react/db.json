@@ -3515,6 +3515,149 @@
         "latitude": 35.15854946084184,
         "longitude": 129.1708852947505
       }
+    },
+    {
+      "id": "bdec",
+      "startDto": {
+        "name": "EF SEOUL",
+        "latitude": 37.52382159034047,
+        "longitude": 127.03207675464354
+      },
+      "endDto": {
+        "name": "호랑이젤라떡",
+        "latitude": 35.15854946084184,
+        "longitude": 129.1708852947505
+      }
+    },
+    {
+      "id": "c3a2",
+      "startDto": {
+        "name": "EF SEOUL",
+        "latitude": 37.52382159034047,
+        "longitude": 127.03207675464354
+      },
+      "endDto": {
+        "name": "호랑이젤라떡",
+        "latitude": 35.15854946084184,
+        "longitude": 129.1708852947505
+      }
+    },
+    {
+      "id": "7f62",
+      "startDto": {
+        "name": "EF SEOUL",
+        "latitude": 37.52382159034047,
+        "longitude": 127.03207675464354
+      },
+      "endDto": {
+        "name": "호랑이젤라떡",
+        "latitude": 35.15854946084184,
+        "longitude": 129.1708852947505
+      }
+    },
+    {
+      "id": "7d93",
+      "startDto": {
+        "name": "EF SEOUL",
+        "latitude": 37.52382159034047,
+        "longitude": 127.03207675464354
+      },
+      "endDto": {
+        "name": "호랑이젤라떡",
+        "latitude": 35.15854946084184,
+        "longitude": 129.1708852947505
+      }
+    },
+    {
+      "id": "b2f9",
+      "startDto": {
+        "name": "EF SEOUL",
+        "latitude": 37.52382159034047,
+        "longitude": 127.03207675464354
+      },
+      "endDto": {
+        "name": "호랑이젤라떡",
+        "latitude": 35.15854946084184,
+        "longitude": 129.1708852947505
+      }
+    },
+    {
+      "id": "acd9",
+      "startDto": {
+        "name": "EF SEOUL",
+        "latitude": 37.52382159034047,
+        "longitude": 127.03207675464354
+      },
+      "endDto": {
+        "name": "호랑이젤라떡",
+        "latitude": 35.15854946084184,
+        "longitude": 129.1708852947505
+      }
+    },
+    {
+      "id": "fc50",
+      "startDto": {
+        "name": "EF SEOUL",
+        "latitude": 37.52382159034047,
+        "longitude": 127.03207675464354
+      },
+      "endDto": {
+        "name": "호랑이젤라떡",
+        "latitude": 35.15854946084184,
+        "longitude": 129.1708852947505
+      }
+    },
+    {
+      "id": "d451",
+      "startDto": {
+        "name": "EF SEOUL",
+        "latitude": 37.52382159034047,
+        "longitude": 127.03207675464354
+      },
+      "endDto": {
+        "name": "호랑이젤라떡",
+        "latitude": 35.15854946084184,
+        "longitude": 129.1708852947505
+      }
+    },
+    {
+      "id": "cc42",
+      "startDto": {
+        "name": "EF SEOUL",
+        "latitude": 37.52382159034047,
+        "longitude": 127.03207675464354
+      },
+      "endDto": {
+        "name": "호랑이젤라떡",
+        "latitude": 35.15854946084184,
+        "longitude": 129.1708852947505
+      }
+    },
+    {
+      "id": "e33d",
+      "startDto": {
+        "name": "EF SEOUL",
+        "latitude": 37.52382159034047,
+        "longitude": 127.03207675464354
+      },
+      "endDto": {
+        "name": "호랑이젤라떡",
+        "latitude": 35.15854946084184,
+        "longitude": 129.1708852947505
+      }
+    },
+    {
+      "id": "7a75",
+      "startDto": {
+        "name": "EF SEOUL",
+        "latitude": 37.52382159034047,
+        "longitude": 127.03207675464354
+      },
+      "endDto": {
+        "name": "호랑이젤라떡",
+        "latitude": 35.15854946084184,
+        "longitude": 129.1708852947505
+      }
     }
   ]
 }
