@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faRotate, faEllipsisVertical, faBus, faSubway } from "@fortawesome/free-solid-svg-icons";
+import { faRotate, faEllipsisVertical, faBus, faSubway, faPersonWalking } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState, useResetRecoilState } from "recoil";
 import axios from "axios";
@@ -120,7 +120,40 @@ function SearchRoutes() {
             </PathInfo>
 
             <SummaryBar id="summaryBar">
-              <Bar>요약바</Bar>
+              <BarContainer>
+                {path.subPathDtos && path.subPathDtos.map((subPath, index) => (
+                  <React.Fragment key={index}>
+                    {subPath.type === 'walk' ? (
+                      <React.Fragment>
+                        
+                        <Bar
+                          key={subPath.subPathId}
+                          width={(subPath.time / path.totalTime) * 100}
+                          color={'darkgray'}>
+                            {/* <IconBox>
+                              <TransportIcon icon={faPersonWalking} style={{ color: 'gray'}} />
+                            </IconBox> */}
+                          <p>{subPath.time}분</p>
+                        </Bar>
+                        
+                      </React.Fragment>
+                    ) : (
+                      <React.Fragment>
+                        <Bar
+                          key={subPath.subPathId}
+                          width={(subPath.time / path.totalTime) * 100}
+                          color={subPath.type === 'subway' ? subPath.subwayColor : subPath.busColor}>
+                            <IconBox>
+                              <TransportIcon icon={subPath.type === 'bus' ? faBus : faSubway} style={{ color: subPath.type === 'bus' ? subPath.busColor : subPath.subwayColor }} />
+                            </IconBox>
+                            <p>{subPath.time}분</p>
+                        </Bar>
+                      </React.Fragment>
+                    )}
+                    <div style={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)', bottom: '25px', fontWeight: 'bold' }}>{subPath.time}분</div>
+                  </React.Fragment>
+                ))}
+              </BarContainer>
             </SummaryBar>
 
             <SubPathSummary>
@@ -133,7 +166,6 @@ function SearchRoutes() {
                       )}
                       {subPath.type === "subway" && (
                         <React.Fragment>
-
                         <FontAwesomeIcon icon={faSubway} style={{ color: subPath.subwayColor }} />
                         {subPath.type === "subway" && <div>{subPath.subwayName.split(' ').pop()}</div>}
                       </React.Fragment>
@@ -166,6 +198,178 @@ function SearchRoutes() {
 export default SearchRoutes;
 
 
+// import React, { useState, useEffect } from "react";
+// import styled from "styled-components";
+// import { motion } from "framer-motion";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { faRotate, faEllipsisVertical, faClockRotateLeft, faBus, faSubway, faPersonWalking } from "@fortawesome/free-solid-svg-icons";
+// import { useNavigate } from "react-router-dom";
+// import { useRecoilState, useResetRecoilState } from "recoil";
+// import { routeInfoState } from "../recoil/atoms";
+// import axios from "axios";
+
+// const { kakao } = window;
+
+// // JSON 서버 API URL(json-server 이용한 프톤트 테스트 용)
+// const apiUrl = "http://localhost:3001/paths";
+
+// function SearchRoutes() {
+//   const [route, setRoute] = useRecoilState(routeInfoState);
+//   const resetRouteInfo = useResetRecoilState(routeInfoState);
+//   const navigate = useNavigate();
+
+//   const [serverResponse, setServerResponse] = useState(null); // 서버 응답 저장용
+//   const [paths, setPaths] = useState([]);
+
+//   // 서버에 출발지 목적지 위도 경도 데이터 전송
+//   const sendRouteToServer = async (route) => {
+//     try {
+//       // const response = await axios.post("YOUR_SERVER_URL/api/route", {
+//       const response = await axios.post(apiUrl, {
+//         startDto: {
+//           name: route.origin[0].name,
+//           latitude: parseFloat(route.origin[0].lat),
+//           longitude: parseFloat(route.origin[0].lon),
+//         },
+//         endDto: {
+//           name: route.dest[0].name,
+//           latitude: parseFloat(route.dest[0].lat),
+//           longitude: parseFloat(route.dest[0].lon),
+//         },
+//       });
+//       console.log("서버 응답: ", response.data);
+//       setServerResponse(response.data); // 서버 응답 정보
+//       console.log(response.data);
+//       fetchPaths(); // 출발지 목적지 보내고 경로정보 get하는 함수 호출
+//     } catch (error) {
+//       console.error("서버로 데이터 전송 실패: ", error);
+//     }
+//   };
+
+//   // 서버에서 경로 정보 가져오기
+//   const fetchPaths = async () => {
+//     try {
+//       const response = await axios.get(apiUrl);
+//       setPaths(response.data);
+//     } catch (error) {
+//       console.error("Error fetching paths", error);
+//     }
+//   };
+
+//   // Recoil 상태가 변경될 때마다 서버로 데이터를 전송(출발지 목적지 위경도 정보 있을 때만)
+//   useEffect(() => {
+//     if (route.origin[0].lat && route.dest[0].lat) {
+//       sendRouteToServer(route);
+//     }
+//   }, [route]);
+
+//   // reverse 버튼 핸들러
+//   const onReverseClick = () => {
+//     setRoute((prev) => ({
+//       origin: prev.dest,
+//       dest: prev.origin,
+//     }));
+//   };
+
+//   // reset 버튼 클릭 핸들러
+//   const onResetClick = () => {
+//     resetRouteInfo();
+//   };
+
+//   console.log("경로 정보 확인: ", route); // test용
+
+//   return (
+//     <React.Fragment>
+//       <SearchContainer id="origin">
+//         <Container>
+//           <Input
+//             type="text"
+//             value={route.origin[0].name}
+//             onClick={() => navigate('/search')}
+//             readOnly
+//             placeholder="출발지 입력"
+//           />
+//         </Container>
+//         <Container>
+//           <FontAwesomeIcon icon={faRotate} onClick={onReverseClick} />
+//         </Container>
+//       </SearchContainer>
+//       <SearchContainer id="dest">
+//         <Container>
+//           <Input
+//             type="text"
+//             value={route.dest[0].name}
+//             onClick={() => navigate('/search')}
+//             readOnly
+//             placeholder="도착지 입력"
+//           />
+//         </Container>
+//         <Container>
+//           <FontAwesomeIcon icon={faEllipsisVertical} onClick={onResetClick} />
+//         </Container>
+//       </SearchContainer>
+//       {paths.map((path) => (
+//         <ResultContainer key={path.totalTime}>
+//           <OptionBar id="sortingByTransport">
+//             <button>전체</button>
+//             <button>버스 3</button>
+//             <button>지하철 2</button>
+//           </OptionBar>
+//           <SortingBar id="sortingOption">
+//             <div>오늘 오후 12:43 출발</div>
+//             <div>최소도보순</div>
+//           </SortingBar>
+
+//           <PathBox id="pathBox">
+//             <PathInfo id="timeAndPrice">
+//               <span>{path.totalTime}</span>
+//               <div>분 <p>|</p> 도보 {path.totalWalkTime}분 {path.totalWalkDistance}m<p>|</p>{path.price}원</div>
+//             </PathInfo>
+
+//             <SummaryBar id="summaryBar">
+//               <BarContainer>
+//                 {path.subPathDtos && path.subPathDtos.filter(subPath => subPath.type !== 'walk').map((subPath) => (
+//                   <Bar
+//                     key={subPath.subPathId}
+//                     width={(subPath.time / path.totalTime) * 100}
+//                     color={subPath.type === 'subway' ? subPath.subwayColor : subPath.busColor}
+//                   />
+//                 ))}
+//               </BarContainer>
+//             </SummaryBar>
+
+//             <SubPathSummary>
+//               {path.subPathDtos && path.subPathDtos.filter(subPath => subPath.type !== 'walk').map((subPath) => (
+//                 <SubPath key={subPath.subPathId}>
+//                   <div id="subPath-component">
+//                     <div id="subPathIconColumn">
+//                       {subPath.type === "bus" && <FontAwesomeIcon icon={faBus} style={{ color: subPath.busColor }} />}
+//                       {subPath.type === "subway" && <FontAwesomeIcon icon={faSubway} style={{ color: subPath.subwayColor }} />}
+//                       {subPath.type === "walk" && <FontAwesomeIcon icon={faPersonWalking} />}
+//                     </div>
+//                     <div id="subPathTextColumn">
+//                       <div>{subPath.pointDtos[0] && subPath.pointDtos[0].pointInformationDto.name}</div>
+//                       {subPath.type === "bus" && <div>{subPath.busNo}</div>}
+//                       {subPath.type === "subway" && <div>{subPath.subwayName.split(' ').pop()}</div>}
+//                       <div>{subPath.pointDtos[subPath.pointDtos.length - 1] && subPath.pointDtos[subPath.pointDtos.length - 1].pointInformationDto.name}</div>
+//                     </div>
+//                   </div>
+//                 </SubPath>
+//               ))}
+//             </SubPathSummary>
+//           </PathBox>
+//         </ResultContainer>
+//       ))}
+//     </React.Fragment>
+//   );
+// }
+
+// export default SearchRoutes;
+
+
+
+
+//////
 
 const SearchContainer = styled.div`
   display: flex;
@@ -336,14 +540,6 @@ const PathInfo = styled.div`
   }
 `;
 
-const SummaryBar = styled.div`
-  /* background-color: pink; */
-  padding: 10px 0px;
-`;
-const Bar =styled.div`
-  background-color: #dddddd;
-  border-radius: 25px;
-`;
 const SubPathSummary = styled.div`
   /* background-color: tomato; */
   padding: 5px 0px;
@@ -363,4 +559,60 @@ const IconColumn = styled.div`
 `;
 const TextColumn = styled.div`
   background-color: pink;
+`;
+
+//요약바
+const SummaryBar = styled.div`
+  /* background-color: pink; */
+  padding: 10px 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const BarContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 20px;
+  background-color: #dddddd;
+  border-radius: 25px;
+`;
+const Bar = styled.div`
+  height: 100%;
+  background-color: ${(props) => props.color};
+  width: ${(props) => props.width}%;
+  border-radius: 25px;
+  /* position: relative; */
+  font-size: 12px;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  text-align: center;
+  p{
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+    font-weight: 500;
+    color: white;
+  }
+`;
+const TransportIcon = styled(FontAwesomeIcon)`
+  font-size: 10px;
+`;
+
+const IconBox = styled.div`
+  margin-left: -10px;
+  min-width: 22px;
+  max-width: 22px;
+  min-height: 22px;
+  max-height: 22px;
+  background-color: white;
+  border: 1px solid gray;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
 `;
