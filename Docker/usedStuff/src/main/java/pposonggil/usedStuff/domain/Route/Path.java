@@ -59,6 +59,16 @@ public class Path extends BaseEntity {
     })
     private PointInformation end;
 
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "name", column = @Column(name = "mid_name")),
+            @AttributeOverride(name = "latitude", column = @Column(name = "mid_latitude")),
+            @AttributeOverride(name = "longitude", column = @Column(name = "mid_longitude")),
+            @AttributeOverride(name = "x", column = @Column(name = "mid_x")),
+            @AttributeOverride(name = "y", column = @Column(name = "mid_y"))
+    })
+    private PointInformation mid;
+
     @JsonIgnore
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "route_requester_id")

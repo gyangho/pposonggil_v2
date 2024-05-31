@@ -5,7 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import pposonggil.usedStuff.domain.Route.LatXLngY;
 import pposonggil.usedStuff.domain.Route.Path;
+import pposonggil.usedStuff.domain.Route.PointInformation;
 import pposonggil.usedStuff.domain.Route.SubPath;
 import pposonggil.usedStuff.dto.Route.PointInformation.PointInformationDto;
 import pposonggil.usedStuff.dto.Route.SubPath.SubPathDto;
@@ -37,6 +39,7 @@ public class PathDto {
     private Long subwayStationCount;
     private PointInformationDto startDto;
     private PointInformationDto endDto;
+    private PointInformationDto midDto;
     private List<SubPathDto> subPathDtos;
 
     public static PathDto fromEntity(Path path) {
@@ -53,8 +56,9 @@ public class PathDto {
                 .totalTransitCount(path.getTotalTransitCount())
                 .busStationCount(path.getBusStationCount())
                 .subwayStationCount(path.getSubwayStationCount())
-                .startDto(PointInformationDto.fromEntity(path.getStart()))
-                .endDto(PointInformationDto.fromEntity(path.getEnd()))
+                .startDto(getPointXYDto(path.getStart()))
+                .endDto(getPointXYDto(path.getEnd()))
+                .midDto(getPointMidDto(path.getStart(), path.getEnd()))
                 .subPathDtos(path.getSubPaths().stream()
                         .map(SubPathDto::fromEntity)
                         .collect(Collectors.toList()))
@@ -62,7 +66,8 @@ public class PathDto {
     }
 
     public Path toEntity() {
-        Path path = Path.builder(this.startDto.toEntity(), this.endDto.toEntity())
+        Path path = Path.builder(getPointXYDto(this.startDto.toEntity()).toEntity(),
+                        getPointXYDto(this.endDto.toEntity()).toEntity())
                 .totalTime(this.totalTime)
                 .price(this.price)
                 .totalDistance(this.totalDistance)
@@ -73,6 +78,7 @@ public class PathDto {
                 .totalTransitCount(this.totalTransitCount)
                 .busStationCount(this.busStationCount)
                 .subwayStationCount(this.subwayStationCount)
+                .mid(midDto.toEntity())
                 .build();
 
         List<SubPath> subPaths = this.subPathDtos.stream()
@@ -84,7 +90,7 @@ public class PathDto {
         return path;
     }
 
-    public static PathDto fromJsonNode(JsonNode node, PointInformationDto start, PointInformationDto end) {
+    public static PathDto fromJsonNode(JsonNode node, PointInformationDto startDto, PointInformationDto endDto) {
         JsonNode info = node.get("info");
 
         return PathDto.builder()
@@ -99,14 +105,39 @@ public class PathDto {
                         + info.path("subwayTransitCount").asLong(0L))
                 .busStationCount(info.path("busStationCount").asLong(0L))
                 .subwayStationCount(info.path("subwayStationCount").asLong(0L))
-                .startDto(start)
-                .endDto(end)
+                .startDto(getPointXYDto(startDto.toEntity()))
+                .endDto(getPointXYDto(endDto.toEntity()))
+                .midDto(getPointMidDto(startDto.toEntity(), endDto.toEntity()))
                 .subPathDtos(Optional.ofNullable(node.get("subPath"))
                         .map(JsonNode::elements)
                         .map(elements -> StreamSupport.stream(Spliterators.spliteratorUnknownSize(elements, Spliterator.ORDERED), false))
                         .orElseGet(Stream::empty)
-                        .map(SubPathDto::fromJsonNode)
+                        .map(jsonNode -> SubPathDto.fromJsonNode(jsonNode, startDto, endDto))
                         .collect(Collectors.toList()))
+                .build();
+    }
+
+    private static PointInformationDto getPointXYDto(PointInformation pointDto) {
+        LatXLngY midLatXLngY = LatXLngY.convertGRID_GPS(LatXLngY.TO_GRID, pointDto.getLatitude(), pointDto.getLongitude());
+
+        return PointInformationDto.builder()
+                .latitude(midLatXLngY.lat)
+                .longitude(midLatXLngY.lng)
+                .x((long) midLatXLngY.x)
+                .y((long) midLatXLngY.y)
+                .build();
+    }
+
+    private static PointInformationDto getPointMidDto(PointInformation startDto, PointInformation endDto) {
+        LatXLngY midLatXLngY = LatXLngY.convertGRID_GPS(LatXLngY.TO_GRID,
+                ((startDto.getLatitude() + endDto.getLatitude()) / 2),
+                ((startDto.getLongitude() + endDto.getLongitude()) / 2));
+
+        return PointInformationDto.builder()
+                .latitude(midLatXLngY.lat)
+                .longitude(midLatXLngY.lng)
+                .x((long) midLatXLngY.x)
+                .y((long) midLatXLngY.y)
                 .build();
     }
 }
