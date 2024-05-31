@@ -10,6 +10,128 @@ import { faMagnifyingGlass, faLocationDot, faClockRotateLeft } from "@fortawesom
 
 const { kakao } = window;
 
+function Search() {
+  const [inputText, setInputText] = useState(""); // 검색 입력 텍스트
+  const [searchResults, setSearchResults] = useState([]); // 검색 결과(자동완성 기능)
+  const [searchHistory, setSearchHistory] = useState([]); // 검색 기록(로컬스토리지)
+  const [selectedPlaceInfo, setSelectedPlaceInfo] = useState(null);
+  
+  const setSearchPlace = useSetRecoilState(searchPlace); // 선택한 장소명 atom으로 관리
+  const searchPlaceValue = useRecoilValue(searchPlace);
+  
+  const navigate = useNavigate();
+  // Kakao Maps API를 이용한 검색 함수
+  const handleSearch = useCallback(() => {
+    if (!inputText) {
+      setSearchResults([]);
+      return;
+    }
+    const ps = new kakao.maps.services.Places();
+    const keyword = inputText;
+    // 장소 검색 객체를 통해 키워드로 장소 검색 요청
+    ps.keywordSearch(keyword, (data, status) => {
+      if (status === kakao.maps.services.Status.OK) {
+        setSearchResults(data);
+      } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
+        setSearchResults([]);
+      } else if (status === kakao.maps.services.Status.ERROR) {
+        alert("검색 결과 중 오류가 발생했습니다.");
+      }
+    });
+  }, [inputText]);
+
+  // 검색 입력 텍스트 변경 시 딜레이를 두고 검색 수행
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      handleSearch();
+    }, 100);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [inputText, handleSearch]);
+
+  // 컴포넌트가 처음 렌더링될 때 로컬스토리지에서 검색 기록 불러오기
+  useEffect(() => {
+    const savedHistory = localStorage.getItem("searchHistory");
+    if (savedHistory) {
+      setSearchHistory(JSON.parse(savedHistory));
+    }
+  }, []);
+
+  // 검색 결과 클릭 시 장소명 로컬스토리지에 저장 및 searchPlace atom 값 업데이트
+  const handleResultClick = (result, index) => {
+    // 선택한 장소 로컬스토리지에 저장(상세 정보까지 전부 다)
+    const newHistory = [result, ...searchHistory.filter(item => item.place_name !== result.place_name)];
+    setSearchHistory(newHistory);
+    localStorage.setItem("searchHistory", JSON.stringify(newHistory));
+    // 선택 장소명에 해당하는 상세 정보 atom에 저장
+    setSearchPlace({
+      place_name: result.place_name || result,
+      category_group_name: result.category_group_name,
+      address_name: result.address_name,
+      road_address_name: result.road_address_name,
+      phone: result.phone,
+      lat: result.y,
+      lon: result.x,
+    });
+    console.log("atom :", searchPlaceValue); //테스트용
+    navigate(`/search/place`);
+  };
+
+  // 입력 텍스트 변경 핸들러
+  const handleInputChange = (e) => {
+    setInputText(e.target.value);
+  };
+
+  // 검색 결과가 없을 때 로컬스토리지의 검색 기록을 표시
+  const resultsToShow = searchResults.length > 0 ? searchResults : searchHistory;
+
+  return (
+    <React.Fragment>
+      <SearchContainer>
+        <Container>
+          <Icon icon={faMagnifyingGlass} />
+          <Input
+            type="text"
+            value={inputText}
+            onChange={handleInputChange}
+            placeholder="장소·주소 검색"
+          />
+        </Container>
+      </SearchContainer>
+
+      <ResultContainer>
+        {resultsToShow.map((result, index) => (
+          <ResultItem 
+            key={index} 
+            onClick={() => handleResultClick(result, index)}
+          >
+            {searchResults.length > 0 ? (
+              <PlaceIcon icon={faLocationDot} />
+            ) : (
+              <HistoryIcon icon={faClockRotateLeft} />
+            )}
+              <PlaceInfo>
+               <InfoItem id="placeName">{result.place_name || result}</InfoItem>
+               
+               {searchResults.length > 0 && (
+                  <>
+                    {/* <InfoItem id="address"><br/>{result.address_name}</InfoItem> */}
+                    <InfoItem id="roadAddress"><br/>{result.road_address_name}</InfoItem>
+                    {/* <InfoItem id="phoneNumber"><br/>{result.phone}</InfoItem> */}
+                    {/* <InfoItem id="phoneNumber"><br/>{result.x}</InfoItem> */}
+                    {/* <InfoItem id="phoneNumber"><br/>{result.y}</InfoItem> */}
+                  </>
+                )}
+             </PlaceInfo>
+            </ResultItem>
+        ))}
+      </ResultContainer>
+    </React.Fragment>
+  );
+}
+
+export default Search
+
 const SearchContainer = styled.div`
   display: flex;
   justify-content: center;
@@ -42,6 +164,7 @@ const Input = styled.input`
   width: 100%;
   height: 45px;
   font-size: 17px;
+  font-weight: 600;
   border: none;
   background-color: inherit;
   &:focus {
@@ -115,132 +238,3 @@ const InfoItem = styled.span`
     color: black;
   }
 `;
-
-/////////////////////////////////////////////////////////////////////////////////////
-
-function Search() {
-  const [inputText, setInputText] = useState(""); // 검색 입력 텍스트
-  const [searchResults, setSearchResults] = useState([]); // 검색 결과(자동완성 기능)
-  const [searchHistory, setSearchHistory] = useState([]); // 검색 기록(로컬스토리지)
-  const [selectedPlaceInfo, setSelectedPlaceInfo] = useState(null);
-  
-  const setSearchPlace = useSetRecoilState(searchPlace); // 선택한 장소명 atom으로 관리
-  const searchPlaceValue = useRecoilValue(searchPlace);
-
-  const setNav = useSetRecoilState(navState);
-  setNav("search");
-  
-  const navigate = useNavigate();
-  // Kakao Maps API를 이용한 검색 함수
-  const handleSearch = useCallback(() => {
-    if (!inputText) {
-      setSearchResults([]);
-      return;
-    }
-    const ps = new kakao.maps.services.Places();
-    const keyword = inputText;
-    // 장소 검색 객체를 통해 키워드로 장소 검색 요청
-    ps.keywordSearch(keyword, (data, status) => {
-      if (status === kakao.maps.services.Status.OK) {
-        setSearchResults(data);
-      } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
-        setSearchResults([]);
-      } else if (status === kakao.maps.services.Status.ERROR) {
-        alert("검색 결과 중 오류가 발생했습니다.");
-      }
-    });
-  }, [inputText]);
-
-  // 검색 입력 텍스트 변경 시 딜레이를 두고 검색 수행
-  useEffect(() => {
-    const delayDebounceFn = setTimeout(() => {
-      handleSearch();
-    }, 200);
-
-    return () => clearTimeout(delayDebounceFn);
-  }, [inputText, handleSearch]);
-
-  // 컴포넌트가 처음 렌더링될 때 로컬스토리지에서 검색 기록 불러오기
-  useEffect(() => {
-    const savedHistory = localStorage.getItem("searchHistory");
-    if (savedHistory) {
-      setSearchHistory(JSON.parse(savedHistory));
-    }
-  }, []);
-
-  // 검색 결과 클릭 시 장소명 로컬스토리지에 저장 및 searchPlace atom 값 업데이트
-  const handleResultClick = (result, index) => {
-    // 선택한 장소 로컬스토리지에 저장(상세 정보까지 전부 다)
-    const newHistory = [result, ...searchHistory.filter(item => item !== result)];
-    setSearchHistory(newHistory);
-    localStorage.setItem("searchHistory", JSON.stringify(newHistory));
-    // 선택 장소명에 해당하는 상세 정보 atom에 저장
-    setSearchPlace({
-      place_name: result.place_name || result,
-      category_group_name: result.category_group_name,
-      address_name: result.address_name,
-      road_address_name: result.road_address_name,
-      phone: result.phone,
-      lat: result.y,
-      lon: result.x,
-    });
-    console.log("atom :", searchPlaceValue); //테스트용
-    navigate(`/search/place`);
-  };
-
-  // 입력 텍스트 변경 핸들러
-  const handleInputChange = (e) => {
-    setInputText(e.target.value);
-  };
-
-  // 검색 결과가 없을 때 로컬스토리지의 검색 기록을 표시
-  const resultsToShow = searchResults.length > 0 ? searchResults : searchHistory;
-
-// test용
-
-  return (
-    <React.Fragment>
-      <SearchContainer>
-        <Container>
-          <Icon icon={faMagnifyingGlass} />
-          <Input
-            type="text"
-            value={inputText}
-            onChange={handleInputChange}
-            placeholder="장소·주소 검색"
-          />
-        </Container>
-      </SearchContainer>
-
-      <ResultContainer>
-        {resultsToShow.map((result, index) => (
-          <ResultItem 
-            key={index} 
-            onClick={() => handleResultClick(result, index)}
-          >
-            {searchResults.length > 0 ? (
-              <PlaceIcon icon={faLocationDot} />
-            ) : (
-              <HistoryIcon icon={faClockRotateLeft} />
-            )}
-              <PlaceInfo>
-               <InfoItem id="placeName">{result.place_name || result}</InfoItem>
-               
-               {searchResults.length > 0 && (
-                  <>
-                    <InfoItem id="address"><br/>{result.address_name}</InfoItem>
-                    <InfoItem id="roadAddress"><br/>{result.road_address_name}</InfoItem>
-                    <InfoItem id="phoneNumber"><br/>{result.phone}</InfoItem>
-                    <InfoItem id="phoneNumber"><br/>{result.x}</InfoItem>
-                    <InfoItem id="phoneNumber"><br/>{result.y}</InfoItem>
-                  </>
-                )}
-             </PlaceInfo>
-            </ResultItem>
-        ))}
-      </ResultContainer>
-    </React.Fragment>
-  );
-}
-
-export default Search

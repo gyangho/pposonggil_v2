@@ -9,10 +9,10 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 //JSON 서버 API URL(json-server 이용한 프톤트 테스트 용)
-// const apiUrl ="http://localhost:3001/postList"
+const apiUrl ="http://localhost:3001/boards"
 
 //서버 제공 url(실제 url)
-const apiUrl ="http://localhost:8080/api/boards/with-image"
+// const apiUrl ="http://localhost:8080/api/boards/with-image"
 
 function Board() {
   const [isRotating, setIsRotating] = useState(false);
@@ -82,13 +82,20 @@ function Board() {
       <ListBox>
         <PostList>
           {posts.map((post) => (
-            <Post key={post.id} onClick={() => onPostClick(post.id)}>
-            <ImgBox><img src={post.img} alt="Example" /></ImgBox>
+            <Post key={post.boardId} onClick={() => onPostClick(post.boardId)}>
+            <ImgBox>
+            {post.imgUrl ? (
+              <img src={post.imgUrl} alt="Example" />
+              ) : (
+                <img src="https://via.placeholder.com/110" alt="Example" />
+              )
+            }
+            </ImgBox>
             <TextBox>
               <div id="title">{post.title}</div>
-              <div id="time" style={{color: "gray", fontSize: "16px"}}>{post.date}</div>
+              <div id="time" style={{color: "gray", fontSize: "16px"}}>{post.createdAt}</div>
               <br/>
-              <div id="price" style={{fontWeight: "800"}}>{post.price}</div>
+              <div id="price" style={{fontWeight: "800"}}>{post.price}원</div>
             </TextBox>
           </Post>
           ))}

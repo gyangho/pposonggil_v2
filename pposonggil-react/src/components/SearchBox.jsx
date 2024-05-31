@@ -20,11 +20,10 @@ const SearchContainer = styled.div`
 `;
 
 const Container = styled.div`
-  width: 85%;
+  width: 80%;
   height: 45px;
   background-color: whitesmoke;
   box-shadow: 0px 0px 5px 4px rgba(109, 109, 109, 0.15);
-  /* padding: 0px 20px; */
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -32,7 +31,7 @@ const Container = styled.div`
   padding: 12px;
   margin: 0px 20px;
   &:last-child { //버튼 컨테이너
-    width: 15%;
+    width: 20%;
     padding: 0px;
     margin-left: 0px;
     justify-content: flex-end;
@@ -44,6 +43,7 @@ const Input = styled(motion.input)`
   width: 100%;
   height: 100%;
   font-size: 17px;
+  font-weight: 600;
   border: none;
   background-color: inherit;
   &:focus {
@@ -68,7 +68,7 @@ const Btn = styled.button`
   width: 100%;
   height: 100%;
   border-radius: 15px;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 600;
   color: white;
 `;
@@ -94,7 +94,7 @@ function SearchBox() {
     navigate('/search/routes');
   };
 
-  const clickedBars = (e) => {
+  const handleBarClick = (e) => {
     //왼쪽에서 오른쪽으로 화면 절반정도 뽀송길 설명 페이지 토글되게
     //새로운 화면 아니고 map위에 zindex값으로 레이아웃처럼 위로 뜨게.
     //atom값으로 State 값 변경하고 Map.js에서 띄우는 걸로..!
@@ -116,7 +116,7 @@ function SearchBox() {
       <Container>
         <Icon 
           icon={faBars} 
-          onClick={clickedBars}
+          onClick={handleBarClick}
         />
         <AnimatePresence>
           <Input 

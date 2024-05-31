@@ -1,71 +1,158 @@
 {
-  "postList": [
+  "boards":
+  [
     {
-      "author": "ooo",
-      "title": "중고 우산 판매해요!",
-      "date": "2024-05-28",
-      "content": "딱 한번 사용했어요~",
-      "price": "2000원",
-      "img": "https://www.wishbucket.io/_next/image?url=https%3A%2F%2Fd2gfz7wkiigkmv.cloudfront.net%2Fpickin%2F2%2F1%2F2%2FFr4m2M5JTemNu--TcHL5MQ&w=1080&q=75"
-    },
-    {
-      "author": "ooo",
-      "title": "1회사용 편의점 우산 팔아요",
-      "date": "2024-05-28",
-      "content": "저렴히 내놓습니당",
-      "price": "1500원",
-      "img": "https://img.danawa.com/prod_img/500000/393/837/img/29837393_1.jpg?_v=20231107131415"
-    },
-    {
-      "author": "ooo",
-      "title": "안쓰는 우산 내놓아요",
-      "date": "2024-05-28",
-      "content": "급히 필요하신 분들 저렴히 가져가세용",
-      "price": "1000원",
-      "img": "https://sitem.ssgcdn.com/35/49/51/item/1000533514935_i1_750.jpg"
-    }
-  ],
-  "board": [
-    {
-      "boardId": 1,
-      "writerId": 1,
-      "writerNickName": "nickName1",
+      "boardId": 10,
+      "writerId": 17,
+      "writerNickName": "ooo",
       "ratingScore": 5.0,
-      "title": "title1",
-      "content": "우산 팔아요1",
+      "title": "우산 팔아요!",
+      "content": "3회 미만 사용했습니다",
       "startTimeString": "2024-05-21-10:00",
-      "endTimeString": "2024-05-21-10:10",
+      "endTimeString": "2024-05-21-10:30",
+      "imgUrl": "https://img.danawa.com/prod_img/500000/393/837/img/29837393_1.jpg?_v=20231107131415",
       "address": {
-        "name": "숭실대1",
+        "name": "숭실대학교 정보과학관",
         "latitude": 37.4958,
         "longitude": 126.9583,
-        "street": "주소1"
+        "street": "서울 동작구 사당로 50"
       },
       "createdAt": "2024-05-30T02:17:32.33273",
       "updateAt": "2024-05-30T02:17:32.33273",
-      "price": 50000,
+      "price": 1000,
       "freebie": false
     },
     {
-      "boardId": 2,
-      "writerId": 1,
-      "writerNickName": "nickName1",
-      "ratingScore": 5.0,
-      "title": "title1",
-      "content": "우산 팔아요1",
+      "boardId": 20,
+      "writerId": 37,
+      "writerNickName": "oo",
+      "ratingScore": 4.5,
+      "title": "안쓰는 우산 내놓아요",
+      "content": "우산 급히 필요하신 분 저렴히 가져가세요~",
       "startTimeString": "2024-05-21-10:00",
       "endTimeString": "2024-05-21-10:10",
+      "imgUrl": null,
       "address": {
-        "name": "숭실대2",
+        "name": "훈감상회",
         "latitude": 37.4958,
         "longitude": 126.9583,
-        "street": "주소2"
+        "street": "서울 서초구 동광로7길 33"
       },
       "createdAt": "2024-05-30T03:02:48.083084",
       "updateAt": "2024-05-30T03:02:48.083084",
-      "price": 50000,
+      "price": 2000,
       "freebie": false
     }
+  ],
+  
+  "paths": 
+  [
+    {
+      "pathId": null,
+      "routeRequesterId": null,
+      "totalTime": 14,
+      "price": 1400,
+      "totalDistance": 3588,
+      "totalWalkDistance": 588,
+      "totalWalkTime": -1,
+      "busTransitCount": 0,
+      "subwayTransitCount": 1,
+      "totalTransitCount": 1,
+      "busStationCount": 0,
+      "subwayStationCount": 2,
+      "startDto": {
+        "name": "숭실대",
+        "latitude": 37.4948,
+        "longitude": 126.9598,
+        "x": 0,
+        "y": 0
+      },
+      "endDto": {
+        "name": "이수역주변",
+        "latitude": 37.4857,
+        "longitude": 126.9815,
+        "x": 0,
+        "y": 0
+      },
+      "subPathDtos": [
+        {
+          "subPathId": null,
+          "pathId": null,
+          "type": "walk",
+          "distance": 527,
+          "time": 8,
+          "stationCount": 0,
+          "subwayName": "null",
+          "busNo": "null",
+          "subwayColor": "#000000",
+          "busColor": "#000000",
+          "startDto": null,
+          "endDto": null,
+          "pointDtos": []
+        },
+        {
+          "subPathId": null,
+          "pathId": null,
+          "type": "subway",
+          "distance": 3000,
+          "time": 5,
+          "stationCount": 2,
+          "subwayName": "수도권 7호선",
+          "busNo": "null",
+          "subwayColor": "#747F00",
+          "busColor": "#000000",
+          "startDto": null,
+          "endDto": null,
+          "pointDtos": [
+            {
+              "pointInformationDto": {
+                "name": "숭실대입구",
+                "latitude": 37.495861,
+                "longitude": 126.953991,
+                "x": 59,
+                "y": 125
+              },
+              "subPathId": null
+            },
+            {
+              "pointInformationDto": {
+                "name": "남성",
+                "latitude": 37.484749,
+                "longitude": 126.971052,
+                "x": 60,
+                "y": 125
+              },
+              "subPathId": null
+            },
+            {
+              "pointInformationDto": {
+                "name": "이수",
+                "latitude": 37.485386,
+                "longitude": 126.982067,
+                "x": 60,
+                "y": 125
+              },
+              "subPathId": null
+            }
+          ]
+        },
+        {
+          "subPathId": null,
+          "pathId": null,
+          "type": "walk",
+          "distance": 61,
+          "time": 1,
+          "stationCount": 0,
+          "subwayName": "null",
+          "busNo": "null",
+          "subwayColor": "#000000",
+          "busColor": "#000000",
+          "startDto": null,
+          "endDto": null,
+          "pointDtos": []
+        }
+      ]
+    }
+    
   ]
 }
-

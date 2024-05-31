@@ -44,7 +44,7 @@ function App() {
           
           <Route path="/market/schedule" element={<TransactionSchedule />} />
           <Route path="/market/chat/:author"  exact    element={<Chat />} />         
-          <Route path="/market/post/:postId" exact    element={<Post />} />
+          <Route path="/market/post/:boardId" exact    element={<Post />} />
           <Route path="/market/posting" element={<Posting/>} />
           <Route path="/market" element={<Board />} />
 
