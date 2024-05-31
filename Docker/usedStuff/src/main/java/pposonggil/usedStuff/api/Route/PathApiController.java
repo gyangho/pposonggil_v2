@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import pposonggil.usedStuff.dto.Route.Path.PathDto;
 import pposonggil.usedStuff.dto.Route.PointInformation.PointInformationDto;
 import pposonggil.usedStuff.service.Route.PathService;
+import pposonggil.usedStuff.service.Route.SubPathService;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -17,6 +18,7 @@ import java.util.Map;
 public class PathApiController {
 
     private final PathService pathService;
+    private final SubPathService subPathService;
 
     @PostMapping("/api/paths")
     public ResponseEntity<Object> createPaths(@RequestPart("startDto") PointInformationDto startDto,
@@ -39,5 +41,15 @@ public class PathApiController {
         response.put("message", "경로를 저장했습니다.");
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
 
+    }
+
+    @GetMapping("/api/path/default")
+    public ResponseEntity<Object> selectDefaultPath(@RequestBody PathDto pathDto) throws IOException {
+        PathDto defaultPathDto = pathService.selectDefaultPath(pathDto);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "최적 도보 경로가 포함된 상세 경로 입니다.");
+        response.put("defaultPathDto", defaultPathDto);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 }

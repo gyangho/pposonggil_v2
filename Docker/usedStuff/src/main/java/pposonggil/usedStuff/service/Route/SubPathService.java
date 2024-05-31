@@ -8,11 +8,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pposonggil.usedStuff.dto.Route.Path.PathDto;
+import pposonggil.usedStuff.dto.Route.Point.PointDto;
 import pposonggil.usedStuff.dto.Route.PointInformation.PointInformationDto;
 import pposonggil.usedStuff.dto.Route.SubPath.SubPathDto;
 import pposonggil.usedStuff.repository.route.path.PathRepository;
 import pposonggil.usedStuff.repository.route.subpath.SubPathRepository;
-
 
 
 import java.io.BufferedReader;
@@ -32,48 +32,53 @@ public class SubPathService {
     private final PathRepository pathRepository;
     private final SubPathRepository subPathRepository;
 
-//    public String createWalkSubPaths(SubPathDto subPathDto) throws IOException {
-//        List<SubPath> subPaths = subPathRepository.findSubPathsByPathId(subPathDto.getPathId());
-//
-//        for (SubPath subPath : subPaths) {
-//            String urlInfo = buildUrl(subPathDto.getStartDto(), subPathDto.getEndDto());
-//            StringBuilder sb = getResponse(urlInfo);
-//            System.out.println(sb.toString());
-//            return sb.toString();
-//
-//        }
-//        return null;
-//    }
-//
-
-    public List<SubPathDto> createWalkSubPaths(PathDto pathDto) throws IOException {
+    public List<SubPathDto> createDefaultSubPaths(PathDto pathDto) throws IOException {
         List<SubPathDto> subPathDtos = pathDto.getSubPathDtos();
+
         List<SubPathDto> result = new ArrayList<>();
         ObjectMapper objectMapper = new ObjectMapper();
 
         for (SubPathDto subPathDto : subPathDtos) {
-            String urlInfo = buildUrl(subPathDto.getStartDto(), subPathDto.getEndDto());
-            StringBuilder sb = getResponse(urlInfo);
-            JsonNode jsonNode = objectMapper.readTree(sb.toString());
+            if (subPathDto.getType().equals("walk")) {
+                String urlInfo = buildUrl(subPathDto.getStartDto(), subPathDto.getEndDto());
+                StringBuilder sb = getResponse(urlInfo);
+                JsonNode jsonNode = objectMapper.readTree(sb.toString());
 
-            JsonNode routesNode = jsonNode.path("routes");
-            JsonNode firstRoute = routesNode.get(0); // 첫 번째 route 접근
+                JsonNode routesNode = jsonNode.path("routes").get(0);
 
-            double totalDistance = firstRoute.path("distance").asDouble();
-            double totalTime = firstRoute.path("duration").asDouble();
-            JsonNode legsNode = firstRoute.path("legs");
-            JsonNode firstLeg = legsNode.get(0); // 첫 번째 leg 접근
-            JsonNode stepsNode = firstLeg.path("steps");
+                double totalDistance = routesNode.path("distance").asDouble();
+                double totalTime = routesNode.path("duration").asDouble();
+                JsonNode legsNode = routesNode.path("legs").get(0);
+                JsonNode stepsNode = legsNode.path("steps");
 
-            List<PointInformationDto> pointDtos = new ArrayList<>();
-            for (JsonNode step : stepsNode) {
-                String polyline = step.path("geometry").asText();
-                List<LatLng> decode = PolylineEncoding.decode(polyline);
-                System.out.println(decode);
+                List<PointDto> pointDtos = new ArrayList<>();
+
+                for (JsonNode step : stepsNode) {
+                    String polyline = step.path("geometry").asText();
+
+                    List<LatLng> decode = PolylineEncoding.decode(polyline);
+                    for (LatLng latLng : decode) {
+                        Double latitude = latLng.lat;
+                        Double longitude = latLng.lng;
+
+                        PointInformationDto pointInformationDto = PointInformationDto.builder()
+                                .latitude(latitude)
+                                .longitude(longitude)
+                                .build();
+
+                        PointDto pointDto = PointDto.builder()
+                                .subPathId(subPathDto.getSubPathId())
+                                .pointInformationDto(pointInformationDto)
+                                .build();
+
+                        pointDtos.add(pointDto);
+                    }
+                }
+                subPathDto.setPointDtos(pointDtos);
             }
-//            result.add();
+            result.add(subPathDto);
         }
-        return null;
+        return result;
     }
 
     private static StringBuilder getResponse(String urlInfo) throws IOException {
