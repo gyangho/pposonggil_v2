@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pposonggil.usedStuff.domain.Member;
+import pposonggil.usedStuff.domain.Route.LatXLngY;
 import pposonggil.usedStuff.domain.Route.Path;
+import pposonggil.usedStuff.domain.Route.PointInformation;
 import pposonggil.usedStuff.dto.Route.Path.PathDto;
 import pposonggil.usedStuff.dto.Route.PointInformation.PointInformationDto;
 import pposonggil.usedStuff.dto.Route.SubPath.SubPathDto;
@@ -23,9 +25,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 @Service
 @Transactional(readOnly = true)
@@ -73,10 +73,64 @@ public class PathService {
         JsonNode path = result.get("path");
         for (JsonNode node : path) {
             PathDto pathDto = PathDto.fromJsonNode(node, start, end);
-            pathDtos.add(pathDto);
+            pathDtos.add(setUpStartMidEndTime(pathDto));
+        }
+        return pathDtos;
+    }
+
+    private static PathDto setUpStartMidEndTime(PathDto pathDto) {
+        List<SubPathDto> subPathDtos = pathDto.getSubPathDtos();
+        long setTotalWalkTime = 0L;
+
+        for (int idx = 0; idx < subPathDtos.size(); idx++) {
+            SubPathDto subPathDto = subPathDtos.get(idx);
+
+            if (Objects.equals(subPathDto.getType(), "walk")) {
+                setTotalWalkTime = setTotalWalkTime + subPathDto.getTime();
+
+                if (idx == 0) {
+                    subPathDto.setStartDto(pathDto.getStartDto());
+                    subPathDto.setEndDto(subPathDtos.get(1)
+                            .getPointDtos().getFirst().getPointInformationDto());
+                } else if (idx == subPathDtos.size()-1) {
+                    subPathDto.setStartDto(subPathDtos.get(idx-1).getEndDto());
+                    subPathDto.setEndDto(pathDto.getEndDto());
+                } else {
+                    subPathDto.setStartDto(subPathDtos.get(idx-1).getStartDto());
+                    subPathDto.setEndDto(subPathDtos.get(idx+1)
+                            .getPointDtos().getFirst().getPointInformationDto());
+                }
+            } else {
+                subPathDto.setStartDto(subPathDto.getPointDtos().getFirst().getPointInformationDto());
+                subPathDto.setEndDto(subPathDto.getPointDtos().getLast().getPointInformationDto());
+            }
+            subPathDto.setMidDto(getPointMidDto(subPathDto.getStartDto().toEntity(),
+                    subPathDto.getEndDto().toEntity()));
         }
 
-        return pathDtos;
+        for (SubPathDto subPathDto : pathDto.getSubPathDtos()) {
+            if (Objects.equals(subPathDto.getType(), "walk"))
+                setTotalWalkTime = setTotalWalkTime + subPathDto.getTime();
+
+        }
+        pathDto.setTotalWalkTime(setTotalWalkTime);
+
+        return pathDto;
+    }
+
+    private static PointInformationDto getPointMidDto(PointInformation startDto, PointInformation endDto) {
+        LatXLngY midLatXLngY = LatXLngY.convertGRID_GPS(LatXLngY.TO_GRID,
+                ((startDto.getLatitude() + endDto.getLatitude()) / 2),
+                ((startDto.getLongitude() + endDto.getLongitude()) / 2));
+
+        PointInformationDto midDto = PointInformationDto.builder()
+                .latitude(midLatXLngY.lat)
+                .longitude(midLatXLngY.lng)
+                .x((long) midLatXLngY.x)
+                .y((long) midLatXLngY.y)
+                .build();
+
+        return midDto;
     }
 
     private static StringBuilder getResponse(String urlInfo) throws IOException {

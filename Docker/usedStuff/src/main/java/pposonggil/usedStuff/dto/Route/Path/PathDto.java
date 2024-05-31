@@ -112,15 +112,16 @@ public class PathDto {
                         .map(JsonNode::elements)
                         .map(elements -> StreamSupport.stream(Spliterators.spliteratorUnknownSize(elements, Spliterator.ORDERED), false))
                         .orElseGet(Stream::empty)
-                        .map(jsonNode -> SubPathDto.fromJsonNode(jsonNode, startDto, endDto))
+                        .map(SubPathDto::fromJsonNode)
                         .collect(Collectors.toList()))
                 .build();
     }
 
-    private static PointInformationDto getPointXYDto(PointInformation pointDto) {
-        LatXLngY midLatXLngY = LatXLngY.convertGRID_GPS(LatXLngY.TO_GRID, pointDto.getLatitude(), pointDto.getLongitude());
+    private static PointInformationDto getPointXYDto(PointInformation pointInfo) {
+        LatXLngY midLatXLngY = LatXLngY.convertGRID_GPS(LatXLngY.TO_GRID, pointInfo.getLatitude(), pointInfo.getLongitude());
 
         return PointInformationDto.builder()
+                .name(pointInfo.getName())
                 .latitude(midLatXLngY.lat)
                 .longitude(midLatXLngY.lng)
                 .x((long) midLatXLngY.x)

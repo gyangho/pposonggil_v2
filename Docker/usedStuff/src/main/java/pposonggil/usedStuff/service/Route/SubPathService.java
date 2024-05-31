@@ -24,6 +24,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @Transactional(readOnly = true)
@@ -39,7 +40,8 @@ public class SubPathService {
         ObjectMapper objectMapper = new ObjectMapper();
 
         for (SubPathDto subPathDto : subPathDtos) {
-            if (subPathDto.getType().equals("walk")) {
+            // "walk" 타입의 SubPathDto만 특별 처리
+            if (Objects.equals(subPathDto.getType(), "walk")) {
                 String urlInfo = buildUrl(subPathDto.getStartDto(), subPathDto.getEndDto());
                 StringBuilder sb = getResponse(urlInfo);
                 JsonNode jsonNode = objectMapper.readTree(sb.toString());
@@ -74,7 +76,10 @@ public class SubPathService {
                         pointDtos.add(pointDto);
                     }
                 }
+                double roundedTime = (totalTime % 60 >= 30) ? ((totalTime / 60) + 1) : (totalTime / 60);
                 subPathDto.setPointDtos(pointDtos);
+                subPathDto.setTime((long)roundedTime);
+                subPathDto.setDistance((long) totalDistance);
             }
             result.add(subPathDto);
         }

@@ -86,7 +86,7 @@ public class SubPathDto {
         return subPath;
     }
 
-    public static SubPathDto fromJsonNode(JsonNode node, PointInformationDto startDto, PointInformationDto endDto) {
+    public static SubPathDto fromJsonNode(JsonNode node) {
         return SubPathDto.builder()
                 .type(Optional.ofNullable(node.get("trafficType"))
                         .map(JsonNode::asInt)
@@ -124,9 +124,6 @@ public class SubPathDto {
                         .map(BusColor::getByNumber)
                         .map(BusColor::getColorCode)//  지하철 색
                         .orElse("#000000"))
-                .startDto(getPointXYDto(startDto.toEntity()))
-                .endDto(getPointXYDto(endDto.toEntity()))
-                .midDto(getPointMidDto(startDto.toEntity(), endDto.toEntity()))
                 .pointDtos(Optional.ofNullable(node.get("passStopList"))
                         .map(passStopList -> passStopList.get("stations"))
                         .filter(JsonNode::isArray)
