@@ -1,5 +1,11 @@
 package pposonggil.usedStuff.repository.route.path.custom;
 
-public interface CustomPathRepository  {
+import pposonggil.usedStuff.domain.Route.Path;
 
+import java.util.List;
+
+public interface CustomPathRepository  {
+    List<Path> findAllWithMember();
+
+    List<Path> findPathsWithByMemberByRequesterId(Long requesterId);
 }

@@ -14,7 +14,6 @@ import pposonggil.usedStuff.dto.Route.PointInformation.PointInformationDto;
 import pposonggil.usedStuff.repository.member.MemberRepository;
 import pposonggil.usedStuff.repository.route.path.PathRepository;
 import pposonggil.usedStuff.repository.route.point.PointRepository;
-import pposonggil.usedStuff.repository.route.subpath.SubPathRepository;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -36,13 +35,21 @@ public class PathService {
 
     private final MemberRepository memberRepository;
     private final PathRepository pathRepository;
-    private final SubPathRepository subPathRepository;
+    private final SubPathService subPathService;
     private final PointRepository pointRepository;
 
     public List<PathDto> createPaths(PointInformationDto start, PointInformationDto end) throws IOException {
         String urlInfo = buildUrl(start, end);
         StringBuilder sb = getResponse(urlInfo);
-        return getPathDtos(sb, start, end);
+//        return getPathDtos(sb, start, end);
+        List<PathDto> pathDtos = getPathDtos(sb, start, end);
+
+        for(PathDto pathDto : pathDtos){
+            subPathService.createWalkSubPaths(pathDto);
+
+        }
+                return getPathDtos(sb, start, end);
+
     }
 
     @Transactional
@@ -51,6 +58,7 @@ public class PathService {
                 .orElseThrow(() -> new NoSuchElementException("Member not found with id: " + pathDto.getRouteRequesterId()));
 
         Path path = pathDto.toEntity();
+
         path.setRouteRequester(routeRequester);
         pathRepository.save(path);
 
