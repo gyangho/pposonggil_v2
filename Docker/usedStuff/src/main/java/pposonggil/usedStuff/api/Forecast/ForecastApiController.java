@@ -22,7 +22,7 @@ public class ForecastApiController {
      */
     @GetMapping("/api/forecast/by-date-time")
     public List<ForecastDto> forecastsByDateAndTime(@RequestBody ForecastDto forecastDto) {
-        return forecastService.findForecastsByDateAndTime(forecastDto);
+        return forecastService.findForecastsByTime(forecastDto);
     }
 
     /**
@@ -52,7 +52,7 @@ public class ForecastApiController {
      */
     @GetMapping("/api/forecast/by-date-time-x-y")
     public ForecastDto forecastDtoByDateAndTimeAndXAndY(@RequestBody ForecastDto forecastDto) {
-        return forecastService.findForecastByDateAndTimeAndXAndY(forecastDto);
+        return forecastService.findForecastByTimeAndXAndY(forecastDto);
     }
 
 }

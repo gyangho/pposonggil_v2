@@ -21,8 +21,8 @@ public class ForecastService {
     /**
      * 날짜, 시각에 따른 기상 정보 Dto 리스트 조회
      */
-    public List<ForecastDto> findForecastsByDateAndTime(ForecastDto forecastDto) {
-        List<Forecast> forecasts = forecastRepository.findByDateAndTime(forecastDto.getDate(), forecastDto.getTime());
+    public List<ForecastDto> findForecastsByTime(ForecastDto forecastDto) {
+        List<Forecast> forecasts = forecastRepository.findByTime(forecastDto.getTime());
         return forecasts.stream()
                 .map(ForecastDto::fromEntity)
                 .collect(Collectors.toList());
@@ -41,8 +41,8 @@ public class ForecastService {
     /**
      * 위도, 경도에 따른 기상 정보 Dto 리스트 조회
      */
-    public List<ForecastDto> findForecastsByLatAndLon(PointInformationDto pointInfoDto){
-        LatXLngY latXLngY = LatXLngY.convertGRID_GPS(LatXLngY.TO_GRID, pointInfoDto.getLatitude(), pointInfoDto.getLongitude());
+    public List<ForecastDto> findForecastsByLatAndLon(PointInformationDto pointInformationDto){
+        LatXLngY latXLngY = LatXLngY.convertGRID_GPS(LatXLngY.TO_GRID, pointInformationDto.getLatitude(), pointInformationDto.getLongitude());
 
         List<Forecast> forecasts = forecastRepository.findByXAndY(String.format("%.0f", latXLngY.x), String.format("%.0f", latXLngY.y));
         return forecasts.stream()
@@ -52,10 +52,10 @@ public class ForecastService {
 
 
     /**
-     * 날짜, 시각, x, y에 따른 기상 정보 Dto
+     * 시각, x, y에 따른 기상 정보 Dto
      */
-    public ForecastDto findForecastByDateAndTimeAndXAndY(ForecastDto forecastDto) {
-        Forecast forecast = forecastRepository.findByDateAndTimeAndXAndY(forecastDto.getDate(), forecastDto.getTime(),
+    public ForecastDto findForecastByTimeAndXAndY(ForecastDto forecastDto) {
+        Forecast forecast = forecastRepository.findByTimeAndXAndY(forecastDto.getTime(),
                 forecastDto.getX(), forecastDto.getY());
 
         return ForecastDto.fromEntity(forecast);

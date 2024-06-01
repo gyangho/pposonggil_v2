@@ -14,7 +14,6 @@ import static lombok.AccessLevel.PROTECTED;
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PRIVATE)
 public class ForecastDto {
-    private String date;
     private String time;
     private String x;
     private String y;
@@ -26,7 +25,6 @@ public class ForecastDto {
 
     public static ForecastDto fromEntity(Forecast forecast){
         return ForecastDto.builder()
-                .date(forecast.getDate())
                 .time(forecast.getTime())
                 .x(forecast.getX())
                 .y(forecast.getY())
