@@ -33,6 +33,13 @@ public class PointDto {
         point.setPointSubPath(subPath);
         return point;
     }
+
+    public Point toEntity2(){
+        Point point = Point.builder()
+                .build();
+        return point;
+    }
+
     public static PointDto fromJsonNode(JsonNode node) {
         return PointDto.builder()
                 .pointInformationDto(PointInformationDto.fromJsonNode(node))

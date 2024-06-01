@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import pposonggil.usedStuff.domain.BaseEntity;
+import pposonggil.usedStuff.domain.Member;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,35 +40,72 @@ public class Path extends BaseEntity {
     private Long busStationCount;
     private Long subwayStationCount;
 
+    @AttributeOverrides({
+            @AttributeOverride(name = "name", column = @Column(name = "start_name")),
+            @AttributeOverride(name = "latitude", column = @Column(name = "start_latitude")),
+            @AttributeOverride(name = "longitude", column = @Column(name = "start_longitude")),
+            @AttributeOverride(name = "x", column = @Column(name = "start_x")),
+            @AttributeOverride(name = "y", column = @Column(name = "start_y"))
+    })
+    private PointInformation start;
+
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "name", column = @Column(name = "end_name")),
+            @AttributeOverride(name = "latitude", column = @Column(name = "end_latitude")),
+            @AttributeOverride(name = "longitude", column = @Column(name = "end_longitude")),
+            @AttributeOverride(name = "x", column = @Column(name = "end_x")),
+            @AttributeOverride(name = "y", column = @Column(name = "end_y"))
+    })
+    private PointInformation end;
+
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "name", column = @Column(name = "mid_name")),
+            @AttributeOverride(name = "latitude", column = @Column(name = "mid_latitude")),
+            @AttributeOverride(name = "longitude", column = @Column(name = "mid_longitude")),
+            @AttributeOverride(name = "x", column = @Column(name = "mid_x")),
+            @AttributeOverride(name = "y", column = @Column(name = "mid_y"))
+    })
+    private PointInformation mid;
+
     @JsonIgnore
-    @OneToOne(mappedBy = "routeRequestPath", fetch = LAZY)
-    private RouteRequest routeRequest;
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "route_requester_id")
+    private Member routeRequester;
 
     @Builder.Default
     @OneToMany(mappedBy = "path", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SubPath> subPaths = new ArrayList<>();
 
-    public void setRouteRequest(RouteRequest routeRequest) {
-        this.routeRequest = routeRequest;
-        if(routeRequest != null && routeRequest.getRouteRequestPath() != this)
-            routeRequest.setRouteRequestPath(this);
+    public void setRouteRequester(Member routeRequester) {
+        this.routeRequester = routeRequester;
+        routeRequester.getPaths().add(this);
+//        if(routeRequest != null && routeRequest.getRouteRequestPath() != this)
+//            routeRequest.setRouteRequestPath(this);
     }
 
     public void setSubPaths(List<SubPath> subPaths) {
         this.subPaths = subPaths;
-        for(SubPath subPath: subPaths){
+        for (SubPath subPath : subPaths) {
             subPath.setPath(this);
         }
     }
 
-    public static PathBuilder builder() {
-        return new PathBuilder();
+    public static PathBuilder builder(PointInformation start, PointInformation end) {
+        if (start == null || end == null) {
+            throw new IllegalArgumentException("필수 파라미터 누락");
+        }
+        return new PathBuilder()
+                .start(start)
+                .end(end);
     }
 
     public static Path buildPath(Long totalTime, Long price, Long totalDistance, Long totalWalkDistance,
                                  Long totalWalkTime, Long busTransitCount, Long subwayTransitCount,
-                                 Long totalTransitCount, Long busStationCount, Long subwayStationCount) {
-        return Path.builder()
+                                 Long totalTransitCount, Long busStationCount, Long subwayStationCount,
+                                 PointInformation start, PointInformation end) {
+        return Path.builder(start, end)
                 .totalTime(totalTime)
                 .price(price)
                 .totalDistance(totalDistance)
