@@ -49,10 +49,26 @@ public class PathService {
      * 대중교통 경로 리스트 생성
      * 도보경로 X
      */
-    public List<PathDto> createPaths(PointInformationDto start, PointInformationDto end) throws IOException {
+    public List<PathDto> createPaths(PointInformationDto start, PointInformationDto end, String selectTime) throws IOException {
         String urlInfo = buildUrl(start, end);
         StringBuilder sb = getResponse(urlInfo);
-        return getPathDtos(sb, start, end);
+        List<PathDto> pathDtos = getPathDtos(sb, start, end);
+        calTotalRain(selectTime, pathDtos);
+        return pathDtos;
+    }
+
+    /**
+     * 탐색한 경로들의 예상 강수량 계산
+     */
+    private void calTotalRain(String selectTime, List<PathDto> pathDtos) {
+        for (PathDto pathDto : pathDtos) {
+            List<ForecastSubPathDto> forecastSubPathDtos = createForecastBySubPath(pathDto, selectTime);
+            double totalRain = 0.0;
+            for (ForecastSubPathDto forecastSubPathDto : forecastSubPathDtos) {
+                totalRain = totalRain + Double.parseDouble(forecastSubPathDto.getExpectedRain());
+            }
+            pathDto.setTotalRain(totalRain);
+        }
     }
 
     /**

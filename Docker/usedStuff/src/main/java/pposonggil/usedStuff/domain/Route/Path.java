@@ -34,6 +34,7 @@ public class Path extends BaseEntity {
     private Long totalDistance;
     private Long totalWalkDistance;
     private Long totalWalkTime;
+    private Double totalRain;
     private Long busTransitCount;
     private Long subwayTransitCount;
     private Long totalTransitCount;
