@@ -63,7 +63,6 @@ const ContentBox = styled(motion.div)`
   justify-content: center;
   align-items: center;
   background-color: whitesmoke;
-  position: sticky;
   position: absolute;
   left: 0;
   right: 0;
@@ -92,5 +91,5 @@ const Bar = styled.div`
 
 const MapBox = styled(motion.div)`
   position: relative;
-  /* width: 100%; */
+  width: 100%;
 `;

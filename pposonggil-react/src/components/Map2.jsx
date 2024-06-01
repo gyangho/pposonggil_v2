@@ -83,7 +83,7 @@ function Map2() {
         const container = mapRef.current;
         const options = {
           center: new kakao.maps.LatLng(place.lat, place.lon),
-          level: 2,
+          level: 3,
         };
         mapInstance.current = new kakao.maps.Map(container, options);
         geocoder.current = new kakao.maps.services.Geocoder();

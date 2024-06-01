@@ -45,3619 +45,591 @@
   ],
   "paths": [
     {
-      "pathId": null,
-      "routeRequesterId": null,
-      "totalTime": 14,
-      "price": 1400,
-      "totalDistance": 3588,
-      "totalWalkDistance": 588,
-      "totalWalkTime": 18,
-      "busTransitCount": 0,
-      "subwayTransitCount": 1,
-      "totalTransitCount": 1,
-      "busStationCount": 0,
-      "subwayStationCount": 2,
-      "startDto": {
-        "name": "숭실대",
-        "latitude": 37.4948,
-        "longitude": 126.9598,
-        "x": 60,
-        "y": 125
-      },
-      "endDto": {
-        "name": "이수역주변",
-        "latitude": 37.4857,
-        "longitude": 126.9815,
-        "x": 60,
-        "y": 125
-      },
-      "midDto": {
-        "name": null,
-        "latitude": 37.49025,
-        "longitude": 126.97065,
-        "x": 60,
-        "y": 125
-      },
-      "subPathDtos": [
-        {
-          "subPathId": null,
+      "message": "최적 도보 경로가 포함된 상세 경로 입니다.",
+      "defaultPathDto": {
           "pathId": null,
-          "type": "walk",
-          "distance": 527,
-          "time": 8,
-          "stationCount": 0,
-          "subwayName": "null",
-          "busNo": "null",
-          "subwayColor": "#000000",
-          "busColor": "#000000",
+          "routeRequesterId": null,
+          "totalTime": 19,
+          "price": 1400,
+          "totalDistance": 6820,
+          "totalWalkDistance": 620,
+          "totalWalkTime": 18,
+          "busTransitCount": 0,
+          "subwayTransitCount": 1,
+          "totalTransitCount": 1,
+          "busStationCount": 0,
+          "subwayStationCount": 4,
           "startDto": {
-            "name": "숭실대",
-            "latitude": 37.4948,
-            "longitude": 126.9598,
-            "x": 60,
-            "y": 125
+              "name": "신세계 백화점",
+              "latitude": 37.5042,
+              "longitude": 127.0044,
+              "x": 60,
+              "y": 125
           },
           "endDto": {
-            "name": "숭실대입구",
-            "latitude": 37.495861,
-            "longitude": 126.953991,
-            "x": 59,
-            "y": 125
+              "name": "숭실대 정보관",
+              "latitude": 37.4947,
+              "longitude": 126.9599,
+              "x": 60,
+              "y": 125
           },
           "midDto": {
-            "name": null,
-            "latitude": 37.495330499999994,
-            "longitude": 126.9568955,
-            "x": 59,
-            "y": 125
+              "name": null,
+              "latitude": 37.499449999999996,
+              "longitude": 126.98215,
+              "x": 60,
+              "y": 125
           },
-          "pointDtos": []
-        },
-        {
-          "subPathId": null,
-          "pathId": null,
-          "type": "subway",
-          "distance": 3000,
-          "time": 5,
-          "stationCount": 2,
-          "subwayName": "수도권 7호선",
-          "busNo": "null",
-          "subwayColor": "#747F00",
-          "busColor": "#000000",
-          "startDto": {
-            "name": "숭실대입구",
-            "latitude": 37.495861,
-            "longitude": 126.953991,
-            "x": 59,
-            "y": 125
-          },
-          "endDto": {
-            "name": "이수",
-            "latitude": 37.485386,
-            "longitude": 126.982067,
-            "x": 60,
-            "y": 125
-          },
-          "midDto": {
-            "name": null,
-            "latitude": 37.4906235,
-            "longitude": 126.968029,
-            "x": 60,
-            "y": 125
-          },
-          "pointDtos": [
-            {
-              "pointInformationDto": {
-                "name": "숭실대입구",
-                "latitude": 37.495861,
-                "longitude": 126.953991,
-                "x": 59,
-                "y": 125
+          "subPathDtos": [
+              {
+                  "subPathId": null,
+                  "pathId": null,
+                  "type": "walk",
+                  "distance": 81,
+                  "time": 1,
+                  "stationCount": 0,
+                  "subwayName": "null",
+                  "busNo": "null",
+                  "subwayColor": "#000000",
+                  "busColor": "#000000",
+                  "startDto": {
+                      "name": "신세계 백화점",
+                      "latitude": 37.5042,
+                      "longitude": 127.0044,
+                      "x": 60,
+                      "y": 125
+                  },
+                  "endDto": {
+                      "name": "고속터미널",
+                      "latitude": 37.503471,
+                      "longitude": 127.004524,
+                      "x": 60,
+                      "y": 125
+                  },
+                  "midDto": {
+                      "name": null,
+                      "latitude": 37.503835499999994,
+                      "longitude": 127.004462,
+                      "x": 60,
+                      "y": 125
+                  },
+                  "pointDtos": [
+                      {
+                          "pointInformationDto": {
+                              "name": null,
+                              "latitude": 37.5041,
+                              "longitude": 127.00410000000001,
+                              "x": null,
+                              "y": null
+                          },
+                          "subPathId": null
+                      },
+                      {
+                          "pointInformationDto": {
+                              "name": null,
+                              "latitude": 37.503690000000006,
+                              "longitude": 127.00430000000001,
+                              "x": null,
+                              "y": null
+                          },
+                          "subPathId": null
+                      },
+                      {
+                          "pointInformationDto": {
+                              "name": null,
+                              "latitude": 37.503620000000005,
+                              "longitude": 127.00445,
+                              "x": null,
+                              "y": null
+                          },
+                          "subPathId": null
+                      },
+                      {
+                          "pointInformationDto": {
+                              "name": null,
+                              "latitude": 37.50347,
+                              "longitude": 127.00452000000001,
+                              "x": null,
+                              "y": null
+                          },
+                          "subPathId": null
+                      },
+                      {
+                          "pointInformationDto": {
+                              "name": null,
+                              "latitude": 37.50347,
+                              "longitude": 127.00452000000001,
+                              "x": null,
+                              "y": null
+                          },
+                          "subPathId": null
+                      }
+                  ]
               },
-              "subPathId": null
-            },
-            {
-              "pointInformationDto": {
-                "name": "남성",
-                "latitude": 37.484749,
-                "longitude": 126.971052,
-                "x": 60,
-                "y": 125
+              {
+                  "subPathId": null,
+                  "pathId": null,
+                  "type": "subway",
+                  "distance": 6200,
+                  "time": 10,
+                  "stationCount": 4,
+                  "subwayName": "수도권 7호선",
+                  "busNo": "null",
+                  "subwayColor": "#747F00",
+                  "busColor": "#000000",
+                  "startDto": {
+                      "name": "고속터미널",
+                      "latitude": 37.503471,
+                      "longitude": 127.004524,
+                      "x": 60,
+                      "y": 125
+                  },
+                  "endDto": {
+                      "name": "숭실대입구",
+                      "latitude": 37.495861,
+                      "longitude": 126.953991,
+                      "x": 59,
+                      "y": 125
+                  },
+                  "midDto": {
+                      "name": null,
+                      "latitude": 37.499666,
+                      "longitude": 126.9792575,
+                      "x": 60,
+                      "y": 125
+                  },
+                  "pointDtos": [
+                      {
+                          "pointInformationDto": {
+                              "name": "고속터미널",
+                              "latitude": 37.503471,
+                              "longitude": 127.004524,
+                              "x": 60,
+                              "y": 125
+                          },
+                          "subPathId": null
+                      },
+                      {
+                          "pointInformationDto": {
+                              "name": "내방",
+                              "latitude": 37.487625,
+                              "longitude": 126.993503,
+                              "x": 60,
+                              "y": 125
+                          },
+                          "subPathId": null
+                      },
+                      {
+                          "pointInformationDto": {
+                              "name": "이수",
+                              "latitude": 37.485386,
+                              "longitude": 126.982067,
+                              "x": 60,
+                              "y": 125
+                          },
+                          "subPathId": null
+                      },
+                      {
+                          "pointInformationDto": {
+                              "name": "남성",
+                              "latitude": 37.484749,
+                              "longitude": 126.971052,
+                              "x": 60,
+                              "y": 125
+                          },
+                          "subPathId": null
+                      },
+                      {
+                          "pointInformationDto": {
+                              "name": "숭실대입구",
+                              "latitude": 37.495861,
+                              "longitude": 126.953991,
+                              "x": 59,
+                              "y": 125
+                          },
+                          "subPathId": null
+                      }
+                  ]
               },
-              "subPathId": null
-            },
-            {
-              "pointInformationDto": {
-                "name": "이수",
-                "latitude": 37.485386,
-                "longitude": 126.982067,
-                "x": 60,
-                "y": 125
-              },
-              "subPathId": null
-            }
+              {
+                  "subPathId": null,
+                  "pathId": null,
+                  "type": "walk",
+                  "distance": 580,
+                  "time": 8,
+                  "stationCount": 0,
+                  "subwayName": "null",
+                  "busNo": "null",
+                  "subwayColor": "#000000",
+                  "busColor": "#000000",
+                  "startDto": {
+                      "name": "숭실대입구",
+                      "latitude": 37.495861,
+                      "longitude": 126.953991,
+                      "x": 59,
+                      "y": 125
+                  },
+                  "endDto": {
+                      "name": "숭실대 정보관",
+                      "latitude": 37.4947,
+                      "longitude": 126.9599,
+                      "x": 60,
+                      "y": 125
+                  },
+                  "midDto": {
+                      "name": null,
+                      "latitude": 37.4952805,
+                      "longitude": 126.9569455,
+                      "x": 59,
+                      "y": 125
+                  },
+                  "pointDtos": [
+                      {
+                          "pointInformationDto": {
+                              "name": null,
+                              "latitude": 37.495900000000006,
+                              "longitude": 126.95406000000001,
+                              "x": null,
+                              "y": null
+                          },
+                          "subPathId": null
+                      },
+                      {
+                          "pointInformationDto": {
+                              "name": null,
+                              "latitude": 37.49571,
+                              "longitude": 126.95424000000001,
+                              "x": null,
+                              "y": null
+                          },
+                          "subPathId": null
+                      },
+                      {
+                          "pointInformationDto": {
+                              "name": null,
+                              "latitude": 37.49571,
+                              "longitude": 126.95424000000001,
+                              "x": null,
+                              "y": null
+                          },
+                          "subPathId": null
+                      },
+                      {
+                          "pointInformationDto": {
+                              "name": null,
+                              "latitude": 37.49579000000001,
+                              "longitude": 126.95437000000001,
+                              "x": null,
+                              "y": null
+                          },
+                          "subPathId": null
+                      },
+                      {
+                          "pointInformationDto": {
+                              "name": null,
+                              "latitude": 37.49579000000001,
+                              "longitude": 126.95437000000001,
+                              "x": null,
+                              "y": null
+                          },
+                          "subPathId": null
+                      },
+                      {
+                          "pointInformationDto": {
+                              "name": null,
+                              "latitude": 37.49577,
+                              "longitude": 126.95450000000001,
+                              "x": null,
+                              "y": null
+                          },
+                          "subPathId": null
+                      },
+                      {
+                          "pointInformationDto": {
+                              "name": null,
+                              "latitude": 37.495740000000005,
+                              "longitude": 126.95459000000001,
+                              "x": null,
+                              "y": null
+                          },
+                          "subPathId": null
+                      },
+                      {
+                          "pointInformationDto": {
+                              "name": null,
+                              "latitude": 37.495720000000006,
+                              "longitude": 126.95464000000001,
+                              "x": null,
+                              "y": null
+                          },
+                          "subPathId": null
+                      },
+                      {
+                          "pointInformationDto": {
+                              "name": null,
+                              "latitude": 37.49571,
+                              "longitude": 126.95469000000001,
+                              "x": null,
+                              "y": null
+                          },
+                          "subPathId": null
+                      },
+                      {
+                          "pointInformationDto": {
+                              "name": null,
+                              "latitude": 37.49566,
+                              "longitude": 126.95487000000001,
+                              "x": null,
+                              "y": null
+                          },
+                          "subPathId": null
+                      },
+                      {
+                          "pointInformationDto": {
+                              "name": null,
+                              "latitude": 37.495580000000004,
+                              "longitude": 126.95537000000002,
+                              "x": null,
+                              "y": null
+                          },
+                          "subPathId": null
+                      },
+                      {
+                          "pointInformationDto": {
+                              "name": null,
+                              "latitude": 37.49553,
+                              "longitude": 126.95600000000002,
+                              "x": null,
+                              "y": null
+                          },
+                          "subPathId": null
+                      },
+                      {
+                          "pointInformationDto": {
+                              "name": null,
+                              "latitude": 37.495470000000005,
+                              "longitude": 126.95645,
+                              "x": null,
+                              "y": null
+                          },
+                          "subPathId": null
+                      },
+                      {
+                          "pointInformationDto": {
+                              "name": null,
+                              "latitude": 37.49548,
+                              "longitude": 126.95654,
+                              "x": null,
+                              "y": null
+                          },
+                          "subPathId": null
+                      },
+                      {
+                          "pointInformationDto": {
+                              "name": null,
+                              "latitude": 37.49546,
+                              "longitude": 126.95667000000002,
+                              "x": null,
+                              "y": null
+                          },
+                          "subPathId": null
+                      },
+                      {
+                          "pointInformationDto": {
+                              "name": null,
+                              "latitude": 37.49544,
+                              "longitude": 126.95687000000001,
+                              "x": null,
+                              "y": null
+                          },
+                          "subPathId": null
+                      },
+                      {
+                          "pointInformationDto": {
+                              "name": null,
+                              "latitude": 37.49541,
+                              "longitude": 126.95691000000001,
+                              "x": null,
+                              "y": null
+                          },
+                          "subPathId": null
+                      },
+                      {
+                          "pointInformationDto": {
+                              "name": null,
+                              "latitude": 37.49528,
+                              "longitude": 126.95774000000002,
+                              "x": null,
+                              "y": null
+                          },
+                          "subPathId": null
+                      },
+                      {
+                          "pointInformationDto": {
+                              "name": null,
+                              "latitude": 37.49522,
+                              "longitude": 126.95817000000001,
+                              "x": null,
+                              "y": null
+                          },
+                          "subPathId": null
+                      },
+                      {
+                          "pointInformationDto": {
+                              "name": null,
+                              "latitude": 37.49515,
+                              "longitude": 126.95864000000002,
+                              "x": null,
+                              "y": null
+                          },
+                          "subPathId": null
+                      },
+                      {
+                          "pointInformationDto": {
+                              "name": null,
+                              "latitude": 37.495140000000006,
+                              "longitude": 126.95878,
+                              "x": null,
+                              "y": null
+                          },
+                          "subPathId": null
+                      },
+                      {
+                          "pointInformationDto": {
+                              "name": null,
+                              "latitude": 37.49517,
+                              "longitude": 126.95883,
+                              "x": null,
+                              "y": null
+                          },
+                          "subPathId": null
+                      },
+                      {
+                          "pointInformationDto": {
+                              "name": null,
+                              "latitude": 37.49523000000001,
+                              "longitude": 126.95881000000001,
+                              "x": null,
+                              "y": null
+                          },
+                          "subPathId": null
+                      },
+                      {
+                          "pointInformationDto": {
+                              "name": null,
+                              "latitude": 37.49523000000001,
+                              "longitude": 126.95881000000001,
+                              "x": null,
+                              "y": null
+                          },
+                          "subPathId": null
+                      },
+                      {
+                          "pointInformationDto": {
+                              "name": null,
+                              "latitude": 37.49524,
+                              "longitude": 126.95890000000001,
+                              "x": null,
+                              "y": null
+                          },
+                          "subPathId": null
+                      },
+                      {
+                          "pointInformationDto": {
+                              "name": null,
+                              "latitude": 37.49524,
+                              "longitude": 126.95890000000001,
+                              "x": null,
+                              "y": null
+                          },
+                          "subPathId": null
+                      },
+                      {
+                          "pointInformationDto": {
+                              "name": null,
+                              "latitude": 37.495090000000005,
+                              "longitude": 126.95885000000001,
+                              "x": null,
+                              "y": null
+                          },
+                          "subPathId": null
+                      },
+                      {
+                          "pointInformationDto": {
+                              "name": null,
+                              "latitude": 37.49503,
+                              "longitude": 126.95886000000002,
+                              "x": null,
+                              "y": null
+                          },
+                          "subPathId": null
+                      },
+                      {
+                          "pointInformationDto": {
+                              "name": null,
+                              "latitude": 37.49503,
+                              "longitude": 126.95886000000002,
+                              "x": null,
+                              "y": null
+                          },
+                          "subPathId": null
+                      },
+                      {
+                          "pointInformationDto": {
+                              "name": null,
+                              "latitude": 37.494960000000006,
+                              "longitude": 126.95928,
+                              "x": null,
+                              "y": null
+                          },
+                          "subPathId": null
+                      },
+                      {
+                          "pointInformationDto": {
+                              "name": null,
+                              "latitude": 37.494960000000006,
+                              "longitude": 126.95928,
+                              "x": null,
+                              "y": null
+                          },
+                          "subPathId": null
+                      },
+                      {
+                          "pointInformationDto": {
+                              "name": null,
+                              "latitude": 37.49492,
+                              "longitude": 126.95954,
+                              "x": null,
+                              "y": null
+                          },
+                          "subPathId": null
+                      },
+                      {
+                          "pointInformationDto": {
+                              "name": null,
+                              "latitude": 37.494870000000006,
+                              "longitude": 126.95993000000001,
+                              "x": null,
+                              "y": null
+                          },
+                          "subPathId": null
+                      },
+                      {
+                          "pointInformationDto": {
+                              "name": null,
+                              "latitude": 37.494870000000006,
+                              "longitude": 126.95993000000001,
+                              "x": null,
+                              "y": null
+                          },
+                          "subPathId": null
+                      }
+                  ]
+              }
           ]
-        },
-        {
-          "subPathId": null,
-          "pathId": null,
-          "type": "walk",
-          "distance": 61,
-          "time": 1,
-          "stationCount": 0,
-          "subwayName": "null",
-          "busNo": "null",
-          "subwayColor": "#000000",
-          "busColor": "#000000",
-          "startDto": {
-            "name": "이수",
-            "latitude": 37.485386,
-            "longitude": 126.982067,
-            "x": 60,
-            "y": 125
-          },
-          "endDto": {
-            "name": "이수역주변",
-            "latitude": 37.4857,
-            "longitude": 126.9815,
-            "x": 60,
-            "y": 125
-          },
-          "midDto": {
-            "name": null,
-            "latitude": 37.485543,
-            "longitude": 126.9817835,
-            "x": 60,
-            "y": 125
-          },
-          "pointDtos": []
-        }
-      ]
-    },
-    {
-      "id": "0bc2",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
       }
-    },
-    {
-      "id": "07a1",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "3cee",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "2cee",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "444a",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "1875",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "1c3f",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "c333",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "6c07",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "1500",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "d189",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "e5c5",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "354b",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "b717",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "1ddb",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "569d",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "2ebf",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "22f4",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "4dff",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "a644",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "4964",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "9152",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "3a87",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "43b9",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "4916",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "6e0e",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "d3cf",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "8520",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "be48",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "396b",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "c9f4",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "fa92",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "d5dc",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "7a48",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "f425",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "6c79",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "2336",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "6371",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "f462",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "195d",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "65db",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "922b",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "a42e",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "bd3b",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "5e95",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "a830",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "818c",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "ae39",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "129e",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "cfb7",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "42e3",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "252c",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "8111",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "3425",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "f120",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "4152",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "5b63",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "60ec",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "1ecb",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "485c",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "af1f",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "2ecf",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "c39a",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "2486",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "2dbd",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "5796",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "5394",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "ff2f",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "2261",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "7e1b",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "ef93",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "d13d",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "4545",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "eab3",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "98a2",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "36d9",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "464d",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "b6ee",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "17c1",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "8db0",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "fd54",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "047e",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "5819",
-      "startDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      },
-      "endDto": {
-        "name": "훈감상회",
-        "latitude": 37.4922970209911,
-        "longitude": 126.984923309449
-      }
-    },
-    {
-      "id": "37b4",
-      "startDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      },
-      "endDto": {
-        "name": "훈감상회",
-        "latitude": 37.4922970209911,
-        "longitude": 126.984923309449
-      }
-    },
-    {
-      "id": "c1eb",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "11cc",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "6314",
-      "startDto": {
-        "name": "훈감상회",
-        "latitude": 37.4922970209911,
-        "longitude": 126.984923309449
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "071b",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "7c6b",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "42fc",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      }
-    },
-    {
-      "id": "e101",
-      "startDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      },
-      "endDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      }
-    },
-    {
-      "id": "3977",
-      "startDto": {
-        "name": "훈감상회",
-        "latitude": 37.4922970209911,
-        "longitude": 126.984923309449
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "8a15",
-      "startDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      },
-      "endDto": {
-        "name": "훈감상회",
-        "latitude": 37.4922970209911,
-        "longitude": 126.984923309449
-      }
-    },
-    {
-      "id": "a1ec",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "e3f2",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "1daf",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "e66a",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "8bc8",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "e7b7",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "b7e4",
-      "startDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "c428",
-      "startDto": {
-        "name": "서울 서초구 방배동 789-19",
-        "latitude": 37.4922057,
-        "longitude": 126.9856329
-      },
-      "endDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      }
-    },
-    {
-      "id": "9bb7",
-      "startDto": {
-        "name": "훈감상회",
-        "latitude": 37.4922970209911,
-        "longitude": 126.984923309449
-      },
-      "endDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      }
-    },
-    {
-      "id": "d477",
-      "startDto": {
-        "name": "훈감상회",
-        "latitude": 37.4922970209911,
-        "longitude": 126.984923309449
-      },
-      "endDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      }
-    },
-    {
-      "id": "9247",
-      "startDto": {
-        "name": "훈감상회",
-        "latitude": 37.4922970209911,
-        "longitude": 126.984923309449
-      },
-      "endDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      }
-    },
-    {
-      "id": "ee89",
-      "startDto": {
-        "name": "훈감상회",
-        "latitude": 37.4922970209911,
-        "longitude": 126.984923309449
-      },
-      "endDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      }
-    },
-    {
-      "id": "2e85",
-      "startDto": {
-        "name": "훈감상회",
-        "latitude": 37.4922970209911,
-        "longitude": 126.984923309449
-      },
-      "endDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      }
-    },
-    {
-      "id": "78bf",
-      "startDto": {
-        "name": "훈감상회",
-        "latitude": 37.4922970209911,
-        "longitude": 126.984923309449
-      },
-      "endDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      }
-    },
-    {
-      "id": "40bf",
-      "startDto": {
-        "name": "훈감상회",
-        "latitude": 37.4922970209911,
-        "longitude": 126.984923309449
-      },
-      "endDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      }
-    },
-    {
-      "id": "f09d",
-      "startDto": {
-        "name": "훈감상회",
-        "latitude": 37.4922970209911,
-        "longitude": 126.984923309449
-      },
-      "endDto": {
-        "name": "훈감동",
-        "latitude": 37.48069602074364,
-        "longitude": 126.98128735306085
-      }
-    },
-    {
-      "id": "70fe",
-      "startDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      },
-      "endDto": {
-        "name": "훈감상회",
-        "latitude": 37.4922970209911,
-        "longitude": 126.984923309449
-      }
-    },
-    {
-      "id": "65ac",
-      "startDto": {
-        "name": "서울 서초구 방배동 789-19",
-        "latitude": 37.4922046,
-        "longitude": 126.9856289
-      },
-      "endDto": {
-        "name": "훈감상회",
-        "latitude": 37.4922970209911,
-        "longitude": 126.984923309449
-      }
-    },
-    {
-      "id": "fb12",
-      "startDto": {
-        "name": "서울 서초구 방배동 789-19",
-        "latitude": 37.4922046,
-        "longitude": 126.9856289
-      },
-      "endDto": {
-        "name": "훈감상회",
-        "latitude": 37.4922970209911,
-        "longitude": 126.984923309449
-      }
-    },
-    {
-      "id": "773a",
-      "startDto": {
-        "name": "서울 서초구 방배동 789-19",
-        "latitude": 37.4921942,
-        "longitude": 126.9856321
-      },
-      "endDto": {
-        "name": "서울 서초구 방배동 3277",
-        "latitude": 37.49158252405583,
-        "longitude": 126.98493815306325
-      }
-    },
-    {
-      "id": "cb30",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "숭실대학교",
-        "latitude": 37.495853033944364,
-        "longitude": 126.95781764313084
-      }
-    },
-    {
-      "id": "76b1",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      }
-    },
-    {
-      "id": "98eb",
-      "startDto": {
-        "name": "훈감상회",
-        "latitude": 37.4922970209911,
-        "longitude": 126.984923309449
-      },
-      "endDto": {
-        "name": "훈감상회",
-        "latitude": 37.4922970209911,
-        "longitude": 126.984923309449
-      }
-    },
-    {
-      "id": "31eb",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "68de",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "1a59",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "d8c3",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "d41e",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "6027",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "23b0",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "9534",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "1e8c",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "9af7",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "a45d",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "e914",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "b607",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "ab79",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "d1df",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "ca22",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "96d2",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "c3de",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "823c",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "8d4f",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "ab95",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "28d5",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "9399",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "f4d8",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "a301",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "ee15",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "d074",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "35f5",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "74be",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "aa98",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "983a",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "00bb",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "7621",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "4b13",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "e9bb",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "5f42",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "7d7b",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "f8a4",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "796e",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "6c7c",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "f31d",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "c420",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "4404",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "4309",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "007f",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "3129",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "127a",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "bb12",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "e9cd",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "9d77",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "ccbd",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "eb7b",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "d1d2",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "0126",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "f392",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "5850",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "5a7b",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "1851",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "75b9",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "80f0",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "1f38",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "20be",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "6bfb",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "f101",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "b504",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "662b",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "c86d",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "e136",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "3e6c",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "6fe8",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "9e60",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "9970",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "b93d",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "ec5e",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "9642",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "152f",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "287c",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "f7b5",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "04ce",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "4be7",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "ce5e",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "05ec",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "7919",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "bac3",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "f38b",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "a35a",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "3d47",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "6302",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "9727",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "681f",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "a4ca",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "1fd3",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "8031",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "be38",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "876f",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "56d7",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "dde5",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "eb5b",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "6a58",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "4294",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "b42e",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "9803",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "039c",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "6513",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "0368",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "e38e",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "b63d",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "b72e",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "ed66",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "d9f9",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "ea60",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "5000",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "c342",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "58a3",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "4b83",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "90f5",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "4239",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "e59b",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "36c8",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "c1fe",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "5762",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "b175",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "8628",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "b194",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "dadd",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "247e",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "0e7f",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "50f0",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "424a",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "1242",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "a40e",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "4472",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "6e53",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "8c66",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "514c",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "d259",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "1845",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "546a",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "bdec",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "c3a2",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "7f62",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "7d93",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "b2f9",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "acd9",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "fc50",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "d451",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "cc42",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "e33d",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    },
-    {
-      "id": "7a75",
-      "startDto": {
-        "name": "EF SEOUL",
-        "latitude": 37.52382159034047,
-        "longitude": 127.03207675464354
-      },
-      "endDto": {
-        "name": "호랑이젤라떡",
-        "latitude": 35.15854946084184,
-        "longitude": 129.1708852947505
-      }
-    }
-  ]
+  }
+  ],
+  "path2":
+  [{"pathId":null,"routeRequesterId":null,"totalTime":19,"price":1400,"totalDistance":6820,"totalWalkDistance":620,"totalWalkTime":18,"busTransitCount":0,"subwayTransitCount":1,"totalTransitCount":1,"busStationCount":0,"subwayStationCount":4,"startDto":{"name":"신세계 백화점","latitude":37.5042,"longitude":127.0044,"x":60,"y":125},"endDto":{"name":"숭실대 정보관","latitude":37.4947,"longitude":126.9599,"x":60,"y":125},"midDto":{"name":null,"latitude":37.499449999999996,"longitude":126.98215,"x":60,"y":125},"subPathDtos":[{"subPathId":null,"pathId":null,"type":"walk","distance":82,"time":1,"stationCount":0,"subwayName":"null","busNo":"null","subwayColor":"#000000","busColor":"#000000","startDto":{"name":"신세계 백화점","latitude":37.5042,"longitude":127.0044,"x":60,"y":125},"endDto":{"name":"고속터미널","latitude":37.503471,"longitude":127.004524,"x":60,"y":125},"midDto":{"name":null,"latitude":37.503835499999994,"longitude":127.004462,"x":60,"y":125},"pointDtos":[]},{"subPathId":null,"pathId":null,"type":"subway","distance":6200,"time":10,"stationCount":4,"subwayName":"수도권 7호선","busNo":"null","subwayColor":"#747F00","busColor":"#000000","startDto":{"name":"고속터미널","latitude":37.503471,"longitude":127.004524,"x":60,"y":125},"endDto":{"name":"숭실대입구","latitude":37.495861,"longitude":126.953991,"x":59,"y":125},"midDto":{"name":null,"latitude":37.499666,"longitude":126.9792575,"x":60,"y":125},"pointDtos":[{"pointInformationDto":{"name":"고속터미널","latitude":37.503471,"longitude":127.004524,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"내방","latitude":37.487625,"longitude":126.993503,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"이수","latitude":37.485386,"longitude":126.982067,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"남성","latitude":37.484749,"longitude":126.971052,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"숭실대입구","latitude":37.495861,"longitude":126.953991,"x":59,"y":125},"subPathId":null}]},{"subPathId":null,"pathId":null,"type":"walk","distance":538,"time":8,"stationCount":0,"subwayName":"null","busNo":"null","subwayColor":"#000000","busColor":"#000000","startDto":{"name":"숭실대입구","latitude":37.495861,"longitude":126.953991,"x":59,"y":125},"endDto":{"name":"숭실대 정보관","latitude":37.4947,"longitude":126.9599,"x":60,"y":125},"midDto":{"name":null,"latitude":37.4952805,"longitude":126.9569455,"x":59,"y":125},"pointDtos":[]}]},{"pathId":null,"routeRequesterId":null,"totalTime":25,"price":1400,"totalDistance":7321,"totalWalkDistance":582,"totalWalkTime":18,"busTransitCount":1,"subwayTransitCount":1,"totalTransitCount":2,"busStationCount":1,"subwayStationCount":4,"startDto":{"name":"신세계 백화점","latitude":37.5042,"longitude":127.0044,"x":60,"y":125},"endDto":{"name":"숭실대 정보관","latitude":37.4947,"longitude":126.9599,"x":60,"y":125},"midDto":{"name":null,"latitude":37.499449999999996,"longitude":126.98215,"x":60,"y":125},"subPathDtos":[{"subPathId":null,"pathId":null,"type":"walk","distance":82,"time":1,"stationCount":0,"subwayName":"null","busNo":"null","subwayColor":"#000000","busColor":"#000000","startDto":{"name":"신세계 백화점","latitude":37.5042,"longitude":127.0044,"x":60,"y":125},"endDto":{"name":"고속터미널","latitude":37.503471,"longitude":127.004524,"x":60,"y":125},"midDto":{"name":null,"latitude":37.503835499999994,"longitude":127.004462,"x":60,"y":125},"pointDtos":[]},{"subPathId":null,"pathId":null,"type":"subway","distance":6200,"time":10,"stationCount":4,"subwayName":"수도권 7호선","busNo":"null","subwayColor":"#747F00","busColor":"#000000","startDto":{"name":"고속터미널","latitude":37.503471,"longitude":127.004524,"x":60,"y":125},"endDto":{"name":"숭실대입구","latitude":37.495861,"longitude":126.953991,"x":59,"y":125},"midDto":{"name":null,"latitude":37.499666,"longitude":126.9792575,"x":60,"y":125},"pointDtos":[{"pointInformationDto":{"name":"고속터미널","latitude":37.503471,"longitude":127.004524,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"내방","latitude":37.487625,"longitude":126.993503,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"이수","latitude":37.485386,"longitude":126.982067,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"남성","latitude":37.484749,"longitude":126.971052,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"숭실대입구","latitude":37.495861,"longitude":126.953991,"x":59,"y":125},"subPathId":null}]},{"subPathId":null,"pathId":null,"type":"walk","distance":26,"time":1,"stationCount":0,"subwayName":"null","busNo":"null","subwayColor":"#000000","busColor":"#000000","startDto":{"name":"고속터미널","latitude":37.503471,"longitude":127.004524,"x":60,"y":125},"endDto":{"name":"숭실대입구역2번출구","latitude":37.495931,"longitude":126.953718,"x":59,"y":125},"midDto":{"name":null,"latitude":37.499701,"longitude":126.97912099999999,"x":60,"y":125},"pointDtos":[]},{"subPathId":null,"pathId":null,"type":"bus","distance":539,"time":6,"stationCount":1,"subwayName":"null","busNo":"관악01","subwayColor":"#000000","busColor":"#ffc600","startDto":{"name":"숭실대입구역2번출구","latitude":37.495931,"longitude":126.953718,"x":59,"y":125},"endDto":{"name":"봉천고개현대아파트","latitude":37.491717,"longitude":126.956061,"x":59,"y":125},"midDto":{"name":null,"latitude":37.493824000000004,"longitude":126.95488950000001,"x":59,"y":125},"pointDtos":[{"pointInformationDto":{"name":"숭실대입구역2번출구","latitude":37.495931,"longitude":126.953718,"x":59,"y":125},"subPathId":null},{"pointInformationDto":{"name":"봉천고개현대아파트","latitude":37.491717,"longitude":126.956061,"x":59,"y":125},"subPathId":null}]},{"subPathId":null,"pathId":null,"type":"walk","distance":474,"time":7,"stationCount":0,"subwayName":"null","busNo":"null","subwayColor":"#000000","busColor":"#000000","startDto":{"name":"봉천고개현대아파트","latitude":37.491717,"longitude":126.956061,"x":59,"y":125},"endDto":{"name":"숭실대 정보관","latitude":37.4947,"longitude":126.9599,"x":60,"y":125},"midDto":{"name":null,"latitude":37.4932085,"longitude":126.9579805,"x":59,"y":125},"pointDtos":[]}]},{"pathId":null,"routeRequesterId":null,"totalTime":20,"price":1500,"totalDistance":5882,"totalWalkDistance":153,"totalWalkTime":6,"busTransitCount":1,"subwayTransitCount":1,"totalTransitCount":2,"busStationCount":4,"subwayStationCount":3,"startDto":{"name":"신세계 백화점","latitude":37.5042,"longitude":127.0044,"x":60,"y":125},"endDto":{"name":"숭실대 정보관","latitude":37.4947,"longitude":126.9599,"x":60,"y":125},"midDto":{"name":null,"latitude":37.499449999999996,"longitude":126.98215,"x":60,"y":125},"subPathDtos":[{"subPathId":null,"pathId":null,"type":"walk","distance":82,"time":1,"stationCount":0,"subwayName":"null","busNo":"null","subwayColor":"#000000","busColor":"#000000","startDto":{"name":"신세계 백화점","latitude":37.5042,"longitude":127.0044,"x":60,"y":125},"endDto":{"name":"고속터미널","latitude":37.503471,"longitude":127.004524,"x":60,"y":125},"midDto":{"name":null,"latitude":37.503835499999994,"longitude":127.004462,"x":60,"y":125},"pointDtos":[]},{"subPathId":null,"pathId":null,"type":"subway","distance":4200,"time":7,"stationCount":3,"subwayName":"수도권 7호선","busNo":"null","subwayColor":"#747F00","busColor":"#000000","startDto":{"name":"고속터미널","latitude":37.503471,"longitude":127.004524,"x":60,"y":125},"endDto":{"name":"남성","latitude":37.484749,"longitude":126.971052,"x":60,"y":125},"midDto":{"name":null,"latitude":37.49411,"longitude":126.987788,"x":60,"y":125},"pointDtos":[{"pointInformationDto":{"name":"고속터미널","latitude":37.503471,"longitude":127.004524,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"내방","latitude":37.487625,"longitude":126.993503,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"이수","latitude":37.485386,"longitude":126.982067,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"남성","latitude":37.484749,"longitude":126.971052,"x":60,"y":125},"subPathId":null}]},{"subPathId":null,"pathId":null,"type":"walk","distance":40,"time":1,"stationCount":0,"subwayName":"null","busNo":"null","subwayColor":"#000000","busColor":"#000000","startDto":{"name":"고속터미널","latitude":37.503471,"longitude":127.004524,"x":60,"y":125},"endDto":{"name":"남성역","latitude":37.484979,"longitude":126.970707,"x":60,"y":125},"midDto":{"name":null,"latitude":37.494225,"longitude":126.9876155,"x":60,"y":125},"pointDtos":[]},{"subPathId":null,"pathId":null,"type":"bus","distance":1529,"time":10,"stationCount":4,"subwayName":"null","busNo":"752","subwayColor":"#000000","busColor":"#0068b7","startDto":{"name":"남성역","latitude":37.484979,"longitude":126.970707,"x":60,"y":125},"endDto":{"name":"숭실대별관앞","latitude":37.494977,"longitude":126.959951,"x":60,"y":125},"midDto":{"name":null,"latitude":37.489978,"longitude":126.965329,"x":60,"y":125},"pointDtos":[{"pointInformationDto":{"name":"남성역","latitude":37.484979,"longitude":126.970707,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"사당중학교","latitude":37.486678,"longitude":126.968185,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"총신대","latitude":37.488787,"longitude":126.966143,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"사당롯데캐슬골든포레.사당해그린","latitude":37.492323,"longitude":126.963527,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"숭실대별관앞","latitude":37.494977,"longitude":126.959951,"x":60,"y":125},"subPathId":null}]},{"subPathId":null,"pathId":null,"type":"walk","distance":31,"time":1,"stationCount":0,"subwayName":"null","busNo":"null","subwayColor":"#000000","busColor":"#000000","startDto":{"name":"숭실대별관앞","latitude":37.494977,"longitude":126.959951,"x":60,"y":125},"endDto":{"name":"숭실대 정보관","latitude":37.4947,"longitude":126.9599,"x":60,"y":125},"midDto":{"name":null,"latitude":37.4948385,"longitude":126.9599255,"x":60,"y":125},"pointDtos":[]}]},{"pathId":null,"routeRequesterId":null,"totalTime":25,"price":1500,"totalDistance":7384,"totalWalkDistance":612,"totalWalkTime":18,"busTransitCount":1,"subwayTransitCount":1,"totalTransitCount":2,"busStationCount":1,"subwayStationCount":4,"startDto":{"name":"신세계 백화점","latitude":37.5042,"longitude":127.0044,"x":60,"y":125},"endDto":{"name":"숭실대 정보관","latitude":37.4947,"longitude":126.9599,"x":60,"y":125},"midDto":{"name":null,"latitude":37.499449999999996,"longitude":126.98215,"x":60,"y":125},"subPathDtos":[{"subPathId":null,"pathId":null,"type":"walk","distance":82,"time":1,"stationCount":0,"subwayName":"null","busNo":"null","subwayColor":"#000000","busColor":"#000000","startDto":{"name":"신세계 백화점","latitude":37.5042,"longitude":127.0044,"x":60,"y":125},"endDto":{"name":"고속터미널","latitude":37.503471,"longitude":127.004524,"x":60,"y":125},"midDto":{"name":null,"latitude":37.503835499999994,"longitude":127.004462,"x":60,"y":125},"pointDtos":[]},{"subPathId":null,"pathId":null,"type":"subway","distance":6200,"time":10,"stationCount":4,"subwayName":"수도권 7호선","busNo":"null","subwayColor":"#747F00","busColor":"#000000","startDto":{"name":"고속터미널","latitude":37.503471,"longitude":127.004524,"x":60,"y":125},"endDto":{"name":"숭실대입구","latitude":37.495861,"longitude":126.953991,"x":59,"y":125},"midDto":{"name":null,"latitude":37.499666,"longitude":126.9792575,"x":60,"y":125},"pointDtos":[{"pointInformationDto":{"name":"고속터미널","latitude":37.503471,"longitude":127.004524,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"내방","latitude":37.487625,"longitude":126.993503,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"이수","latitude":37.485386,"longitude":126.982067,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"남성","latitude":37.484749,"longitude":126.971052,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"숭실대입구","latitude":37.495861,"longitude":126.953991,"x":59,"y":125},"subPathId":null}]},{"subPathId":null,"pathId":null,"type":"walk","distance":65,"time":1,"stationCount":0,"subwayName":"null","busNo":"null","subwayColor":"#000000","busColor":"#000000","startDto":{"name":"고속터미널","latitude":37.503471,"longitude":127.004524,"x":60,"y":125},"endDto":{"name":"숭실대입구역","latitude":37.496235,"longitude":126.953431,"x":59,"y":125},"midDto":{"name":null,"latitude":37.499853,"longitude":126.9789775,"x":60,"y":125},"pointDtos":[]},{"subPathId":null,"pathId":null,"type":"bus","distance":572,"time":6,"stationCount":1,"subwayName":"null","busNo":"641","subwayColor":"#000000","busColor":"#0068b7","startDto":{"name":"숭실대입구역","latitude":37.496235,"longitude":126.953431,"x":59,"y":125},"endDto":{"name":"봉현초등학교","latitude":37.49179,"longitude":126.956116,"x":59,"y":125},"midDto":{"name":null,"latitude":37.4940125,"longitude":126.95477349999999,"x":59,"y":125},"pointDtos":[{"pointInformationDto":{"name":"숭실대입구역","latitude":37.496235,"longitude":126.953431,"x":59,"y":125},"subPathId":null},{"pointInformationDto":{"name":"봉현초등학교","latitude":37.49179,"longitude":126.956116,"x":59,"y":125},"subPathId":null}]},{"subPathId":null,"pathId":null,"type":"walk","distance":465,"time":7,"stationCount":0,"subwayName":"null","busNo":"null","subwayColor":"#000000","busColor":"#000000","startDto":{"name":"봉현초등학교","latitude":37.49179,"longitude":126.956116,"x":59,"y":125},"endDto":{"name":"숭실대 정보관","latitude":37.4947,"longitude":126.9599,"x":60,"y":125},"midDto":{"name":null,"latitude":37.493245,"longitude":126.958008,"x":59,"y":125},"pointDtos":[]}]},{"pathId":null,"routeRequesterId":null,"totalTime":25,"price":1500,"totalDistance":7384,"totalWalkDistance":612,"totalWalkTime":18,"busTransitCount":1,"subwayTransitCount":1,"totalTransitCount":2,"busStationCount":1,"subwayStationCount":4,"startDto":{"name":"신세계 백화점","latitude":37.5042,"longitude":127.0044,"x":60,"y":125},"endDto":{"name":"숭실대 정보관","latitude":37.4947,"longitude":126.9599,"x":60,"y":125},"midDto":{"name":null,"latitude":37.499449999999996,"longitude":126.98215,"x":60,"y":125},"subPathDtos":[{"subPathId":null,"pathId":null,"type":"walk","distance":82,"time":1,"stationCount":0,"subwayName":"null","busNo":"null","subwayColor":"#000000","busColor":"#000000","startDto":{"name":"신세계 백화점","latitude":37.5042,"longitude":127.0044,"x":60,"y":125},"endDto":{"name":"고속터미널","latitude":37.503471,"longitude":127.004524,"x":60,"y":125},"midDto":{"name":null,"latitude":37.503835499999994,"longitude":127.004462,"x":60,"y":125},"pointDtos":[]},{"subPathId":null,"pathId":null,"type":"subway","distance":6200,"time":10,"stationCount":4,"subwayName":"수도권 7호선","busNo":"null","subwayColor":"#747F00","busColor":"#000000","startDto":{"name":"고속터미널","latitude":37.503471,"longitude":127.004524,"x":60,"y":125},"endDto":{"name":"숭실대입구","latitude":37.495861,"longitude":126.953991,"x":59,"y":125},"midDto":{"name":null,"latitude":37.499666,"longitude":126.9792575,"x":60,"y":125},"pointDtos":[{"pointInformationDto":{"name":"고속터미널","latitude":37.503471,"longitude":127.004524,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"내방","latitude":37.487625,"longitude":126.993503,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"이수","latitude":37.485386,"longitude":126.982067,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"남성","latitude":37.484749,"longitude":126.971052,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"숭실대입구","latitude":37.495861,"longitude":126.953991,"x":59,"y":125},"subPathId":null}]},{"subPathId":null,"pathId":null,"type":"walk","distance":65,"time":1,"stationCount":0,"subwayName":"null","busNo":"null","subwayColor":"#000000","busColor":"#000000","startDto":{"name":"고속터미널","latitude":37.503471,"longitude":127.004524,"x":60,"y":125},"endDto":{"name":"숭실대입구역","latitude":37.496235,"longitude":126.953431,"x":59,"y":125},"midDto":{"name":null,"latitude":37.499853,"longitude":126.9789775,"x":60,"y":125},"pointDtos":[]},{"subPathId":null,"pathId":null,"type":"bus","distance":572,"time":6,"stationCount":1,"subwayName":"null","busNo":"5511","subwayColor":"#000000","busColor":"#53b332","startDto":{"name":"숭실대입구역","latitude":37.496235,"longitude":126.953431,"x":59,"y":125},"endDto":{"name":"봉현초등학교","latitude":37.49179,"longitude":126.956116,"x":59,"y":125},"midDto":{"name":null,"latitude":37.4940125,"longitude":126.95477349999999,"x":59,"y":125},"pointDtos":[{"pointInformationDto":{"name":"숭실대입구역","latitude":37.496235,"longitude":126.953431,"x":59,"y":125},"subPathId":null},{"pointInformationDto":{"name":"봉현초등학교","latitude":37.49179,"longitude":126.956116,"x":59,"y":125},"subPathId":null}]},{"subPathId":null,"pathId":null,"type":"walk","distance":465,"time":7,"stationCount":0,"subwayName":"null","busNo":"null","subwayColor":"#000000","busColor":"#000000","startDto":{"name":"봉현초등학교","latitude":37.49179,"longitude":126.956116,"x":59,"y":125},"endDto":{"name":"숭실대 정보관","latitude":37.4947,"longitude":126.9599,"x":60,"y":125},"midDto":{"name":null,"latitude":37.493245,"longitude":126.958008,"x":59,"y":125},"pointDtos":[]}]},{"pathId":null,"routeRequesterId":null,"totalTime":29,"price":1500,"totalDistance":8050,"totalWalkDistance":338,"totalWalkTime":12,"busTransitCount":1,"subwayTransitCount":1,"totalTransitCount":2,"busStationCount":6,"subwayStationCount":5,"startDto":{"name":"신세계 백화점","latitude":37.5042,"longitude":127.0044,"x":60,"y":125},"endDto":{"name":"숭실대 정보관","latitude":37.4947,"longitude":126.9599,"x":60,"y":125},"midDto":{"name":null,"latitude":37.499449999999996,"longitude":126.98215,"x":60,"y":125},"subPathDtos":[{"subPathId":null,"pathId":null,"type":"walk","distance":200,"time":3,"stationCount":0,"subwayName":"null","busNo":"null","subwayColor":"#000000","busColor":"#000000","startDto":{"name":"신세계 백화점","latitude":37.5042,"longitude":127.0044,"x":60,"y":125},"endDto":{"name":"고속터미널","latitude":37.506003,"longitude":127.004318,"x":60,"y":125},"midDto":{"name":null,"latitude":37.505101499999995,"longitude":127.004359,"x":60,"y":125},"pointDtos":[]},{"subPathId":null,"pathId":null,"type":"subway","distance":5000,"time":10,"stationCount":5,"subwayName":"수도권 9호선","busNo":"null","subwayColor":"#BDB092","busColor":"#000000","startDto":{"name":"고속터미널","latitude":37.506003,"longitude":127.004318,"x":60,"y":125},"endDto":{"name":"노들","latitude":37.512695,"longitude":126.953213,"x":59,"y":126},"midDto":{"name":null,"latitude":37.509349,"longitude":126.97876550000001,"x":60,"y":125},"pointDtos":[{"pointInformationDto":{"name":"고속터미널","latitude":37.506003,"longitude":127.004318,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"신반포","latitude":37.503496,"longitude":126.996033,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"구반포","latitude":37.501438,"longitude":126.987442,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"동작","latitude":37.503133,"longitude":126.977774,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"흑석","latitude":37.509183,"longitude":126.963395,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"노들","latitude":37.512695,"longitude":126.953213,"x":59,"y":126},"subPathId":null}]},{"subPathId":null,"pathId":null,"type":"walk","distance":101,"time":2,"stationCount":0,"subwayName":"null","busNo":"null","subwayColor":"#000000","busColor":"#000000","startDto":{"name":"고속터미널","latitude":37.506003,"longitude":127.004318,"x":60,"y":125},"endDto":{"name":"상도터널노량진동","latitude":37.511834,"longitude":126.953609,"x":59,"y":126},"midDto":{"name":null,"latitude":37.5089185,"longitude":126.97896349999999,"x":60,"y":125},"pointDtos":[]},{"subPathId":null,"pathId":null,"type":"bus","distance":2712,"time":13,"stationCount":6,"subwayName":"null","busNo":"752","subwayColor":"#000000","busColor":"#0068b7","startDto":{"name":"상도터널노량진동","latitude":37.511834,"longitude":126.953609,"x":59,"y":126},"endDto":{"name":"숭실대별관앞","latitude":37.494683,"longitude":126.960317,"x":60,"y":125},"midDto":{"name":null,"latitude":37.5032585,"longitude":126.956963,"x":59,"y":125},"pointDtos":[{"pointInformationDto":{"name":"상도터널노량진동","latitude":37.511834,"longitude":126.953609,"x":59,"y":126},"subPathId":null},{"pointInformationDto":{"name":"상도터널상도동","latitude":37.504563,"longitude":126.949571,"x":59,"y":125},"subPathId":null},{"pointInformationDto":{"name":"상도역","latitude":37.501671,"longitude":126.948684,"x":59,"y":125},"subPathId":null},{"pointInformationDto":{"name":"상도동중앙하이츠빌.상도전통시장","latitude":37.498837,"longitude":126.95111,"x":59,"y":125},"subPathId":null},{"pointInformationDto":{"name":"숭실대입구역","latitude":37.496709,"longitude":126.953017,"x":59,"y":125},"subPathId":null},{"pointInformationDto":{"name":"숭실대정문앞","latitude":37.495177,"longitude":126.957042,"x":59,"y":125},"subPathId":null},{"pointInformationDto":{"name":"숭실대별관앞","latitude":37.494683,"longitude":126.960317,"x":60,"y":125},"subPathId":null}]},{"subPathId":null,"pathId":null,"type":"walk","distance":37,"time":1,"stationCount":0,"subwayName":"null","busNo":"null","subwayColor":"#000000","busColor":"#000000","startDto":{"name":"숭실대별관앞","latitude":37.494683,"longitude":126.960317,"x":60,"y":125},"endDto":{"name":"숭실대 정보관","latitude":37.4947,"longitude":126.9599,"x":60,"y":125},"midDto":{"name":null,"latitude":37.4946915,"longitude":126.9601085,"x":60,"y":125},"pointDtos":[]}]},{"pathId":null,"routeRequesterId":null,"totalTime":38,"price":1500,"totalDistance":8072,"totalWalkDistance":329,"totalWalkTime":12,"busTransitCount":2,"subwayTransitCount":0,"totalTransitCount":2,"busStationCount":15,"subwayStationCount":0,"startDto":{"name":"신세계 백화점","latitude":37.5042,"longitude":127.0044,"x":60,"y":125},"endDto":{"name":"숭실대 정보관","latitude":37.4947,"longitude":126.9599,"x":60,"y":125},"midDto":{"name":null,"latitude":37.499449999999996,"longitude":126.98215,"x":60,"y":125},"subPathDtos":[{"subPathId":null,"pathId":null,"type":"walk","distance":245,"time":4,"stationCount":0,"subwayName":"null","busNo":"null","subwayColor":"#000000","busColor":"#000000","startDto":{"name":"신세계 백화점","latitude":37.5042,"longitude":127.0044,"x":60,"y":125},"endDto":{"name":"고속터미널","latitude":37.506305,"longitude":127.005228,"x":60,"y":125},"midDto":{"name":null,"latitude":37.5052525,"longitude":127.00481400000001,"x":60,"y":125},"pointDtos":[]},{"subPathId":null,"pathId":null,"type":"bus","distance":2730,"time":11,"stationCount":3,"subwayName":"null","busNo":"360","subwayColor":"#000000","busColor":"#0068b7","startDto":{"name":"고속터미널","latitude":37.506305,"longitude":127.005228,"x":60,"y":125},"endDto":{"name":"동작역.국립현충원","latitude":37.503,"longitude":126.976895,"x":60,"y":125},"midDto":{"name":null,"latitude":37.5046525,"longitude":126.9910615,"x":60,"y":125},"pointDtos":[{"pointInformationDto":{"name":"고속터미널","latitude":37.506305,"longitude":127.005228,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"신반포역.세화여중고","latitude":37.503432,"longitude":126.995732,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"구반포역.세화고등학교","latitude":37.50195,"longitude":126.989973,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"동작역.국립현충원","latitude":37.503,"longitude":126.976895,"x":60,"y":125},"subPathId":null}]},{"subPathId":null,"pathId":null,"type":"walk","distance":53,"time":1,"stationCount":0,"subwayName":"null","busNo":"null","subwayColor":"#000000","busColor":"#000000","startDto":{"name":"고속터미널","latitude":37.506305,"longitude":127.005228,"x":60,"y":125},"endDto":{"name":"동작역.국립현충원","latitude":37.502522,"longitude":126.976845,"x":60,"y":125},"midDto":{"name":null,"latitude":37.5044135,"longitude":126.9910365,"x":60,"y":125},"pointDtos":[]},{"subPathId":null,"pathId":null,"type":"bus","distance":5013,"time":21,"stationCount":12,"subwayName":"null","busNo":"752","subwayColor":"#000000","busColor":"#0068b7","startDto":{"name":"동작역.국립현충원","latitude":37.502522,"longitude":126.976845,"x":60,"y":125},"endDto":{"name":"숭실대별관앞","latitude":37.494977,"longitude":126.959951,"x":60,"y":125},"midDto":{"name":null,"latitude":37.4987495,"longitude":126.96839800000001,"x":60,"y":125},"pointDtos":[{"pointInformationDto":{"name":"동작역.국립현충원","latitude":37.502522,"longitude":126.976845,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"갯마을앞","latitude":37.49755,"longitude":126.983348,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"정금마을.방배경찰서","latitude":37.494337,"longitude":126.982747,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"경문고교.배나무골앞","latitude":37.491381,"longitude":126.982663,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"총신대입구역.남성사계시장입구앞","latitude":37.48817,"longitude":126.982288,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"이수역10번출구","latitude":37.484907,"longitude":126.98007,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"남성초등학교","latitude":37.484325,"longitude":126.978427,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"남성역골목시장","latitude":37.483668,"longitude":126.973326,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"남성역","latitude":37.484979,"longitude":126.970707,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"사당중학교","latitude":37.486678,"longitude":126.968185,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"총신대","latitude":37.488787,"longitude":126.966143,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"사당롯데캐슬골든포레.사당해그린","latitude":37.492323,"longitude":126.963527,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"숭실대별관앞","latitude":37.494977,"longitude":126.959951,"x":60,"y":125},"subPathId":null}]},{"subPathId":null,"pathId":null,"type":"walk","distance":31,"time":1,"stationCount":0,"subwayName":"null","busNo":"null","subwayColor":"#000000","busColor":"#000000","startDto":{"name":"숭실대별관앞","latitude":37.494977,"longitude":126.959951,"x":60,"y":125},"endDto":{"name":"숭실대 정보관","latitude":37.4947,"longitude":126.9599,"x":60,"y":125},"midDto":{"name":null,"latitude":37.4948385,"longitude":126.9599255,"x":60,"y":125},"pointDtos":[]}]},{"pathId":null,"routeRequesterId":null,"totalTime":39,"price":1500,"totalDistance":6156,"totalWalkDistance":838,"totalWalkTime":26,"busTransitCount":2,"subwayTransitCount":0,"totalTransitCount":2,"busStationCount":14,"subwayStationCount":0,"startDto":{"name":"신세계 백화점","latitude":37.5042,"longitude":127.0044,"x":60,"y":125},"endDto":{"name":"숭실대 정보관","latitude":37.4947,"longitude":126.9599,"x":60,"y":125},"midDto":{"name":null,"latitude":37.499449999999996,"longitude":126.98215,"x":60,"y":125},"subPathDtos":[{"subPathId":null,"pathId":null,"type":"walk","distance":245,"time":4,"stationCount":0,"subwayName":"null","busNo":"null","subwayColor":"#000000","busColor":"#000000","startDto":{"name":"신세계 백화점","latitude":37.5042,"longitude":127.0044,"x":60,"y":125},"endDto":{"name":"고속터미널","latitude":37.506305,"longitude":127.005228,"x":60,"y":125},"midDto":{"name":null,"latitude":37.5052525,"longitude":127.00481400000001,"x":60,"y":125},"pointDtos":[]},{"subPathId":null,"pathId":null,"type":"bus","distance":4379,"time":17,"stationCount":8,"subwayName":"null","busNo":"452","subwayColor":"#000000","busColor":"#0068b7","startDto":{"name":"고속터미널","latitude":37.506305,"longitude":127.005228,"x":60,"y":125},"endDto":{"name":"중앙대학교","latitude":37.507982,"longitude":126.96132,"x":60,"y":125},"midDto":{"name":null,"latitude":37.5071435,"longitude":126.983274,"x":60,"y":125},"pointDtos":[{"pointInformationDto":{"name":"고속터미널","latitude":37.506305,"longitude":127.005228,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"신반포역.세화여중고","latitude":37.503432,"longitude":126.995732,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"구반포역.세화고등학교","latitude":37.50195,"longitude":126.989973,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"동작역.국립현충원","latitude":37.503,"longitude":126.976895,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"흑석동한강현대아파트","latitude":37.505858,"longitude":126.971891,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"비계","latitude":37.506478,"longitude":126.968557,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"흑석동명수대현대아파트","latitude":37.507297,"longitude":126.96642,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"흑석역.흑석동빗물펌프장","latitude":37.508324,"longitude":126.963261,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"중앙대학교","latitude":37.507982,"longitude":126.96132,"x":60,"y":125},"subPathId":null}]},{"subPathId":null,"pathId":null,"type":"walk","distance":54,"time":1,"stationCount":0,"subwayName":"null","busNo":"null","subwayColor":"#000000","busColor":"#000000","startDto":{"name":"고속터미널","latitude":37.506305,"longitude":127.005228,"x":60,"y":125},"endDto":{"name":"중앙대병원","latitude":37.507495,"longitude":126.961293,"x":60,"y":125},"midDto":{"name":null,"latitude":37.5069,"longitude":126.9832605,"x":60,"y":125},"pointDtos":[]},{"subPathId":null,"pathId":null,"type":"bus","distance":939,"time":9,"stationCount":6,"subwayName":"null","busNo":"동작01","subwayColor":"#000000","busColor":"#ffc600","startDto":{"name":"중앙대병원","latitude":37.507495,"longitude":126.961293,"x":60,"y":125},"endDto":{"name":"동양아파트","latitude":37.499553,"longitude":126.95982,"x":60,"y":125},"midDto":{"name":null,"latitude":37.503524,"longitude":126.9605565,"x":60,"y":125},"pointDtos":[{"pointInformationDto":{"name":"중앙대병원","latitude":37.507495,"longitude":126.961293,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"중앙대병원후문.흑석시장","latitude":37.506513,"longitude":126.961262,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"중앙대부속초등학교.롯데캐슬에듀포레","latitude":37.505158,"longitude":126.960839,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"은로초등학교","latitude":37.503265,"longitude":126.96082,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"중앙빌리지.동부센트레빌","latitude":37.502034,"longitude":126.960193,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"유앤미아파트","latitude":37.500998,"longitude":126.960173,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"동양아파트","latitude":37.499553,"longitude":126.95982,"x":60,"y":125},"subPathId":null}]},{"subPathId":null,"pathId":null,"type":"walk","distance":539,"time":8,"stationCount":0,"subwayName":"null","busNo":"null","subwayColor":"#000000","busColor":"#000000","startDto":{"name":"동양아파트","latitude":37.499553,"longitude":126.95982,"x":60,"y":125},"endDto":{"name":"숭실대 정보관","latitude":37.4947,"longitude":126.9599,"x":60,"y":125},"midDto":{"name":null,"latitude":37.4971265,"longitude":126.95985999999999,"x":60,"y":125},"pointDtos":[]}]},{"pathId":null,"routeRequesterId":null,"totalTime":42,"price":1500,"totalDistance":7135,"totalWalkDistance":842,"totalWalkTime":26,"busTransitCount":2,"subwayTransitCount":0,"totalTransitCount":2,"busStationCount":15,"subwayStationCount":0,"startDto":{"name":"신세계 백화점","latitude":37.5042,"longitude":127.0044,"x":60,"y":125},"endDto":{"name":"숭실대 정보관","latitude":37.4947,"longitude":126.9599,"x":60,"y":125},"midDto":{"name":null,"latitude":37.499449999999996,"longitude":126.98215,"x":60,"y":125},"subPathDtos":[{"subPathId":null,"pathId":null,"type":"walk","distance":245,"time":4,"stationCount":0,"subwayName":"null","busNo":"null","subwayColor":"#000000","busColor":"#000000","startDto":{"name":"신세계 백화점","latitude":37.5042,"longitude":127.0044,"x":60,"y":125},"endDto":{"name":"고속터미널","latitude":37.506305,"longitude":127.005228,"x":60,"y":125},"midDto":{"name":null,"latitude":37.5052525,"longitude":127.00481400000001,"x":60,"y":125},"pointDtos":[]},{"subPathId":null,"pathId":null,"type":"bus","distance":4151,"time":16,"stationCount":7,"subwayName":"null","busNo":"452","subwayColor":"#000000","busColor":"#0068b7","startDto":{"name":"고속터미널","latitude":37.506305,"longitude":127.005228,"x":60,"y":125},"endDto":{"name":"흑석역.흑석동빗물펌프장","latitude":37.508324,"longitude":126.963261,"x":60,"y":125},"midDto":{"name":null,"latitude":37.5073145,"longitude":126.9842445,"x":60,"y":125},"pointDtos":[{"pointInformationDto":{"name":"고속터미널","latitude":37.506305,"longitude":127.005228,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"신반포역.세화여중고","latitude":37.503432,"longitude":126.995732,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"구반포역.세화고등학교","latitude":37.50195,"longitude":126.989973,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"동작역.국립현충원","latitude":37.503,"longitude":126.976895,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"흑석동한강현대아파트","latitude":37.505858,"longitude":126.971891,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"비계","latitude":37.506478,"longitude":126.968557,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"흑석동명수대현대아파트","latitude":37.507297,"longitude":126.96642,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"흑석역.흑석동빗물펌프장","latitude":37.508324,"longitude":126.963261,"x":60,"y":125},"subPathId":null}]},{"subPathId":null,"pathId":null,"type":"walk","distance":0,"time":0,"stationCount":0,"subwayName":"null","busNo":"null","subwayColor":"#000000","busColor":"#000000","startDto":{"name":"고속터미널","latitude":37.506305,"longitude":127.005228,"x":60,"y":125},"endDto":{"name":"흑석역.흑석동빗물펌프장","latitude":37.508324,"longitude":126.963261,"x":60,"y":125},"midDto":{"name":null,"latitude":37.5073145,"longitude":126.9842445,"x":60,"y":125},"pointDtos":[]},{"subPathId":null,"pathId":null,"type":"bus","distance":2142,"time":13,"stationCount":8,"subwayName":"null","busNo":"5511","subwayColor":"#000000","busColor":"#53b332","startDto":{"name":"흑석역.흑석동빗물펌프장","latitude":37.508324,"longitude":126.963261,"x":60,"y":125},"endDto":{"name":"숭실대입구역","latitude":37.496235,"longitude":126.953431,"x":59,"y":125},"midDto":{"name":null,"latitude":37.5022795,"longitude":126.958346,"x":59,"y":125},"pointDtos":[{"pointInformationDto":{"name":"흑석역.흑석동빗물펌프장","latitude":37.508324,"longitude":126.963261,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"중앙대정문","latitude":37.507186,"longitude":126.9589,"x":59,"y":125},"subPathId":null},{"pointInformationDto":{"name":"중앙대중문","latitude":37.506631,"longitude":126.957222,"x":59,"y":125},"subPathId":null},{"pointInformationDto":{"name":"중앙대후문","latitude":37.50448,"longitude":126.953486,"x":59,"y":125},"subPathId":null},{"pointInformationDto":{"name":"상도SH빌아파트상도팰리스후문","latitude":37.503154,"longitude":126.954296,"x":59,"y":125},"subPathId":null},{"pointInformationDto":{"name":"상도3차삼성래미안후문","latitude":37.500922,"longitude":126.953614,"x":59,"y":125},"subPathId":null},{"pointInformationDto":{"name":"금양빌딩","latitude":37.499551,"longitude":126.953453,"x":59,"y":125},"subPathId":null},{"pointInformationDto":{"name":"상도1동주민센터.상도3차래미안","latitude":37.498071,"longitude":126.953224,"x":59,"y":125},"subPathId":null},{"pointInformationDto":{"name":"숭실대입구역","latitude":37.496235,"longitude":126.953431,"x":59,"y":125},"subPathId":null}]},{"subPathId":null,"pathId":null,"type":"walk","distance":597,"time":9,"stationCount":0,"subwayName":"null","busNo":"null","subwayColor":"#000000","busColor":"#000000","startDto":{"name":"숭실대입구역","latitude":37.496235,"longitude":126.953431,"x":59,"y":125},"endDto":{"name":"숭실대 정보관","latitude":37.4947,"longitude":126.9599,"x":60,"y":125},"midDto":{"name":null,"latitude":37.495467500000004,"longitude":126.9566655,"x":59,"y":125},"pointDtos":[]}]},{"pathId":null,"routeRequesterId":null,"totalTime":33,"price":1500,"totalDistance":6492,"totalWalkDistance":276,"totalWalkTime":10,"busTransitCount":2,"subwayTransitCount":0,"totalTransitCount":2,"busStationCount":14,"subwayStationCount":0,"startDto":{"name":"신세계 백화점","latitude":37.5042,"longitude":127.0044,"x":60,"y":125},"endDto":{"name":"숭실대 정보관","latitude":37.4947,"longitude":126.9599,"x":60,"y":125},"midDto":{"name":null,"latitude":37.499449999999996,"longitude":126.98215,"x":60,"y":125},"subPathDtos":[{"subPathId":null,"pathId":null,"type":"walk","distance":245,"time":4,"stationCount":0,"subwayName":"null","busNo":"null","subwayColor":"#000000","busColor":"#000000","startDto":{"name":"신세계 백화점","latitude":37.5042,"longitude":127.0044,"x":60,"y":125},"endDto":{"name":"고속터미널","latitude":37.506305,"longitude":127.005228,"x":60,"y":125},"midDto":{"name":null,"latitude":37.5052525,"longitude":127.00481400000001,"x":60,"y":125},"pointDtos":[]},{"subPathId":null,"pathId":null,"type":"bus","distance":3310,"time":14,"stationCount":6,"subwayName":"null","busNo":"4212","subwayColor":"#000000","busColor":"#53b332","startDto":{"name":"고속터미널","latitude":37.506305,"longitude":127.005228,"x":60,"y":125},"endDto":{"name":"총신대입구역.남성사계시장입구앞","latitude":37.48817,"longitude":126.982288,"x":60,"y":125},"midDto":{"name":null,"latitude":37.4972375,"longitude":126.993758,"x":60,"y":125},"pointDtos":[{"pointInformationDto":{"name":"고속터미널","latitude":37.506305,"longitude":127.005228,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"신반포역.세화여중고","latitude":37.503432,"longitude":126.995732,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"구반포역.세화고등학교","latitude":37.50195,"longitude":126.989973,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"갯마을앞","latitude":37.49755,"longitude":126.983348,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"정금마을.방배경찰서","latitude":37.494337,"longitude":126.982747,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"경문고교.배나무골앞","latitude":37.491381,"longitude":126.982663,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"총신대입구역.남성사계시장입구앞","latitude":37.48817,"longitude":126.982288,"x":60,"y":125},"subPathId":null}]},{"subPathId":null,"pathId":null,"type":"walk","distance":0,"time":0,"stationCount":0,"subwayName":"null","busNo":"null","subwayColor":"#000000","busColor":"#000000","startDto":{"name":"고속터미널","latitude":37.506305,"longitude":127.005228,"x":60,"y":125},"endDto":{"name":"총신대입구역.남성사계시장입구앞","latitude":37.48817,"longitude":126.982288,"x":60,"y":125},"midDto":{"name":null,"latitude":37.4972375,"longitude":126.993758,"x":60,"y":125},"pointDtos":[]},{"subPathId":null,"pathId":null,"type":"bus","distance":2906,"time":14,"stationCount":8,"subwayName":"null","busNo":"752","subwayColor":"#000000","busColor":"#0068b7","startDto":{"name":"총신대입구역.남성사계시장입구앞","latitude":37.48817,"longitude":126.982288,"x":60,"y":125},"endDto":{"name":"숭실대별관앞","latitude":37.494977,"longitude":126.959951,"x":60,"y":125},"midDto":{"name":null,"latitude":37.4915735,"longitude":126.9711195,"x":60,"y":125},"pointDtos":[{"pointInformationDto":{"name":"총신대입구역.남성사계시장입구앞","latitude":37.48817,"longitude":126.982288,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"이수역10번출구","latitude":37.484907,"longitude":126.98007,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"남성초등학교","latitude":37.484325,"longitude":126.978427,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"남성역골목시장","latitude":37.483668,"longitude":126.973326,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"남성역","latitude":37.484979,"longitude":126.970707,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"사당중학교","latitude":37.486678,"longitude":126.968185,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"총신대","latitude":37.488787,"longitude":126.966143,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"사당롯데캐슬골든포레.사당해그린","latitude":37.492323,"longitude":126.963527,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"숭실대별관앞","latitude":37.494977,"longitude":126.959951,"x":60,"y":125},"subPathId":null}]},{"subPathId":null,"pathId":null,"type":"walk","distance":31,"time":1,"stationCount":0,"subwayName":"null","busNo":"null","subwayColor":"#000000","busColor":"#000000","startDto":{"name":"숭실대별관앞","latitude":37.494977,"longitude":126.959951,"x":60,"y":125},"endDto":{"name":"숭실대 정보관","latitude":37.4947,"longitude":126.9599,"x":60,"y":125},"midDto":{"name":null,"latitude":37.4948385,"longitude":126.9599255,"x":60,"y":125},"pointDtos":[]}]},{"pathId":null,"routeRequesterId":null,"totalTime":36,"price":1500,"totalDistance":7328,"totalWalkDistance":338,"totalWalkTime":12,"busTransitCount":2,"subwayTransitCount":0,"totalTransitCount":2,"busStationCount":15,"subwayStationCount":0,"startDto":{"name":"신세계 백화점","latitude":37.5042,"longitude":127.0044,"x":60,"y":125},"endDto":{"name":"숭실대 정보관","latitude":37.4947,"longitude":126.9599,"x":60,"y":125},"midDto":{"name":null,"latitude":37.499449999999996,"longitude":126.98215,"x":60,"y":125},"subPathDtos":[{"subPathId":null,"pathId":null,"type":"walk","distance":245,"time":4,"stationCount":0,"subwayName":"null","busNo":"null","subwayColor":"#000000","busColor":"#000000","startDto":{"name":"신세계 백화점","latitude":37.5042,"longitude":127.0044,"x":60,"y":125},"endDto":{"name":"고속터미널","latitude":37.506305,"longitude":127.005228,"x":60,"y":125},"midDto":{"name":null,"latitude":37.5052525,"longitude":127.00481400000001,"x":60,"y":125},"pointDtos":[]},{"subPathId":null,"pathId":null,"type":"bus","distance":3752,"time":15,"stationCount":6,"subwayName":"null","busNo":"148","subwayColor":"#000000","busColor":"#0068b7","startDto":{"name":"고속터미널","latitude":37.506305,"longitude":127.005228,"x":60,"y":125},"endDto":{"name":"방배동고개","latitude":37.486896,"longitude":126.989203,"x":60,"y":125},"midDto":{"name":null,"latitude":37.4966005,"longitude":126.99721550000001,"x":60,"y":125},"pointDtos":[{"pointInformationDto":{"name":"고속터미널","latitude":37.506305,"longitude":127.005228,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"신반포역.세화여중고","latitude":37.503432,"longitude":126.995732,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"구반포역.세화고등학교","latitude":37.50195,"longitude":126.989973,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"삼호아파트","latitude":37.49684,"longitude":126.987734,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"가야메디컬센터","latitude":37.493327,"longitude":126.989942,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"서문여고입구","latitude":37.490311,"longitude":126.98711,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"방배동고개","latitude":37.486896,"longitude":126.989203,"x":60,"y":125},"subPathId":null}]},{"subPathId":null,"pathId":null,"type":"walk","distance":62,"time":1,"stationCount":0,"subwayName":"null","busNo":"null","subwayColor":"#000000","busColor":"#000000","startDto":{"name":"고속터미널","latitude":37.506305,"longitude":127.005228,"x":60,"y":125},"endDto":{"name":"방배고개","latitude":37.486424,"longitude":126.988824,"x":60,"y":125},"midDto":{"name":null,"latitude":37.4963645,"longitude":126.997026,"x":60,"y":125},"pointDtos":[]},{"subPathId":null,"pathId":null,"type":"bus","distance":3238,"time":15,"stationCount":9,"subwayName":"null","busNo":"742","subwayColor":"#000000","busColor":"#0068b7","startDto":{"name":"방배고개","latitude":37.486424,"longitude":126.988824,"x":60,"y":125},"endDto":{"name":"숭실대별관앞","latitude":37.494977,"longitude":126.959951,"x":60,"y":125},"midDto":{"name":null,"latitude":37.4907005,"longitude":126.9743875,"x":60,"y":125},"pointDtos":[{"pointInformationDto":{"name":"방배고개","latitude":37.486424,"longitude":126.988824,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"이수역","latitude":37.485866,"longitude":126.984637,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"이수역10번출구","latitude":37.484907,"longitude":126.98007,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"남성초등학교","latitude":37.484325,"longitude":126.978427,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"남성역골목시장","latitude":37.483668,"longitude":126.973326,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"남성역","latitude":37.484979,"longitude":126.970707,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"사당중학교","latitude":37.486678,"longitude":126.968185,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"총신대","latitude":37.488787,"longitude":126.966143,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"사당롯데캐슬골든포레.사당해그린","latitude":37.492323,"longitude":126.963527,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"숭실대별관앞","latitude":37.494977,"longitude":126.959951,"x":60,"y":125},"subPathId":null}]},{"subPathId":null,"pathId":null,"type":"walk","distance":31,"time":1,"stationCount":0,"subwayName":"null","busNo":"null","subwayColor":"#000000","busColor":"#000000","startDto":{"name":"숭실대별관앞","latitude":37.494977,"longitude":126.959951,"x":60,"y":125},"endDto":{"name":"숭실대 정보관","latitude":37.4947,"longitude":126.9599,"x":60,"y":125},"midDto":{"name":null,"latitude":37.4948385,"longitude":126.9599255,"x":60,"y":125},"pointDtos":[]}]},{"pathId":null,"routeRequesterId":null,"totalTime":38,"price":1500,"totalDistance":6626,"totalWalkDistance":369,"totalWalkTime":12,"busTransitCount":2,"subwayTransitCount":0,"totalTransitCount":2,"busStationCount":21,"subwayStationCount":0,"startDto":{"name":"신세계 백화점","latitude":37.5042,"longitude":127.0044,"x":60,"y":125},"endDto":{"name":"숭실대 정보관","latitude":37.4947,"longitude":126.9599,"x":60,"y":125},"midDto":{"name":null,"latitude":37.499449999999996,"longitude":126.98215,"x":60,"y":125},"subPathDtos":[{"subPathId":null,"pathId":null,"type":"walk","distance":240,"time":4,"stationCount":0,"subwayName":"null","busNo":"null","subwayColor":"#000000","busColor":"#000000","startDto":{"name":"신세계 백화점","latitude":37.5042,"longitude":127.0044,"x":60,"y":125},"endDto":{"name":"삼성래미안.이수역방향","latitude":37.503744,"longitude":127.001745,"x":60,"y":125},"midDto":{"name":null,"latitude":37.503972,"longitude":127.0030725,"x":60,"y":125},"pointDtos":[]},{"subPathId":null,"pathId":null,"type":"bus","distance":3351,"time":18,"stationCount":13,"subwayName":"null","busNo":"서초13","subwayColor":"#000000","busColor":"#ffc600","startDto":{"name":"삼성래미안.이수역방향","latitude":37.503744,"longitude":127.001745,"x":60,"y":125},"endDto":{"name":"이수역2번출구","latitude":37.487298,"longitude":126.98248,"x":60,"y":125},"midDto":{"name":null,"latitude":37.495521,"longitude":126.99211249999999,"x":60,"y":125},"pointDtos":[{"pointInformationDto":{"name":"삼성래미안.이수역방향","latitude":37.503744,"longitude":127.001745,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"서래마을입구","latitude":37.499183,"longitude":126.998311,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"서래마을.서래글로벌빌리지센터","latitude":37.497939,"longitude":126.998248,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"효성빌라","latitude":37.496261,"longitude":126.998112,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"방배중학교","latitude":37.495068,"longitude":126.997653,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"필리핀대사관","latitude":37.494143,"longitude":126.995856,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"방배4동성당","latitude":37.493836,"longitude":126.993621,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"함지박사거리","latitude":37.49323,"longitude":126.991232,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"빛교회.이수중앙시장","latitude":37.492327,"longitude":126.988949,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"카페골목입구","latitude":37.491655,"longitude":126.98725,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"노인정","latitude":37.489456,"longitude":126.987268,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"서문여고","latitude":37.487453,"longitude":126.984853,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"이수역4번출구","latitude":37.485697,"longitude":126.982887,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"이수역2번출구","latitude":37.487298,"longitude":126.98248,"x":60,"y":125},"subPathId":null}]},{"subPathId":null,"pathId":null,"type":"walk","distance":98,"time":1,"stationCount":0,"subwayName":"null","busNo":"null","subwayColor":"#000000","busColor":"#000000","startDto":{"name":"삼성래미안.이수역방향","latitude":37.503744,"longitude":127.001745,"x":60,"y":125},"endDto":{"name":"총신대입구역.남성사계시장입구앞","latitude":37.48817,"longitude":126.982288,"x":60,"y":125},"midDto":{"name":null,"latitude":37.495957,"longitude":126.9920165,"x":60,"y":125},"pointDtos":[]},{"subPathId":null,"pathId":null,"type":"bus","distance":2906,"time":14,"stationCount":8,"subwayName":"null","busNo":"752","subwayColor":"#000000","busColor":"#0068b7","startDto":{"name":"총신대입구역.남성사계시장입구앞","latitude":37.48817,"longitude":126.982288,"x":60,"y":125},"endDto":{"name":"숭실대별관앞","latitude":37.494977,"longitude":126.959951,"x":60,"y":125},"midDto":{"name":null,"latitude":37.4915735,"longitude":126.9711195,"x":60,"y":125},"pointDtos":[{"pointInformationDto":{"name":"총신대입구역.남성사계시장입구앞","latitude":37.48817,"longitude":126.982288,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"이수역10번출구","latitude":37.484907,"longitude":126.98007,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"남성초등학교","latitude":37.484325,"longitude":126.978427,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"남성역골목시장","latitude":37.483668,"longitude":126.973326,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"남성역","latitude":37.484979,"longitude":126.970707,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"사당중학교","latitude":37.486678,"longitude":126.968185,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"총신대","latitude":37.488787,"longitude":126.966143,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"사당롯데캐슬골든포레.사당해그린","latitude":37.492323,"longitude":126.963527,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"숭실대별관앞","latitude":37.494977,"longitude":126.959951,"x":60,"y":125},"subPathId":null}]},{"subPathId":null,"pathId":null,"type":"walk","distance":31,"time":1,"stationCount":0,"subwayName":"null","busNo":"null","subwayColor":"#000000","busColor":"#000000","startDto":{"name":"숭실대별관앞","latitude":37.494977,"longitude":126.959951,"x":60,"y":125},"endDto":{"name":"숭실대 정보관","latitude":37.4947,"longitude":126.9599,"x":60,"y":125},"midDto":{"name":null,"latitude":37.4948385,"longitude":126.9599255,"x":60,"y":125},"pointDtos":[]}]},{"pathId":null,"routeRequesterId":null,"totalTime":39,"price":1500,"totalDistance":7391,"totalWalkDistance":345,"totalWalkTime":10,"busTransitCount":2,"subwayTransitCount":0,"totalTransitCount":2,"busStationCount":23,"subwayStationCount":0,"startDto":{"name":"신세계 백화점","latitude":37.5042,"longitude":127.0044,"x":60,"y":125},"endDto":{"name":"숭실대 정보관","latitude":37.4947,"longitude":126.9599,"x":60,"y":125},"midDto":{"name":null,"latitude":37.499449999999996,"longitude":126.98215,"x":60,"y":125},"subPathDtos":[{"subPathId":null,"pathId":null,"type":"walk","distance":216,"time":3,"stationCount":0,"subwayName":"null","busNo":"null","subwayColor":"#000000","busColor":"#000000","startDto":{"name":"신세계 백화점","latitude":37.5042,"longitude":127.0044,"x":60,"y":125},"endDto":{"name":"호남고속.신세계","latitude":37.505919,"longitude":127.003265,"x":60,"y":125},"midDto":{"name":null,"latitude":37.5050595,"longitude":127.0038325,"x":60,"y":125},"pointDtos":[]},{"subPathId":null,"pathId":null,"type":"bus","distance":4140,"time":20,"stationCount":15,"subwayName":"null","busNo":"서초14","subwayColor":"#000000","busColor":"#ffc600","startDto":{"name":"호남고속.신세계","latitude":37.505919,"longitude":127.003265,"x":60,"y":125},"endDto":{"name":"이수역2번출구","latitude":37.487298,"longitude":126.98248,"x":60,"y":125},"midDto":{"name":null,"latitude":37.4966085,"longitude":126.9928725,"x":60,"y":125},"pointDtos":[{"pointInformationDto":{"name":"호남고속.신세계","latitude":37.505919,"longitude":127.003265,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"경남상가","latitude":37.504792,"longitude":126.999978,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"반포2동주민센터","latitude":37.503985,"longitude":126.997218,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"삼성래미안","latitude":37.50267,"longitude":126.995199,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"반포종합운동장","latitude":37.499482,"longitude":126.996407,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"서초소방서","latitude":37.498342,"longitude":126.992667,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"서초구민체육센터","latitude":37.498376,"longitude":126.990371,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"삼호아파트","latitude":37.497368,"longitude":126.987331,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"서래초등학교","latitude":37.495666,"longitude":126.98844,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"가야메디컬센터","latitude":37.493327,"longitude":126.989942,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"빛교회.이수중앙시장","latitude":37.492327,"longitude":126.988949,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"카페골목입구","latitude":37.491655,"longitude":126.98725,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"노인정","latitude":37.489456,"longitude":126.987268,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"서문여고","latitude":37.487453,"longitude":126.984853,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"이수역4번출구","latitude":37.485697,"longitude":126.982887,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"이수역2번출구","latitude":37.487298,"longitude":126.98248,"x":60,"y":125},"subPathId":null}]},{"subPathId":null,"pathId":null,"type":"walk","distance":98,"time":1,"stationCount":0,"subwayName":"null","busNo":"null","subwayColor":"#000000","busColor":"#000000","startDto":{"name":"호남고속.신세계","latitude":37.505919,"longitude":127.003265,"x":60,"y":125},"endDto":{"name":"총신대입구역.남성사계시장입구앞","latitude":37.48817,"longitude":126.982288,"x":60,"y":125},"midDto":{"name":null,"latitude":37.4970445,"longitude":126.99277649999999,"x":60,"y":125},"pointDtos":[]},{"subPathId":null,"pathId":null,"type":"bus","distance":2906,"time":14,"stationCount":8,"subwayName":"null","busNo":"752","subwayColor":"#000000","busColor":"#0068b7","startDto":{"name":"총신대입구역.남성사계시장입구앞","latitude":37.48817,"longitude":126.982288,"x":60,"y":125},"endDto":{"name":"숭실대별관앞","latitude":37.494977,"longitude":126.959951,"x":60,"y":125},"midDto":{"name":null,"latitude":37.4915735,"longitude":126.9711195,"x":60,"y":125},"pointDtos":[{"pointInformationDto":{"name":"총신대입구역.남성사계시장입구앞","latitude":37.48817,"longitude":126.982288,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"이수역10번출구","latitude":37.484907,"longitude":126.98007,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"남성초등학교","latitude":37.484325,"longitude":126.978427,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"남성역골목시장","latitude":37.483668,"longitude":126.973326,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"남성역","latitude":37.484979,"longitude":126.970707,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"사당중학교","latitude":37.486678,"longitude":126.968185,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"총신대","latitude":37.488787,"longitude":126.966143,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"사당롯데캐슬골든포레.사당해그린","latitude":37.492323,"longitude":126.963527,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"숭실대별관앞","latitude":37.494977,"longitude":126.959951,"x":60,"y":125},"subPathId":null}]},{"subPathId":null,"pathId":null,"type":"walk","distance":31,"time":1,"stationCount":0,"subwayName":"null","busNo":"null","subwayColor":"#000000","busColor":"#000000","startDto":{"name":"숭실대별관앞","latitude":37.494977,"longitude":126.959951,"x":60,"y":125},"endDto":{"name":"숭실대 정보관","latitude":37.4947,"longitude":126.9599,"x":60,"y":125},"midDto":{"name":null,"latitude":37.4948385,"longitude":126.9599255,"x":60,"y":125},"pointDtos":[]}]},{"pathId":null,"routeRequesterId":null,"totalTime":44,"price":1500,"totalDistance":10084,"totalWalkDistance":298,"totalWalkTime":12,"busTransitCount":2,"subwayTransitCount":0,"totalTransitCount":2,"busStationCount":19,"subwayStationCount":0,"startDto":{"name":"신세계 백화점","latitude":37.5042,"longitude":127.0044,"x":60,"y":125},"endDto":{"name":"숭실대 정보관","latitude":37.4947,"longitude":126.9599,"x":60,"y":125},"midDto":{"name":null,"latitude":37.499449999999996,"longitude":126.98215,"x":60,"y":125},"subPathDtos":[{"subPathId":null,"pathId":null,"type":"walk","distance":245,"time":4,"stationCount":0,"subwayName":"null","busNo":"null","subwayColor":"#000000","busColor":"#000000","startDto":{"name":"신세계 백화점","latitude":37.5042,"longitude":127.0044,"x":60,"y":125},"endDto":{"name":"고속터미널","latitude":37.506305,"longitude":127.005228,"x":60,"y":125},"midDto":{"name":null,"latitude":37.5052525,"longitude":127.00481400000001,"x":60,"y":125},"pointDtos":[]},{"subPathId":null,"pathId":null,"type":"bus","distance":5478,"time":19,"stationCount":8,"subwayName":"null","busNo":"360","subwayColor":"#000000","busColor":"#0068b7","startDto":{"name":"고속터미널","latitude":37.506305,"longitude":127.005228,"x":60,"y":125},"endDto":{"name":"노들역","latitude":37.51272,"longitude":126.95095,"x":59,"y":126},"midDto":{"name":null,"latitude":37.5095125,"longitude":126.97808900000001,"x":60,"y":125},"pointDtos":[{"pointInformationDto":{"name":"고속터미널","latitude":37.506305,"longitude":127.005228,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"신반포역.세화여중고","latitude":37.503432,"longitude":126.995732,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"구반포역.세화고등학교","latitude":37.50195,"longitude":126.989973,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"동작역.국립현충원","latitude":37.503,"longitude":126.976895,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"흑석동한강현대아파트","latitude":37.505858,"longitude":126.971891,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"비계","latitude":37.506478,"longitude":126.968557,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"흑석역.명수대현대아파트","latitude":37.507632,"longitude":126.965567,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"흑석동효사정앞","latitude":37.511657,"longitude":126.961179,"x":60,"y":126},"subPathId":null},{"pointInformationDto":{"name":"노들역","latitude":37.51272,"longitude":126.95095,"x":59,"y":126},"subPathId":null}]},{"subPathId":null,"pathId":null,"type":"walk","distance":16,"time":1,"stationCount":0,"subwayName":"null","busNo":"null","subwayColor":"#000000","busColor":"#000000","startDto":{"name":"고속터미널","latitude":37.506305,"longitude":127.005228,"x":60,"y":125},"endDto":{"name":"노들역","latitude":37.512865,"longitude":126.950982,"x":59,"y":126},"midDto":{"name":null,"latitude":37.509585,"longitude":126.978105,"x":60,"y":125},"pointDtos":[]},{"subPathId":null,"pathId":null,"type":"bus","distance":4308,"time":19,"stationCount":11,"subwayName":"null","busNo":"742","subwayColor":"#000000","busColor":"#0068b7","startDto":{"name":"노들역","latitude":37.512865,"longitude":126.950982,"x":59,"y":126},"endDto":{"name":"숭실대별관앞","latitude":37.494683,"longitude":126.960317,"x":60,"y":125},"midDto":{"name":null,"latitude":37.503774,"longitude":126.95564949999999,"x":59,"y":125},"pointDtos":[{"pointInformationDto":{"name":"노들역","latitude":37.512865,"longitude":126.950982,"x":59,"y":126},"subPathId":null},{"pointInformationDto":{"name":"사육신공원","latitude":37.513177,"longitude":126.948568,"x":59,"y":126},"subPathId":null},{"pointInformationDto":{"name":"노량진역","latitude":37.513907,"longitude":126.943536,"x":59,"y":126},"subPathId":null},{"pointInformationDto":{"name":"동작구청.노량진초등학교앞","latitude":37.51047,"longitude":126.940055,"x":59,"y":125},"subPathId":null},{"pointInformationDto":{"name":"장성교회","latitude":37.508397,"longitude":126.939983,"x":59,"y":125},"subPathId":null},{"pointInformationDto":{"name":"동작문화복지센터.동작보건소","latitude":37.505006,"longitude":126.940732,"x":59,"y":125},"subPathId":null},{"pointInformationDto":{"name":"상도노빌리티아파트","latitude":37.504844,"longitude":126.945778,"x":59,"y":125},"subPathId":null},{"pointInformationDto":{"name":"상도역","latitude":37.501671,"longitude":126.948684,"x":59,"y":125},"subPathId":null},{"pointInformationDto":{"name":"상도동중앙하이츠빌.상도전통시장","latitude":37.498837,"longitude":126.95111,"x":59,"y":125},"subPathId":null},{"pointInformationDto":{"name":"숭실대입구역","latitude":37.496709,"longitude":126.953017,"x":59,"y":125},"subPathId":null},{"pointInformationDto":{"name":"숭실대정문앞","latitude":37.495177,"longitude":126.957042,"x":59,"y":125},"subPathId":null},{"pointInformationDto":{"name":"숭실대별관앞","latitude":37.494683,"longitude":126.960317,"x":60,"y":125},"subPathId":null}]},{"subPathId":null,"pathId":null,"type":"walk","distance":37,"time":1,"stationCount":0,"subwayName":"null","busNo":"null","subwayColor":"#000000","busColor":"#000000","startDto":{"name":"숭실대별관앞","latitude":37.494683,"longitude":126.960317,"x":60,"y":125},"endDto":{"name":"숭실대 정보관","latitude":37.4947,"longitude":126.9599,"x":60,"y":125},"midDto":{"name":null,"latitude":37.4946915,"longitude":126.9601085,"x":60,"y":125},"pointDtos":[]}]},{"pathId":null,"routeRequesterId":null,"totalTime":42,"price":1500,"totalDistance":8072,"totalWalkDistance":329,"totalWalkTime":12,"busTransitCount":3,"subwayTransitCount":0,"totalTransitCount":3,"busStationCount":15,"subwayStationCount":0,"startDto":{"name":"신세계 백화점","latitude":37.5042,"longitude":127.0044,"x":60,"y":125},"endDto":{"name":"숭실대 정보관","latitude":37.4947,"longitude":126.9599,"x":60,"y":125},"midDto":{"name":null,"latitude":37.499449999999996,"longitude":126.98215,"x":60,"y":125},"subPathDtos":[{"subPathId":null,"pathId":null,"type":"walk","distance":245,"time":4,"stationCount":0,"subwayName":"null","busNo":"null","subwayColor":"#000000","busColor":"#000000","startDto":{"name":"신세계 백화점","latitude":37.5042,"longitude":127.0044,"x":60,"y":125},"endDto":{"name":"고속터미널","latitude":37.506305,"longitude":127.005228,"x":60,"y":125},"midDto":{"name":null,"latitude":37.5052525,"longitude":127.00481400000001,"x":60,"y":125},"pointDtos":[]},{"subPathId":null,"pathId":null,"type":"bus","distance":2730,"time":11,"stationCount":3,"subwayName":"null","busNo":"360","subwayColor":"#000000","busColor":"#0068b7","startDto":{"name":"고속터미널","latitude":37.506305,"longitude":127.005228,"x":60,"y":125},"endDto":{"name":"동작역.국립현충원","latitude":37.503,"longitude":126.976895,"x":60,"y":125},"midDto":{"name":null,"latitude":37.5046525,"longitude":126.9910615,"x":60,"y":125},"pointDtos":[{"pointInformationDto":{"name":"고속터미널","latitude":37.506305,"longitude":127.005228,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"신반포역.세화여중고","latitude":37.503432,"longitude":126.995732,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"구반포역.세화고등학교","latitude":37.50195,"longitude":126.989973,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"동작역.국립현충원","latitude":37.503,"longitude":126.976895,"x":60,"y":125},"subPathId":null}]},{"subPathId":null,"pathId":null,"type":"walk","distance":53,"time":1,"stationCount":0,"subwayName":"null","busNo":"null","subwayColor":"#000000","busColor":"#000000","startDto":{"name":"고속터미널","latitude":37.506305,"longitude":127.005228,"x":60,"y":125},"endDto":{"name":"동작역.국립현충원","latitude":37.502522,"longitude":126.976845,"x":60,"y":125},"midDto":{"name":null,"latitude":37.5044135,"longitude":126.9910365,"x":60,"y":125},"pointDtos":[]},{"subPathId":null,"pathId":null,"type":"bus","distance":1748,"time":9,"stationCount":3,"subwayName":"null","busNo":"5524","subwayColor":"#000000","busColor":"#53b332","startDto":{"name":"동작역.국립현충원","latitude":37.502522,"longitude":126.976845,"x":60,"y":125},"endDto":{"name":"경문고교.배나무골앞","latitude":37.491381,"longitude":126.982663,"x":60,"y":125},"midDto":{"name":null,"latitude":37.496951499999994,"longitude":126.979754,"x":60,"y":125},"pointDtos":[{"pointInformationDto":{"name":"동작역.국립현충원","latitude":37.502522,"longitude":126.976845,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"갯마을앞","latitude":37.49755,"longitude":126.983348,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"정금마을.방배경찰서","latitude":37.494337,"longitude":126.982747,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"경문고교.배나무골앞","latitude":37.491381,"longitude":126.982663,"x":60,"y":125},"subPathId":null}]},{"subPathId":null,"pathId":null,"type":"walk","distance":0,"time":0,"stationCount":0,"subwayName":"null","busNo":"null","subwayColor":"#000000","busColor":"#000000","startDto":{"name":"동작역.국립현충원","latitude":37.502522,"longitude":126.976845,"x":60,"y":125},"endDto":{"name":"경문고교.배나무골앞","latitude":37.491381,"longitude":126.982663,"x":60,"y":125},"midDto":{"name":null,"latitude":37.496951499999994,"longitude":126.979754,"x":60,"y":125},"pointDtos":[]},{"subPathId":null,"pathId":null,"type":"bus","distance":3265,"time":16,"stationCount":9,"subwayName":"null","busNo":"752","subwayColor":"#000000","busColor":"#0068b7","startDto":{"name":"경문고교.배나무골앞","latitude":37.491381,"longitude":126.982663,"x":60,"y":125},"endDto":{"name":"숭실대별관앞","latitude":37.494977,"longitude":126.959951,"x":60,"y":125},"midDto":{"name":null,"latitude":37.493179,"longitude":126.971307,"x":60,"y":125},"pointDtos":[{"pointInformationDto":{"name":"경문고교.배나무골앞","latitude":37.491381,"longitude":126.982663,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"총신대입구역.남성사계시장입구앞","latitude":37.48817,"longitude":126.982288,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"이수역10번출구","latitude":37.484907,"longitude":126.98007,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"남성초등학교","latitude":37.484325,"longitude":126.978427,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"남성역골목시장","latitude":37.483668,"longitude":126.973326,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"남성역","latitude":37.484979,"longitude":126.970707,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"사당중학교","latitude":37.486678,"longitude":126.968185,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"총신대","latitude":37.488787,"longitude":126.966143,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"사당롯데캐슬골든포레.사당해그린","latitude":37.492323,"longitude":126.963527,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"숭실대별관앞","latitude":37.494977,"longitude":126.959951,"x":60,"y":125},"subPathId":null}]},{"subPathId":null,"pathId":null,"type":"walk","distance":31,"time":1,"stationCount":0,"subwayName":"null","busNo":"null","subwayColor":"#000000","busColor":"#000000","startDto":{"name":"숭실대별관앞","latitude":37.494977,"longitude":126.959951,"x":60,"y":125},"endDto":{"name":"숭실대 정보관","latitude":37.4947,"longitude":126.9599,"x":60,"y":125},"midDto":{"name":null,"latitude":37.4948385,"longitude":126.9599255,"x":60,"y":125},"pointDtos":[]}]},{"pathId":null,"routeRequesterId":null,"totalTime":47,"price":1500,"totalDistance":8357,"totalWalkDistance":658,"totalWalkTime":22,"busTransitCount":3,"subwayTransitCount":0,"totalTransitCount":3,"busStationCount":15,"subwayStationCount":0,"startDto":{"name":"신세계 백화점","latitude":37.5042,"longitude":127.0044,"x":60,"y":125},"endDto":{"name":"숭실대 정보관","latitude":37.4947,"longitude":126.9599,"x":60,"y":125},"midDto":{"name":null,"latitude":37.499449999999996,"longitude":126.98215,"x":60,"y":125},"subPathDtos":[{"subPathId":null,"pathId":null,"type":"walk","distance":245,"time":4,"stationCount":0,"subwayName":"null","busNo":"null","subwayColor":"#000000","busColor":"#000000","startDto":{"name":"신세계 백화점","latitude":37.5042,"longitude":127.0044,"x":60,"y":125},"endDto":{"name":"고속터미널","latitude":37.506305,"longitude":127.005228,"x":60,"y":125},"midDto":{"name":null,"latitude":37.5052525,"longitude":127.00481400000001,"x":60,"y":125},"pointDtos":[]},{"subPathId":null,"pathId":null,"type":"bus","distance":2730,"time":11,"stationCount":3,"subwayName":"null","busNo":"360","subwayColor":"#000000","busColor":"#0068b7","startDto":{"name":"고속터미널","latitude":37.506305,"longitude":127.005228,"x":60,"y":125},"endDto":{"name":"동작역.국립현충원","latitude":37.503,"longitude":126.976895,"x":60,"y":125},"midDto":{"name":null,"latitude":37.5046525,"longitude":126.9910615,"x":60,"y":125},"pointDtos":[{"pointInformationDto":{"name":"고속터미널","latitude":37.506305,"longitude":127.005228,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"신반포역.세화여중고","latitude":37.503432,"longitude":126.995732,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"구반포역.세화고등학교","latitude":37.50195,"longitude":126.989973,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"동작역.국립현충원","latitude":37.503,"longitude":126.976895,"x":60,"y":125},"subPathId":null}]},{"subPathId":null,"pathId":null,"type":"walk","distance":53,"time":1,"stationCount":0,"subwayName":"null","busNo":"null","subwayColor":"#000000","busColor":"#000000","startDto":{"name":"고속터미널","latitude":37.506305,"longitude":127.005228,"x":60,"y":125},"endDto":{"name":"동작역.국립현충원","latitude":37.502522,"longitude":126.976845,"x":60,"y":125},"midDto":{"name":null,"latitude":37.5044135,"longitude":126.9910365,"x":60,"y":125},"pointDtos":[]},{"subPathId":null,"pathId":null,"type":"bus","distance":2107,"time":11,"stationCount":4,"subwayName":"null","busNo":"5524","subwayColor":"#000000","busColor":"#53b332","startDto":{"name":"동작역.국립현충원","latitude":37.502522,"longitude":126.976845,"x":60,"y":125},"endDto":{"name":"총신대입구역.남성사계시장입구앞","latitude":37.48817,"longitude":126.982288,"x":60,"y":125},"midDto":{"name":null,"latitude":37.495346,"longitude":126.9795665,"x":60,"y":125},"pointDtos":[{"pointInformationDto":{"name":"동작역.국립현충원","latitude":37.502522,"longitude":126.976845,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"갯마을앞","latitude":37.49755,"longitude":126.983348,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"정금마을.방배경찰서","latitude":37.494337,"longitude":126.982747,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"경문고교.배나무골앞","latitude":37.491381,"longitude":126.982663,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"총신대입구역.남성사계시장입구앞","latitude":37.48817,"longitude":126.982288,"x":60,"y":125},"subPathId":null}]},{"subPathId":null,"pathId":null,"type":"walk","distance":329,"time":5,"stationCount":0,"subwayName":"null","busNo":"null","subwayColor":"#000000","busColor":"#000000","startDto":{"name":"동작역.국립현충원","latitude":37.502522,"longitude":126.976845,"x":60,"y":125},"endDto":{"name":"이수역","latitude":37.485866,"longitude":126.984637,"x":60,"y":125},"midDto":{"name":null,"latitude":37.494194,"longitude":126.980741,"x":60,"y":125},"pointDtos":[]},{"subPathId":null,"pathId":null,"type":"bus","distance":2862,"time":14,"stationCount":8,"subwayName":"null","busNo":"742","subwayColor":"#000000","busColor":"#0068b7","startDto":{"name":"이수역","latitude":37.485866,"longitude":126.984637,"x":60,"y":125},"endDto":{"name":"숭실대별관앞","latitude":37.494977,"longitude":126.959951,"x":60,"y":125},"midDto":{"name":null,"latitude":37.4904215,"longitude":126.972294,"x":60,"y":125},"pointDtos":[{"pointInformationDto":{"name":"이수역","latitude":37.485866,"longitude":126.984637,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"이수역10번출구","latitude":37.484907,"longitude":126.98007,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"남성초등학교","latitude":37.484325,"longitude":126.978427,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"남성역골목시장","latitude":37.483668,"longitude":126.973326,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"남성역","latitude":37.484979,"longitude":126.970707,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"사당중학교","latitude":37.486678,"longitude":126.968185,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"총신대","latitude":37.488787,"longitude":126.966143,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"사당롯데캐슬골든포레.사당해그린","latitude":37.492323,"longitude":126.963527,"x":60,"y":125},"subPathId":null},{"pointInformationDto":{"name":"숭실대별관앞","latitude":37.494977,"longitude":126.959951,"x":60,"y":125},"subPathId":null}]},{"subPathId":null,"pathId":null,"type":"walk","distance":31,"time":1,"stationCount":0,"subwayName":"null","busNo":"null","subwayColor":"#000000","busColor":"#000000","startDto":{"name":"숭실대별관앞","latitude":37.494977,"longitude":126.959951,"x":60,"y":125},"endDto":{"name":"숭실대 정보관","latitude":37.4947,"longitude":126.9599,"x":60,"y":125},"midDto":{"name":null,"latitude":37.4948385,"longitude":126.9599255,"x":60,"y":125},"pointDtos":[]}]}]
 }

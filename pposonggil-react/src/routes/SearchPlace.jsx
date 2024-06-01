@@ -130,7 +130,7 @@ const SearchBoxWrapper = styled.div`
   display:flex;
   justify-content: space-between;
   align-items: center;
-  background-color: white;
+  background-color: #ffffff97;
   position: absolute;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   z-index: 200;
@@ -176,8 +176,10 @@ const Icon = styled(FontAwesomeIcon)`
 const MapWrapper = styled.div`
   height: 50%;
   height: calc(100% - 95px - 235px); /* 남은 높이를 계산하여 설정 */
+  height: calc(100% - 235px); /* 남은 높이를 계산하여 설정 */
+
   position: relative;
-  top:95px;
+  /* top:95px; */
 `;
 /* 하단창 */
 const ContentBoxWrapper = styled.div` 
@@ -277,7 +279,7 @@ const DetailInfo = styled.div`
 const Btn = styled.div`
   background-color: white;
   width: auto;
-  padding: 8px 24px;
+  padding: 6px 20px;
   border-radius: 25px;
   text-align: center;
   border: 0.5px solid #00000039;

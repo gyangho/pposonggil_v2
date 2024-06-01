@@ -1,8 +1,9 @@
+
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
 import { motion } from "framer-motion";
+import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faRotate, faEllipsisVertical, faBus, faSubway, faPersonWalking } from "@fortawesome/free-solid-svg-icons";
+import { faRotate, faEllipsisVertical, faBus, faSubway, faDroplet, faCircleDot } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState, useResetRecoilState } from "recoil";
 import axios from "axios";
@@ -11,7 +12,7 @@ import { routeInfoState } from "../recoil/atoms";
 
 const { kakao } = window;
 
-const apiUrl = "http://localhost:3001/paths";
+const apiUrl = "http://localhost:3001/path2";
 
 function SearchRoutes() {
   const [route, setRoute] = useRecoilState(routeInfoState);
@@ -20,6 +21,9 @@ function SearchRoutes() {
 
   const [serverResponse, setServerResponse] = useState(null);
   const [paths, setPaths] = useState([]);
+  const [filterOption, setFilterOption] = useState("all");
+  const [sortOption, setSortOption] = useState("walk"); // "walk" for 최소도보순, "time" for 최단시간순, "transit" for 최소환승순
+  const [activeButton, setActiveButton] = useState("all"); // 현재 활성화된 버튼 상태
 
   const sendRouteToServer = async (route) => {
     try {
@@ -53,9 +57,7 @@ function SearchRoutes() {
   };
 
   useEffect(() => {
-    if (route.origin[0].lat && route.dest[0].lat) {
-      sendRouteToServer(route);
-    }
+    fetchPaths();
   }, [route]);
 
   const onReverseClick = () => {
@@ -69,15 +71,38 @@ function SearchRoutes() {
     resetRouteInfo();
   };
 
-  console.log("경로 정보 확인: ", route);
+  const filterPaths = () => {
+    if (filterOption === "all") {
+      return paths;
+    } else if (filterOption === "bus") {
+      return paths.filter(path => path.subPathDtos.every(subPath => subPath.type === "walk" || subPath.type === "bus"));
+    } else if (filterOption === "subway") {
+      return paths.filter(path => path.subPathDtos.every(subPath => subPath.type === "walk" || subPath.type === "subway"));
+    }
+  };
 
+  const sortPaths = (filteredPaths) => {
+    if (sortOption === "walk") {
+      return filteredPaths.sort((a, b) => a.totalWalkDistance - b.totalWalkDistance);
+    } else if (sortOption === "time") {
+      return filteredPaths.sort((a, b) => a.totalTime - b.totalTime);
+    } else if (sortOption === "transit") {
+      return filteredPaths.sort((a, b) => a.totalTransitCount - b.totalTransitCount);
+    }
+  };
+
+  const busPathsCount = paths.filter(path => path.subPathDtos.every(subPath => subPath.type === "walk" || subPath.type === "bus")).length;
+  const subwayPathsCount = paths.filter(path => path.subPathDtos.every(subPath => subPath.type === "walk" || subPath.type === "subway")).length;
+
+  const filteredPaths = filterPaths();
+  const sortedPaths = sortPaths(filteredPaths);
   return (
-    <React.Fragment>
+    <Wrapper>
       <SearchContainer id="origin">
         <Container>
           <Input
             type="text"
-            value={route.origin[0].name}
+            value={route.origin.name}
             onClick={() => navigate('/search')}
             readOnly
             placeholder="출발지 입력"
@@ -91,7 +116,7 @@ function SearchRoutes() {
         <Container>
           <Input
             type="text"
-            value={route.dest[0].name}
+            value={route.dest.name}
             onClick={() => navigate('/search')}
             readOnly
             placeholder="도착지 입력"
@@ -101,72 +126,134 @@ function SearchRoutes() {
           <FontAwesomeIcon icon={faEllipsisVertical} />
         </Container>
       </SearchContainer>
-      {paths.map((path, index) => (
-        <ResultContainer key={index}>
-          <OptionBar id="sortingByTransport">
-            <button>전체</button>
-            <button>버스 3</button>
-            <button>지하철 2</button>
-          </OptionBar>
-          <SortingBar id="sortingOption">
-            <div>오늘 오후 12:43 출발</div>
-            <div>최소도보순</div>
-          </SortingBar>
-
-          <PathBox id="pathBox">
-            <PathInfo id="timeAndPrice">
-              <span>{path.totalTime}</span>
-              <div>분 <p>|</p> 도보 {path.totalWalkTime}분 {path.totalWalkDistance}m<p>|</p>{path.price}원</div>
-            </PathInfo>
+     
+      <OptionBar id="sortingByTransport">
+        <button
+          className={activeButton === "all" ? "active" : ""}
+          onClick={() => { setFilterOption("all"); setActiveButton("all"); }}
+        >
+          전체
+        </button>
+        <button
+          className={activeButton === "bus" ? "active" : ""}
+          onClick={() => { setFilterOption("bus"); setActiveButton("bus"); }}
+        >
+          버스 {busPathsCount}
+        </button>
+        <button
+        className={activeButton === "subway" ? "active" : ""}
+        onClick={() => { setFilterOption("subway"); setActiveButton("subway"); }}
+        >
+          지하철 {subwayPathsCount}
+        </button>
+      </OptionBar>
+      <SortingBar id="sortingOption">
+        <div>{new Date().toLocaleString("ko-KR", { hour: "numeric", minute: "numeric" })} 출발</div>
+        <select onChange={(e) => setSortOption(e.target.value)}>
+          <option value="walk">최소도보순</option>
+          <option value="time">최단시간순</option>
+          <option value="transit">최소환승순</option>
+        </select>
+      </SortingBar>
+      <ResultContainer>
+        {sortedPaths.map((path, index) => (
+          <PathBox id="pathBox" key={index}>
+            <PathSummary>
+              <PathInfo id="timeAndPrice">
+                <span>{path.totalTime}</span>
+                <div>분 <p>|</p> 도보 {path.totalWalkTime}분 {path.totalWalkDistance}m<p>|</p>{path.price}원</div>
+              </PathInfo>
+              <PathWeatherInfo>
+                <FontAwesomeIcon icon={faDroplet}/>
+                <p>0.3mm</p>
+              </PathWeatherInfo>
+            </PathSummary>
 
             <SummaryBar id="summaryBar">
               <BarContainer>
-                {path.subPathDtos && path.subPathDtos.map((subPath, index) => (
-                  <Bar
-                    key={index}
-                    width={(subPath.time / path.totalTime) * 100}
-                    // color={subPath.type === 'subway' ? subPath.subwayColor : subPath.busColor}
-                    color={subPath.type === 'walk' ? 'gray' : (subPath.type === 'subway' ? subPath.subwayColor : subPath.busColor)}
-                    >
-                    {subPath.type !== 'walk' && (
-                      <IconBox>
-                        <TransportIcon icon={subPath.type === 'bus' ? faBus : faSubway} style={{ color: subPath.type === 'bus' ? subPath.busColor : subPath.subwayColor }} />
-                      </IconBox>
-                    )}
-                    <p>{subPath.time}분</p>
-                  </Bar>
+                {path.subPathDtos && path.subPathDtos.map((subPath, subIndex) => (
+                  subPath.time !== 0 && (
+                    <React.Fragment key={subIndex}>
+                      <Bar
+                        width={(subPath.time / path.totalTime) * 100}
+                        color={subPath.type === 'walk' ? 'darkgray' : (subPath.type === 'subway' ? subPath.subwayColor : subPath.busColor)}
+                      >
+                        {subPath.type !== 'walk' && (
+                          <IconBox style={{backgroundColor: subPath.type === 'bus' ? subPath.busColor : subPath.subwayColor}}>
+                            <FontAwesomeIcon
+                              icon={subPath.type === 'bus' ? faBus : (subPath.type === 'subway' && faSubway)}
+                              style={{color: "white"}}
+                            />
+                          </IconBox>
+                        )}
+                        <p>{subPath.time}분</p>
+                      </Bar>
+                    </React.Fragment>
+                  )
                 ))}
               </BarContainer>
             </SummaryBar>
 
             <SubPathSummary>
-              {path.subPathDtos && path.subPathDtos.filter(subPath => subPath.type !== 'walk').map((subPath, subIndex) => (
-                <SubPath key={subIndex}>
-                  <div id="subPath-component">
-                    <div id="subPathIconColumn">
-                      {subPath.type === "bus" && <FontAwesomeIcon icon={faBus} style={{ color: subPath.busColor }} />}
-                      {subPath.type === "subway" && <FontAwesomeIcon icon={faSubway} style={{ color: subPath.subwayColor }} />}
-                      {subPath.type === "walk" && <FontAwesomeIcon icon={faPersonWalking} />}
-                    </div>
-                    <div id="subPathTextColumn">
-                      <div>{subPath.pointDtos[0] && subPath.pointDtos[0].pointInformationDto.name}</div>
-                      {subPath.type === "bus" && <div>{subPath.busNo}</div>}
-                      {subPath.type === "subway" && <div>{subPath.subwayName.split(' ').pop()}</div>}
-                      <div>{subPath.pointDtos[subPath.pointDtos.length - 1] && subPath.pointDtos[subPath.pointDtos.length - 1].pointInformationDto.name}</div>
-                    </div>
-                  </div>
-                </SubPath>
+              {path.subPathDtos && path.subPathDtos.filter(subPath => subPath.type !== 'walk').map((subPath, subIndex, array) => (
+                <React.Fragment key={subIndex}>
+                  <SubPath>
+                    <IconColumn id="subPathIconColumn">
+                      {subPath.type === "bus" && <FontAwesomeIcon icon={faBus} style={{ color: subPath.busColor, marginLeft: "-1.7px" }} />}
+                      {subPath.busColor === "#0068b7" && <div style={{ color: subPath.busColor }}>간선</div>}
+                      {subPath.busColor === "#53b332" && <div style={{ color: subPath.busColor }}>지선</div>}
+                      {subPath.busColor === "#ffc600" && <div style={{ color: subPath.busColor }}>마을</div>}
+
+                      {subPath.type === "subway" && (
+                        <React.Fragment>
+                          <FontAwesomeIcon icon={faSubway} style={{ color: subPath.subwayColor }} />
+                          <div style={{ color: subPath.subwayColor }}>{subPath.subwayName.split(' ').pop()}</div>
+                        </React.Fragment>
+                      )}
+                    </IconColumn>
+                    <TextColumn id="subPathTextColumn">
+                      <div>
+                        {subPath.startDto.name}
+                        {subPath.type === "subway" && "역"}
+                      </div>
+                      {subPath.type === "bus" && (
+                        <div style={{display: "flex", paddingTop: "5px"}}>
+                          <FontAwesomeIcon icon={faBus} style={{color: subPath.busColor, marginRight: "3px"}}/>
+                          <div style={{fontWeight: "600"}}>{subPath.busNo}</div>
+                        </div>
+                      )}
+                    </TextColumn>
+                  </SubPath>
+                      
+                  {/* 마지막 subPath인 경우 하차 정보를 표시 */}
+                  {subIndex === array.length - 1 && (
+                    <SubPath>
+                      <IconColumn>
+                        <FontAwesomeIcon icon={faCircleDot} style={{ color: "darkgray" }} />
+                        <div style={{ color: "darkgray" }}>하차</div>
+                      </IconColumn>
+                      <TextColumn>
+                        <div>{subPath.endDto.name}</div>
+                      </TextColumn>
+                    </SubPath>
+                  )}
+
+                </React.Fragment>
               ))}
             </SubPathSummary>
           </PathBox>
-        </ResultContainer>
-      ))}
-    </React.Fragment>
-  );
+        ))}
+      </ResultContainer>
+    </Wrapper>
+  ); 
 }
-
 export default SearchRoutes;
 
+const Wrapper = styled.div`
+  overflow-y: scroll;
+  height: 100%;
+  width: 100%;
+`;
 
 const SearchContainer = styled.div`
   display: flex;
@@ -178,18 +265,18 @@ const SearchContainer = styled.div`
 
 const Container = styled.div`
   width: 65%;
-  height: 40px;
+  height: 35px;
   background-color: whitesmoke;
   padding: 0px 20px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
   border-radius: 15px;
-  padding: 12px;
   margin: 0px 5px;
-  &:last-child { //버튼
+  border-radius: 5px;
+
+  &:last-child {
     width: 10%;
-    border-radius: 5px;
     background-color: #003E5E;
     justify-content: flex-end;
     color: white;
@@ -204,11 +291,11 @@ const Input = styled(motion.input)`
   text-align: left;
   width: 100%;
   height: 100%;
-  font-size: 17px;
+  font-size: 15px;
   font-weight: 600;
   border: none;
   background-color: whitesmoke;
-  margin-left: 10px;
+  margin: 0px 5px s;
   &:focus {
     outline: none;
     cursor: pointer;
@@ -217,62 +304,12 @@ const Input = styled(motion.input)`
 
 const ResultContainer = styled.div`
   background-color: whitesmoke;
-  min-height: 65vh;
   width: 100%;
-  max-height: 65vh;
-  overflow-y: scroll;
-  bottom: 70px;
-  left: 0;
-  right: 0;
 `;
 
-const Icon = styled(FontAwesomeIcon)`
-  width: 22px;
-  height: 22px;
-`;
-
-const SearchedRoute = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  padding: 10px 20px;
-  height: auto;
-  min-height: 45px;
-  color: black;
-  font-weight: 300;
-  font-size: 16px;
-  border-bottom: 0.5px solid #aeaeae99;
-  background-color: white;
-`;
-
-const RouteIcon = styled(FontAwesomeIcon)`
-  color: white;
-  width: 12px;
-  height: 12px;
-  padding: 10px;
-  background-color: #a3a3a3;
-  border-radius: 50%;
-`;
-
-const optionIcon = styled(FontAwesomeIcon)`
-  
-`;
-
-const Box = styled.div`
-  background-color: #88d5ff35;
-  width: 100%;
-  height: 45px;
-`;
-
-const RouteInfo = styled.div`
-  margin: 0px 20px;
-  font-weight: 500;
-`;
-
-//하단 경로 검색 결과 부분
 const OptionBar = styled.div`
   width: 100%;
-  height: 45px;
+  height: 40px;
   background-color: white;
   border-top: 1px solid darkgrey;
   border-bottom: 1px solid darkgrey;
@@ -286,7 +323,7 @@ const OptionBar = styled.div`
     background-color: white;
     border-radius: 25px;
     margin-right: 15px;
-    padding: 5px 10px;
+    padding: 4px 8px;
     border: 1.5px solid #FFC512;
     font-weight: bold;
     color: #FFC512;
@@ -306,20 +343,25 @@ const SortingBar = styled(OptionBar)`
 const PathBox = styled.div`
   background-color: white;
   padding: 15px 20px;
-  border-top: 1px solid darkgrey;
-  border-bottom: 1px solid darkgrey;
-  margin-bottom: 5px;
+  border-top: 1px solid #dddddd;
+  border-bottom: 1px solid #dddddd;
+  margin-bottom: 10px;
 `;
 
+const PathSummary = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 15px;
+`;
 const PathInfo = styled.div`
   width: 100%;
-  height: 40px;
-  background-color: tomato;
+  height: auto;
   font-weight: 600;
   display: flex;
   justify-content: start;
   align-items: end;
-  span { 
+  span {
     font-size: 30px;
     font-weight: 900;
     margin-right: 2px;
@@ -336,35 +378,66 @@ const PathInfo = styled.div`
     color: darkgray;
   }
 `;
+const PathWeatherInfo = styled.div`
+  display: block;
+  height: auto;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: #63CAFF;
+  font-size: 25px;
+  p {
+    font-weight: 900;
+    font-size: 14px;
+    color: #004263;
+  }
+`;
 
+/* 상세 경로 부분 */
 const SubPathSummary = styled.div`
-  /* background-color: tomato; */
+  width: 100%;
   padding: 5px 0px;
   border-top: 1px solid darkgrey;
-
+  font-weight: 300;
+  font-size: 14px;
 `;
+
 const SubPath = styled.div`
-  padding: 5px 0px; 
-`;
-const EachSubPath = styled.div`
-  background-color: skyblue;
+  width: 100%;
+  height: auto;
+  padding: 5px 0px;
   display: flex;
-`;
-const IconColumn = styled.div`
-  display: block;
-  background-color: lemonchiffon;
-`;
-const TextColumn = styled.div`
-  background-color: pink;
+  /* background-color: salmon; */
+  font-weight: 400;
 `;
 
-//요약바
-const SummaryBar = styled.div`
+const IconColumn = styled.div`
+  width: 80px;
+  display: flex;
+
+  /* margin-left: 5px; */
+  justify-content: start;
   /* background-color: pink; */
+  font-weight: 700;
+  font-size: 15px;
+  * {
+    margin-right: 6px;
+  }
+`;
+
+const TextColumn = styled.div`
+  width: 75%;
+
+  /* background-color: skyblue; */
+`;
+
+const SummaryBar = styled.div`
   padding: 10px 0px;
   display: flex;
   justify-content: center;
   align-items: center;
+  font-size: 10px;
+
 `;
 
 const BarContainer = styled.div`
@@ -372,44 +445,44 @@ const BarContainer = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 20px;
+  height: 18px;
   background-color: #dddddd;
+  background-color: darkgray;
   border-radius: 25px;
 `;
+
 const Bar = styled.div`
   height: 100%;
   background-color: ${(props) => props.color};
   width: ${(props) => props.width}%;
+  min-width: 14px;
   border-radius: 25px;
-  /* position: relative; */
-  font-size: 12px;
+  position: relative;
   display: flex;
   justify-content: start;
   align-items: center;
   text-align: center;
-  p{
+  p {
     width: 100%;
     text-align: center;
     justify-content: center;
-    font-weight: 500;
+    font-weight: 700;
+    font-size: 10px;
     color: white;
   }
 `;
-const TransportIcon = styled(FontAwesomeIcon)`
-  font-size: 10px;
-`;
 
 const IconBox = styled.div`
-  margin-left: -10px;
-  min-width: 22px;
-  max-width: 22px;
-  min-height: 22px;
-  max-height: 22px;
-  background-color: white;
-  border: 1px solid gray;
+  min-width: 20px;
+  max-width: 20px;
+  min-height: 20px;
+  max-height: 20px;
+  border: 1px solid whitesmoke;
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 2;
+  font-size: 12px;
 `;
+

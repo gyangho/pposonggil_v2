@@ -85,7 +85,7 @@ function Navigation() {
 
   const items = [
     { name: "홈", nav: "home", to: "/", icon: faHouse },
-    { name: "경로찾기", nav: "search", to: "/search", icon: faRoute },
+    { name: "경로찾기", nav: "search", to: "/search/routes", icon: faRoute },
     { name: "중고우산", nav: "market", to: "/market", icon: faUmbrella },
     { name: "즐겨찾기", nav: "bookmark", to: "/bookmark", icon: faBookmark },
     { name: "마이", nav: "mypage", to: "/mypage", icon: faUser },

@@ -116,9 +116,7 @@ function PlaceInfo() {
   export default PlaceInfo
 
   const Container = styled(motion.div)`
-  font-family: 'Open Sans', Arial, sans-serif;
-  font-weight: 600;
-  padding: 12px;
+  padding: 10px;
   height: 100%;
   width: 100%;
   display: block;
@@ -130,7 +128,7 @@ function PlaceInfo() {
 const Box = styled.div`
   border-radius: 22px;
   width: 100%;
-  margin: 20px;
+  padding: 20px;
 `;
 
 const Row = styled.div`
@@ -145,14 +143,13 @@ const Row = styled.div`
 `;
 
 const Address = styled.div`
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 700;
 `;
 
 
 const Info = styled.div`
-  font-size:16px;
-  margin-right: 15px;
+  font-size:15px;
   width: auto;
   margin-bottom: 10px;
   font-weight: 500;
@@ -161,7 +158,7 @@ const Info = styled.div`
 const Btn = styled.div`
   background-color: white;
   width: auto;
-  padding: 8px 24px;
+  padding: 6px 20px;
   border-radius: 25px;
   text-align: center;
   border: 0.5px solid #00000039;
@@ -176,7 +173,7 @@ const Btn = styled.div`
 const AddressBox = styled.div`
   display: flex;
   width: auto;
-  margin-top: 15px;
+  margin-top: 5px;
   &:last-child {
     justify-content: end;
   }
