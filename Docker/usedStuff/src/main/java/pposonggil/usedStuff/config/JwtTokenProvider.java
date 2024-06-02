@@ -1,33 +1,47 @@
-package com.pposong.pposongoauth2.config;
+package pposonggil.usedStuff.config;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 
+import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
+import java.util.Base64;
 import java.util.Date;
 
+@Slf4j
+@Component
 public class JwtTokenProvider {
     private final long VALID_MILISECOND = 1000L * 60 * 60; // 1 시간
-    private final PrincipalDetailsService principalDetailsService;
 
     @Value("${jwt.secret}")
-    private String secretKey;
+    private String secretKeyPlain;
+    private SecretKey cachedSecretKey;
 
-    private Key getSecretKey(String secretKey) {
-        byte[] KeyBytes = secretKey.getBytes(StandardCharsets.UTF_8);
-        return Keys.hmacShaKeyFor(KeyBytes);
+    // plain -> 시크릿 키 변환 method
+    private SecretKey _getSecretKey() {
+        String keyBase64Encoded = Base64.getEncoder().encodeToString(secretKeyPlain.getBytes());
+        return Keys.hmacShaKeyFor(keyBase64Encoded.getBytes());
+    }
+
+    public SecretKey getSecretKey() {
+        if (cachedSecretKey == null)
+            cachedSecretKey = _getSecretKey();
+        return cachedSecretKey;
     }
 
     private String getUsername(String jwtToken) {
         return Jwts.parserBuilder()
-                .setSigningKey(getSecretKey(secretKey))
+                .setSigningKey(getSecretKey())
                 .build()
                 .parseClaimsJws(jwtToken)
                 .getBody()
@@ -38,7 +52,7 @@ public class JwtTokenProvider {
         try {
             log.info("validate..");
             Jws<Claims> claims = Jwts.parserBuilder()
-                    .setSigningKey(getSecretKey(secretKey))
+                    .setSigningKey(getSecretKey())
                     .build()
                     .parseClaimsJws(jwtToken);
             log.info("{}",claims.getBody().getExpiration());

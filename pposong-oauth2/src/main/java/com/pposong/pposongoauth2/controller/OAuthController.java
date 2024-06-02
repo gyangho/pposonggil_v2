@@ -20,4 +20,7 @@ public class OAuthController {
     public String adminPage(){
         return "adminPage";
     }
+
+    @GetMapping("/auth/success")
+    public String success() {return "welcome";}
 }
