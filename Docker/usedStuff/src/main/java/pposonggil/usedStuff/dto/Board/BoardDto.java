@@ -25,6 +25,7 @@ public class BoardDto {
     private String content;
     private String startTimeString;
     private String endTimeString;
+    private String imageUrl;
     private TransactionAddress address;
     private LocalDateTime createdAt;
     private LocalDateTime updateAt;
@@ -41,6 +42,7 @@ public class BoardDto {
                 .content(board.getContent())
                 .startTimeString(board.getStartTimeString())
                 .endTimeString(board.getEndTimeString())
+                .imageUrl(board.getImageUrl())
                 .address(board.getAddress())
                 .createdAt(board.getCreatedAt())
                 .updateAt(board.getUpdateAt())

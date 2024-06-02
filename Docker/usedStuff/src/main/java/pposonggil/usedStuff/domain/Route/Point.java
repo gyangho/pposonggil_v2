@@ -30,6 +30,7 @@ public class Point {
 
     public void setPointSubPath(SubPath pointSubPath) {
         this.pointSubPath = pointSubPath;
+//        pointSubPath.getPoints().add(this);
     }
 
     @Builder

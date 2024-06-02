@@ -7,7 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
-import pposonggil.usedStuff.domain.Route.RouteRequest;
+import pposonggil.usedStuff.domain.Route.Path;
+//import pposonggil.usedStuff.domain.Route.RouteRequest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +49,7 @@ public class Member extends BaseEntity {
 
     @Builder.Default
     @OneToMany(mappedBy = "routeRequester")
-    private List<RouteRequest> routeRequests = new ArrayList<>();
+    private List<Path> paths = new ArrayList<>();
 
     @Builder.Default
     @OneToMany(mappedBy = "tradeSubject")
