@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pposonggil.usedStuff.dto.Forecast.ForecastSubPathDto;
 import pposonggil.usedStuff.dto.Route.Path.PathDto;
 import pposonggil.usedStuff.dto.Route.PointInformation.PointInformationDto;
 import pposonggil.usedStuff.service.Route.PathService;
@@ -11,6 +12,7 @@ import pposonggil.usedStuff.service.Route.SubPathService;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -22,9 +24,10 @@ public class PathApiController {
 
     @PostMapping("/api/paths")
     public ResponseEntity<Object> createPaths(@RequestPart("startDto") PointInformationDto startDto,
-                                              @RequestPart("endDto") PointInformationDto endDto) {
+                                              @RequestPart("endDto") PointInformationDto endDto,
+                                              @RequestPart("selectTime") String selectTime) {
         try {
-            Object response = pathService.createPaths(startDto, endDto);
+            Object response = pathService.createPaths(startDto, endDto, selectTime);
             return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (IOException e) {
             e.printStackTrace();
@@ -50,6 +53,21 @@ public class PathApiController {
         Map<String, Object> response = new HashMap<>();
         response.put("message", "최적 도보 경로가 포함된 상세 경로 입니다.");
         response.put("defaultPathDto", defaultPathDto);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @GetMapping("/api/path/expected")
+    public ResponseEntity<Object> selectPathWithRain(@RequestPart("pathDto") PathDto pathDto,
+                                                     @RequestPart("selectTime") String selectTime) {
+        List<ForecastSubPathDto> forecastBySubPath = pathService.createForecastBySubPath(pathDto, selectTime);
+        Double result = 0.0;
+
+        for (ForecastSubPathDto forecastSubPathDto : forecastBySubPath) {
+            result = result + Double.parseDouble(forecastSubPathDto.getExpectedRain());
+        }
+        Map<String, Object> response = new HashMap<>();
+        response.put("result", result);
+        response.put("forecast", forecastBySubPath);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 }

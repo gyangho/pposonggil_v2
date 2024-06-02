@@ -32,6 +32,7 @@ public class PathDto {
     private Long totalDistance;
     private Long totalWalkDistance;
     private Long totalWalkTime;
+    private Double totalRain;
     private Long busTransitCount;
     private Long subwayTransitCount;
     private Long totalTransitCount;
@@ -51,6 +52,7 @@ public class PathDto {
                 .totalDistance(path.getTotalDistance())
                 .totalWalkDistance(path.getTotalWalkDistance())
                 .totalWalkTime(path.getTotalWalkTime())
+                .totalRain(path.getTotalRain())
                 .busTransitCount(path.getBusTransitCount())
                 .subwayTransitCount(path.getSubwayTransitCount())
                 .totalTransitCount(path.getTotalTransitCount())
@@ -73,6 +75,7 @@ public class PathDto {
                 .totalDistance(this.totalDistance)
                 .totalWalkDistance(this.totalWalkDistance)
                 .totalWalkTime(this.totalWalkTime)
+                .totalRain(this.totalRain)
                 .busTransitCount(this.busTransitCount)
                 .subwayTransitCount(this.subwayTransitCount)
                 .totalTransitCount(this.totalTransitCount)

@@ -11,12 +11,15 @@ import pposonggil.usedStuff.domain.Member;
 import pposonggil.usedStuff.domain.Route.LatXLngY;
 import pposonggil.usedStuff.domain.Route.Path;
 import pposonggil.usedStuff.domain.Route.PointInformation;
+import pposonggil.usedStuff.dto.Forecast.ForecastDto;
+import pposonggil.usedStuff.dto.Forecast.ForecastSubPathDto;
 import pposonggil.usedStuff.dto.Route.Path.PathDto;
 import pposonggil.usedStuff.dto.Route.PointInformation.PointInformationDto;
 import pposonggil.usedStuff.dto.Route.SubPath.SubPathDto;
 import pposonggil.usedStuff.repository.member.MemberRepository;
 import pposonggil.usedStuff.repository.route.path.PathRepository;
 import pposonggil.usedStuff.repository.route.point.PointRepository;
+import pposonggil.usedStuff.service.Forecast.ForecastService;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -25,6 +28,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -37,20 +42,90 @@ public class PathService {
     private final MemberRepository memberRepository;
     private final PathRepository pathRepository;
     private final SubPathService subPathService;
+    private final ForecastService forecastService;
     private final PointRepository pointRepository;
 
-    public List<PathDto> createPaths(PointInformationDto start, PointInformationDto end) throws IOException {
+    /**
+     * 대중교통 경로 리스트 생성
+     * 도보경로 X
+     */
+    public List<PathDto> createPaths(PointInformationDto start, PointInformationDto end, String selectTime) throws IOException {
         String urlInfo = buildUrl(start, end);
         StringBuilder sb = getResponse(urlInfo);
-        return getPathDtos(sb, start, end);
+        List<PathDto> pathDtos = getPathDtos(sb, start, end);
+        calTotalRain(selectTime, pathDtos);
+        return pathDtos;
     }
 
+    /**
+     * 탐색한 경로들의 예상 강수량 계산
+     */
+    private void calTotalRain(String selectTime, List<PathDto> pathDtos) {
+        for (PathDto pathDto : pathDtos) {
+            List<ForecastSubPathDto> forecastSubPathDtos = createForecastBySubPath(pathDto, selectTime);
+            double totalRain = 0.0;
+            for (ForecastSubPathDto forecastSubPathDto : forecastSubPathDtos) {
+                totalRain = totalRain + Double.parseDouble(forecastSubPathDto.getExpectedRain());
+            }
+            pathDto.setTotalRain(totalRain);
+        }
+    }
+
+    /**
+     * 선택한 시각에 따른
+     * SubPath 내 예상되는 기상 정보 및 강수량 리스트 생성
+     */
+    public List<ForecastSubPathDto> createForecastBySubPath(PathDto pathDto, String selectTime) {
+        List<ForecastSubPathDto> result = new ArrayList<>();
+        String standardTime = selectTime.substring(0, 2) + "00";
+        Long duration = null;
+
+        for (SubPathDto subPathDto : pathDto.getSubPathDtos()) {
+            duration = subPathDto.getTime();
+            if (Objects.equals(subPathDto.getType(), "walk")) {
+                ForecastDto forecastDto = ForecastDto.builder()
+                        .time(standardTime)
+                        .x(subPathDto.getMidDto().getX().toString())
+                        .y(subPathDto.getMidDto().getY().toString())
+                        .build();
+
+                ForecastDto forecastDto1 = forecastService.findForecastByTimeAndXAndY(forecastDto);
+
+                ForecastSubPathDto forecastSubPathDto = ForecastSubPathDto.builder()
+                        .time(subPathDto.getTime().toString())
+                        .expectedRain(String.format("%.2f", Double.parseDouble(forecastDto1.getRn1()) / 60 * subPathDto.getTime()))
+                        .rn1(forecastDto1.getRn1())
+                        .t1h(forecastDto1.getT1h())
+                        .reh(forecastDto1.getReh())
+                        .wsd(forecastDto1.getWsd())
+                        .latitude(subPathDto.getMidDto().getLatitude())
+                        .longitude(subPathDto.getMidDto().getLongitude())
+                        .build();
+
+                result.add(forecastSubPathDto);
+            }
+            LocalTime curTime = LocalTime.parse(selectTime, DateTimeFormatter.ofPattern("HHmm"));
+            LocalTime updateTime = curTime.plusMinutes(duration);
+            standardTime = updateTime.format(DateTimeFormatter.ofPattern("HH")) + "00";
+        }
+        return result;
+    }
+
+    /**
+     * default osrm을 이용한 도보 경로가 포함된
+     * 대중교통 경로
+     */
     public PathDto selectDefaultPath(PathDto pathDto) throws IOException {
         List<SubPathDto> walkSubPaths = subPathService.createDefaultSubPaths(pathDto);
         pathDto.setSubPathDtos(walkSubPaths);
         return pathDto;
     }
 
+    /**
+     * 선택한 경로를 db에 저장
+     * 도보 경로X
+     * 날씨 정보X
+     */
     @Transactional
     public Long createPath(PathDto pathDto) {
         Member routeRequester = memberRepository.findById(pathDto.getRouteRequesterId())
@@ -92,12 +167,12 @@ public class PathService {
                     subPathDto.setStartDto(pathDto.getStartDto());
                     subPathDto.setEndDto(subPathDtos.get(1)
                             .getPointDtos().getFirst().getPointInformationDto());
-                } else if (idx == subPathDtos.size()-1) {
-                    subPathDto.setStartDto(subPathDtos.get(idx-1).getEndDto());
+                } else if (idx == subPathDtos.size() - 1) {
+                    subPathDto.setStartDto(subPathDtos.get(idx - 1).getEndDto());
                     subPathDto.setEndDto(pathDto.getEndDto());
                 } else {
-                    subPathDto.setStartDto(subPathDtos.get(idx-1).getStartDto());
-                    subPathDto.setEndDto(subPathDtos.get(idx+1)
+                    subPathDto.setStartDto(subPathDtos.get(idx - 1).getStartDto());
+                    subPathDto.setEndDto(subPathDtos.get(idx + 1)
                             .getPointDtos().getFirst().getPointInformationDto());
                 }
             } else {
