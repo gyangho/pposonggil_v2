@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import styled from "styled-components";
@@ -12,7 +11,7 @@ import { routeInfoState } from "../recoil/atoms";
 
 const { kakao } = window;
 
-const apiUrl = "http://localhost:3001/path2";
+const apiUrl = "http://localhost:3001/paths";
 
 function SearchRoutes() {
   const [route, setRoute] = useRecoilState(routeInfoState);
@@ -71,6 +70,7 @@ function SearchRoutes() {
     resetRouteInfo();
   };
 
+  // 경로 검색 결과 필터 버튼 3개
   const filterPaths = () => {
     if (filterOption === "all") {
       return paths;
@@ -80,7 +80,7 @@ function SearchRoutes() {
       return paths.filter(path => path.subPathDtos.every(subPath => subPath.type === "walk" || subPath.type === "subway"));
     }
   };
-
+  // 정렬 기준 옵션(최소도보, 최단시간, 최소 환승)
   const sortPaths = (filteredPaths) => {
     if (sortOption === "walk") {
       return filteredPaths.sort((a, b) => a.totalWalkDistance - b.totalWalkDistance);
@@ -90,12 +90,18 @@ function SearchRoutes() {
       return filteredPaths.sort((a, b) => a.totalTransitCount - b.totalTransitCount);
     }
   };
-
+  //버스 버튼 => 도보 + 버스만 포함한 경로, 지하철 버튼 => 도보 + 지하철만 포함한 경로 필터링
   const busPathsCount = paths.filter(path => path.subPathDtos.every(subPath => subPath.type === "walk" || subPath.type === "bus")).length;
   const subwayPathsCount = paths.filter(path => path.subPathDtos.every(subPath => subPath.type === "walk" || subPath.type === "subway")).length;
 
   const filteredPaths = filterPaths();
   const sortedPaths = sortPaths(filteredPaths);
+
+  //클릭한 경로의 pathId url 파라미터로 전달
+  const goToRouteDetail = (pathId) => {
+    navigate(`/search/routes/${pathId}`);
+  };
+
   return (
     <Wrapper>
       <SearchContainer id="origin">
@@ -147,6 +153,7 @@ function SearchRoutes() {
           지하철 {subwayPathsCount}
         </button>
       </OptionBar>
+
       <SortingBar id="sortingOption">
         <div>{new Date().toLocaleString("ko-KR", { hour: "numeric", minute: "numeric" })} 출발</div>
         <select onChange={(e) => setSortOption(e.target.value)}>
@@ -155,9 +162,10 @@ function SearchRoutes() {
           <option value="transit">최소환승순</option>
         </select>
       </SortingBar>
+
       <ResultContainer>
         {sortedPaths.map((path, index) => (
-          <PathBox id="pathBox" key={index}>
+          <PathBox id="pathBox" key={index} onClick={() => goToRouteDetail(path.pathId)}>
             <PathSummary>
               <PathInfo id="timeAndPrice">
                 <span>{path.totalTime}</span>
@@ -165,7 +173,7 @@ function SearchRoutes() {
               </PathInfo>
               <PathWeatherInfo>
                 <FontAwesomeIcon icon={faDroplet}/>
-                <p>0.3mm</p>
+                <p>{path.totalRain}<span style={{fontSize:"11px"}}>mm</span></p>
               </PathWeatherInfo>
             </PathSummary>
 

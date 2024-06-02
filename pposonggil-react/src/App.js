@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import styled from 'styled-components';
 
-import SearchRoute from './routes/SearchRoute';
+import RouteDetail from './routes/RouteDetail';
 import SearchRoutes from './routes/SearchRoutes';
 import SearchPlace from './routes/SearchPlace';
 import Search from './routes/Search';
@@ -11,7 +11,6 @@ import Login from './routes/Login';
 import Header from './layouts/Header';
 import Navigation from './layouts/Navigation';
 
-import Map2 from './components/Map2';
 import MyPage from './routes/MyPage';
 import LogIn from './routes/Login';
 import KakaoRedirect from './components/KakaoRedirect';
@@ -48,7 +47,7 @@ function App() {
           <Route path="/market/posting" element={<Posting/>} />
           <Route path="/market" element={<Board />} />
 
-          <Route path="/search/route" element={<SearchRoute />} />
+          <Route path="/search/routes/:pathId" exact element={<RouteDetail />} />
           <Route path="/search/routes" element={<SearchRoutes />} />
           <Route path="/search/place" element={<SearchPlace />} />
           <Route path="/search" element={<Search />} />
