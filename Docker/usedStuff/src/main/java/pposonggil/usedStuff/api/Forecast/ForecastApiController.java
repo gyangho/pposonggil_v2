@@ -16,12 +16,12 @@ public class ForecastApiController {
     private final ForecastService forecastService;
 
     /**
-     * 날짜, 시간으로 기상 정보 조회
+     * 시간으로 기상 정보 조회
      * @param forecastDto
-     * @return 날짜 시간이 일치하는 기상 정보 Dto 리스트
+     * @return 시간이 일치하는 기상 정보 Dto 리스트
      */
-    @GetMapping("/api/forecast/by-date-time")
-    public List<ForecastDto> forecastsByDateAndTime(@RequestBody ForecastDto forecastDto) {
+    @GetMapping("/api/forecast/by-time")
+    public List<ForecastDto> forecastsByTime(@RequestBody ForecastDto forecastDto) {
         return forecastService.findForecastsByTime(forecastDto);
     }
 
@@ -46,12 +46,12 @@ public class ForecastApiController {
     }
 
     /**
-     * 날짜, 시간, x, y가 일치하는 기상 정보 조회
+     * 시간, x, y가 일치하는 기상 정보 조회
      * @param forecastDto
      * @return 날짜, 시간, x, y가 일치하는 기상 정보 Dto
      */
-    @GetMapping("/api/forecast/by-date-time-x-y")
-    public ForecastDto forecastDtoByDateAndTimeAndXAndY(@RequestBody ForecastDto forecastDto) {
+    @GetMapping("/api/forecast/by-time-x-y")
+    public ForecastDto forecastDtoByTimeAndXAndY(@RequestBody ForecastDto forecastDto) {
         return forecastService.findForecastByTimeAndXAndY(forecastDto);
     }
 

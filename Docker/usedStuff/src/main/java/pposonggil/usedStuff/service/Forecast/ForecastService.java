@@ -19,10 +19,11 @@ public class ForecastService {
     private final ForecastRepository forecastRepository;
 
     /**
-     * 날짜, 시각에 따른 기상 정보 Dto 리스트 조회
+     * 시각에 따른 기상 정보 Dto 리스트 조회
      */
     public List<ForecastDto> findForecastsByTime(ForecastDto forecastDto) {
-        List<Forecast> forecasts = forecastRepository.findByTime(forecastDto.getTime());
+        String standardTime = forecastDto.getTime().substring(0, 2) + "00";
+        List<Forecast> forecasts = forecastRepository.findByTime(standardTime);
         return forecasts.stream()
                 .map(ForecastDto::fromEntity)
                 .collect(Collectors.toList());
@@ -55,7 +56,8 @@ public class ForecastService {
      * 시각, x, y에 따른 기상 정보 Dto
      */
     public ForecastDto findForecastByTimeAndXAndY(ForecastDto forecastDto) {
-        Forecast forecast = forecastRepository.findByTimeAndXAndY(forecastDto.getTime(),
+        String standardTime = forecastDto.getTime().substring(0, 2) + "00";
+        Forecast forecast = forecastRepository.findByTimeAndXAndY(standardTime,
                 forecastDto.getX(), forecastDto.getY());
 
         return ForecastDto.fromEntity(forecast);
