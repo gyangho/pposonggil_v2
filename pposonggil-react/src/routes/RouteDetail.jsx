@@ -1,11 +1,16 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import { useParams } from "react-router-dom";
+import { useRecoilState } from 'recoil';
+import { addressState, currentAddressState, mapCenterState, locationBtnState, markerState } from '../recoil/atoms';
+
 import axios from "axios";
 
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBus, faSubway, faDroplet, faCircleDot, faPersonWalking, faLocationDot } from "@fortawesome/free-solid-svg-icons";
+
+import MapBtn from "../components/MapBtn";
 
 const { kakao } = window;
 const apiUrl = "http://localhost:3001/paths";
@@ -20,6 +25,133 @@ function RouteDetail() {
 
   const mapRef = useRef(null);
   const mapInstance = useRef(null);
+  /*  여기서부터 MapBtn 컴포넌트 관련 */
+  const markerInstance = useRef(null);
+  const geocoder = useRef(null);
+
+  const [currentAddress, setCurrentAddress] = useRecoilState(currentAddressState); // 현재 위치 추적 주소
+  const [activeMarker, setActiveMarker] = useRecoilState(markerState);
+
+
+  const [isGridActive, setIsGridActive] = useState(false);
+  const [isGridLoading, setIsGridLoading] = useState(false);
+  const [isLocationLoading, setIsLocationLoading] = useState(false);
+  const [activeTracking, setActiveTracking] = useState(false);
+  const [gridObjects, setGridObjects] = useState([]); //그리드 객체 관리
+
+  // 그리드 경계 데이터
+  const latLine = [37.69173846, 37.64577895, 37.60262058, 37.55674696, 37.51063517, 37.46494092, 37.42198141];
+  const lonLine = [126.7851093, 126.8432583, 126.9010823, 126.9599082, 127.0180783, 127.0766389, 127.1340031, 127.1921521];
+  const gridBounds = [];
+
+   // 그리드 경계 좌표 생성
+  for (let latIdx = 1; latIdx < latLine.length; latIdx++) {
+    for (let lonIdx = 0; lonIdx < lonLine.length - 1; lonIdx++) {
+      if (latIdx === 1 && lonIdx !== 4 && lonIdx !== 5) continue;
+      if (latIdx === 2 && lonIdx !== 2 && lonIdx !== 3 && lonIdx !== 4 && lonIdx !== 5) continue;
+      if (latIdx === 6 && lonIdx !== 1 && lonIdx !== 2 && lonIdx !== 4) continue;
+
+      const sw = new kakao.maps.LatLng(latLine[latIdx - 1], lonLine[lonIdx]);
+      const ne = new kakao.maps.LatLng(latLine[latIdx], lonLine[lonIdx + 1]);
+      gridBounds.push(new kakao.maps.LatLngBounds(sw, ne));
+    }
+  }
+
+
+  //위치 추적 버튼 핸들러
+  const handleLocationBtn = useCallback(() => {
+    setIsLocationLoading(true);
+    if (!activeTracking) { 
+      if (navigator.geolocation) {
+        // 현재 위치 추적 및 지도 확대/이동
+        navigator.geolocation.getCurrentPosition((position) => {
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+          const curPosition = new kakao.maps.LatLng(lat, lon);
+
+          mapInstance.current.setCenter(curPosition);
+          mapInstance.current.setLevel(3);
+          setActiveTracking(true);
+
+          // 좌표를 주소로 변환
+          //현재 위치 주소 정보 currentAddress atom에 저장
+          geocoder.current.coord2Address(lon, lat, (result, status) => {
+            if (status === kakao.maps.services.Status.OK) {
+              setCurrentAddress({
+                depth2: result[0].address.region_2depth_name,
+                depth3: result[0].address.region_3depth_name,
+                addr: result[0].address.address_name,
+                roadAddr: result[0].road_address.address_name,
+                lat: lat,
+                lon: lon,
+              });
+            }
+          });
+          
+          //마커 업데이트
+          if (!markerInstance.current) {
+            markerInstance.current = new kakao.maps.Marker({
+              position: curPosition,
+              map: mapInstance.current,
+            });
+          } else {
+            markerInstance.current.setPosition(curPosition);
+            markerInstance.current.setMap(mapInstance.current);
+          }
+          setActiveMarker(true);
+          setIsLocationLoading(false);
+        }, () => {
+          alert('위치를 가져올 수 없습니다.');
+          setIsLocationLoading(false);
+        });
+      } else {
+        alert('Geolocation을 사용할 수 없습니다.');
+        setIsLocationLoading(false);
+      }
+    } else {
+      if (markerInstance.current) { //마커 있으면 제거
+        markerInstance.current.setMap(null);
+      }
+      setActiveTracking(false);// 위치 추적 상태 비활성화로 atom 업데이트
+      setActiveMarker(false); //마커 상태 비활성화로 atom 업데이트
+      setIsLocationLoading(false);
+    }
+  }, [activeTracking]);
+
+  // 격자 버튼 핸들러
+  const showGrid = useCallback(() => {
+    const newGridObjects = gridBounds.map(bounds => {
+      const rectangle = new kakao.maps.Rectangle({
+        bounds: bounds,
+        strokeWeight: 2,
+        strokeColor: '#004c80',
+        strokeOpacity: 0.8,
+        strokeStyle: 'solid',
+        fillColor: '#fff',
+        fillOpacity: 0.5,
+      });
+      rectangle.setMap(mapInstance.current);
+      return rectangle;
+    });
+    setGridObjects(newGridObjects);  // 그리드 객체 상태 업데이트
+  }, [gridBounds]);
+
+  const hideGrid = useCallback(() => {
+    gridObjects.forEach(rectangle => {
+      rectangle.setMap(null);  // 그리드 객체 맵에서 제거
+    });
+    setGridObjects([]);  // 그리드 객체 상태 초기화
+  }, [gridObjects]);
+
+  // 그리드 버튼 핸들러
+  const handleGridBtn = () => {
+    setIsGridActive(!isGridActive);  // 그리드 활성화 상태 토글
+    if (!isGridActive) {
+      showGrid();  // 그리드 활성화
+    } else {
+      hideGrid();  // 그리드 비활성화
+    }
+  };
 
   //서버로부터 path 데이터 fetch
   useEffect(() => {
@@ -56,6 +188,7 @@ function RouteDetail() {
           level: 4,
         };
         mapInstance.current = new kakao.maps.Map(container, options);
+        geocoder.current = new kakao.maps.services.Geocoder();
         setMap(mapInstance.current);
         console.log("지도 랜더링");
       });
@@ -135,6 +268,8 @@ function RouteDetail() {
       // 마커 클릭 시 인포 윈도우 show
       if (isInfoVisible) {
         infoWindow.open(map, startMarker);
+        infoWindow.open(map, endMarker);
+
       }
 
       kakao.maps.event.addListener(startMarker, 'click', () => {
@@ -157,21 +292,34 @@ function RouteDetail() {
 
   return (
     <React.Fragment>
-      <MapContainer id="map" ref={mapRef} style={{position:"relative"}}>
+      <MapContainer 
+        id="map" ref={mapRef} style={{position:"relative"}}
+        
+        >
         <button onClick={() => setIsInfoVisible(!isInfoVisible)} style={{zIndex: "1000", position: "absolute"}}>
           {isInfoVisible ? "인포윈도우 숨기기" : "인포윈도우 보기"}
         </button>
+        <MapBtn
+          isGridActive={isGridActive}
+          isGridLoading={isGridLoading}
+          isLocationLoading={isLocationLoading}
+          activeTracking={activeTracking}
+          handleGridBtn={handleGridBtn}
+          handleLocationBtn={handleLocationBtn}
+        />
 
       </MapContainer>
 
       <PathInfoContainer
-        initial={{ height: "50%" }}
-        animate={{ height: isExpanded ? "70%" : "50%" }}
+        initial={{ height: "40%" }}
+        animate={{ height: isExpanded ? "80%" : "40%" }}
         transition={{ duration: 0.5 }}
         onClick={() => setIsExpanded(!isExpanded)}
       >
         <ResultContainer>
+        <ToggleBar><TBar /></ToggleBar>
           <PathBox id="pathBox">
+            
             <PathSummary>
               <PathInfo id="timeAndPrice">
                 <span>{path.totalTime}</span>
@@ -300,18 +448,20 @@ function RouteDetail() {
 
 export default RouteDetail;
 
-const MapContainer = styled.div`
+const MapContainer = styled(motion.div)`
   width: 100%;
-  height: 50%;
+  height: 60%;
+  position: relative;
 `;
 
 const PathInfoContainer = styled(motion.div)`
   width: 100%;
+  height: 40%;
   background: white;
   position: absolute;
   bottom: 0;
-  z-index: 10;
-  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
   overflow-y: scroll;
 `;
 
@@ -356,9 +506,29 @@ const SortingBar = styled(OptionBar)`
 const PathBox = styled.div`
   background-color: white;
   padding: 15px 20px;
-  border-top: 1px solid #dddddd;
-  border-bottom: 1px solid #dddddd;
+
   margin-bottom: 10px;
+`;
+
+/* slide 바 */
+const ToggleBar = styled.div`
+  width: 100%;
+  height: 20px;
+  padding: 15px 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: sticky;
+  top:0;
+  background-color: whitesmoke;
+  z-index: 1000;
+`;
+
+const TBar = styled.div`
+  width: 10%;
+  height: 6px;
+  border-radius: 25px;
+  background-color: #d9d9d9;
 `;
 
 const PathSummary = styled.div`
@@ -410,7 +580,6 @@ const PathWeatherInfo = styled.div`
 const SubPathSummary = styled.div`
   width: 100%;
   padding: 5px 0px;
-  border-top: 1px solid darkgrey;
   font-weight: 300;
   font-size: 14px;
 `;
@@ -422,11 +591,13 @@ const SubPath = styled.div`
   padding: 10px 0px;
   display: flex;
   /* background-color: salmon; */
-  border-bottom: 2px solid whitesmoke;
-  font-weight: 400;
+  border-top: 3px solid whitesmoke;
+  font-weight: 600;
 `;
 const IconColumn = styled.div`
   width: 80px;
+  width: 25%;
+
   display: flex;
   height: 100%;
   /* margin-left: 5px; */
@@ -440,7 +611,13 @@ const IconColumn = styled.div`
 `;
 const TextColumn = styled.div`
   width: 75%;
+  border-left: 2px dashed darkgray;
+  font-size: 14px;
   /* background-color: skyblue; */
+  * {
+    margin-bottom: 5px;
+    padding-left: 10px;
+  }
 `;
 
 const SummaryBar = styled.div`
@@ -496,4 +673,6 @@ const IconBox = styled.div`
   z-index: 2;
   font-size: 12px;
 `;
+
+/* Btn 컴포넌트 추가*/
 

@@ -29,6 +29,7 @@ function SearchPlace() {
       ...prevState,
       origin: [newOrigin],
     }));
+    console.log("출발지 설정 클릭: ", routeInfo);
     navigate('/search/routes');
   };
 
@@ -38,7 +39,7 @@ function SearchPlace() {
       lat: place.lat,
       lon: place.lon,
     };
-    if(routeInfo.origin) {
+    if(!routeInfo.origin[0].lat) {
       const newOrigin = {
         name: curAddr.addr,
         lat: curAddr.lat,
@@ -54,6 +55,7 @@ function SearchPlace() {
         dest: [newDest],
       }));
     }
+    console.log("도착지 설정 클릭: ", routeInfo);
     navigate('/search/routes');
   };
 

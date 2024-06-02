@@ -19,17 +19,25 @@ function SearchRoutes() {
   const navigate = useNavigate();
 
   const [serverResponse, setServerResponse] = useState(null);
-  const [paths, setPaths] = useState([]);
+  const [paths, setPaths] = useState([]); //서버로부터 받아온 경로 검색 결과 저장
   const [filterOption, setFilterOption] = useState("all");
   const [sortOption, setSortOption] = useState("walk"); // "walk" for 최소도보순, "time" for 최단시간순, "transit" for 최소환승순
   const [activeButton, setActiveButton] = useState("all"); // 현재 활성화된 버튼 상태
 
+
+  // Recoil 상태가 변경될 때마다 서버로 데이터를 전송(출발지 목적지 위경도 정보 있을 때만)
+  useEffect(() => {
+    if (route.origin[0].lat && route.dest[0].lat) {
+      sendRouteToServer(route);
+    }
+  }, [route]);
+
   const sendRouteToServer = async (route) => {
     try {
-      const response = await axios.post(apiUrl, {
+      const response = await axios.post("http://localhost:3001/path2", {
         startDto: {
           name: route.origin[0].name,
-          latitude: parseFloat(route.origin[0].lat),
+          latitude: parseFloat(route.origin[0].lat), //atom에는 다 문자열로 저장해놔서 변환 필요..
           longitude: parseFloat(route.origin[0].lon),
         },
         endDto: {
@@ -40,7 +48,7 @@ function SearchRoutes() {
       });
       console.log("서버 응답: ", response.data);
       setServerResponse(response.data);
-      fetchPaths();
+      fetchPaths(); //테스트용
     } catch (error) {
       console.error("서버로 데이터 전송 실패: ", error);
     }
@@ -55,10 +63,6 @@ function SearchRoutes() {
     }
   };
 
-  useEffect(() => {
-    fetchPaths();
-  }, [route]);
-
   const onReverseClick = () => {
     setRoute((prev) => ({
       origin: prev.dest,
@@ -68,6 +72,7 @@ function SearchRoutes() {
 
   const onResetClick = () => {
     resetRouteInfo();
+    setPaths([]);
   };
 
   // 경로 검색 결과 필터 버튼 3개
@@ -108,7 +113,7 @@ function SearchRoutes() {
         <Container>
           <Input
             type="text"
-            value={route.origin.name}
+            value={route.origin[0].name}
             onClick={() => navigate('/search')}
             readOnly
             placeholder="출발지 입력"
@@ -122,7 +127,7 @@ function SearchRoutes() {
         <Container>
           <Input
             type="text"
-            value={route.dest.name}
+            value={route.dest[0].name}
             onClick={() => navigate('/search')}
             readOnly
             placeholder="도착지 입력"

@@ -1,20 +1,15 @@
-/*원본 코드 */
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { useRecoilState, useSetRecoilState } from 'recoil';
-import { addressState, currentAddressState, gridState, locationBtnState, mapCenterState, markerState } from '../recoil/atoms';
-
-import styled from "styled-components";
-import { motion } from 'framer-motion';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLocationCrosshairs, faSpinner, faBorderAll , faCloudShowersHeavy, faL} from "@fortawesome/free-solid-svg-icons";
+import styled from 'styled-components';
+import { useRecoilState } from 'recoil';
+import { addressState, currentAddressState, mapCenterState, locationBtnState, markerState } from '../recoil/atoms';
 
 import SearchBox from './SearchBox';
+import MapBtn from './MapBtn';
 
 const { kakao } = window;
 
 function Map() {
   const [isLocationLoading, setIsLocationLoading] = useState(false); //지도 하단 버튼 2개 로딩 상태 관리
-
   const [address, setAddress] = useRecoilState(addressState); //마크업 및 지도 이동 시 지도 중심 위치 주소 (temp주소)
   const [currentAddress, setCurrentAddress] = useRecoilState(currentAddressState); // 현재 위치 추적 주소
   const [mapCenterAddress, setMapCenterAddress] = useRecoilState(mapCenterState);
@@ -244,145 +239,57 @@ function Map() {
     }
   }, [activeTracking]);
 
-
-
   // 새로운 함수 추가 - 그리드 보여주기
-const showGrid = useCallback(() => {
-  const newGridObjects = gridBounds.map(bounds => {
-    const rectangle = new kakao.maps.Rectangle({
-      bounds: bounds,
-      strokeWeight: 2,
-      strokeColor: '#004c80',
-      strokeOpacity: 0.8,
-      strokeStyle: 'solid',
-      fillColor: '#fff',
-      fillOpacity: 0.5,
+  const showGrid = useCallback(() => {
+    const newGridObjects = gridBounds.map(bounds => {
+      const rectangle = new kakao.maps.Rectangle({
+        bounds: bounds,
+        strokeWeight: 2,
+        strokeColor: '#004c80',
+        strokeOpacity: 0.8,
+        strokeStyle: 'solid',
+        fillColor: '#fff',
+        fillOpacity: 0.5,
+      });
+      rectangle.setMap(mapInstance.current);
+      return rectangle;
     });
-    rectangle.setMap(mapInstance.current);
-    return rectangle;
-  });
-  setGridObjects(newGridObjects);  // 그리드 객체 상태 업데이트
-}, [gridBounds]);
+    setGridObjects(newGridObjects);  // 그리드 객체 상태 업데이트
+  }, [gridBounds]);
 
-const hideGrid = useCallback(() => {
-  gridObjects.forEach(rectangle => {
-    rectangle.setMap(null);  // 그리드 객체 맵에서 제거
-  });
-  setGridObjects([]);  // 그리드 객체 상태 초기화
-}, [gridObjects]);
+  const hideGrid = useCallback(() => {
+    gridObjects.forEach(rectangle => {
+      rectangle.setMap(null);  // 그리드 객체 맵에서 제거
+    });
+    setGridObjects([]);  // 그리드 객체 상태 초기화
+  }, [gridObjects]);
 
-// 그리드 버튼 핸들러
-const handleGridBtn = () => {
-  setIsGridActive(!isGridActive);  // 그리드 활성화 상태 토글
-  if (!isGridActive) {
-    showGrid();  // 그리드 활성화
-  } else {
-    hideGrid();  // 그리드 비활성화
-  }
-};
-  // test용
-  // console.log("클릭 위치 주소 정보: ", address);
-  // console.log("맵 중심 위치 주소 정보: ", mapCenterAddress);
-  // console.log("위치 추적 주소는: ", currentAddress);
-  // localStorage.clear();
+  // 그리드 버튼 핸들러
+  const handleGridBtn = () => {
+    setIsGridActive(!isGridActive);  // 그리드 활성화 상태 토글
+    if (!isGridActive) {
+      showGrid();  // 그리드 활성화
+    } else {
+      hideGrid();  // 그리드 비활성화
+    }
+  };
 
   return (
     <KakaoMap id="map" ref={mapRef}>
       <SearchBox />
-      <BtnContainer>
-        {isGridActive && (
-        <RainBtn
-          whileTap={{ scale: 0.7 }}
-          initial={{ y: 50, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: 50, opacity: 0 }}
-          transition={{ duration: 0.4 }}
-        >
-          <Icon 
-            icon={faCloudShowersHeavy}
-          />  
-        </RainBtn>
-        )}
-        <GridBtn
-          whileTap={{ scale: 0.9 }}
-          isGridLoading={isGridLoading}  // 그리드 버튼 로딩 상태 전달
-          onClick={handleGridBtn}
-          style={{ backgroundColor: isGridActive ? "#ffdf6a" : "white" }}
-
-        >
-          <Icon
-            icon={isGridLoading ? faSpinner : faBorderAll}
-            // style={{ color: isGridActive ? "#219fff" : "#0078b9" }}
-            style={{ color: "#006aa3"}}
-
-          />
-        </GridBtn>
-
-        <LocationBtn
-          onClick={handleLocationBtn}
-          isLocationLoading={isLocationLoading}
-          whileTap={{ scale: 0.9 }}
-          
-        >
-          <Icon
-            icon={isLocationLoading ? faSpinner : faLocationCrosshairs}
-            style={{ color: activeTracking ? "tomato" : "#216CFF" }}
-            initial={{ rotate: 0 }}
-            animate={{ rotate: isLocationLoading ? 360 : 0 }}
-            transition={{ duration: 1, repeat: isLocationLoading ? Infinity : 0 }}
-          />
-        </LocationBtn>
-      </BtnContainer>
+      <MapBtn
+        isGridActive={isGridActive}
+        isGridLoading={isGridLoading}
+        isLocationLoading={isLocationLoading}
+        activeTracking={activeTracking}
+        handleGridBtn={handleGridBtn}
+        handleLocationBtn={handleLocationBtn}
+      />
     </KakaoMap>
   );
 }
 
 export default Map;
-
-const BtnContainer = styled.div`
-  /* width: auto; */
-  z-index: 100;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: flex-end;
-  bottom: 20px;
-  right: 20px;
-  position: absolute;
-`;
-
-const LocationBtn = styled(motion.button)`
-  all: unset;
-  margin-top: 20px;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  right: 0;
-  bottom: 0;
-  z-index: 100;
-  position: sticky;
-  border-radius: 50%;
-  background-color: white;
-  padding: 12px;
-  box-shadow: 0px 0px 3px 3px rgba(0, 0, 0, 0.1);
-  cursor: ${props => (props.isLocationLoading ? 'not-allowed' : 'pointer')};
-`;
-
-const GridBtn = styled(LocationBtn)`
-  cursor: ${props => (props.isGridLoading ? 'not-allowed' : 'pointer')};
-`;
-
-const Icon = styled(motion(FontAwesomeIcon))`
-  width: 22px;
-  height: 22px;
-  transition: color 0.2s ease;
-`;
-
-const RainBtn =styled(motion(LocationBtn))`
-  color: #7ccdff;
-  background-color: #424040d2;
-  cursor: pointer;
-`;
 
 const KakaoMap = styled.div`
   width: 100%;
