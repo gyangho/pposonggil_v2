@@ -72,7 +72,7 @@ function RouteDetail() {
         };
         if (path.subPathDtos) {
           path.subPathDtos.forEach((subPath, index) => {
-            if(subPath.type==="walk") { //도보 구간일 경우
+            if(subPath.type==="walk" && subPath.time !== 0) { //도보 구간일 경우
               const walkPath = [];
               // 일단 무시하고 수정될 거라 가정하고 코드 짜놓겠음
               // if(index === 0 || index === path.subPathDtos.length-1) {
@@ -103,7 +103,7 @@ function RouteDetail() {
                 path: transportPath,
                 strokeWeight: 8,
                 strokeColor: subPath.type  === "bus" ? subPath.busColor : subPath.subwayColor,
-                strokeOpacity: 0.2,
+                strokeOpacity: 0.4,
                 strokeStyle: 'solid',
               });
               transportPolyline.setMap(map);
@@ -152,7 +152,7 @@ function RouteDetail() {
   //구간별 경로 박스 클릭 시 해당 경로로 지도 중심 이동
   const focusSubPath = (subIndex) => {
     //subIndex에 해당하는 polㅛLine 그려진 구간으로 지도 확대
-    console.log("해당 경로 구간으로 지도 부드럽게 이동");
+    console.log("해당 경로 구간으로 지도 부드럽게 이동: ", subIndex);
   }
 
   return (
@@ -161,8 +161,9 @@ function RouteDetail() {
         <button onClick={() => setIsInfoVisible(!isInfoVisible)} style={{zIndex: "1000", position: "absolute"}}>
           {isInfoVisible ? "인포윈도우 숨기기" : "인포윈도우 보기"}
         </button>
+
       </MapContainer>
-      
+
       <PathInfoContainer
         initial={{ height: "50%" }}
         animate={{ height: isExpanded ? "70%" : "50%" }}
@@ -217,13 +218,13 @@ function RouteDetail() {
                           <React.Fragment>
                             {subIndex === 0 ? (
                               <React.Fragment>
-                                <FontAwesomeIcon icon={faLocationDot} style={{ color: "darkgray" }} />
-                                <div style={{ color: "darkgray" }}>출발</div>
+                                <FontAwesomeIcon icon={faLocationDot} style={{ color: "#216CFF" }} />
+                                <div style={{ color: "#216CFF" }}>출발</div>
                               </React.Fragment>
                             ) : (
                               <React.Fragment>
-                                <FontAwesomeIcon icon={faPersonWalking} style={{ color: "darkgray" }} />
-                                <div style={{ color: "darkgray" }}>도보</div>
+                                <FontAwesomeIcon icon={faPersonWalking} style={{ color: "gray" }} />
+                                <div style={{ color: "gray" }}>도보</div>
                               </React.Fragment>
                             )}
                             
@@ -244,29 +245,31 @@ function RouteDetail() {
                       <TextColumn id="subPathTextColumn">
                         {subPath.type === "walk" && (
                           <React.Fragment>
-                            <div>{subPath.startDto.name} 
-                            </div>
+                            <div>{subPath.startDto.name}</div>
                             <div>도보 {subPath.distance}m {subPath.time}분</div>
+                            <br />
+                            <div>{subPath.endDto.name}</div>
+
                           </React.Fragment>
                         )}
                         {subPath.type !== "walk" && (
                           <React.Fragment>
                             <div>
-                          {subPath.startDto.name}
-                          {subPath.type === "subway" && "역"}
-                          {subPath.type !== "walk" && " 승차"}
-                          {subPath.type === "bus" && (
-                            <div style={{display: "flex", paddingTop: "5px"}}>
-                              <FontAwesomeIcon icon={faBus} style={{color: subPath.busColor, marginRight: "3px"}}/>
-                              <div style={{fontWeight: "600"}}>{subPath.busNo}</div>
-                            </div>
-                          )}
-                          <br/>
-                          {subPath.endDto.name}
-                          {subPath.type === "subway" && "역 하차"}
-                          {subPath.type === "bus" && " 하차"}
-                        </div>
-                        
+                              {subPath.startDto.name}
+                              {subPath.type === "subway" && "역"}
+                              {subPath.type !== "walk" && " 승차"}
+                              {subPath.type === "subway" && <br />}
+                              {subPath.type === "bus" && (
+                                <div style={{display: "flex", paddingTop: "5px"}}>
+                                  <FontAwesomeIcon icon={faBus} style={{color: subPath.busColor, marginRight: "3px"}}/>
+                                  <div style={{fontWeight: "600"}}>{subPath.busNo}</div>
+                                </div>
+                              )}
+                              <br/>
+                              {subPath.endDto.name}
+                              {subPath.type === "subway" && "역 하차"}
+                              {subPath.type === "bus" && " 하차"}
+                              </div>
                           </React.Fragment>
                         )}
                         
@@ -277,8 +280,8 @@ function RouteDetail() {
                   {subIndex === array.length - 1 && (
                     <SubPath onClick={()=> focusSubPath(subIndex)}>
                       <IconColumn>
-                        <FontAwesomeIcon icon={faCircleDot} style={{ color: "darkgray" }} />
-                        <div style={{ color: "darkgray" }}>도착</div>
+                        <FontAwesomeIcon icon={faCircleDot} style={{ color: "#216CFF" }} />
+                        <div style={{ color: "#216CFF" }}>도착</div>
                       </IconColumn>
                       <TextColumn>
                         <div>{subPath.endDto.name}</div>
@@ -416,9 +419,10 @@ const SubPath = styled.div`
   width: 100%;
   height: auto;
   padding: 5px 0px;
+  padding: 10px 0px;
   display: flex;
-  background-color: salmon;
-  border-bottom: 2px solid black;
+  /* background-color: salmon; */
+  border-bottom: 2px solid whitesmoke;
   font-weight: 400;
 `;
 const IconColumn = styled.div`
@@ -427,7 +431,7 @@ const IconColumn = styled.div`
   height: 100%;
   /* margin-left: 5px; */
   justify-content: start;
-  background-color: pink;
+  /* background-color: pink; */
   font-weight: 700;
   font-size: 15px;
   * {
@@ -436,8 +440,7 @@ const IconColumn = styled.div`
 `;
 const TextColumn = styled.div`
   width: 75%;
-  border-bottom: 1px solid darkgray;
-  background-color: skyblue;
+  /* background-color: skyblue; */
 `;
 
 const SummaryBar = styled.div`
