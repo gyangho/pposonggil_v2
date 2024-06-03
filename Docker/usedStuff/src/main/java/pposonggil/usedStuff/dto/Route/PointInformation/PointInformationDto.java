@@ -25,12 +25,14 @@ public class PointInformationDto {
     private Long y;
 
     public static PointInformationDto fromEntity(PointInformation pointInformation) {
+        LatXLngY latXLngY = LatXLngY.convertGRID_GPS(LatXLngY.TO_GRID, pointInformation.getLatitude(), pointInformation.getLongitude());
+
         return PointInformationDto.builder()
                 .name(pointInformation.getName())
                 .latitude(pointInformation.getLatitude())
                 .longitude(pointInformation.getLongitude())
-                .x(pointInformation.getX())
-                .y(pointInformation.getY())
+                .x((long)latXLngY.x)
+                .y((long)latXLngY.y)
                 .build();
     }
 

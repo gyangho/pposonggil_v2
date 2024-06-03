@@ -43,6 +43,10 @@ dependencies {
 	implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.1.RELEASE'
 
+	implementation 'com.google.maps:google-maps-services:2.2.0'
+	implementation 'org.slf4j:slf4j-simple:1.7.25'
+
+
 	// 테스트 설정
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'io.findify:s3mock_2.12:0.2.4'
