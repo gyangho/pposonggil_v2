@@ -36,29 +36,74 @@ function SearchRoutes() {
     const now = new Date();
     const hhmm = now.getHours().toString().padStart(2, '0') + now.getMinutes().toString().padStart(2, '0');
     //서버에 출발지/목적지/현재시간 정보 전달(post)
+    // try {
+    // const response = await axios.post("http://localhost:8080/api/paths/by-member/1", { //실제 url로 바꿔야함
+    //   startDto: {
+    //     name: route.origin[0].name,
+    //     latitude: parseFloat(route.origin[0].lat), //atom에는 다 문자열로 저장해놔서 변환 필요..
+    //     longitude: parseFloat(route.origin[0].lon),
+    //     x: 0,
+    //     y: 0
+    //   },
+    //   endDto: {
+    //     name: route.dest[0].name,
+    //     latitude: parseFloat(route.dest[0].lat),
+    //     longitude: parseFloat(route.dest[0].lon),
+    //     x: 0,
+    //     y: 0
+    //   },
+    //   selectTime : hhmm
+    // });
+    // console.log("서버 응답: ", response.data);
+    // setServerResponse(response.data); // 서버에서 response 값으로 경로 검색 결과 줄거임. 이거 setPaths로
+    // fetchPaths(); //테스트용
+    // } catch (error) {
+    // console.error("서버로 데이터 전송 실패: ", error);
+    // }
+    // }
+
+
+
+
+    const url = 'http://localhost:8080/api/paths/by-member/1';
+
+    // form-data 객체 생성
+    const formData = new FormData();
+  
+    // 첫 번째 form-data 추가
+    const startDto = {
+      "name": "숭실대",
+      "latitude": 37.4948,
+      "longitude": 126.9598,
+      "x": 0,
+      "y": 0
+    };
+    formData.append('startDto', new Blob([JSON.stringify(startDto)], { type: 'application/json' }));
+
+    // 두 번째 form-data 추가
+    const endDto = {
+      "name": "이수역주변",
+      "latitude": 37.4857,
+      "longitude": 126.9815,
+      "x": 0,
+      "y": 0
+    };
+    formData.append('endDto', new Blob([JSON.stringify(endDto)], { type: 'application/json' }));
+
+    // 세 번째 form-data 추가
+    formData.append('selectTime', '0014');
+
     try {
-      const response = await axios.post("http://localhost:3001/path2", { //실제 url로 바꿔야함
-        startDto: {
-          name: route.origin[0].name,
-          latitude: parseFloat(route.origin[0].lat), //atom에는 다 문자열로 저장해놔서 변환 필요..
-          longitude: parseFloat(route.origin[0].lon),
-          x: 0,
-          y: 0
-        },
-        endDto: {
-          name: route.dest[0].name,
-          latitude: parseFloat(route.dest[0].lat),
-          longitude: parseFloat(route.dest[0].lon),
-          x: 0,
-          y: 0
-        },
-        selectTime : hhmm
+      const response = await axios.post(url, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
       });
-      console.log("서버 응답: ", response.data);
+      console.log('Response:', response.data);
       setServerResponse(response.data); // 서버에서 response 값으로 경로 검색 결과 줄거임. 이거 setPaths로
-      fetchPaths(); //테스트용
+
     } catch (error) {
-      console.error("서버로 데이터 전송 실패: ", error);
+      console.error('Error:', error);
     }
   };
   //임시로 서버에서 데이터 받는 것 구현.
