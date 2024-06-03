@@ -4,11 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pposonggil.usedStuff.domain.Member;
+import pposonggil.usedStuff.domain.Role;
 import pposonggil.usedStuff.dto.Member.MemberDto;
 import pposonggil.usedStuff.repository.member.MemberRepository;
 
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -17,9 +17,22 @@ import java.util.stream.Collectors;
 public class MemberService {
     private final MemberRepository memberRepository;
 
+
+    public Member createMember(String name, String email, String provider) {
+        Set<Role> roles = new HashSet<>();
+        roles.add(Role.USER);  // 기본 역할 설정
+        Member member = Member.builder()
+                .name(name)
+                .email(email)
+                .provider(provider)
+                .role(roles)
+                .build();
+
+        return memberRepository.save(member);
+    }
     /**
      * 회원 가입
-     */
+     * /
     @Transactional
     public Long createMember(MemberDto memberDto) {
         validateDuplicateNickName(memberDto.getNickName());
@@ -43,6 +56,7 @@ public class MemberService {
         if(!findPhones.isEmpty())
             throw new IllegalStateException("이미 존재하는 전화번호 입니다.");
     }
+    */
 
     /**
      * 전체 회원 조회
@@ -65,9 +79,13 @@ public class MemberService {
         return MemberDto.fromEntity(member);
     }
 
+    public Optional<Member> findMemberByName(String name) {
+        return memberRepository.findByName(name);
+    }
+
     /**
      * 회원 정보 업데이트
-     */
+
     @Transactional
     public void updateMember(MemberDto memberDto){
         Member member = memberRepository.findById(memberDto.getMemberId())
@@ -93,11 +111,12 @@ public class MemberService {
 
     /**
      * 회원 삭제
-     */
+
     @Transactional
     public void deleteMember(Long memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(NoSuchElementException::new);
         memberRepository.delete(member);
     }
+    */
 }

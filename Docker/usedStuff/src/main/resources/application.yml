@@ -7,8 +7,4 @@ spring:
       - application-secret.yml
       - application-dev.yml
       - application-prod.yml
-
-jwt:
-  header: Authorization
-  secret: lsdkfaldjflkajaskdjfhiu2ihf282uhidbfjk22nl2j2jk3hk4jh23lkj42k3jb4lk2j3h4lk2j34b2l3kjb4k23j4bl2khgjhvkjhvk2jvj2hvj2hvkjh3vjk2h3vkjhk | base64 dsdflajdsaksldfkAWFA234sdlfkjasdlfs
-  access-token-validity-in-seconds: 600 #100min
+      - application-oauth.yml

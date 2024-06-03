@@ -5,8 +5,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import pposonggil.usedStuff.domain.Member;
+import pposonggil.usedStuff.domain.Role;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
@@ -18,21 +20,19 @@ import static lombok.AccessLevel.PROTECTED;
 public class MemberDto {
     private Long memberId;
     private String name;
-    private String nickName;
-    private String phone;
     private Double ratingScore;
     private LocalDateTime createdAt;
     private boolean isActivated;
+    private Set<Role> role;
 
     public static MemberDto fromEntity(Member member){
         return MemberDto.builder()
                 .memberId(member.getId())
                 .name(member.getName())
-                .nickName(member.getNickName())
-                .phone(member.getPhone())
                 .ratingScore(member.getRatingScore())
                 .createdAt(member.getCreatedAt())
                 .isActivated(member.isActivated())
+                .role(member.getRole())
                 .build();
     }
 }
