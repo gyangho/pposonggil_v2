@@ -207,8 +207,6 @@ function RouteDetail() {
           path.subPathDtos.forEach((subPath, index) => {
             if(subPath.type==="walk" && subPath.time !== 0) { //도보 구간일 경우
               const walkPath = [];
-              // 일단 무시하고 수정될 거라 가정하고 코드 짜놓겠음
-              // if(index === 0 || index === path.subPathDtos.length-1) {
               walkPath.push(new kakao.maps.LatLng(subPath.startDto.latitude, subPath.startDto.longitude));
               walkPath.push(new kakao.maps.LatLng(subPath.endDto.latitude, subPath.endDto.longitude));
               // 경로 지도에 선으로 표시
@@ -230,7 +228,6 @@ function RouteDetail() {
               subPath.pointDtos.forEach(point => {
                 transportPath.push(new kakao.maps.LatLng(point.pointInformationDto.latitude, point.pointInformationDto.longitude));
                 bounds.extend(new kakao.maps.LatLng(point.pointInformationDto.latitude, point.pointInformationDto.longitude));
-                
               });
               const transportPolyline = new kakao.maps.Polyline({
                 path: transportPath,
@@ -241,6 +238,31 @@ function RouteDetail() {
               });
               transportPolyline.setMap(map);
             }
+
+            /* 경로 구간별 출발/도착지점 마커 표시 및 클릭 시 해당 구간으로 이동 */
+            // subPath의 출발지/도착지 마커 이미지
+            const subPathMarkerImg = new kakao.maps.MarkerImage(
+              'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png', //별모양 마커 이미지
+              // 'http://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png', //기본 마커 이미지
+              new kakao.maps.Size(15, 25),
+              { offset: new kakao.maps.Point(10, 15) } // 마커 이미지의 중앙 하단을 지도 좌표에 일치시키기 위한 옵션
+            );
+
+            // subPath의 출발구간 마커
+            const subPathStartMarker = new kakao.maps.Marker({
+              position: new kakao.maps.LatLng(subPath.startDto.latitude, subPath.startDto.longitude),
+              map,
+              zIndex: 10,
+              image: subPathMarkerImg, // 출발지 마커 이미지 적용(별모양)
+            });
+            // 마커 클릭 이벤트 등록
+            kakao.maps.event.addListener(subPathStartMarker, 'click', () => {
+              // 클릭 시 해당 subPath로 지도 이동
+              const subPathBounds = new kakao.maps.LatLngBounds();
+              subPathBounds.extend(new kakao.maps.LatLng(subPath.startDto.latitude, subPath.startDto.longitude));
+              subPathBounds.extend(new kakao.maps.LatLng(subPath.endDto.latitude, subPath.endDto.longitude));
+              map.setBounds(subPathBounds);
+            });
           });
         }
       });
@@ -248,15 +270,32 @@ function RouteDetail() {
       // 전체 경로 지도에 다 담기 위한 바운더리 설정
       map.setBounds(bounds);
 
-      //출발지 마커
+      //경로의 출발지/목적지 마커 표시
+      const pathStartMarkerImg = new kakao.maps.MarkerImage(
+        'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/red_b.png',
+        new kakao.maps.Size(40, 45),
+        { offset: new kakao.maps.Point(10, 35) }
+      );
+
+      const pathEndMarkerImg = new kakao.maps.MarkerImage(
+        'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/blue_b.png',
+        new kakao.maps.Size(40, 45),
+        { offset: new kakao.maps.Point(10, 35) }
+      );
+
       const startMarker = new kakao.maps.Marker({
         position: new kakao.maps.LatLng(path.startDto.latitude, path.startDto.longitude),
         map,
+        zIndex: 4,
+        image: pathStartMarkerImg,
       });
-      //도착지 마커 표시
+      
       const endMarker = new kakao.maps.Marker({
         position: new kakao.maps.LatLng(path.endDto.latitude, path.endDto.longitude),
         map,
+        zIndex: 4,
+        image: pathEndMarkerImg,
+
       });
 
       //인포 윈도우에 띄울 내용
@@ -265,30 +304,25 @@ function RouteDetail() {
       });
       setInfoWindow(infoWindow);
 
-      // 마커 클릭 시 인포 윈도우 show
-      if (isInfoVisible) {
-        infoWindow.open(map, startMarker);
-        infoWindow.open(map, endMarker);
-
-      }
-
-      kakao.maps.event.addListener(startMarker, 'click', () => {
-        infoWindow.open(map, startMarker);
-      });
-
-      kakao.maps.event.addListener(endMarker, 'click', () => {
-        infoWindow.open(map, endMarker);
-      });
+      // 마커 클릭 이벤트: 출발지/목적지 클릭시 인포 윈도우 show 함수
+      const addMarkerClickListener = (marker) => {
+        kakao.maps.event.addListener(marker, 'click', () => {
+          infoWindow.open(map, marker);
+        });
+      };
+      addMarkerClickListener(startMarker); //경로 출발지 마커 클릭 이벤트 등록
+      addMarkerClickListener(endMarker); //경로 도착지 마커 클릭 이벤트 등록
+      
     }
   }, [path, map, isInfoVisible]);
 
-  if (!path) return <div>Loading...</div>;
+    //구간별 경로 박스 클릭 시 해당 경로로 지도 중심 이동(아직 구현 안함)
+    const focusSubPath = (subIndex) => {
+      //subIndex에 해당하는 polㅛLine 그려진 구간으로 지도 확대
+      console.log("해당 경로 구간으로 지도 부드럽게 이동: ", subIndex);
+    }
 
-  //구간별 경로 박스 클릭 시 해당 경로로 지도 중심 이동
-  const focusSubPath = (subIndex) => {
-    //subIndex에 해당하는 polㅛLine 그려진 구간으로 지도 확대
-    console.log("해당 경로 구간으로 지도 부드럽게 이동: ", subIndex);
-  }
+  if (!path) return <div>Loading...</div>; //스피너
 
   return (
     <React.Fragment>
@@ -366,8 +400,8 @@ function RouteDetail() {
                           <React.Fragment>
                             {subIndex === 0 ? (
                               <React.Fragment>
-                                <FontAwesomeIcon icon={faLocationDot} style={{ color: "#216CFF" }} />
-                                <div style={{ color: "#216CFF" }}>출발</div>
+                                <FontAwesomeIcon icon={faLocationDot} style={{ color: "tomato" }} />
+                                <div style={{ color: "tomato" }}>출발</div>
                               </React.Fragment>
                             ) : (
                               <React.Fragment>
