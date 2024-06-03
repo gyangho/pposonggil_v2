@@ -7,6 +7,55 @@ import { useRecoilState } from "recoil";
 import { navState } from "../recoil/atoms";
 import { Link } from 'react-router-dom';
 
+function Navigation() {
+  const [nav, setNav] = useRecoilState(navState);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  useEffect(() => {
+    const index = items.findIndex(item => item.nav === nav);
+    if (index !== -1) {
+      setActiveIndex(index);
+    }
+  }, [nav]);
+
+  const items = [
+    { name: "홈", nav: "home", to: "/", icon: faHouse },
+    { name: "경로찾기", nav: "search", to: "/search/routes", icon: faRoute },
+    { name: "중고우산", nav: "market", to: "/market", icon: faUmbrella },
+    { name: "즐겨찾기", nav: "bookmark", to: "/bookmark", icon: faBookmark },
+    { name: "마이", nav: "mypage", to: "/mypage", icon: faUser },
+  ];
+
+  const onClick = useCallback((index) => {
+    setNav(items[index].nav);
+  }, [setNav]);
+
+  return (
+    <Nav>
+      <Items>
+        {items.map((item, index) => (
+          <Item key={item.nav}>
+              <Link to={item.to} style={{ textDecoration: 'none', width: "100%", height: "100%" }}>
+                <NavIcon
+                  whileTap={{ scale: 0.85 }}
+                  onClick={() => onClick(index)}
+                  isActive={index === activeIndex}
+                >
+                  <FontAwesomeIcon icon={item.icon} />
+                  <div>{item.name}</div>
+                </NavIcon>
+              </Link>
+            {index === activeIndex && <NavStateBar layout layoutId="stateBar" activeIndex={activeIndex} />}
+          </Item>
+        ))}
+      </Items>
+    </Nav>
+  );
+}
+
+export default Navigation
+
+
 const Nav = styled.div`
   outline: none;
   display: flex;
@@ -46,12 +95,21 @@ const Item = styled(motion.li)`
 
 const NavIcon = styled(motion.div)`
   font-size: 25px;
-  color: ${(props) => (props.isActive ? "#003E5E" : "#4a4a4a")};
+  color: ${(props) => (props.isActive ? "#003E5E" : "gray")};
   display: flex;
+  flex-direction: column; /* 수직 정렬 */
   justify-content: center;
   align-items: center;
+  text-align: center;
   width: 100%;
   height: 100%;
+  padding-top: 8px;
+  div {
+    margin-top: 8px;
+    font-size: 12px;
+    font-weight: 400;
+    color: inherit;
+  }
 `;
 
 const NavStateBar = styled(motion.div)`
@@ -62,50 +120,3 @@ const NavStateBar = styled(motion.div)`
   position: absolute;
   top: 0px;
 `;
-
-function Navigation() {
-  const [nav, setNav] = useRecoilState(navState);
-  const [activeIndex, setActiveIndex] = useState(0);
-
-  useEffect(() => {
-    const index = items.findIndex(item => item.nav === nav);
-    if (index !== -1) {
-      setActiveIndex(index);
-    }
-  }, [nav]);
-
-  const items = [
-    { nav: "home", to: "/", icon: faHouse },
-    { nav: "search", to: "/search", icon: faRoute },
-    { nav: "market", to: "/market", icon: faUmbrella },
-    { nav: "bookmark", to: "/bookmark", icon: faBookmark },
-    { nav: "mypage", to: "/mypage", icon: faUser },
-  ];
-
-  const onClick = useCallback((index) => {
-    setNav(items[index].nav);
-  }, [setNav]);
-
-  return (
-    <Nav>
-      <Items>
-        {items.map((item, index) => (
-          <Item key={item.nav}>
-              <Link to={item.to} style={{ textDecoration: 'none', width: "100%", height: "100%" }}>
-                <NavIcon
-                  whileTap={{ scale: 0.85 }}
-                  onClick={() => onClick(index)}
-                  isActive={index === activeIndex}
-                >
-                  <FontAwesomeIcon icon={item.icon} />
-                </NavIcon>
-              </Link>
-            {index === activeIndex && <NavStateBar layout layoutId="stateBar" activeIndex={activeIndex} />}
-          </Item>
-        ))}
-      </Items>
-    </Nav>
-  );
-}
-
-export default Navigation;
