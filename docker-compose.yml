@@ -91,6 +91,8 @@ services:
     networks:
       - front-network
       - back-network
+      - osrm-network
+
 
   mysql:
     image: gonaging/mysql:8
@@ -119,12 +121,60 @@ services:
       interval: 5s
       timeout: 2s
       retries: 100
+
+  osrm-extract:
+    image: osrm/osrm-backend
+    container_name: osrm-extract
+    command: osrm-extract -p /opt/foot_pposong.lua /data/seoul.osm
+    volumes:
+      - "${PWD}/Docker/osrm/data:/data"
+      - "${PWD}/Docker/osrm/profiles/foot_pposong.lua:/opt/foot_pposong.lua"
+    networks:
+      - osrm-network
+
+  osrm-partition:
+    image: osrm/osrm-backend
+    container_name: osrm-partition
+    command: osrm-partition /data/seoul.osrm
+    volumes:
+      - "${PWD}/Docker/osrm/data:/data"
+    depends_on:
+      - osrm-extract
+    networks:
+      - osrm-network
+
+  osrm-customize:
+    image: osrm/osrm-backend
+    container_name: osrm-customize
+    command: osrm-customize /data/seoul.osrm
+    volumes:
+      - "${PWD}/Docker/osrm/data:/data"
+    depends_on:
+      - osrm-partition
+    networks:
+      - osrm-network
+
+  osrm-routed:
+    image: osrm/osrm-backend
+    container_name: osrm-routed
+    command: osrm-routed --algorithm mld /data/seoul.osm
+    ports:
+      - "5000:5000"
+    volumes:
+      - "${PWD}/Docker/osrm/data:/data"
+    depends_on:
+      - osrm-customize
+    networks:
+      - osrm-network
+
 volumes:
    db:
 networks:
   front-network:
     driver: bridge
   back-network:
+    driver: bridge
+  osrm-network:
     driver: bridge
 
 x-project_name: pposonggil_v2
