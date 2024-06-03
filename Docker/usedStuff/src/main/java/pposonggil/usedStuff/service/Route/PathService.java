@@ -31,6 +31,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -49,10 +50,13 @@ public class PathService {
      * 대중교통 경로 리스트 생성
      * 도보경로 X
      */
-    public List<PathDto> createPaths(PointInformationDto start, PointInformationDto end, String selectTime) throws IOException {
+    public List<PathDto> createPaths(PointInformationDto start, PointInformationDto end, String selectTime, Long requesterId) throws IOException {
+        memberRepository.findById(requesterId)
+                .orElseThrow(() -> new NoSuchElementException("Member not found with id: " + requesterId));
+
         String urlInfo = buildUrl(start, end);
         StringBuilder sb = getResponse(urlInfo);
-        List<PathDto> pathDtos = getPathDtos(sb, start, end);
+        List<PathDto> pathDtos = getPathDtos(sb, start, end, requesterId);
         calTotalRain(selectTime, pathDtos);
         return pathDtos;
     }
@@ -122,6 +126,16 @@ public class PathService {
     }
 
     /**
+     * pposong osrm을 이용한 뽀송 도보 경로가 포함된
+     * 대중교통 경로
+     */
+    public PathDto selectPposongPath(PathDto pathDto) throws IOException {
+        List<SubPathDto> walkSubPaths = subPathService.createPposongSubPaths(pathDto);
+        pathDto.setSubPathDtos(walkSubPaths);
+        return pathDto;
+    }
+
+    /**
      * 선택한 경로를 db에 저장
      * 도보 경로X
      * 날씨 정보X
@@ -139,7 +153,41 @@ public class PathService {
         return path.getId();
     }
 
-    private static List<PathDto> getPathDtos(StringBuilder sb, PointInformationDto start, PointInformationDto end) throws JsonProcessingException {
+    /**
+     * 전체 경로 조회
+     * @return db에 저장된 모든 경로 리스트
+     */
+    public List<PathDto> findPaths() {
+        List<Path> paths = pathRepository.findAll();
+        return paths.stream()
+                .map(PathDto::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * 멤버 아이디에 해당하는 경로 조회
+     * @param requesterId: 경로 저장한 회원 아이디
+     * @return
+     */
+    public List<PathDto> findPathsByMember(Long requesterId) {
+        List<Path> paths = pathRepository.findPathsWithByMemberByRequesterId(requesterId);
+        return paths.stream()
+                .map(PathDto::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * 경로 삭제
+     * @param pathId
+     */
+    @Transactional
+    public void deletePath(Long pathId) {
+        Path path = pathRepository.findById(pathId)
+                .orElseThrow(() -> new NoSuchElementException("Path not found with id: " + pathId));
+        pathRepository.delete(path);
+    }
+
+    private static List<PathDto> getPathDtos(StringBuilder sb, PointInformationDto start, PointInformationDto end, Long requesterId) throws JsonProcessingException {
         List<PathDto> pathDtos = new ArrayList<>();
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -148,6 +196,7 @@ public class PathService {
         JsonNode path = result.get("path");
         for (JsonNode node : path) {
             PathDto pathDto = PathDto.fromJsonNode(node, start, end);
+            pathDto.setRouteRequesterId(requesterId);
             pathDtos.add(setUpStartMidEndTime(pathDto));
         }
         return pathDtos;
@@ -171,7 +220,7 @@ public class PathService {
                     subPathDto.setStartDto(subPathDtos.get(idx - 1).getEndDto());
                     subPathDto.setEndDto(pathDto.getEndDto());
                 } else {
-                    subPathDto.setStartDto(subPathDtos.get(idx - 1).getStartDto());
+                    subPathDto.setStartDto(subPathDtos.get(idx - 1).getEndDto());
                     subPathDto.setEndDto(subPathDtos.get(idx + 1)
                             .getPointDtos().getFirst().getPointInformationDto());
                 }
