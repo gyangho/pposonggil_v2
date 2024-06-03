@@ -164,7 +164,26 @@ function RouteDetail() {
           setPath(foundPath);
           /*선택한 경로의 도보 구간 날씨 서버로부터 post하고 fetch 하는 코드 추가 */
           //위에서 foundPath로 setPath해서 업데이트된 path 객체 그대로 서버에 보내기, 그리고 시간!(hhmm형식으로)
-          console.log("fetch 성공!", foundPath);
+          console.log("선택한 path를 찾았습니다", foundPath);
+
+           // 현재 시간 정보를 hhmm 형식으로 구하기
+          const now = new Date();
+          const hhmm = now.getHours().toString().padStart(2, '0') + now.getMinutes().toString().padStart(2, '0');
+
+          // foundPath와 현재 시간 정보를 서버에 POST 요청으로 보내기
+          try {
+            const postResponse = await axios.post('http://localhost:3001/postExpected', 
+            {
+              pathDto: path,
+              selectTime: hhmm
+            });
+            console.log("POST 응답:", postResponse.data);
+            //원래 백에서 response 온걸로 해야하지만 임시로 fetch하겠음
+            fetchSubPathsWeather();
+          } catch (postError) {
+            console.error("Error posting data", postError);
+          }
+
         } else {
           console.error(`Path with id ${pathId} not found.`);
         }
@@ -174,6 +193,21 @@ function RouteDetail() {
     };
     fetchPath();
   }, [pathId]);
+
+  //임시 코드, json-server와 연동
+  const [subPathsWeather, setSubPathsWeather] = useState([]);
+
+  const fetchSubPathsWeather = async () => {
+    try {
+      const response = await axios.get('http://localhost:3001/expected');
+      setSubPathsWeather(response.data);
+      console.log("Weather data fetched successfully!", subPathsWeather);
+    } catch (error) {
+      console.error("Error fetching weather data", error);
+    }
+  };
+
+
 
   //지도 생성
   useEffect(() => {
@@ -318,11 +352,18 @@ function RouteDetail() {
     }
   }, [path, map, isInfoVisible]);
 
-    //구간별 경로 박스 클릭 시 해당 경로로 지도 중심 이동(아직 구현 안함)
-    const focusSubPath = (subIndex) => {
-      //subIndex에 해당하는 polㅛLine 그려진 구간으로 지도 확대
-      console.log("해당 경로 구간으로 지도 부드럽게 이동: ", subIndex);
-    }
+  //구간별 경로 박스 클릭 시 해당 경로로 지도 중심 이동(아직 구현 안함)
+  const focusSubPath = (subIndex) => {
+    //subIndex에 해당하는 polㅛLine 그려진 구간으로 지도 확대
+    console.log("해당 경로 구간으로 지도 부드럽게 이동: ", subIndex);
+  }
+
+  const removeFirstForecast = () => {
+    setSubPathsWeather((prevWeather) => {
+      prevWeather.forecast.splice(0, 1);
+      return { ...prevWeather };
+    });
+  };
 
   if (!path) return <div>Loading...</div>; //스피너
 
@@ -433,7 +474,8 @@ function RouteDetail() {
                             <div>도보 {subPath.distance}m {subPath.time}분</div>
                             <br />
                             <div>{subPath.endDto.name}</div>
-
+                            {/* <div> {subPathsWeather.forecast[0].expectedRain}</div> */}
+                            {/* {removeFirstForecast()} */}
                           </React.Fragment>
                         )}
                         {subPath.type !== "walk" && (
@@ -445,8 +487,8 @@ function RouteDetail() {
                               {subPath.type === "subway" && <br />}
                               {subPath.type === "bus" && (
                                 <div style={{display: "flex", paddingTop: "5px"}}>
-                                  <FontAwesomeIcon icon={faBus} style={{color: subPath.busColor, marginRight: "3px"}}/>
-                                  <div style={{fontWeight: "600"}}>{subPath.busNo}</div>
+                                  <FontAwesomeIcon icon={faBus} style={{color: subPath.busColor, paddingLeft: "0"}}/>
+                                  <div style={{fontWeight: "900", paddingLeft: "5px"}}>{subPath.busNo}</div>
                                 </div>
                               )}
                               <br/>
