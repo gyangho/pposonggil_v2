@@ -162,6 +162,8 @@ function RouteDetail() {
         const foundPath = paths.find((path) => String(path.pathId) === pathId);
         if (foundPath) {
           setPath(foundPath);
+          /*선택한 경로의 도보 구간 날씨 서버로부터 post하고 fetch 하는 코드 추가 */
+          //위에서 foundPath로 setPath해서 업데이트된 path 객체 그대로 서버에 보내기, 그리고 시간!(hhmm형식으로)
           console.log("fetch 성공!", foundPath);
         } else {
           console.error(`Path with id ${pathId} not found.`);
