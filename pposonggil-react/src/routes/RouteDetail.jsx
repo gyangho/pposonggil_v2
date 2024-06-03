@@ -16,7 +16,7 @@ const { kakao } = window;
 const apiUrl = "http://localhost:3001/paths";
 
 function RouteDetail() {
-  const { pathId } = useParams();
+  const { index } = useParams();
   const [path, setPath] = useState(null);
   const [map, setMap] = useState(null);
   const [isInfoVisible, setIsInfoVisible] = useState(false);
@@ -56,10 +56,8 @@ function RouteDetail() {
       gridBounds.push(new kakao.maps.LatLngBounds(sw, ne));
     }
   }
-
-
-  //위치 추적 버튼 핸들러
-  const handleLocationBtn = useCallback(() => {
+  
+  const handleLocationBtn = useCallback(() => {//위치 추적 버튼 핸들러
     setIsLocationLoading(true);
     if (!activeTracking) { 
       if (navigator.geolocation) {
@@ -117,9 +115,8 @@ function RouteDetail() {
       setIsLocationLoading(false);
     }
   }, [activeTracking]);
-
-  // 격자 버튼 핸들러
-  const showGrid = useCallback(() => {
+  
+  const showGrid = useCallback(() => { // 격자 버튼 핸들러
     const newGridObjects = gridBounds.map(bounds => {
       const rectangle = new kakao.maps.Rectangle({
         bounds: bounds,
@@ -138,7 +135,7 @@ function RouteDetail() {
 
   const hideGrid = useCallback(() => {
     gridObjects.forEach(rectangle => {
-      rectangle.setMap(null);  // 그리드 객체 맵에서 제거
+      rectangle.setMap(null);
     });
     setGridObjects([]);  // 그리드 객체 상태 초기화
   }, [gridObjects]);
@@ -159,17 +156,14 @@ function RouteDetail() {
       try {
         const response = await axios.get(apiUrl);
         const paths = response.data;
-        const foundPath = paths.find((path) => String(path.pathId) === pathId);
+        const foundPath = paths.find((path) => String(path.index) === index);
         if (foundPath) {
           setPath(foundPath);
           /*선택한 경로의 도보 구간 날씨 서버로부터 post하고 fetch 하는 코드 추가 */
-          //위에서 foundPath로 setPath해서 업데이트된 path 객체 그대로 서버에 보내기, 그리고 시간!(hhmm형식으로)
           console.log("선택한 path를 찾았습니다", foundPath);
-
-           // 현재 시간 정보를 hhmm 형식으로 구하기
+          // 현재 시간 정보를 hhmm 형식으로 구하기
           const now = new Date();
           const hhmm = now.getHours().toString().padStart(2, '0') + now.getMinutes().toString().padStart(2, '0');
-
           // foundPath와 현재 시간 정보를 서버에 POST 요청으로 보내기
           try {
             const postResponse = await axios.post('http://localhost:3001/postExpected', 
@@ -185,14 +179,14 @@ function RouteDetail() {
           }
 
         } else {
-          console.error(`Path with id ${pathId} not found.`);
+          console.error(`Path with id ${index} not found.`);
         }
       } catch (error) {
         console.error("Error fetching path", error);
       }
     };
     fetchPath();
-  }, [pathId]);
+  }, [index]);
 
   //임시 코드, json-server와 연동
   const [subPathsWeather, setSubPathsWeather] = useState([]);
@@ -231,7 +225,7 @@ function RouteDetail() {
     };
   }, []);
 
-  //지도 위 경로 표시  
+  //지도에 경로 표시  
   useEffect(() => {
     if (path && map) {
       const bounds = new kakao.maps.LatLngBounds();
@@ -325,7 +319,7 @@ function RouteDetail() {
         zIndex: 4,
         image: pathStartMarkerImg,
       });
-      
+
       const endMarker = new kakao.maps.Marker({
         position: new kakao.maps.LatLng(path.endDto.latitude, path.endDto.longitude),
         map,
@@ -384,9 +378,7 @@ function RouteDetail() {
           handleGridBtn={handleGridBtn}
           handleLocationBtn={handleLocationBtn}
         />
-
       </MapContainer>
-
       <PathInfoContainer
         initial={{ height: "40%" }}
         animate={{ height: isExpanded ? "80%" : "40%" }}
@@ -502,7 +494,6 @@ function RouteDetail() {
                       </TextColumn>
                     </SubPath>
                   )}
-
                   {subIndex === array.length - 1 && (
                     <SubPath onClick={()=> focusSubPath(subIndex)}>
                       <IconColumn>

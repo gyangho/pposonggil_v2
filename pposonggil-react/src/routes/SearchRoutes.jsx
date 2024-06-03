@@ -11,7 +11,7 @@ import { routeInfoState } from "../recoil/atoms";
 
 const { kakao } = window;
 
-const apiUrl = "http://localhost:3001/paths";
+const apiUrl = "http://localhost:3001/paths"; //출발지 목적지 보내는 url
 
 function SearchRoutes() {
   const [route, setRoute] = useRecoilState(routeInfoState);
@@ -24,7 +24,6 @@ function SearchRoutes() {
   const [sortOption, setSortOption] = useState("walk"); // "walk" for 최소도보순, "time" for 최단시간순, "transit" for 최소환승순
   const [activeButton, setActiveButton] = useState("all"); // 현재 활성화된 버튼 상태
 
-
   // Recoil 상태가 변경될 때마다 서버로 데이터를 전송(출발지 목적지 위경도 정보 있을 때만)
   useEffect(() => {
     if (route.origin[0].lat && route.dest[0].lat) {
@@ -33,27 +32,36 @@ function SearchRoutes() {
   }, [route]);
 
   const sendRouteToServer = async (route) => {
+    // 현재 시간 정보를 hhmm 형식
+    const now = new Date();
+    const hhmm = now.getHours().toString().padStart(2, '0') + now.getMinutes().toString().padStart(2, '0');
+    //서버에 출발지/목적지/현재시간 정보 전달(post)
     try {
-      const response = await axios.post("http://localhost:3001/path2", {
+      const response = await axios.post("http://localhost:3001/path2", { //실제 url로 바꿔야함
         startDto: {
           name: route.origin[0].name,
           latitude: parseFloat(route.origin[0].lat), //atom에는 다 문자열로 저장해놔서 변환 필요..
           longitude: parseFloat(route.origin[0].lon),
+          x: 0,
+          y: 0
         },
         endDto: {
           name: route.dest[0].name,
           latitude: parseFloat(route.dest[0].lat),
           longitude: parseFloat(route.dest[0].lon),
+          x: 0,
+          y: 0
         },
+        selectTime : hhmm
       });
       console.log("서버 응답: ", response.data);
-      setServerResponse(response.data);
+      setServerResponse(response.data); // 서버에서 response 값으로 경로 검색 결과 줄거임. 이거 setPaths로
       fetchPaths(); //테스트용
     } catch (error) {
       console.error("서버로 데이터 전송 실패: ", error);
     }
   };
-
+  //임시로 서버에서 데이터 받는 것 구현.
   const fetchPaths = async () => {
     try {
       const response = await axios.get(apiUrl);
@@ -102,9 +110,9 @@ function SearchRoutes() {
   const filteredPaths = filterPaths();
   const sortedPaths = sortPaths(filteredPaths);
 
-  //클릭한 경로의 pathId url 파라미터로 전달
-  const goToRouteDetail = (pathId) => {
-    navigate(`/search/routes/${pathId}`);
+  //클릭한 경로의 index url 파라미터로 전달 (전: pathId, 현: index)
+  const goToRouteDetail = (index) => {
+    navigate(`/search/routes/${index}`);
   };
 
   return (
@@ -170,7 +178,7 @@ function SearchRoutes() {
 
       <ResultContainer>
         {sortedPaths.map((path, index) => (
-          <PathBox id="pathBox" key={index} onClick={() => goToRouteDetail(path.pathId)}>
+          <PathBox id="pathBox" key={index} onClick={() => goToRouteDetail(path.index)}>
             <PathSummary>
               <PathInfo id="timeAndPrice">
                 <span>{path.totalTime}</span>

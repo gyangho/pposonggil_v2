@@ -1,4 +1,4 @@
-version: '3.2'
+version: "3.2"
 services:
   nginx:
     image: gonaging/nginx:1.25
@@ -93,7 +93,6 @@ services:
       - back-network
       - osrm-network
 
-
   mysql:
     image: gonaging/mysql:8
     restart: unless-stopped
@@ -117,7 +116,11 @@ services:
     networks:
       - back-network
     healthcheck:
-      test: ['CMD-SHELL', 'mysqladmin ping -h 127.0.0.1 -u root --password=$$MYSQL_ROOT_PASSWORD']
+      test:
+        [
+          "CMD-SHELL",
+          "mysqladmin ping -h 127.0.0.1 -u root --password=$$MYSQL_ROOT_PASSWORD",
+        ]
       interval: 5s
       timeout: 2s
       retries: 100
@@ -168,7 +171,7 @@ services:
       - osrm-network
 
 volumes:
-   db:
+  db:
 networks:
   front-network:
     driver: bridge
