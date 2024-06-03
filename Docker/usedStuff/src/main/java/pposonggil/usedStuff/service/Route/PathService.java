@@ -57,6 +57,13 @@ public class PathService {
         String urlInfo = buildUrl(start, end);
         StringBuilder sb = getResponse(urlInfo);
         List<PathDto> pathDtos = getPathDtos(sb, start, end, requesterId);
+
+        long index = 0;
+        for (PathDto pathDto : pathDtos) {
+            pathDto.setIndex(index);
+            index = index + 1;
+        }
+
         calTotalRain(selectTime, pathDtos);
         return pathDtos;
     }
@@ -155,6 +162,7 @@ public class PathService {
 
     /**
      * 전체 경로 조회
+     *
      * @return db에 저장된 모든 경로 리스트
      */
     public List<PathDto> findPaths() {
@@ -166,6 +174,7 @@ public class PathService {
 
     /**
      * 멤버 아이디에 해당하는 경로 조회
+     *
      * @param requesterId: 경로 저장한 회원 아이디
      * @return
      */
@@ -178,6 +187,7 @@ public class PathService {
 
     /**
      * 경로 삭제
+     *
      * @param pathId
      */
     @Transactional
