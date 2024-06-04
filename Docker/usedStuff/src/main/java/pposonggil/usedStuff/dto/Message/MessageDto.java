@@ -25,7 +25,7 @@ public class MessageDto {
                 .messageId(message.getId())
                 .senderId(message.getSender().getId())
                 .chatRoomId(message.getMessageChatRoom().getId())
-                .senderNickName(message.getSender().getNickName())
+                .senderNickName(message.getSender().getName())
                 .content(message.getContent())
                 .createdAt(message.getCreatedAt())
                 .build();

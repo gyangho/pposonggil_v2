@@ -25,7 +25,7 @@ public class MemberService {
                 .name(name)
                 .email(email)
                 .provider(provider)
-                .role(roles)
+                .roles(roles)
                 .build();
 
         return memberRepository.save(member);

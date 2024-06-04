@@ -23,7 +23,7 @@ public class MemberDto {
     private Double ratingScore;
     private LocalDateTime createdAt;
     private boolean isActivated;
-    private Set<Role> role;
+    private Set<Role> roles;
 
     public static MemberDto fromEntity(Member member){
         return MemberDto.builder()
@@ -32,7 +32,7 @@ public class MemberDto {
                 .ratingScore(member.getRatingScore())
                 .createdAt(member.getCreatedAt())
                 .isActivated(member.isActivated())
-                .role(member.getRole())
+                .roles(member.getRoles())
                 .build();
     }
 }

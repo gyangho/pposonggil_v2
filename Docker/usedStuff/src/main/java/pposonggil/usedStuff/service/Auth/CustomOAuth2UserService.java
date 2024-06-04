@@ -8,6 +8,8 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pposonggil.usedStuff.domain.Member;
+import pposonggil.usedStuff.domain.OAuth2UserInfo;
+import pposonggil.usedStuff.domain.PrincipalDetails;
 import pposonggil.usedStuff.repository.member.MemberRepository;
 
 import java.util.Map;
