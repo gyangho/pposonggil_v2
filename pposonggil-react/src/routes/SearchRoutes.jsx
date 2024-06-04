@@ -62,22 +62,10 @@ function SearchRoutes() {
       }
     }
     try {
-      const response = await axios.post(url, { 
-        startDto: {
-          name: route.origin[0].name,
-          latitude: parseFloat(route.origin[0].lat), //atom에는 다 문자열로 저장해놔서 변환 필요..
-          longitude: parseFloat(route.origin[0].lon),
-          x: 0,
-          y: 0
-        },
-        endDto: {
-          name: route.dest[0].name,
-          latitude: parseFloat(route.dest[0].lat),
-          longitude: parseFloat(route.dest[0].lon),
-          x: 0,
-          y: 0
-        },
-        selectTime : hhmm
+      const response = await axios.post(url, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
       });
       console.log('Response:', response.data);
       setPaths(response.data);
