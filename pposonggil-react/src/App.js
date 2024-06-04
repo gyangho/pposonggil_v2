@@ -47,7 +47,7 @@ function App() {
           <Route path="/market/posting" element={<Posting/>} />
           <Route path="/market" element={<Board />} />
 
-          <Route path="/search/route-detail" exact element={<RouteDetail />} />
+          <Route path="/search/routes/route-detail" exact element={<RouteDetail />} />
           <Route path="/search/routes" element={<SearchRoutes />} />
           <Route path="/search/place" element={<SearchPlace />} />
           <Route path="/search" element={<Search />} />

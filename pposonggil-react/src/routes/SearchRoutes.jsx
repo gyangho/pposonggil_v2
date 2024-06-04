@@ -10,7 +10,7 @@ import axios from "axios";
 import { routeInfoState } from "../recoil/atoms";
 
 function SearchRoutes() {
-  const [route, setRoute] = useRecoilState(routeInfoState);
+  const [route, setRoute] = useRecoilState(routeInfoState); // 검색할 경로의 출발지.도착지 저장 atom
   const resetRouteInfo = useResetRecoilState(routeInfoState);
   const navigate = useNavigate();
 
@@ -28,30 +28,39 @@ function SearchRoutes() {
 
   // 서버로 출발지/목적지 정보 post
   const sendRouteToServer = async (route) => {
+    
     const now = new Date();
-    const hhmm = now.getHours().toString().padStart(2, '0') + now.getMinutes().toString().padStart(2, '0');
+    const time = now.getHours().toString().padStart(2, '0') + now.getMinutes().toString().padStart(2, '0');
     const url = 'http://localhost:8080/api/paths/by-member/1';
     const formData = new FormData(); // form-data 객체 생성
 
     const startDto = {  // 첫 번째 form-data 추가
-      "name": "숭실대",
-      "latitude": 37.4948,
-      "longitude": 126.9598,
+      "name": route.origin[0].name,
+      "latitude": parseFloat(route.origin[0].lat),
+      "longitude": parseFloat(route.origin[0].lon),
       "x": 0,
       "y": 0
     };
     formData.append('startDto', new Blob([JSON.stringify(startDto)], { type: 'application/json' }));
     
     const endDto = { // 두 번째 form-data 추가
-      "name": "이수역주변",
-      "latitude": 37.4857,
-      "longitude": 126.9815,
+      "name": route.dest[0].name,
+      "latitude": parseFloat(route.dest[0].lat),
+      "longitude": parseFloat(route.dest[0].lon),
       "x": 0,
       "y": 0
     };
     formData.append('endDto', new Blob([JSON.stringify(endDto)], { type: 'application/json' }));
-    formData.append('selectTime', hhmm); // 세 번째 form-data 추가
+    formData.append('selectTime', time ); // 세 번째 form-data 추가
 
+    // FormData 내용 출력
+    for (let [key, value] of formData.entries()) {
+      console.log("서버로 보낸 데이터: ");
+      console.log(`${key}:`, value);
+      if (value instanceof Blob) {
+        value.text().then(text => console.log(`${key} content:`, text));
+      }
+    }
     try {
       const response = await axios.post(url, { 
         startDto: {
@@ -72,10 +81,10 @@ function SearchRoutes() {
       });
       console.log('Response:', response.data);
       setPaths(response.data);
+      console.log("경로 출발지 목적지 전송 성공, 서버 response : ", paths);
     } catch (error) {
-      console.error("서버로 데이터 전송 실패: ", error);
+      console.error('Error:', error);
     }
-    console.log("경로 출발지 목적지 전송 성공, 서버 response : ", paths);
   };
 
   // 출발지/목적지 전환 버튼 핸들러
@@ -84,11 +93,12 @@ function SearchRoutes() {
       origin: prev.dest,
       dest: prev.origin,
     }));
+    console.log("전환 버튼 클릭: ", route);
   };
   // 출발지/목적지 리셋 버튼 핸들러
   const onResetClick = () => {
     resetRouteInfo();
-    setPaths([]);
+    setPaths([]); //검색된 이전 경로 검색 결과 있으면 초기화
   };
 
   // 경로 검색 결과 필터 버튼 3개(전체,버스만,지하철만)
@@ -523,4 +533,5 @@ const IconBox = styled.div`
   z-index: 2;
   font-size: 12px;
 `;
+
 
