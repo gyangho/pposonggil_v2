@@ -11,6 +11,8 @@ const REDIRECT_URI =  "http://localhost:3000/oauth/kakao/callback";
 
 export const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API}&redirect_uri=${REDIRECT_URI}&response_type=code`;
 
+export const GOOGLE_AUTH_URL = `/oauth2/authorization/google`;
+
 const LoginContainer = styled.div`
   display: flex;
   height: 100%;
@@ -89,9 +91,9 @@ const Footer = styled(Title)`
 function LogIn() {
   const resetNav = useResetRecoilState(navState);
   resetNav();
-
   const handleLogin = () => {
     window.location.href = KAKAO_AUTH_URL;
+    // window.location.href = "/oauth2/authorization/google"; //구글
   };
 
   return (

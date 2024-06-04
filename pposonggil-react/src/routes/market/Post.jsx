@@ -8,29 +8,26 @@ import { useSetRecoilState } from "recoil";
 import { navState } from "../../recoil/atoms";
 
 // JSON 서버 API URL, 백이랑 연동 시 수정 필요
-const apiUrl = "http://localhost:3001/postList";
+const apiUrl = "http://localhost:3001/boards"
 
 function Post() {
-  const { postId } = useParams();
+  const { boardId } = useParams();
   const [post, setPost] = useState(null);
   const navigate = useNavigate();
 
-  const setNav = useSetRecoilState(navState);
-  setNav("market");
-
-  //작성자 정보 가져와서 저장
-  // const [author, setAuthor] = useState(null);
+  // const setNav = useSetRecoilState(navState);
+  // setNav("market");
 
   useEffect(() => {
     const fetchPost = async () => {
       try {
         const response = await axios.get(`${apiUrl}`);
-        const postList = response.data;
-        const foundPost = postList.find((item) => item.id === postId);
+        const boards = response.data;
+        const foundPost = boards.find((item) => String(item.boardId) === boardId);
         if (foundPost) {
           setPost(foundPost);
         } else {
-          console.error(`Post with id ${postId} not found.`);
+          console.error(`Post with id ${boardId} not found.`);
         }
       } catch (error) {
         console.error("Error fetching post", error);
@@ -38,21 +35,20 @@ function Post() {
     };
 
     fetchPost();
-  }, [postId]);
+  }, [boardId]);
 
   //후에 파라미터로 유저id 넣어서 채팅방으로 넘어가게 하기
-  const onChatClick = (author) => {
-    navigate(`/market/chat/${author}`);
+  const onChatClick = (writerNickname) => {
+    navigate(`/market/chat/${writerNickname}`);
   }
 
-  // 스핀너
+  // 스피너(아직 구현 안함)
   if (!post) return <div>Loading...</div>;
 
   return (
-    <React.Fragment>
-      <Wrapper>
+    <Wrapper>
         <ImgBox>
-          <img src={post.img} alt={post.title} /> 
+          <img src={post.imgUrl} alt={post.title} /> 
         </ImgBox>
         <AuthorBox>
           <div style={{display: "flex", alignItems: "center" }}>
@@ -60,35 +56,30 @@ function Post() {
               {/* <img src=""/> */}
               <FontAwesomeIcon icon={faCircleUser} style={{color: "gray", fontSize: "35px"}} />
             </div>
-            <div id="name">{post.author}</div>
+            <div id="name">{post.writerNickName}</div>
           </div>
           <div id="rating">
-            <span style={{color: "orange"}}>4.5</span>
+            <span style={{color: "orange"}}>{post.ratingScore}</span>
             <FontAwesomeIcon icon={faTemperatureHalf} style={{color: "tomato", marginRight: "0" }} />
           </div>
         </AuthorBox>
         <DetailBox>
           <Title>{post.title}</Title>
-          <Date>{post.date}</Date>
+          <Date>{post.createdAt}</Date>
           <br />
           <Content>{post.content}</Content>
         </DetailBox>
         <BottomBar>
           <Price>
             <FontAwesomeIcon icon={faWonSign} />
-            <div>{post.price}</div>
+            <div>{post.price}원</div>
           </Price>
           <ChatBtn>
             <FontAwesomeIcon icon={faComments} />
-            <span onClick={() => onChatClick(post.author)}>채팅하기</span>
+            <span onClick={() => onChatClick(post.writerNickName)}>채팅하기</span>
           </ChatBtn>
         </BottomBar>
-
-
-      </Wrapper>
-
-
-    </React.Fragment>
+    </Wrapper>
   );
 }
 

@@ -50,7 +50,7 @@ export const markerState = atom({
 // 격자 활성화 상태 추적 atom
 export const gridState = atom({
   key: "gridState",
-  default: true,
+  default: false,
 })
 
 //현재 네비게이션 위치 상태 추적 atom
@@ -59,10 +59,7 @@ export const navState = atom({
   default: "home",
 })
 
-
-
 //검색 장소 정보 저장 atom
-// 위경도 필수!!
 export const searchPlace = atom({
   key: "searchPlace",
   default: {

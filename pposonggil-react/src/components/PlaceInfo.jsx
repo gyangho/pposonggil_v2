@@ -8,88 +8,6 @@ import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationDot, faMagnifyingGlassArrowRight } from "@fortawesome/free-solid-svg-icons";
 
-
-const Container = styled(motion.div)`
-  font-family: 'Open Sans', Arial, sans-serif;
-  font-weight: 600;
-  padding: 12px;
-  padding-top: 6px;
-  height: 100%;
-  width: 100%;
-  display: block;
-  justify-content: start;
-  align-items: center;
-  font-size: 20px;
-`;
-
-const Box = styled.div`
-  border-radius: 22px;
-  width: 80%;
-  margin: 20px;
-  padding: 12px;;
-`;
-
-const IconBox = styled(Box)`
-  width: 20%;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-
-`;
-
-const Row = styled.div`
-  display: flex;
-  &:first-child {
-    justify-content: space-between;
-    background-color: white;
-    box-shadow: 0px 0px 10px 3px rgba(109, 109, 109, 0.1);
-    border-radius: 25px;
-    margin: 0px 10px;
-  }
-`;
-
-const Icon = styled(FontAwesomeIcon)`
-  width: 25px;
-  height: 25px;
-  padding: 20px;
-  background-color: #003E5E;
-  border-radius: 50%;
-  color: white;
-`;
-
-const Address = styled.div`
-  font-size: 22px;
-  font-weight: 700;
-`;
-
-
-const Info = styled.div`
-  font-size:16px;
-  margin-right: 15px;
-  width: auto;
-  margin-bottom: 10px;
-  font-weight: 500;
-`;
-
-const Btn = styled(Info)`
-  background-color: white;
-  width: auto;
-  padding: 8px 24px;
-  border-radius: 25px;
-  text-align: center;
-  border: 0.5px solid #00000039;
-  box-shadow: 0px 0px 5px 3px rgba(109, 109, 109, 0.15);
-  font-weight: 700;
-  margin-bottom: 0;
-  cursor: pointer;
-`;
-
-const AddressBox = styled.div`
-  display: flex;
-  width: auto;
-  margin-top: 15px;
-`;
-
 function PlaceInfo() {
   const addr = useRecoilValue(addressState);
   const curAddr = useRecoilValue(currentAddressState);
@@ -190,12 +108,73 @@ function PlaceInfo() {
             <Btn onClick={onDestClick}><span style={{ color: "#216CFF"}}>도착</span></Btn>
           </AddressBox>
         </Box>
-        <IconBox>
-          <Icon icon={faMagnifyingGlassArrowRight}/>
-        </IconBox>
       </Row> 
     </Container>
    );
   }
 
   export default PlaceInfo
+
+  const Container = styled(motion.div)`
+  padding: 10px;
+  height: 100%;
+  width: 100%;
+  display: block;
+  justify-content: start;
+  align-items: center;
+  font-size: 20px;
+`;
+
+const Box = styled.div`
+  border-radius: 22px;
+  width: 100%;
+  padding: 20px;
+`;
+
+const Row = styled.div`
+  display: flex;
+  &:first-child {
+    justify-content: space-between;
+    background-color: white;
+    box-shadow: 0px 0px 10px 3px rgba(109, 109, 109, 0.1);
+    border-radius: 25px;
+    margin: 0px 10px;
+  }
+`;
+
+const Address = styled.div`
+  font-size: 20px;
+  font-weight: 700;
+`;
+
+
+const Info = styled.div`
+  font-size:15px;
+  width: auto;
+  margin-bottom: 10px;
+  font-weight: 500;
+`;
+
+const Btn = styled.div`
+  background-color: white;
+  width: auto;
+  padding: 6px 20px;
+  border-radius: 25px;
+  text-align: center;
+  border: 0.5px solid #00000039;
+  box-shadow: 0px 0px 5px 3px rgba(109, 109, 109, 0.15);
+  font-weight: bold;
+  margin-bottom: 0;
+  cursor: pointer;
+  margin-left: 15px;
+  font-size: 18px;
+`;
+
+const AddressBox = styled.div`
+  display: flex;
+  width: auto;
+  margin-top: 5px;
+  &:last-child {
+    justify-content: end;
+  }
+`;

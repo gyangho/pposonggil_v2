@@ -384,7 +384,7 @@ const Confirmation = styled.div`
 
 const MapOverlay = styled.div`
   position: fixed;
-  top: 0;
+  bottom: 30px;
   left: 0;
   width: 100%;
   height: 100%;

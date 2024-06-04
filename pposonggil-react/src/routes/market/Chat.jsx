@@ -7,8 +7,6 @@ import styled from "styled-components";
 function Chat() {
   const { author } = useParams();
 
-  const setNav = useSetRecoilState(navState);
-  setNav("market");
 
   const navigate = useNavigate();
 

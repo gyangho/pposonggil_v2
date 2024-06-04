@@ -9,45 +9,6 @@ import PlaceInfo from "../components/PlaceInfo";
 import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil";
 import { gridState, locationBtnState, markerState, navState, routeInfoState } from "../recoil/atoms";
 
-const ContentBox = styled(motion.div)`
-  overflow-x: hidden;
-  overflow-y: scroll;
-  display: box;
-  justify-content: center;
-  align-items: center;
-  background-color: whitesmoke;
-  position: sticky;
-  bottom: 70px;
-  left: 0;
-  right: 0;
-  z-index: 200;
-  box-shadow: 0px -4px 8px rgba(0, 0, 0, 0.15);
-`;
-
-const ToggleBar = styled.div`
-  width: 100%;
-  height: 20px;
-  padding: 15px 0px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: sticky;
-  top:0;
-  margin-bottom: 5px;
-  background-color: whitesmoke;
-`;
-
-const Bar = styled.div`
-  width: 10%;
-  height: 6px;
-  border-radius: 25px;
-  background-color: #d9d9d9;
-`;
-
-const MapBox = styled(motion.div)`
-  /* width: 100%; */
-`;
-
 function Home() {
   const [slideUp, setSlideUp] = useState(false);
   const contentBoxRef = useRef(null);
@@ -72,16 +33,16 @@ function Home() {
     <React.Fragment>
       <MapBox
         layout
-        initial={{ height: "70%" }}
-        animate={{ height: slideUp ? "45%" : "65%" }}
+        initial={{ height: "60%" }}
+        animate={{ height: slideUp ? "45%" : "60%" }}
         transition={{ duration: 0.3 }}
       >
         <Map/>
       </MapBox>
       <ContentBox
         layout
-        initial={{ height: "30%" }}
-        animate={{ height: slideUp ? "55%" : "35%" }}
+        initial={{ height: "40%" }}
+        animate={{ height: slideUp ? "55%" : "40%" }}
         transition={{ duration: 0.3 }}
         onClick={changeHeight}
         ref={contentBoxRef}
@@ -94,3 +55,41 @@ function Home() {
 }
 
 export default Home;
+
+const ContentBox = styled(motion.div)`
+  overflow-x: hidden;
+  overflow-y: scroll;
+  display: box;
+  justify-content: center;
+  align-items: center;
+  background-color: whitesmoke;
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 200;
+  box-shadow: 0px -4px 8px rgba(0, 0, 0, 0.15);
+`;
+
+const ToggleBar = styled.div`
+  width: 100%;
+  height: 20px;
+  padding: 15px 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: sticky;
+  top:0;
+  background-color: whitesmoke;
+`;
+
+const Bar = styled.div`
+  width: 10%;
+  height: 6px;
+  border-radius: 25px;
+  background-color: #d9d9d9;
+`;
+
+const MapBox = styled(motion.div)`
+  position: relative;
+  width: 100%;
+`;

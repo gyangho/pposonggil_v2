@@ -13,7 +13,6 @@ const Container = styled(motion.div)`
   font-family: 'Open Sans', Arial, sans-serif;
   font-weight: 600;
   padding: 12px;
-  padding-top: 6px;
   height: 100%;
   width: 100%;
   display: block;
