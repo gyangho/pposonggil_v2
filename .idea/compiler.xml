@@ -24,8 +24,19 @@
     <bytecodeTargetLevel>
       <module name="com.pposong.pposong-oauth2" target="21" />
       <module name="com.pposong.pposong-oauth2.test" target="21" />
+<<<<<<< Updated upstream
       <module name="pposonggil.usedStuff" target="21" />
       <module name="pposonggil.usedStuff.test" target="21" />
+=======
+      <module name="pposong-oauth2" target="21" />
+      <module name="pposong-oauth2.main" target="21" />
+      <module name="pposong-oauth2.test" target="21" />
+      <module name="pposonggil.usedStuff" target="21" />
+      <module name="pposonggil.usedStuff.test" target="21" />
+      <module name="usedStuff" target="21" />
+      <module name="usedStuff.main" target="21" />
+      <module name="usedStuff.test" target="21" />
+>>>>>>> Stashed changes
     </bytecodeTargetLevel>
   </component>
 </project>

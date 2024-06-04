@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="fbc73a0f-9444-47e6-9457-7db026927fd3" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/.gradle/8.7/checksums/checksums.lock" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/.gradle/8.7/dependencies-accessors/gc.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/.gradle/8.7/executionHistory/executionHistory.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/.gradle/8.7/executionHistory/executionHistory.lock" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/.gradle/8.7/fileChanges/last-build.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/.gradle/8.7/fileHashes/fileHashes.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/.gradle/8.7/fileHashes/fileHashes.lock" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/.gradle/8.7/fileHashes/resourceHashesCache.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/.gradle/8.7/gc.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/.gradle/buildOutputCleanup/cache.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/.gradle/file-system.probe" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/.gradle/vcs-1/gc.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/classes/java/main/com/pposong/pposongoauth2/PposongOauth2Application.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/classes/java/main/com/pposong/pposongoauth2/Service/CustomOAuth2UserService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/classes/java/main/com/pposong/pposongoauth2/Service/MemberService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/classes/java/main/com/pposong/pposongoauth2/Service/TokenService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/classes/java/main/com/pposong/pposongoauth2/config/CustomAccessDeniedHandler.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/classes/java/main/com/pposong/pposongoauth2/config/CustomAuthenticationEntryPoint.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/classes/java/main/com/pposong/pposongoauth2/config/SecurityConfig.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/classes/java/main/com/pposong/pposongoauth2/config/TokenAuthenticationFilter.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/classes/java/main/com/pposong/pposongoauth2/config/TokenDto$TokenDtoBuilder.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/classes/java/main/com/pposong/pposongoauth2/config/TokenDto.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/classes/java/main/com/pposong/pposongoauth2/config/TokenProvider.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/classes/java/main/com/pposong/pposongoauth2/controller/MemberController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/classes/java/main/com/pposong/pposongoauth2/controller/OAuthController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/classes/java/main/com/pposong/pposongoauth2/handler/OAuth2SuccessHandler.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/classes/java/main/com/pposong/pposongoauth2/member/Member$MemberBuilder.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/classes/java/main/com/pposong/pposongoauth2/member/Member.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/classes/java/main/com/pposong/pposongoauth2/member/OAuth2UserInfo$OAuth2UserInfoBuilder.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/classes/java/main/com/pposong/pposongoauth2/member/OAuth2UserInfo.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/classes/java/main/com/pposong/pposongoauth2/member/PrincipalDetails.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/classes/java/main/com/pposong/pposongoauth2/member/RefreshToken$RefreshTokenBuilder.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/classes/java/main/com/pposong/pposongoauth2/member/RefreshToken.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/classes/java/main/com/pposong/pposongoauth2/member/Role.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/classes/java/main/com/pposong/pposongoauth2/repository/MemberRepository.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/classes/java/main/com/pposong/pposongoauth2/repository/TokenRepository.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/application-oauth.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/application.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/css/components/alt-screen-header.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/css/components/footer.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/css/components/nav-component.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/css/components/route-component.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/css/components/screen-header.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/css/components/search-box.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/css/components/specific-component.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/css/components/status-bar.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/css/main-style.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/css/mainFunc-style.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/css/reset.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/css/result.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/css/screens/bookmark.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/css/screens/home.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/css/screens/intro.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/css/screens/login.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/css/screens/mypage.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/css/screens/newhome.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/css/screens/result.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/css/screens/welcome.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/css/styles.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/css/variables.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/image/1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/image/10.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/image/11.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/image/12.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/image/13.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/image/14.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/image/15.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/image/16.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/image/17.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/image/18.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/image/19.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/image/2.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/image/2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/image/20.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/image/21.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/image/22.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/image/23.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/image/3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/image/4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/image/5.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/image/6.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/image/7.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/image/8.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/image/9.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/image/pposonggil/pposong-icon.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/image/weather-icon/01d.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/image/weather-icon/01n.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/image/weather-icon/02d.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/image/weather-icon/02n.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/image/weather-icon/03d.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/image/weather-icon/03n.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/image/weather-icon/04d.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/image/weather-icon/04n.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/image/weather-icon/09d.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/image/weather-icon/09n.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/image/weather-icon/10d.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/image/weather-icon/10n.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/image/weather-icon/11d.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/image/weather-icon/11n.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/image/weather-icon/13d.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/image/weather-icon/13n.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/image/weather-icon/50d.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/image/weather-icon/50n.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/image/weather-icon/unknown.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/js/autocomplete.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/js/back.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/js/bookmark.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/js/cal_time.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/js/convert_XY.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/js/home.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/js/join.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/js/kakao.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/js/login.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/js/mainFunc.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/js/map.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/js/map_main.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/js/marking.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/js/newhome.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/js/pposong.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/js/route.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/public/js/welcome.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/routes/auth.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/routes/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/static/routes/main.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/swagger/swagger.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/templates/bookmark.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/templates/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/templates/join.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/templates/loginform.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/templates/mypage.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/templates/pposong.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/templates/result.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/templates/welcome.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/templates/새 폴더/adminPage.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/templates/새 폴더/index2.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/templates/새 폴더/loginForm.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/resources/main/templates/새 폴더/privatePage.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/tmp/compileJava/compileTransaction/stash-dir/CustomOAuth2UserService.class.uniqueId5" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/tmp/compileJava/compileTransaction/stash-dir/Member$MemberBuilder.class.uniqueId0" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/tmp/compileJava/compileTransaction/stash-dir/Member.class.uniqueId1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/tmp/compileJava/compileTransaction/stash-dir/MemberController.class.uniqueId9" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/tmp/compileJava/compileTransaction/stash-dir/MemberRepository.class.uniqueId10" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/tmp/compileJava/compileTransaction/stash-dir/MemberService.class.uniqueId7" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/tmp/compileJava/compileTransaction/stash-dir/OAuth2UserInfo$OAuth2UserInfoBuilder.class.uniqueId4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/tmp/compileJava/compileTransaction/stash-dir/OAuth2UserInfo.class.uniqueId2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/tmp/compileJava/compileTransaction/stash-dir/PrincipalDetails.class.uniqueId3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/tmp/compileJava/compileTransaction/stash-dir/SecurityConfig.class.uniqueId8" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/tmp/compileJava/compileTransaction/stash-dir/TokenProvider.class.uniqueId6" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposong-oauth2/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$/Docker/usedStuff">
+      <ProjectState />
+    </projectState>
+    <projectState path="$PROJECT_DIR$/pposong-oauth2">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 2
+}]]></component>
+  <component name="ProjectId" id="2hPh1utbOU0UTG1WLWqQdrPnAMo" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "feature-Authentication-Server-Spring",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RunManager" selected="Spring Boot.PposongOauth2Application">
+    <configuration name="PposongOauth2Application" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="pposong-oauth2.main" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.pposong.pposongoauth2.PposongOauth2Application" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UsedStuffApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+      <module name="usedStuff.main" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="pposonggil.usedStuff.UsedStuffApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="jdk-21.0.2-openjdk-21.0.2-4caba194b151-4f524021" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="fbc73a0f-9444-47e6-9457-7db026927fd3" name="Changes" comment="" />
+      <created>1717501409553</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1717501409553</updated>
+      <workItem from="1717501412191" duration="933000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
