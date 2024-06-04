@@ -69,7 +69,6 @@ function SearchRoutes() {
       });
       console.log('Response:', response.data);
       setPaths(response.data);
-      console.log("경로 출발지 목적지 전송 성공, 서버 response : ", paths);
     } catch (error) {
       console.error('Error:', error);
     }
@@ -118,7 +117,8 @@ function SearchRoutes() {
 
   // 클릭한 path 객체 state로 전송
   const goToRouteDetail = (path) => {
-    navigate(`/search/route-detail`, { state: { path } });
+    console.log(path);
+    navigate(`/search/detail`, { state: { path } });
   };
 
   return (

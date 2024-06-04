@@ -31,12 +31,13 @@ function RouteDetail() {
   const [currentAddress, setCurrentAddress] = useRecoilState(currentAddressState); // 현재 위치 추적 주소
   const [activeMarker, setActiveMarker] = useRecoilState(markerState);
 
-
-  const [isGridActive, setIsGridActive] = useState(false);
-  const [isGridLoading, setIsGridLoading] = useState(false);
   const [isLocationLoading, setIsLocationLoading] = useState(false);
   const [activeTracking, setActiveTracking] = useState(false);
-  const [gridObjects, setGridObjects] = useState([]); //그리드 객체 관리
+
+  const [isGridLoading, setIsGridLoading] = useState(false); // 그리드 버튼 로딩 상태
+  const [isGridActive, setIsGridActive] = useState(false); // 그리드 활성화 상태
+  const [gridObjects, setGridObjects] = useState([]); // 기본 그리드, (29개 격자, 반투명 fillcolor)
+  const [gridWeather, setGridWeather] = useState([]); // 서버로부터 격자당 시간별 강수 정보 받아온 데이터 저장
 
   // 그리드 경계 데이터
   const latLine = [37.69173846, 37.64577895, 37.60262058, 37.55674696, 37.51063517, 37.46494092, 37.42198141];
@@ -55,7 +56,119 @@ function RouteDetail() {
       gridBounds.push(new kakao.maps.LatLngBounds(sw, ne));
     }
   }
+  // 격자 지도 위에 그리고 기본값으로 세팅
+  const showGrid = useCallback(() => {
+    const newGridObjects = gridBounds.map(bounds => {
+      const rectangle = new kakao.maps.Rectangle({
+        bounds: bounds,
+        strokeWeight: 2,
+        strokeColor: '#004c80',
+        strokeOpacity: 0.8,
+        strokeStyle: 'solid',
+        fillColor: '#ffffff',
+        fillOpacity: 0.5,
+      });
+      rectangle.setMap(mapInstance.current);
+      return rectangle;
+    });
+    setGridObjects(newGridObjects);  // 그리드 객체 상태 업데이트
+  }, [gridBounds]);
+
+  const getGridWeatherFromServer = async () => {
+    const now = new Date();
+    const time = now.getHours().toString().padStart(2, '0') + now.getMinutes().toString().padStart(2, '0');
+    const url = 'http://localhost:8080/api/forecasts';
+    const params = { time: time };
+    try {
+      const response = await axios.get(url, {params});
+      setGridWeather(response.data);
+    } catch(error) {
+      console.error("격자 날씨 정보 get 에러", error);
+    }
+  };
+
+  //격자 내 색상 업데이트 
+  const updateGridColors = (weatherData) => {
+    gridObjects.forEach((rectangle, index) => {
+      const gridData = weatherData[index];
+      let fillColor = '#ffffff'; // 기본 색상 (흰색)
+
+      if (gridData) {
+        const reh = parseFloat(gridData.reh);
+        if (reh > 0 && reh <= 5) {
+          fillColor = 'rgba(135, 206, 250, 0.5)'; // 하늘색
+        } else if (reh > 5 && reh <= 10) {
+          fillColor = 'rgba(0, 0, 255, 0.5)'; // 파란색
+        } else if (reh > 10) {
+          fillColor = 'rgba(0, 0, 139, 0.5)'; // 남색
+        }
+      }
+
+      rectangle.setOptions({
+        fillColor,
+        fillOpacity: 0.5,
+      });
+    });
+  };
   
+    //그리드 버튼 클릭 핸들러
+    const handleGridBtn = useCallback(() => {
+      if (isGridActive) {
+        gridObjects.forEach(rectangle => rectangle.setMap(null));
+        setGridObjects([]);
+      } else {
+        showGrid();
+      }
+      setIsGridActive(!isGridActive);
+    }, [isGridActive, gridObjects, showGrid]);
+  
+    const handleTimeBtn = (index) => {
+      //인덱스에 해당하는 순서의 격자 강수량 정보 가져와서 Grid의 fillcolor 변경
+    
+      // index에 해당하는 키 가져옴
+      const Key = Object.keys(gridWeather)[index];
+      console.log('Key:', Key); // 해당 시간대
+    
+      // 키에 해당하는 배열. (총 30개 구간)
+      const Array = gridWeather[Key]; 
+      console.log('Array:', Array); //해당 시간대의 30개의 격자 구역별 날씨정보
+    
+      // 배열의 첫 번째 요소 (30개 중 하나의 격자에 해당하는 정보 접근)
+      const Element = Array[0];
+      console.log('Element:', Element);
+    
+      // 각 격자에 대해 강수량 반영 격자 색상 변경
+      gridObjects.forEach((rectangle, _index) => {
+        const item = Array[_index];
+        console.log(`Index: ${_index}, reh: ${item.reh}`);
+    
+        const gridData = item.reh;
+        let fillColor = '#ffffff'; // 기본 색상 (흰색)
+    
+        if (gridData) {
+          const reh = parseFloat(gridData);
+          if (reh > 0 && reh <= 40) {
+            fillColor = 'rgba(61, 213, 255, 0.5)'; // 하늘색
+            console.log('하늘색으로 변경')
+          } else if (reh > 40 && reh <= 60) {
+            fillColor = 'rgba(0, 60, 255, 0.5)'; // 파란색
+            console.log("파란색으로 변경");
+          } else if (reh > 60) {
+            fillColor = 'rgba(58, 0, 203, 0.5)'; // 남색
+            console.log("남색으로 변경");
+          }
+        }
+        rectangle.setOptions({
+          fillColor,
+          fillOpacity: 0.5,
+        });
+      });
+    };
+  
+  
+
+  
+
   const handleLocationBtn = useCallback(() => {//위치 추적 버튼 핸들러
     setIsLocationLoading(true);
     if (!activeTracking) { 
@@ -114,45 +227,11 @@ function RouteDetail() {
       setIsLocationLoading(false);
     }
   }, [activeTracking]);
-  
-  const showGrid = useCallback(() => { // 격자 버튼 핸들러
-    const newGridObjects = gridBounds.map(bounds => {
-      const rectangle = new kakao.maps.Rectangle({
-        bounds: bounds,
-        strokeWeight: 2,
-        strokeColor: '#004c80',
-        strokeOpacity: 0.8,
-        strokeStyle: 'solid',
-        fillColor: '#fff',
-        fillOpacity: 0.5,
-      });
-      rectangle.setMap(mapInstance.current);
-      return rectangle;
-    });
-    setGridObjects(newGridObjects);  // 그리드 객체 상태 업데이트
-  }, [gridBounds]);
 
-  const hideGrid = useCallback(() => {
-    gridObjects.forEach(rectangle => {
-      rectangle.setMap(null);
-    });
-    setGridObjects([]);  // 그리드 객체 상태 초기화
-  }, [gridObjects]);
-
-  // 그리드 버튼 핸들러
-  const handleGridBtn = () => {
-    setIsGridActive(!isGridActive);  // 그리드 활성화 상태 토글
-    if (!isGridActive) {
-      showGrid();  // 그리드 활성화
-    } else {
-      hideGrid();  // 그리드 비활성화
-    }
-  };
-  
   /* 06.04 (화) 오전 3:20 수정사항 */
   const location = useLocation();
   const { path } = location.state || {};
-
+  const [subPathsWeather, setSubPathsWeather] = useState([]);
 
   //서버로부터 path 데이터 fetch
   // useEffect(() => {
@@ -192,9 +271,6 @@ function RouteDetail() {
   //   fetchPath();
   // }, [index]);
 
-  //임시 코드, json-server와 연동
-  const [subPathsWeather, setSubPathsWeather] = useState([]);
-
   // const fetchSubPathsWeather = async () => {
   //   try {
   //     const response = await axios.get('http://localhost:3001/expected');
@@ -209,6 +285,7 @@ function RouteDetail() {
 
   //지도 생성
   useEffect(() => {
+    getGridWeatherFromServer();
     const script = document.createElement('script');
     script.async = true;
     script.src = "//dapi.kakao.com/v2/maps/sdk.js?appkey=fa3cd41b575ec5e015970670e786ea86&libraries=services&autoload=false";
@@ -356,21 +433,31 @@ function RouteDetail() {
     console.log("해당 경로 구간으로 지도 부드럽게 이동: ", subIndex);
   }
 
-  const removeFirstForecast = () => {
-    setSubPathsWeather((prevWeather) => {
-      prevWeather.forecast.splice(0, 1);
-      return { ...prevWeather };
-    });
-  };
-
   if (!path) return <div>Loading...</div>; //스피너
 
   return (
     <React.Fragment>
       <MapContainer id="map" ref={mapRef} style={{position:"relative"}}>
-        <button onClick={() => setIsInfoVisible(!isInfoVisible)} style={{zIndex: "1000", position: "absolute"}}>
+        {/* <button onClick={() => setIsInfoVisible(!isInfoVisible)} style={{zIndex: "1000", position: "absolute"}}>
           {isInfoVisible ? "인포윈도우 숨기기" : "인포윈도우 보기"}
-        </button>
+        </button> */}
+        <TimeBtnBar>
+        {isGridActive && (
+          <TimeBtns
+            initial={{ x: -50, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: -50, opacity: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <TimeBtn onClick={()=>handleTimeBtn(0)}>00:00</TimeBtn>
+            <TimeBtn onClick={()=>handleTimeBtn(1)}>01:00</TimeBtn>
+            <TimeBtn onClick={()=>handleTimeBtn(2)}>02:00</TimeBtn>
+            <TimeBtn onClick={()=>handleTimeBtn(3)}>03:00</TimeBtn>
+            <TimeBtn onClick={()=>handleTimeBtn(4)}>04:00</TimeBtn>
+            <TimeBtn onClick={()=>handleTimeBtn(5)}>05:00</TimeBtn>
+          </TimeBtns>
+         )}
+        </TimeBtnBar>
         <MapBtn
           isGridActive={isGridActive}
           isGridLoading={isGridLoading}
@@ -533,6 +620,36 @@ const MapContainer = styled(motion.div)`
   width: 100%;
   height: 60%;
   position: relative;
+`;
+const TimeBtnBar = styled.div`
+  width: 100%;
+  height: 40px;
+  display: flex;
+  justify-content: start;
+  z-index: 500;
+  position: sticky;
+`;
+const TimeBtns = styled(motion.div)`
+  padding: 0px 20px;
+  * {
+    margin-right: 8px;
+    margin-top: 15px;
+
+  }
+`;
+const TimeBtn = styled.button`
+  border-radius: 25px;
+  /* border: 2px solid #626161; */
+  border: none;
+  background-color: #626161;
+  color: #7ccdffc9;
+  color: white;
+  padding: 6px 7px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0px 0px 3px 3px rgba(0, 0, 0, 0.1);
+
 `;
 
 const PathInfoContainer = styled(motion.div)`

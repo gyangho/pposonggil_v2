@@ -62,10 +62,25 @@ function Map() {
     setGridObjects(newGridObjects);  // 그리드 객체 상태 업데이트
   }, [gridBounds]);
    // 격자 구간별 날씨 정보 서버로부터 get
+  // const getGridWeatherFromServer = async () => {
+  //   const now = new Date();
+  //   const time = now.getHours().toString().padStart(2, '0') + now.getMinutes().toString().padStart(2, '0');
+  //   const url = 'http://localhost:8080/api/forecasts';
+  //   try {
+  //     const response = await axios.get(url);
+  //     setGridWeather(response.data);
+  //   } catch(error) {
+  //     console.error("격자 날씨 정보 get 에러", error);
+  //   }
+  // };
+
   const getGridWeatherFromServer = async () => {
+    const now = new Date();
+    const time = now.getHours().toString().padStart(2, '0') + now.getMinutes().toString().padStart(2, '0');
     const url = 'http://localhost:8080/api/forecasts';
+    const params = { time: time };
     try {
-      const response = await axios.get(url);
+      const response = await axios.get(url, {params});
       setGridWeather(response.data);
     } catch(error) {
       console.error("격자 날씨 정보 get 에러", error);
@@ -101,28 +116,30 @@ function Map() {
     if (isGridActive) {
       gridObjects.forEach(rectangle => rectangle.setMap(null));
       setGridObjects([]);
+      mapInstance.current.setLevel(3);
     } else {
+      mapInstance.current.setLevel(10);
       showGrid();
     }
     setIsGridActive(!isGridActive);
   }, [isGridActive, gridObjects, showGrid]);
 
   const handleTimeBtn = (index) => {
-    //인덱스에 해당하는 순서의 격자 강수량 정보 가져와서 fillcolor Grid의 fillcolor 변경
+    //인덱스에 해당하는 순서의 격자 강수량 정보 가져와서 Grid의 fillcolor 변경
   
-    // index에 해당하는 키를 가져옵니다.
+    // index에 해당하는 키 가져옴
     const Key = Object.keys(gridWeather)[index];
     console.log('Key:', Key); // 해당 시간대
   
-    // 키에 해당하는 배열에 접근합니다. (총 30개 구간)
+    // 키에 해당하는 배열. (총 30개 구간)
     const Array = gridWeather[Key]; 
     console.log('Array:', Array); //해당 시간대의 30개의 격자 구역별 날씨정보
   
-    // 배열의 첫 번째 요소에 접근합니다. (한 구간당 날씨 정보)
-    const Element = Array[0]; //30개 중 하나의 격자에 해당하는 정보 접근
+    // 배열의 첫 번째 요소 (30개 중 하나의 격자에 해당하는 정보 접근)
+    const Element = Array[0];
     console.log('Element:', Element);
   
-    // 각 격자에 대해 색상 변경을 적용합니다.
+    // 각 격자에 대해 강수량 반영 격자 색상 변경
     gridObjects.forEach((rectangle, _index) => {
       const item = Array[_index];
       console.log(`Index: ${_index}, reh: ${item.reh}`);
@@ -149,65 +166,6 @@ function Map() {
       });
     });
   };
-  
-
-  // const handleTimeBtn = (index) => {
-  //   //인덱스에 해당하는 순서의 격자 강수량 정보 가져와서 fillcolor Grid의 fillcolor 변경
-
-  //    // index에 해당하는 키를 가져옵니다.
-  //    const Key = Object.keys(gridWeather)[index];
-  //    console.log('Key:', Key); // 해당 시간대
- 
-  //    // 키에 해당하는 배열에 접근합니다. (총 30개 구간)
-  //    const Array = gridWeather[Key]; 
-  //    console.log('Array:', Array); //해당 시간대의 30개의 격자 구역별 날씨정보
- 
-  //    // 배열의 첫 번째 요소에 접근합니다. (한 구간당 날씨 정보)
-  //    const Element = Array[0]; //30개 중 하나의 격자에 해당하는 정보 접근
-  //    console.log('Element:', Element);
-
-  //    Array.forEach((item, itemIndex) => {
-  //     console.log(`Index: ${itemIndex}, reh: ${item.reh}`);
-  //     //여기 reh 값으로 격자 내 색깔 변경해야함
-  //     gridObjects.forEach((rectangle, itemIndex) => {
-        
-  //       const gridData = item.reh
-        
-  //       let fillColor = '#ffffff'; // 기본 색상 (흰색)
-  
-  //       if (gridData) {
-  //         const reh = parseFloat(gridData);
-  //         if (reh > 0 && reh <= 40) {
-  //           fillColor = 'rgba(135, 206, 250, 0.5)'; // 하늘색
-  //           console.log('하늘색으로 변경')
-  //         } else if (reh > 40 && reh <= 60) {
-  //           fillColor = 'rgba(229, 255, 0, 0.5)'; // 파란색
-  //           console.log("파란색으로 변경");
-  //         } else if (reh > 60) {
-  //           fillColor = 'rgba(0, 203, 68, 0.5)'; // 남색
-  //           console.log("남색으로 변경");
-  //         }
-  //       }
-  //       rectangle.setOptions({
-  //         fillColor,
-  //         fillOpacity: 0.5,
-  //       });
-  //     });
-  //    });
-  //    // 객체의 모든 키에 대해 반복합니다.
-  //   // for (const key in gridWeather) {
-  //   //   if (gridWeather.hasOwnProperty(key)) { // 객체의 고유 속성인지 확인합니다.
-  //   //     const array = gridWeather[key]; // 각 배열을 가져옵니다.
-        
-  //   //     // 배열의 모든 요소에 대해 반복합니다.
-  //   //     array.forEach((item, index) => {
-  //   //       console.log(`Key: ${key}, Index: ${index}, rnh: ${item.reh}`);
-  //   //     });
-  //   //   }
-  //   // }
-  // };
-
-  
 
   // 맵 로드
   useEffect(() => {
