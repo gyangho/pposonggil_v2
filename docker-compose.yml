@@ -98,7 +98,7 @@ services:
         target: /usr/src/app/pposonggil-react
 
   usedStuff:
-    image: gonaging/usedstuff:1.0
+    image: gonaging/usedstuff:1.1
     build:
       context: ./Docker/usedStuff
       dockerfile: Dockerfile
@@ -143,8 +143,13 @@ services:
     healthcheck:
       test:
         [
+<<<<<<< Updated upstream
           "CMD-SHELL",
           "mysqladmin ping -h 127.0.0.1 -u root --password=$$MYSQL_ROOT_PASSWORD",
+=======
+          'CMD-SHELL',
+          'mysqladmin ping -h 127.0.0.1 -u root --password=$$MYSQL_ROOT_PASSWORD'
+>>>>>>> Stashed changes
         ]
       interval: 5s
       timeout: 2s
