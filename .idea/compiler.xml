@@ -21,5 +21,11 @@
         <module name="usedStuff.main" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="com.pposong.pposong-oauth2" target="21" />
+      <module name="com.pposong.pposong-oauth2.test" target="21" />
+      <module name="pposonggil.usedStuff" target="21" />
+      <module name="pposonggil.usedStuff.test" target="21" />
+    </bytecodeTargetLevel>
   </component>
 </project>
