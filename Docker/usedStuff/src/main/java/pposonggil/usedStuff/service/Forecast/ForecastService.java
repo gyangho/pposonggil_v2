@@ -9,7 +9,11 @@ import pposonggil.usedStuff.dto.Forecast.ForecastDto;
 import pposonggil.usedStuff.dto.Route.PointInformation.PointInformationDto;
 import pposonggil.usedStuff.repository.forecast.ForecastRepository;
 
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,12 +25,23 @@ public class ForecastService {
     /**
      * 시각에 따른 기상 정보 Dto 리스트 조회
      */
-    public List<ForecastDto> findForecastsByTime(ForecastDto forecastDto) {
-        String standardTime = forecastDto.getTime().substring(0, 2) + "00";
-        List<Forecast> forecasts = forecastRepository.findByTime(standardTime);
-        return forecasts.stream()
-                .map(ForecastDto::fromEntity)
-                .collect(Collectors.toList());
+    public Map<String, List<ForecastDto>> getForecastsByTime(ForecastDto forecastDto) {
+        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("HHmm");
+        LocalTime time = LocalTime.parse(forecastDto.getTime(), inputFormatter);
+        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("HH00");
+        Map<String, List<ForecastDto>> results = new LinkedHashMap<>();
+
+        for(int i = 0; i < 6; i++){
+            String formattedTime = time.plusHours(i).format(outputFormatter);
+            List<Forecast> forecasts = forecastRepository.findByTime(formattedTime);
+
+            List<ForecastDto> forecastDtos = forecasts.stream()
+                    .map(ForecastDto::fromEntity)
+                    .collect(Collectors.toList());
+
+            results.put(formattedTime, forecastDtos);
+        }
+        return  results;
     }
 
     /**

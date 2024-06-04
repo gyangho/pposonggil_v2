@@ -9,6 +9,7 @@ import pposonggil.usedStuff.dto.Route.PointInformation.PointInformationDto;
 import pposonggil.usedStuff.service.Forecast.ForecastService;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -16,13 +17,12 @@ public class ForecastApiController {
     private final ForecastService forecastService;
 
     /**
-     * 시간으로 기상 정보 조회
-     * @param forecastDto
-     * @return 시간이 일치하는 기상 정보 Dto 리스트
+     * 기상 정보 조회
+     * @return 시간으로 groupedby된 기상 정보 Dto 리스트
      */
-    @GetMapping("/api/forecast/by-time")
-    public List<ForecastDto> forecastsByTime(@RequestBody ForecastDto forecastDto) {
-        return forecastService.findForecastsByTime(forecastDto);
+    @GetMapping("/api/forecasts")
+    public Map<String, List<ForecastDto>> forecastsByTime(@RequestBody ForecastDto forecastDto) {
+        return forecastService.getForecastsByTime(forecastDto);
     }
 
     /**
