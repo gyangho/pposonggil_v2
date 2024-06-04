@@ -21,8 +21,8 @@ public class ForecastApiController {
      * @return 시간으로 groupedby된 기상 정보 Dto 리스트
      */
     @GetMapping("/api/forecasts")
-    public Map<String, List<ForecastDto>> forecastsByTime() {
-        return forecastService.getForecastsByTime();
+    public Map<String, List<ForecastDto>> forecastsByTime(@RequestBody ForecastDto forecastDto) {
+        return forecastService.getForecastsByTime(forecastDto);
     }
 
     /**

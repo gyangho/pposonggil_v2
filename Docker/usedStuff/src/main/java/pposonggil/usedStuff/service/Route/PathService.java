@@ -51,34 +51,53 @@ public class PathService {
      * 도보경로 X
      */
     public List<PathDto> createPaths(PointInformationDto start, PointInformationDto end, String selectTime, Long requesterId) throws IOException {
-        memberRepository.findById(requesterId)
-                .orElseThrow(() -> new NoSuchElementException("Member not found with id: " + requesterId));
+        try {
+            memberRepository.findById(requesterId)
+                    .orElseThrow(() -> new NoSuchElementException("Member not found with id: " + requesterId));
 
-        String urlInfo = buildUrl(start, end);
-        StringBuilder sb = getResponse(urlInfo);
-        List<PathDto> pathDtos = getPathDtos(sb, start, end, requesterId);
+            String urlInfo = buildUrl(start, end);
+            StringBuilder sb = getResponse(urlInfo);
+            List<PathDto> pathDtos = getPathDtos(sb, start, end, requesterId);
 
-        long index = 0;
-        for (PathDto pathDto : pathDtos) {
-            pathDto.setIndex(index);
-            index = index + 1;
+            long index = 0;
+            for (PathDto pathDto : pathDtos) {
+                pathDto.setIndex(index);
+                index = index + 1;
+            }
+
+            calTotalRain(selectTime, pathDtos);
+            return pathDtos;
+        } catch (IOException e) {
+            // IOException 처리 로직
+            e.printStackTrace();
+            throw new RuntimeException("IOException occurred", e);
+        } catch (NoSuchElementException e) {
+            // NoSuchElementException 처리 로직
+            e.printStackTrace();
+            throw e;
+        } catch (Exception e) {
+            // 기타 예외 처리 로직
+            e.printStackTrace();
+            throw new RuntimeException("An error occurred", e);
         }
-
-        calTotalRain(selectTime, pathDtos);
-        return pathDtos;
     }
 
     /**
      * 탐색한 경로들의 예상 강수량 계산
      */
     private void calTotalRain(String selectTime, List<PathDto> pathDtos) {
-        for (PathDto pathDto : pathDtos) {
-            List<ForecastSubPathDto> forecastSubPathDtos = createForecastBySubPath(pathDto, selectTime);
-            double totalRain = 0.0;
-            for (ForecastSubPathDto forecastSubPathDto : forecastSubPathDtos) {
-                totalRain = totalRain + Double.parseDouble(forecastSubPathDto.getExpectedRain());
+        try {
+            for (PathDto pathDto : pathDtos) {
+                List<ForecastSubPathDto> forecastSubPathDtos = createForecastBySubPath(pathDto, selectTime);
+                double totalRain = 0.0;
+                for (ForecastSubPathDto forecastSubPathDto : forecastSubPathDtos) {
+                    totalRain = totalRain + Double.parseDouble(forecastSubPathDto.getExpectedRain());
+                }
+                pathDto.setTotalRain(totalRain);
             }
-            pathDto.setTotalRain(totalRain);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Runtime exception in calTotalRain", e);
         }
     }
 
@@ -87,39 +106,45 @@ public class PathService {
      * SubPath 내 예상되는 기상 정보 및 강수량 리스트 생성
      */
     public List<ForecastSubPathDto> createForecastBySubPath(PathDto pathDto, String selectTime) {
-        List<ForecastSubPathDto> result = new ArrayList<>();
-        String standardTime = selectTime.substring(0, 2) + "00";
-        Long duration = null;
+        try {
+            List<ForecastSubPathDto> result = new ArrayList<>();
+            String standardTime = selectTime.substring(0, 2) + "00";
+            Long duration = null;
 
-        for (SubPathDto subPathDto : pathDto.getSubPathDtos()) {
-            duration = subPathDto.getTime();
-            if (Objects.equals(subPathDto.getType(), "walk")) {
-                ForecastDto forecastDto = ForecastDto.builder()
-                        .time(standardTime)
-                        .x(subPathDto.getMidDto().getX().toString())
-                        .y(subPathDto.getMidDto().getY().toString())
-                        .build();
+            for (SubPathDto subPathDto : pathDto.getSubPathDtos()) {
+                duration = subPathDto.getTime();
 
-                ForecastDto forecastDto1 = forecastService.findForecastByTimeAndXAndY(forecastDto);
+                if (Objects.equals(subPathDto.getType(), "walk")) {
+                    ForecastDto forecastDto = ForecastDto.builder()
+                            .time(standardTime)
+                            .x(subPathDto.getMidDto().getX().toString())
+                            .y(subPathDto.getMidDto().getY().toString())
+                            .build();
 
-                ForecastSubPathDto forecastSubPathDto = ForecastSubPathDto.builder()
-                        .time(subPathDto.getTime().toString())
-                        .expectedRain(String.format("%.2f", Double.parseDouble(forecastDto1.getRn1()) / 60 * subPathDto.getTime()))
-                        .rn1(forecastDto1.getRn1())
-                        .t1h(forecastDto1.getT1h())
-                        .reh(forecastDto1.getReh())
-                        .wsd(forecastDto1.getWsd())
-                        .latitude(subPathDto.getMidDto().getLatitude())
-                        .longitude(subPathDto.getMidDto().getLongitude())
-                        .build();
+                    ForecastDto forecastDto1 = forecastService.findForecastByTimeAndXAndY(forecastDto);
 
-                result.add(forecastSubPathDto);
+                    ForecastSubPathDto forecastSubPathDto = ForecastSubPathDto.builder()
+                            .time(subPathDto.getTime().toString())
+                            .expectedRain(String.format("%.2f", Double.parseDouble(forecastDto1.getRn1()) / 60 * subPathDto.getTime()))
+                            .rn1(forecastDto1.getRn1())
+                            .t1h(forecastDto1.getT1h())
+                            .reh(forecastDto1.getReh())
+                            .wsd(forecastDto1.getWsd())
+                            .latitude(subPathDto.getMidDto().getLatitude())
+                            .longitude(subPathDto.getMidDto().getLongitude())
+                            .build();
+
+                    result.add(forecastSubPathDto);
+                }
+                LocalTime curTime = LocalTime.parse(selectTime, DateTimeFormatter.ofPattern("HHmm"));
+                LocalTime updateTime = curTime.plusMinutes(duration);
+                standardTime = updateTime.format(DateTimeFormatter.ofPattern("HH")) + "00";
             }
-            LocalTime curTime = LocalTime.parse(selectTime, DateTimeFormatter.ofPattern("HHmm"));
-            LocalTime updateTime = curTime.plusMinutes(duration);
-            standardTime = updateTime.format(DateTimeFormatter.ofPattern("HH")) + "00";
+            return result;
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Runtime exception in createForecastBySubPath", e);
         }
-        return result;
     }
 
     /**
