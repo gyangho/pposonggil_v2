@@ -1,14 +1,13 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { useRecoilState } from 'recoil';
 import { addressState, currentAddressState, mapCenterState, locationBtnState, markerState } from '../recoil/atoms';
-
 import axios from "axios";
 
 import styled from "styled-components";
-import { motion } from "framer-motion";
+import { motion, sync } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBus, faSubway, faDroplet, faCircleDot, faPersonWalking, faLocationDot } from "@fortawesome/free-solid-svg-icons";
+import { faBus, faSubway, faDroplet, faCircleDot, faPersonWalking, faLocationDot, faWind, faCloudSunRain, faGlassWaterDroplet, faCloudRain } from "@fortawesome/free-solid-svg-icons";
 
 import MapBtn from "../components/MapBtn";
 
@@ -17,7 +16,7 @@ const apiUrl = "http://localhost:3001/paths";
 
 function RouteDetail() {
   const { index } = useParams();
-  const [path, setPath] = useState(null);
+  // const [path, setPath] = useState(null);
   const [map, setMap] = useState(null);
   const [isInfoVisible, setIsInfoVisible] = useState(false);
   const [infoWindow, setInfoWindow] = useState(null);
@@ -149,57 +148,62 @@ function RouteDetail() {
       hideGrid();  // 그리드 비활성화
     }
   };
+  
+  /* 06.04 (화) 오전 3:20 수정사항 */
+  const location = useLocation();
+  const { path } = location.state || {};
+
 
   //서버로부터 path 데이터 fetch
-  useEffect(() => {
-    const fetchPath = async () => {
-      try {
-        const response = await axios.get(apiUrl);
-        const paths = response.data;
-        const foundPath = paths.find((path) => String(path.index) === index);
-        if (foundPath) {
-          setPath(foundPath);
-          /*선택한 경로의 도보 구간 날씨 서버로부터 post하고 fetch 하는 코드 추가 */
-          console.log("선택한 path를 찾았습니다", foundPath);
-          // 현재 시간 정보를 hhmm 형식으로 구하기
-          const now = new Date();
-          const hhmm = now.getHours().toString().padStart(2, '0') + now.getMinutes().toString().padStart(2, '0');
-          // foundPath와 현재 시간 정보를 서버에 POST 요청으로 보내기
-          try {
-            const postResponse = await axios.post('http://localhost:3001/postExpected', 
-            {
-              pathDto: path,
-              selectTime: hhmm
-            });
-            console.log("POST 응답:", postResponse.data);
-            //원래 백에서 response 온걸로 해야하지만 임시로 fetch하겠음
-            fetchSubPathsWeather();
-          } catch (postError) {
-            console.error("Error posting data", postError);
-          }
+  // useEffect(() => {
+  //   const fetchPath = async () => {
+  //     try {
+  //       const response = await axios.get(apiUrl);
+  //       const paths = response.data;
+  //       const foundPath = paths.find((path) => String(path.index) === index);
+  //       if (foundPath) {
+  //         setPath(foundPath);
+  //         /*선택한 경로의 도보 구간 날씨 서버로부터 post하고 fetch 하는 코드 추가 */
+  //         console.log("선택한 path를 찾았습니다", foundPath);
+  //         // 현재 시간 정보를 hhmm 형식으로 구하기
+  //         const now = new Date();
+  //         const hhmm = now.getHours().toString().padStart(2, '0') + now.getMinutes().toString().padStart(2, '0');
+  //         // foundPath와 현재 시간 정보를 서버에 POST 요청으로 보내기
+  //         try {
+  //           const postResponse = await axios.post('http://localhost:3001/postExpected', 
+  //           {
+  //             pathDto: path,
+  //             selectTime: hhmm
+  //           });
+  //           console.log("POST 응답:", postResponse.data);
+  //           //원래 백에서 response 온걸로 해야하지만 임시로 fetch하겠음
+  //           fetchSubPathsWeather();
+  //         } catch (postError) {
+  //           console.error("Error posting data", postError);
+  //         }
 
-        } else {
-          console.error(`Path with id ${index} not found.`);
-        }
-      } catch (error) {
-        console.error("Error fetching path", error);
-      }
-    };
-    fetchPath();
-  }, [index]);
+  //       } else {
+  //         console.error(`Path with id ${index} not found.`);
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching path", error);
+  //     }
+  //   };
+  //   fetchPath();
+  // }, [index]);
 
   //임시 코드, json-server와 연동
   const [subPathsWeather, setSubPathsWeather] = useState([]);
 
-  const fetchSubPathsWeather = async () => {
-    try {
-      const response = await axios.get('http://localhost:3001/expected');
-      setSubPathsWeather(response.data);
-      console.log("Weather data fetched successfully!", subPathsWeather);
-    } catch (error) {
-      console.error("Error fetching weather data", error);
-    }
-  };
+  // const fetchSubPathsWeather = async () => {
+  //   try {
+  //     const response = await axios.get('http://localhost:3001/expected');
+  //     setSubPathsWeather(response.data);
+  //     console.log("Weather data fetched successfully!", subPathsWeather);
+  //   } catch (error) {
+  //     console.error("Error fetching weather data", error);
+  //   }
+  // };
 
 
 
@@ -230,8 +234,8 @@ function RouteDetail() {
     if (path && map) {
       const bounds = new kakao.maps.LatLngBounds();
       path.subPathDtos.forEach((subPath, index) => {
-        const isValidCoordinate = (lat, lng) => {
-          return !isNaN(lat) && !isNaN(lng) && lat !== null && lng !== null;
+        const isValidCoordinate = (lat, lon) => {
+          return !isNaN(lat) && !isNaN(lon) && lat !== null && lon !== null;
         };
         if (path.subPathDtos) {
           path.subPathDtos.forEach((subPath, index) => {
@@ -363,10 +367,7 @@ function RouteDetail() {
 
   return (
     <React.Fragment>
-      <MapContainer 
-        id="map" ref={mapRef} style={{position:"relative"}}
-        
-        >
+      <MapContainer id="map" ref={mapRef} style={{position:"relative"}}>
         <button onClick={() => setIsInfoVisible(!isInfoVisible)} style={{zIndex: "1000", position: "absolute"}}>
           {isInfoVisible ? "인포윈도우 숨기기" : "인포윈도우 보기"}
         </button>
@@ -385,10 +386,9 @@ function RouteDetail() {
         transition={{ duration: 0.5 }}
         onClick={() => setIsExpanded(!isExpanded)}
       >
-        <ResultContainer>
+      <ResultContainer>
         <ToggleBar><TBar /></ToggleBar>
           <PathBox id="pathBox">
-            
             <PathSummary>
               <PathInfo id="timeAndPrice">
                 <span>{path.totalTime}</span>
@@ -492,6 +492,18 @@ function RouteDetail() {
                         )}
                         
                       </TextColumn>
+                      <WeatherColumn>
+                        {subPath.type === "walk" && (
+                          <React.Fragment>
+                            <div><Icon><FontAwesomeIcon icon={faDroplet}/></Icon>예상 노출: --mm</div>
+                            <div><Icon><FontAwesomeIcon icon={faCloudRain}/></Icon>시간당: --mm</div>
+                            <div><Icon><FontAwesomeIcon icon={faGlassWaterDroplet}/></Icon>습도: --%</div>
+                            <div><Icon><FontAwesomeIcon icon={faWind}/></Icon>풍속: --m/s</div>
+                            {/* <div> {subPathsWeather.forecast[0].expectedRain}</div> */}
+                            {/* {removeFirstForecast()} */}
+                          </React.Fragment>
+                        )}
+                      </WeatherColumn>
                     </SubPath>
                   )}
                   {subIndex === array.length - 1 && (
@@ -665,28 +677,43 @@ const SubPath = styled.div`
 `;
 const IconColumn = styled.div`
   width: 80px;
-  width: 25%;
-
+  width: 20%;
   display: flex;
   height: 100%;
-  /* margin-left: 5px; */
-  justify-content: start;
+  justify-content: center;
   /* background-color: pink; */
   font-weight: 700;
-  font-size: 15px;
+  font-size: 16px;
   * {
     margin-right: 6px;
   }
 `;
 const TextColumn = styled.div`
-  width: 75%;
+  width: 45%;
   border-left: 2px dashed darkgray;
   font-size: 14px;
-  /* background-color: skyblue; */
   * {
     margin-bottom: 5px;
     padding-left: 10px;
   }
+`;
+const WeatherColumn = styled.div`
+  font-size: 13px;
+  font-weight: bold;
+  width: 35%;
+
+  background-color: #87cfeb44;
+  color: #004263;
+  * {
+    margin-bottom: 3px;
+  }
+  div {
+  display: flex;
+
+  }
+`;
+const Icon = styled.div`
+  padding-right: 5px;
 `;
 
 const SummaryBar = styled.div`
