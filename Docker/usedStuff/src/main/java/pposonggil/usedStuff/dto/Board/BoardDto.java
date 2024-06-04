@@ -36,7 +36,7 @@ public class BoardDto {
         return BoardDto.builder()
                 .boardId(board.getId())
                 .writerId(board.getWriter().getId())
-                .writerNickName(board.getWriter().getNickName())
+                .writerNickName(board.getWriter().getName())
                 .ratingScore(board.getWriter().getRatingScore())
                 .title(board.getTitle())
                 .content(board.getContent())

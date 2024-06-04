@@ -12,20 +12,16 @@ import pposonggil.usedStuff.domain.Route.Path;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
 
 @Entity
 @Table(uniqueConstraints = {
-
         @UniqueConstraint(
-                name = "NICKNAME_UNIQUE",
-                columnNames = {"nickName"}
-        ),
-        @UniqueConstraint(
-                name = "PHONE_UNIQUE",
-                columnNames = {"phone"}
+                name = "EMAIL_UNIQUE",
+                columnNames = {"email"}
         )
 })
 @Getter
@@ -35,9 +31,17 @@ import static lombok.AccessLevel.PROTECTED;
 @AllArgsConstructor(access = PRIVATE)
 public class Member extends BaseEntity {
     @Id
-    @GeneratedValue
-    @Column(name = "member_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String name;
+    private String email;
+    private String provider;
+    private String profile_image;
+
+
+    @ElementCollection(fetch=FetchType.EAGER)
+    @Enumerated(EnumType.STRING)
+    private Set<Role> roles;
 
     @Builder.Default
     @OneToMany(mappedBy = "writer")
@@ -87,40 +91,10 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "blockObject")
     private List<Block> blockObjects = new ArrayList<>();
 
-    private String name;
-    private String nickName;
-    private String phone;
-
     @ColumnDefault(value = "5")
     private Double ratingScore;
 
     private boolean isActivated;
 
-    public void setName(String name) {
-        this.name = name;
-    }
 
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public static MemberBuilder builder(String nickName) {
-        if (nickName == null)
-            throw new IllegalArgumentException("필수 파라미터 누락");
-        return new MemberBuilder()
-                .nickName(nickName);
-    }
-
-    public static Member buildMember(String name, String nickName, String phone) {
-        return Member.builder(nickName)
-                .name(name)
-                .phone(phone)
-                .ratingScore(5.0)
-                .isActivated(true)
-                .build();
-    }
 }
