@@ -264,6 +264,7 @@ function Chat() {
 
   const myId = 1; // 본인의 ID, 실제 사용자 ID로 대체 필요
 
+
   const fetchMessages = async () => {
     try {
       const response = await axios.get(`http://localhost:8080/api/messages/by-chatroom/${chatRoomId}`);
