@@ -241,18 +241,27 @@ function Post() {
 
   const handleChatRequest = async () => {
     try {
-      const response = await axios.post(chatApiUrl, {
-        boardId: post.boardId,
-        // requesterId: post.memberId // 실제 요청자의 ID로 설정
-        requesterId: 2
-      });
-      console.log('Chat room created:', response.data);
-
-      // 채팅방이 생성된 후, 해당 채팅방으로 이동
-      navigate(`/market/chat/${response.data.chatRoomId}`);
+      // 먼저 GET 요청으로 해당 boardId에 맞는 채팅방이 있는지 확인
+      const existingChatResponse = await axios.get(`${chatApiUrl}/${post.boardId}`);
+      if (existingChatResponse.data && existingChatResponse.data.chatRoomId) {
+        // 기존 채팅방이 있는 경우 해당 채팅방으로 이동
+        navigate(`/market/chat/${existingChatResponse.data.chatRoomId}`);
+      } else {
+        //기존 채팅방이 없는 경우 새로운 채팅방 생성
+        const response = await axios.post(chatApiUrl, {
+          boardId: post.boardId,
+          // requesterId: post.memberId // 실제 요청자의 ID로 설정
+          requesterId: 2 //나중에 수정
+        });
+        console.log('Chat room created:', response.data);
+        // 채팅방이 생성된 후, 해당 채팅방으로 이동
+        navigate(`/market/chat/${response.data.chatRoomId}`);
+      }
     } catch (error) {
+
       console.error('Error creating chat room', error);
     }
+
   };
 
 
