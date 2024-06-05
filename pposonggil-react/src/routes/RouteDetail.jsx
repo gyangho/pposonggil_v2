@@ -76,51 +76,26 @@ function RouteDetail() {
 
   const getGridWeatherFromServer = async () => {
     const now = new Date();
-    const time = now.getHours().toString().padStart(2, '0') + now.getMinutes().toString().padStart(2, '0');
+    // const time = now.getHours().toString().padStart(2, '0') + now.getMinutes().toString().padStart(2, '0');
     const url = 'http://localhost:8080/api/forecasts';
-    const params = { time: time };
     try {
-      const response = await axios.get(url, {params});
+      const response = await axios.get(url);
       setGridWeather(response.data);
     } catch(error) {
       console.error("격자 날씨 정보 get 에러", error);
     }
   };
-
-  //격자 내 색상 업데이트 
-  const updateGridColors = (weatherData) => {
-    gridObjects.forEach((rectangle, index) => {
-      const gridData = weatherData[index];
-      let fillColor = '#ffffff'; // 기본 색상 (흰색)
-
-      if (gridData) {
-        const reh = parseFloat(gridData.reh);
-        if (reh > 0 && reh <= 5) {
-          fillColor = 'rgba(135, 206, 250, 0.5)'; // 하늘색
-        } else if (reh > 5 && reh <= 10) {
-          fillColor = 'rgba(0, 0, 255, 0.5)'; // 파란색
-        } else if (reh > 10) {
-          fillColor = 'rgba(0, 0, 139, 0.5)'; // 남색
-        }
-      }
-
-      rectangle.setOptions({
-        fillColor,
-        fillOpacity: 0.5,
-      });
-    });
-  };
   
-    //그리드 버튼 클릭 핸들러
-    const handleGridBtn = useCallback(() => {
-      if (isGridActive) {
-        gridObjects.forEach(rectangle => rectangle.setMap(null));
-        setGridObjects([]);
-      } else {
-        showGrid();
-      }
-      setIsGridActive(!isGridActive);
-    }, [isGridActive, gridObjects, showGrid]);
+  //그리드 버튼 클릭 핸들러
+  const handleGridBtn = useCallback(() => {
+    if (isGridActive) {
+      gridObjects.forEach(rectangle => rectangle.setMap(null));
+      setGridObjects([]);
+    } else {
+      showGrid();
+    }
+    setIsGridActive(!isGridActive);
+  }, [isGridActive, gridObjects, showGrid]);
   
     const handleTimeBtn = (index) => {
       //인덱스에 해당하는 순서의 격자 강수량 정보 가져와서 Grid의 fillcolor 변경
@@ -165,10 +140,6 @@ function RouteDetail() {
       });
     };
   
-  
-
-  
-
   const handleLocationBtn = useCallback(() => {//위치 추적 버튼 핸들러
     setIsLocationLoading(true);
     if (!activeTracking) { 
@@ -233,57 +204,6 @@ function RouteDetail() {
   const { path } = location.state || {};
   const [subPathsWeather, setSubPathsWeather] = useState([]);
 
-  //서버로부터 path 데이터 fetch
-  // useEffect(() => {
-  //   const fetchPath = async () => {
-  //     try {
-  //       const response = await axios.get(apiUrl);
-  //       const paths = response.data;
-  //       const foundPath = paths.find((path) => String(path.index) === index);
-  //       if (foundPath) {
-  //         setPath(foundPath);
-  //         /*선택한 경로의 도보 구간 날씨 서버로부터 post하고 fetch 하는 코드 추가 */
-  //         console.log("선택한 path를 찾았습니다", foundPath);
-  //         // 현재 시간 정보를 hhmm 형식으로 구하기
-  //         const now = new Date();
-  //         const hhmm = now.getHours().toString().padStart(2, '0') + now.getMinutes().toString().padStart(2, '0');
-  //         // foundPath와 현재 시간 정보를 서버에 POST 요청으로 보내기
-  //         try {
-  //           const postResponse = await axios.post('http://localhost:3001/postExpected', 
-  //           {
-  //             pathDto: path,
-  //             selectTime: hhmm
-  //           });
-  //           console.log("POST 응답:", postResponse.data);
-  //           //원래 백에서 response 온걸로 해야하지만 임시로 fetch하겠음
-  //           fetchSubPathsWeather();
-  //         } catch (postError) {
-  //           console.error("Error posting data", postError);
-  //         }
-
-  //       } else {
-  //         console.error(`Path with id ${index} not found.`);
-  //       }
-  //     } catch (error) {
-  //       console.error("Error fetching path", error);
-  //     }
-  //   };
-  //   fetchPath();
-  // }, [index]);
-
-  // const fetchSubPathsWeather = async () => {
-  //   try {
-  //     const response = await axios.get('http://localhost:3001/expected');
-  //     setSubPathsWeather(response.data);
-  //     console.log("Weather data fetched successfully!", subPathsWeather);
-  //   } catch (error) {
-  //     console.error("Error fetching weather data", error);
-  //   }
-  // };
-
-
-
-  //지도 생성
   useEffect(() => {
     getGridWeatherFromServer();
     const script = document.createElement('script');

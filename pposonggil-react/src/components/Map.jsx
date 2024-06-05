@@ -61,54 +61,17 @@ function Map() {
     });
     setGridObjects(newGridObjects);  // 그리드 객체 상태 업데이트
   }, [gridBounds]);
-   // 격자 구간별 날씨 정보 서버로부터 get
-  // const getGridWeatherFromServer = async () => {
-  //   const now = new Date();
-  //   const time = now.getHours().toString().padStart(2, '0') + now.getMinutes().toString().padStart(2, '0');
-  //   const url = 'http://localhost:8080/api/forecasts';
-  //   try {
-  //     const response = await axios.get(url);
-  //     setGridWeather(response.data);
-  //   } catch(error) {
-  //     console.error("격자 날씨 정보 get 에러", error);
-  //   }
-  // };
 
   const getGridWeatherFromServer = async () => {
     const now = new Date();
     const time = now.getHours().toString().padStart(2, '0') + now.getMinutes().toString().padStart(2, '0');
     const url = 'http://localhost:8080/api/forecasts';
-    const params = { time: time };
     try {
       const response = await axios.get(url);
       setGridWeather(response.data);
     } catch(error) {
       console.error("격자 날씨 정보 get 에러", error);
     }
-  };
-
-  //격자 내 색상 업데이트 
-  const updateGridColors = (weatherData) => {
-    gridObjects.forEach((rectangle, index) => {
-      const gridData = weatherData[index];
-      let fillColor = '#ffffff'; // 기본 색상 (흰색)
-
-      if (gridData) {
-        const reh = parseFloat(gridData.reh);
-        if (reh > 0 && reh <= 5) {
-          fillColor = 'rgba(135, 206, 250, 0.5)'; // 하늘색
-        } else if (reh > 5 && reh <= 10) {
-          fillColor = 'rgba(0, 0, 255, 0.5)'; // 파란색
-        } else if (reh > 10) {
-          fillColor = 'rgba(0, 0, 139, 0.5)'; // 남색
-        }
-      }
-
-      rectangle.setOptions({
-        fillColor,
-        fillOpacity: 0.5,
-      });
-    });
   };
 
   //그리드 버튼 클릭 핸들러(우측 하단 격자 버튼)
