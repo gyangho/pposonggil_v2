@@ -82,7 +82,7 @@ services:
       - mysql
     expose:
       - 3000
-    build: ./pposonggil-react
+    # build: ./pposonggil-react
     container_name: pposonggil-react
     restart: unless-stopped
     stdin_open: true # `-i`
@@ -143,13 +143,8 @@ services:
     healthcheck:
       test:
         [
-<<<<<<< Updated upstream
           "CMD-SHELL",
           "mysqladmin ping -h 127.0.0.1 -u root --password=$$MYSQL_ROOT_PASSWORD",
-=======
-          'CMD-SHELL',
-          'mysqladmin ping -h 127.0.0.1 -u root --password=$$MYSQL_ROOT_PASSWORD'
->>>>>>> Stashed changes
         ]
       interval: 5s
       timeout: 2s
