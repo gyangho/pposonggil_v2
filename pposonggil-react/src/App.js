@@ -47,7 +47,9 @@ function App() {
           <Route path="/market/posting" element={<Posting/>} />
           <Route path="/market" element={<Board />} />
 
-          <Route path="/search/routes/:index" exact element={<RouteDetail />} />
+          {/* <Route path="/search/routes/route-detail" element={<RouteDetail />} /> */}
+          <Route path="/search/detail" element={<RouteDetail />} />
+
           <Route path="/search/routes" element={<SearchRoutes />} />
           <Route path="/search/place" element={<SearchPlace />} />
           <Route path="/search" element={<Search />} />
@@ -58,6 +60,7 @@ function App() {
           <Route path="/oauth/kakao/callback" element={<KakaoRedirect />} />
           {/* 로그인 페이지로 수정 필요 */}
           <Route path="/" element={<Home />} />
+
         </Routes>      
       </Wrapper>
       <Navigation />
