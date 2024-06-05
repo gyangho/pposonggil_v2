@@ -204,19 +204,8 @@ import { useSetRecoilState } from "recoil";
 import { navState } from "../../recoil/atoms";
 
 // JSON 서버 API URL, 백이랑 연동 시 수정 필요
-<<<<<<< Updated upstream
-const apiUrl = "http://localhost:3001/boards"
-
-function Post() {
-  const { boardId } = useParams();
-  const [post, setPost] = useState(null);
-  const navigate = useNavigate();
-
-  // const setNav = useSetRecoilState(navState);
-  // setNav("market");
-=======
-const apiUrl = "http://localhost:3001/postList"
-//const chatApiUrl = "http://localhost:3001/chatroom";
+const apiUrl = "http://localhost:8080/api/boards"
+const chatApiUrl = "http://localhost:8080/api/chatroom";
 
 function Post() {
   const { boardId } = useParams();//url 뒤에서 boardId 가져옴
@@ -225,7 +214,6 @@ function Post() {
 
   //const setNav = useSetRecoilState(navState);
   //setNav("market");
->>>>>>> Stashed changes
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -247,40 +235,35 @@ function Post() {
   }, [boardId]);
 
   //후에 파라미터로 유저id 넣어서 채팅방으로 넘어가게 하기
-  const onChatClick = (writerNickname) => {
-    navigate(`/market/chat/${writerNickname}`);
-  }
+  // const onChatClick = (writerNickname) => {
+  //   navigate(`/market/chat/${writerNickname}`);
+  // }
 
-<<<<<<< Updated upstream
-=======
-  // const handleChatRequest = async () => {
-  //   try {
-  //     const response = await axios.post(chatApiUrl, {
-  //       boardId: post.boardId,
-  //       requesterId: 1, // 여기에 실제 요청자의 ID
-  //     });
-  //     console.log('Chat room created:', response.data);
+  const handleChatRequest = async () => {
+    try {
+      const response = await axios.post(chatApiUrl, {
+        boardId: post.boardId,
+        // requesterId: post.memberId // 실제 요청자의 ID로 설정
+        requesterId: 2
+      });
+      console.log('Chat room created:', response.data);
 
-  //     // 채팅방이 생성된 후, 해당 채팅방으로 이동
-  //     navigate(`/chat/${response.data.chatRoomId}`);
-  //   } catch (error) {
-  //     console.error('Error creating chat room', error);
-  //   }
-  // };
+      // 채팅방이 생성된 후, 해당 채팅방으로 이동
+      navigate(`/market/chat/${response.data.chatRoomId}`);
+    } catch (error) {
+      console.error('Error creating chat room', error);
+    }
+  };
 
 
->>>>>>> Stashed changes
   // 스피너(아직 구현 안함)
   if (!post) return <div>Loading...</div>;
 
   return (
-    <Wrapper>
+    <React.Fragment>
+      <Wrapper>
         <ImgBox>
-<<<<<<< Updated upstream
-          <img src={post.imgUrl} alt={post.title} /> 
-=======
-          <img src={post.img} alt={post.title} />
->>>>>>> Stashed changes
+          <img src={post.imageUrl} alt={post.title} />
         </ImgBox>
         <AuthorBox>
           <div style={{ display: "flex", alignItems: "center" }}>
@@ -291,13 +274,8 @@ function Post() {
             <div id="name">{post.writerNickName}</div>
           </div>
           <div id="rating">
-<<<<<<< Updated upstream
-            <span style={{color: "orange"}}>{post.ratingScore}</span>
-            <FontAwesomeIcon icon={faTemperatureHalf} style={{color: "tomato", marginRight: "0" }} />
-=======
             <span style={{ color: "orange" }}>{post.ratingScore}</span>
             <FontAwesomeIcon icon={faTemperatureHalf} style={{ color: "tomato", marginRight: "0" }} />
->>>>>>> Stashed changes
           </div>
         </AuthorBox>
         <DetailBox>
@@ -311,21 +289,13 @@ function Post() {
             <FontAwesomeIcon icon={faWonSign} />
             <div>{post.price}원</div>
           </Price>
-          <ChatBtn>
+          <ChatBtn onClick={handleChatRequest}>
             <FontAwesomeIcon icon={faComments} />
-<<<<<<< Updated upstream
-            <span onClick={() => onChatClick(post.writerNickName)}>채팅하기</span>
-          </ChatBtn>
-        </BottomBar>
-    </Wrapper>
-=======
-            <span onClick={() => onChatClick(post.author)}>채팅하기</span>
-
+            <span>채팅하기</span>
           </ChatBtn>
         </BottomBar>
       </Wrapper>
     </React.Fragment>
->>>>>>> Stashed changes
   );
 }
 

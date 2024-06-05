@@ -8,12 +8,12 @@ import { currentAddressState, navState } from "../../recoil/atoms";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-<<<<<<< Updated upstream
 //JSON 서버 API URL(json-server 이용한 프톤트 테스트 용)
-const apiUrl ="http://localhost:3001/boards"
+// const apiUrl = "http://localhost:3001/boards"
+// const apiUrl = "http://localhost:3001/postList"
 
 //서버 제공 url(실제 url)
-// const apiUrl ="http://localhost:8080/api/boards/with-image"
+const apiUrl = "http://localhost:8080/api/boards"
 
 function Board() {
   const [isRotating, setIsRotating] = useState(false);
@@ -23,7 +23,7 @@ function Board() {
   const curAddr = useRecoilValue(currentAddressState);
   const setNav = useSetRecoilState(navState);
   setNav("market");
-  
+
   const navigate = useNavigate();
 
   //게시물 가져오기
@@ -84,29 +84,29 @@ function Board() {
         <PostList>
           {posts.map((post) => (
             <Post key={post.boardId} onClick={() => onPostClick(post.boardId)}>
-            <ImgBox>
-            {post.imgUrl ? (
-              <img src={post.imgUrl} alt="Example" />
-              ) : (
-                <img src="https://via.placeholder.com/110" alt="Example" />
-              )
-            }
-            </ImgBox>
-            <TextBox>
-              <div id="title">{post.title}</div>
-              <div id="time" style={{color: "gray", fontSize: "16px"}}>{post.createdAt}</div>
-              <br/>
-              <div id="price" style={{fontWeight: "800"}}>{post.price}원</div>
-            </TextBox>
-          </Post>
+              <ImgBox>
+                {post.imageUrl ? (
+                  <img src={post.imageUrl} alt={post.title} />
+                ) : (
+                  <img src="https://via.placeholder.com/110" alt="Example" />
+                )
+                }
+              </ImgBox>
+              <TextBox>
+                <div id="title">{post.title}</div>
+                <div id="time" style={{ color: "gray", fontSize: "16px" }}>{post.createdAt}</div>
+                <br />
+                <div id="price" style={{ fontWeight: "800" }}>{post.price}원</div>
+              </TextBox>
+            </Post>
           ))}
           <Post id="sample" onClick={onPostClick}>
             <ImgBox><img src="https://via.placeholder.com/110" alt="Example" /></ImgBox>
             <TextBox>
               <div id="title">샘플입니다</div>
-              <div id="time" style={{color: "gray", fontSize: "16px"}}>2024-05-27</div>
-              <br/>
-              <div id="price" style={{fontWeight: "800"}}>1억원</div>
+              <div id="time" style={{ color: "gray", fontSize: "16px" }}>2024-05-27</div>
+              <br />
+              <div id="price" style={{ fontWeight: "800" }}>1억원</div>
             </TextBox>
           </Post>
         </PostList>
@@ -123,10 +123,6 @@ function Board() {
 }
 
 export default Board
-=======
-//JSON 서버 API URL로 변경해야 함
-const apiUrl = "http://localhost:3001/postList"
->>>>>>> Stashed changes
 
 const Wrapper = styled.div`
   width: 100%;
@@ -258,107 +254,104 @@ const Btn = styled.div`
   box-shadow: 0px 0px 7px 3px rgba(0, 0, 0, 0.1);
 `;
 
-<<<<<<< Updated upstream
-=======
-function Board() {
-  const [isRotating, setIsRotating] = useState(false);
-  const [posts, setPosts] = useState([]);
-  const [editPost, setEditPost] = useState(null);
+// function Board() {
+//   const [isRotating, setIsRotating] = useState(false);
+//   const [posts, setPosts] = useState([]);
+//   const [editPost, setEditPost] = useState(null);
 
-  const curAddr = useRecoilValue(currentAddressState);
-  const setNav = useSetRecoilState(navState);
-  setNav("market");
+//   const curAddr = useRecoilValue(currentAddressState);
+//   const setNav = useSetRecoilState(navState);
+//   setNav("market");
 
-  const navigate = useNavigate();
+//   const navigate = useNavigate();
 
-  //게시물 가져오기
-  useEffect(() => {
-    fetchPosts();
-  }, []);
+//   //게시물 가져오기
+//   useEffect(() => {
+//     fetchPosts();
+//   }, []);
 
-  const fetchPosts = async () => {
-    try {
-      const response = await axios.get(apiUrl);
-      setPosts(response.data);
-    } catch (error) {
-      console.error("Error fetching posts", error);
-    }
-  };
+//   const fetchPosts = async () => {
+//     try {
+//       const response = await axios.get(apiUrl);
+//       setPosts(response.data);
+//     } catch (error) {
+//       console.error("Error fetching posts", error);
+//     }
+//   };
 
-  const addPost = async (post) => {
-    try {
-      const response = await axios.post(apiUrl, post);
-      setPosts([...posts, response.data]);
-    } catch (error) {
-      console.error("Error adding post", error);
-    }
-  };
+//   const addPost = async (post) => {
+//     try {
+//       const response = await axios.post(apiUrl, post);
+//       setPosts([...posts, response.data]);
+//     } catch (error) {
+//       console.error("Error adding post", error);
+//     }
+//   };
 
-  const onPostClick = (boardId) => {
-    navigate(`/market/post/${boardId}`);
-  };
+//   const onPostClick = (boardId) => {
+//     navigate(`/market/post/${boardId}`);
+//   };
 
-  useEffect(() => {
-    if (isRotating) {
-      const timeout = setTimeout(() => {
-        setIsRotating(false);
-      }, 1000); // 애니메이션 지속 시간 후 상태를 false로 변경
-      return () => clearTimeout(timeout);
-    }
-  }, [isRotating]);
+//   useEffect(() => {
+//     if (isRotating) {
+//       const timeout = setTimeout(() => {
+//         setIsRotating(false);
+//       }, 1000); // 애니메이션 지속 시간 후 상태를 false로 변경
+//       return () => clearTimeout(timeout);
+//     }
+//   }, [isRotating]);
 
-  const handleRefreshClick = () => {
-    //현재 위치 재탐색
-    //재탐색한 위치에 해당하는 게시글 목록 다시 불러와야 함
-    setIsRotating(true);
-  };
+//   const handleRefreshClick = () => {
+//     //현재 위치 재탐색
+//     //재탐색한 위치에 해당하는 게시글 목록 다시 불러와야 함
+//     setIsRotating(true);
+//   };
 
-  return (
-    <Wrapper>
-      <TopBar id="location">
-        <div>{curAddr.depth3 || "현재 위치"}</div>
-        <RefreshBtn
-          onClick={handleRefreshClick}
-          animate={{ rotate: isRotating ? 320 : 10 }}
-          transition={{ duration: 0.8 }}
-        >
-          <FontAwesomeIcon icon={faRotateRight} />
-        </RefreshBtn>
-      </TopBar>
-      <ListBox>
-        <PostList>
-          {posts.map((post) => (
-            <Post key={post.id} onClick={() => onPostClick(post.boardId)}>
-              <ImgBox><img src={post.img} alt="Example" /></ImgBox>
-              <TextBox>
-                <div id="title">{post.title}</div>
-                <div id="time" style={{ color: "gray", fontSize: "16px" }}>{post.date}</div>
-                <br />
-                <div id="price" style={{ fontWeight: "800" }}>{post.price}</div>
-              </TextBox>
-            </Post>
-          ))}
-          <Post id="sample" onClick={onPostClick}>
-            <ImgBox><img src="https://via.placeholder.com/110" alt="Example" /></ImgBox>
-            <TextBox>
-              <div id="title">샘플입니다</div>
-              <div id="time" style={{ color: "gray", fontSize: "16px" }}>2024-05-27</div>
-              <br />
-              <div id="price" style={{ fontWeight: "800" }}>1억원</div>
-            </TextBox>
-          </Post>
-        </PostList>
+//   return (
+//     <Wrapper>
+//       <TopBar id="location">
+//         <div>{curAddr.depth3 || "현재 위치"}</div>
+//         <RefreshBtn
+//           onClick={handleRefreshClick}
+//           animate={{ rotate: isRotating ? 320 : 10 }}
+//           transition={{ duration: 0.8 }}
+//         >
+//           <FontAwesomeIcon icon={faRotateRight} />
+//         </RefreshBtn>
+//       </TopBar>
+//       <ListBox>
+//         <PostList>
+//           {posts.map((post) => (
+//             <Post key={post.id} onClick={() => onPostClick(post.boardId)}>
+//               <ImgBox><img src={post.img} alt="Example" /></ImgBox>
+//               <TextBox>
+//                 <div id="title">{post.title}</div>
+//                 <div id="time" style={{ color: "gray", fontSize: "16px" }}>{post.date}</div>
+//                 <br />
+//                 <div id="price" style={{ fontWeight: "800" }}>{post.price}</div>
+//               </TextBox>
+//             </Post>
+//           ))}
+//           <Post id="sample" onClick={onPostClick}>
+//             <ImgBox><img src="https://via.placeholder.com/110" alt="Example" /></ImgBox>
+//             <TextBox>
+//               <div id="title">샘플입니다</div>
+//               <div id="time" style={{ color: "gray", fontSize: "16px" }}>2024-05-27</div>
+//               <br />
+//               <div id="price" style={{ fontWeight: "800" }}>1억원</div>
+//             </TextBox>
+//           </Post>
+//         </PostList>
 
-        <PostBtn onClick={() => navigate("/market/posting")}>
-          <Btn>
-            <FontAwesomeIcon icon={faPlus} style={{ marginRight: "4px" }} />
-            <div style={{ paddingTop: "2px" }}>글쓰기</div>
-          </Btn>
-        </PostBtn>
-      </ListBox>
-    </Wrapper>
-  );
-}
+//         <PostBtn onClick={() => navigate("/market/posting")}>
+//           <Btn>
+//             <FontAwesomeIcon icon={faPlus} style={{ marginRight: "4px" }} />
+//             <div style={{ paddingTop: "2px" }}>글쓰기</div>
+//           </Btn>
+//         </PostBtn>
+//       </ListBox>
+//     </Wrapper>
+//   );
+// }
 
-export default Board
->>>>>>> Stashed changes
+// export default Board

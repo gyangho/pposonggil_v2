@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faListUl } from "@fortawesome/free-solid-svg-icons";
+import { faListUl, faBookmark, faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 
 const Container = styled.div`
@@ -15,8 +15,28 @@ align-items: center;
 padding-top: 20px;
 `;
 
+const ProfileSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 40px;
+  padding-top: 30px;
+`;
+
+const ProfileIcon = styled(FontAwesomeIcon)`
+  font-size: 80px;
+  color: gray;
+`;
+
+const UserName = styled.div`
+  font-size: 24px;
+  font-weight: bold;
+  margin-top: 10px;
+`;
+
 const Button = styled.button`
-padding: 10px 20px;
+width: 80%;
+padding: 15px;
 background-color: tomato;
 color: white;
 border: none;
@@ -26,6 +46,7 @@ display: flex;
 align-items: center;
 font-size: 18px;
 margin-top: 20px;
+justify-content: center;
 
 &:hover {
   background-color: darkred;
@@ -47,7 +68,7 @@ function MyPage() {
       return;
     }
     try {
-      const response = await axios.get(`http://localhost:3001/postList`);
+      const response = await axios.get(`http://localhost:8080/api/boards`);
       const userPosts = response.data.filter(post => post.writerId === writerId);
       if (userPosts.length > 0) {
         navigate(`/member-posting/${writerId}`);//이게 맞나..
@@ -59,25 +80,25 @@ function MyPage() {
     }
   };
 
-  // const handleTestButtonClick = () => {
-  //   navigate('/Test');
-  // };
-
   return (
     <React.Fragment>
       <Container>
-        <Button onClick={handleButtonClick}>
-          작성한 게시글 목록 보기
+        <ProfileSection>
+          <ProfileIcon icon={faUserCircle} />
+          <UserName>nickName1</UserName>
+        </ProfileSection>
+        <Button onClick={() => handleButtonClick('member-posting')}>
+          내가 작성한 게시글
           <FontAwesomeIcon icon={faListUl} />
         </Button>
-
-        {/* <Button onClick={handleTestButtonClick}>
-          Test 페이지로 이동
-        </Button> */}
+        <Button onClick={() => handleButtonClick('saved-routes')}>
+          내가 저장한 뽀송 경로
+          <FontAwesomeIcon icon={faBookmark} />
+        </Button>
       </Container>
     </React.Fragment>
   )
-}
+};
 
 export default MyPage;
 

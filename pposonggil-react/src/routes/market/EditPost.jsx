@@ -146,18 +146,20 @@
 // }
 
 // export default EditPost;
+
 import React, { useState, useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
 import '../../../src/posting.css'; //css파일 import
 import axios from 'axios';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, useParams } from 'react-router-dom';
 
-const apiUrl = "http://localhost:3001/postList";
+const apiUrl = "http://localhost:8080/api/board";
 
 function EditPost() {
     const location = useLocation();
     const editingPost = location.state?.post;
+    const boardId = useParams();
 
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');

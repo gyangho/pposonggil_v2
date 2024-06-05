@@ -9,7 +9,7 @@ const { kakao } = window;
 
 // JSON 서버 API URL로 변경해야 함
 // const apiUrl = "http://localhost:3001/postList"; // JSON 서버
-const apiUrl = "http://localhost:8080/api/board";
+const apiUrl = "http://localhost:8080/api/board"; //백엔드 연동
 
 function Posting({ onSave, editingPost, onUpdate }) {
   const [title, setTitle] = useState('');
@@ -83,13 +83,21 @@ function Posting({ onSave, editingPost, onUpdate }) {
       },
       price: post.price,
       isFreebie: false,
-      img: post.image ? URL.createObjectURL(post.image) : '', // base64 인코딩된 이미지 문자열 사용
+      // img: post.image ? URL.createObjectURL(post.image) : '', // base64 인코딩된 이미지 문자열 사용
     };
 
+    const formData = new FormData();
+    formData.append('boardDto', new Blob([JSON.stringify(postData)], { type: 'application/json' }));
+    if (post.image) {
+      formData.append('file', post.image);
+    }
+
+    console.log("여기까진 되나요?");
+
     try {
-      const response = await axios.post(apiUrl, postData, {
+      const response = await axios.post(apiUrl, formData, {
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'multipart/form-data',
         },
       });
       console.log('Post added successfully:', response.data);

@@ -53,16 +53,10 @@ function App() {
 
 
           <Route path="/market/schedule" element={<TransactionSchedule />} />
-<<<<<<< Updated upstream
-          <Route path="/market/chat/:author"  exact    element={<Chat />} />         
-          <Route path="/market/post/:boardId" exact    element={<Post />} />
-          <Route path="/market/posting" element={<Posting/>} />
-=======
           {/* <Route path="/market/chat/:author"  exact    element={<Chat />} />          */}
-          <Route path="/market/chat/:nickname" element={<Chat />} /> {/* :author를 :nickname으로 변경 */}
+          <Route path="/market/chat/:chatRoomId" element={<Chat />} /> {/* :author를 :nickname으로 변경 */}
           <Route path="/market/post/:boardId" exact element={<Post />} />
           <Route path="/market/posting" element={<Posting />} />
->>>>>>> Stashed changes
           <Route path="/market" element={<Board />} />
 
           <Route path="/search/routes/:index" exact element={<RouteDetail />} />

@@ -15,6 +15,8 @@ const PostList = styled.div`
 `;
 
 const Post = styled.div`
+  display: flex;
+  align-items: center;
   margin-bottom: 15px;
   padding: 10px;
   border: 1px solid #ddd;
@@ -35,7 +37,6 @@ const PostImage = styled.img`
   object-fit: cover;
   margin-right: 15px;
 `;
-
 
 const PostDetails = styled.div`
   display: flex;
@@ -61,28 +62,24 @@ const PostPrice = styled.span`
   color: #333;
 `;
 
-
 function MemberPosting() {
     const [posts, setPosts] = useState([]);
     const navigate = useNavigate();
-    // const { writerId } = useParams();
+    const { writerId } = useParams(); // url에서 writerId 떼오기
 
     useEffect(() => {
-        // Replace '1' with the actual writer ID dynamically if needed
-        axios.get('http://localhost:3001/postList?writerId=1')//나중에 백엔드 url로 변경
-            //'http://localhost:8080/api/boards/by-member/${writerId}'
+        axios.get(`http://localhost:8080/api/boards/by-member/${writerId}`) // 백엔드 url로 변경
             .then(response => {
                 setPosts(response.data);
             })
             .catch(error => {
                 console.error('Error fetching posts:', error);
             });
-    }, []);
+    }, [writerId]);
 
     const handlePostClick = (boardId) => {
         navigate(`/member-posting/post/${boardId}`);
     };
-
 
     return (
         <Container>
@@ -92,9 +89,7 @@ function MemberPosting() {
                 <PostList>
                     {posts.map(post => (
                         <Post key={post.boardId} onClick={() => handlePostClick(post.boardId)}>
-                            {/* 사진 url 나중에 제대로 바꾸기 */}
-                            {/* <PostImage src={post.img || "https://via.placeholder.com/80"} alt={post.title} /> */}
-                            <PostImage src={post.img.startsWith('blob:') ? "https://via.placeholder.com/80" : post.img} alt={post.title} />
+                            <PostImage src={post.imageUrl || "https://via.placeholder.com/80"} alt={post.title} />
                             <PostDetails>
                                 <PostTitle>{post.title}</PostTitle>
                                 <PostContent>{post.content}</PostContent>

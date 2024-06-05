@@ -8,7 +8,8 @@ import { useSetRecoilState } from "recoil";
 import { navState } from "../recoil/atoms";
 
 // JSON 서버 API URL, 백이랑 연동 시 수정 필요
-const apiUrl = "http://localhost:3001/postList";
+// const apiUrl = "http://localhost:8080/api/board/${boardId}";
+const apiUrl = "http://localhost:8080/api/board";
 
 
 function MemberPostingDetailed() {
@@ -23,16 +24,13 @@ function MemberPostingDetailed() {
     useEffect(() => {
         const fetchPost = async () => {
             try {
-                //const response = await axios.get(`${apiUrl}`);
-                const response = await axios.get(apiUrl);
+                const response = await axios.get(`${apiUrl}/${boardId}`);
                 // const postList = response.data; 백엔드 코드 합치면
-                const postList = response.data;
-                const foundPost = postList.find((item) => item.boardId.toString() === boardId);
-                if (foundPost) {
-                    setPost(foundPost);
-                } else {
-                    console.error(`Post with id ${boardId} not found.`);
-                }
+                // const postList = response.data;
+                // const foundPost = postList.find((item) => item.boardId.toString() === boardId);
+                // if (foundPost) {
+                setPost(response.data);
+                // } else {
             } catch (error) {
                 console.error("Error fetching post", error);
             }
@@ -64,23 +62,24 @@ function MemberPostingDetailed() {
         <React.Fragment>
             <Wrapper>
                 <ImgBox>
-                    <img src={post.img} alt={post.title} />
+                    <img src={post.imageUrl} alt={post.title} />
                 </ImgBox>
                 <AuthorBox>
                     <div style={{ display: "flex", alignItems: "center" }}>
                         <div id="profileImg">
                             <FontAwesomeIcon icon={faCircleUser} style={{ color: "gray", fontSize: "35px" }} />
                         </div>
-                        <div id="name">{post.author}</div>
+                        <div id="name">{post.writerNickName}</div>
                     </div>
                     <div id="rating">
-                        <span style={{ color: "orange" }}>4.5</span>
+                        <span style={{ color: "orange" }}>{post.ratingScore}</span>
                         <FontAwesomeIcon icon={faTemperatureHalf} style={{ color: "tomato", marginRight: "0" }} />
                     </div>
                 </AuthorBox>
                 <DetailBox>
                     <Title>{post.title}</Title>
                     <Date>{post.date}</Date>
+                    {/* <Date>{new Date(post.createdAt).toLocaleString()}</Date> */}
                     <br />
                     <Content>{post.content}</Content>
                 </DetailBox>
