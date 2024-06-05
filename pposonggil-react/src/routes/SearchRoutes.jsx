@@ -38,6 +38,7 @@ function SearchRoutes() {
       "name": route.origin[0].name,
       "latitude": parseFloat(route.origin[0].lat),
       "longitude": parseFloat(route.origin[0].lon),
+
       "x": 0,
       "y": 0
     };
@@ -47,6 +48,12 @@ function SearchRoutes() {
       "name": route.dest[0].name,
       "latitude": parseFloat(route.dest[0].lat),
       "longitude": parseFloat(route.dest[0].lon),
+
+    // 두 번째 form-data 추가
+    const endDto = {
+      "name": "이수역주변",
+      "latitude": 37.4857,
+      "longitude": 126.9815,
       "x": 0,
       "y": 0
     };
@@ -61,6 +68,7 @@ function SearchRoutes() {
         value.text().then(text => console.log(`${key} content:`, text));
       }
     }
+    
     try {
       const response = await axios.post(url, formData, {
         headers: {
