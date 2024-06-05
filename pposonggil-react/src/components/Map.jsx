@@ -80,7 +80,7 @@ function Map() {
     const url = 'http://localhost:8080/api/forecasts';
     const params = { time: time };
     try {
-      const response = await axios.get(url, {params});
+      const response = await axios.get(url);
       setGridWeather(response.data);
     } catch(error) {
       console.error("격자 날씨 정보 get 에러", error);
@@ -111,7 +111,7 @@ function Map() {
     });
   };
 
-  //그리드 버튼 클릭 핸들러
+  //그리드 버튼 클릭 핸들러(우측 하단 격자 버튼)
   const handleGridBtn = useCallback(() => {
     if (isGridActive) {
       gridObjects.forEach(rectangle => rectangle.setMap(null));
@@ -124,28 +124,23 @@ function Map() {
     setIsGridActive(!isGridActive);
   }, [isGridActive, gridObjects, showGrid]);
 
+  //인덱스에 해당하는 순서의 격자 강수량 정보 가져와서 Grid의 fillcolor 변경
   const handleTimeBtn = (index) => {
-    //인덱스에 해당하는 순서의 격자 강수량 정보 가져와서 Grid의 fillcolor 변경
-  
-    // index에 해당하는 키 가져옴
-    const Key = Object.keys(gridWeather)[index];
+    const Key = Object.keys(gridWeather)[index]; // index에 해당하는 키 가져옴 (키:시간대)
     console.log('Key:', Key); // 해당 시간대
-  
-    // 키에 해당하는 배열. (총 30개 구간)
-    const Array = gridWeather[Key]; 
+    
+    const Array = gridWeather[Key]; // 키에 해당하는 배열(총 30개 격자 구간)
     console.log('Array:', Array); //해당 시간대의 30개의 격자 구역별 날씨정보
   
-    // 배열의 첫 번째 요소 (30개 중 하나의 격자에 해당하는 정보 접근)
-    const Element = Array[0];
+    const Element = Array[0]; // 30개 중 하나의 격자에 해당하는 정보 접근(여기선 데이터 확인용으로 임의로 첫번째 접근)
     console.log('Element:', Element);
   
-    // 각 격자에 대해 강수량 반영 격자 색상 변경
-    gridObjects.forEach((rectangle, _index) => {
-      const item = Array[_index];
+    gridObjects.forEach((rectangle, _index) => {  // 각 격자에 대해 강수량 반영 격자 색상 변경
+      const item = Array[_index]; //하나의 시간대에 30개 격자 구간들 중 하나씩 접근
       console.log(`Index: ${_index}, reh: ${item.reh}`);
   
-      const gridData = item.reh;
-      let fillColor = '#ffffff'; // 기본 색상 (흰색)
+      const gridData = item.reh; //키에 해당하는 시간대의 index번째 격자 구간에 해당하는 reh값
+      let fillColor = '#ffffff'; // 우선 디폴트 색상 (흰색)
   
       if (gridData) {
         const reh = parseFloat(gridData);
@@ -162,7 +157,7 @@ function Map() {
       }
       rectangle.setOptions({
         fillColor,
-        fillOpacity: 0.5,
+        fillOpacity: 0.5, //모든 격자 구간 내 색상 반투명하게 설정
       });
     });
   };
@@ -376,12 +371,12 @@ function Map() {
           exit={{ x: -50, opacity: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <TimeBtn onClick={()=>handleTimeBtn(0)}>00:00</TimeBtn>
-          <TimeBtn onClick={()=>handleTimeBtn(1)}>01:00</TimeBtn>
-          <TimeBtn onClick={()=>handleTimeBtn(2)}>02:00</TimeBtn>
-          <TimeBtn onClick={()=>handleTimeBtn(3)}>03:00</TimeBtn>
-          <TimeBtn onClick={()=>handleTimeBtn(4)}>04:00</TimeBtn>
-          <TimeBtn onClick={()=>handleTimeBtn(5)}>05:00</TimeBtn>
+          <TimeBtn onClick={()=>handleTimeBtn(0)}>현재</TimeBtn>
+          <TimeBtn onClick={()=>handleTimeBtn(1)}>+ 1시간</TimeBtn>
+          <TimeBtn onClick={()=>handleTimeBtn(2)}>+ 2시간</TimeBtn>
+          <TimeBtn onClick={()=>handleTimeBtn(3)}>+ 3시간</TimeBtn>
+          <TimeBtn onClick={()=>handleTimeBtn(4)}>+ 4시간</TimeBtn>
+          <TimeBtn onClick={()=>handleTimeBtn(5)}>+ 5시간</TimeBtn>
         </TimeBtns>
        )}
       </TimeBtnBar>
@@ -427,4 +422,8 @@ const TimeBtn = styled.button`
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
+  &:hover {
+    background-color: #626161;
+    color: #7ccdffc9;
+  }
 `;
