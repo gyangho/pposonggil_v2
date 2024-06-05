@@ -175,7 +175,7 @@ function Weather() {
     );
   }
 
-  const weatherIconCode = weatherData.weather[0].icon;
+  const weatherIconCode = weatherData?.weather[0].icon;
   const weatherIconUrl = `http://openweathermap.org/img/wn/${weatherIconCode}@2x.png`;
 
   // 기온과 체감 온도를 정수로 반올림
@@ -209,7 +209,7 @@ function Weather() {
         </Box>
         <IconBox>
           <WeatherIcon src={weatherIconUrl} />
-          <Description>{weatherData.weather[0].description}</Description>
+          <Description>{weatherData?.weather[0].description}</Description>
         </IconBox>
       </Row>
       <Hr/>
