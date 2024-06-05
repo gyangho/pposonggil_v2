@@ -34,6 +34,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -79,9 +80,12 @@ public class BoardService {
                     .latitude(address.getLatitude())
                     .longitude(address.getLongitude())
                     .build();
-
-            PathDto pathDto = pathService.createPaths(startDto, endDto, curTime.format(inputFormatter), memberId).getFirst();
-            boardDto.setExpectedRain(pathDto.getTotalRain());
+            try {
+                PathDto pathDto = pathService.createPaths(startDto, endDto, curTime.format(inputFormatter), memberId).getFirst();
+                boardDto.setExpectedRain(pathDto.getTotalRain());
+            } catch (Exception e) {
+              log.info("Forecast 정보를 가져오는 데 실패했습니다: " + e.getMessage());
+            }
         }
         return boardDtos;
     }
@@ -107,8 +111,12 @@ public class BoardService {
                 .y(String.format("%.0f", latXLngY.y))
                 .build();
 
-        ForecastDto forecastByTimeAndXAndY = forecastService.findForecastByTimeAndXAndY(forecastDto);
-        boardDto.setForecastDto(forecastByTimeAndXAndY);
+        try {
+            ForecastDto forecastByTimeAndXAndY = forecastService.findForecastByTimeAndXAndY(forecastDto);
+            boardDto.setForecastDto(forecastByTimeAndXAndY);
+        } catch (Exception e) {
+            log.info("Forecast 정보를 가져오는 데 실패했습니다: " + e.getMessage());
+        }
 
         return boardDto;
     }

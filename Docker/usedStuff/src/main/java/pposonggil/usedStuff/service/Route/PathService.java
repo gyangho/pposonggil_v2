@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +34,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -65,7 +67,12 @@ public class PathService {
                 index = index + 1;
             }
 
-            calTotalRain(selectTime, pathDtos);
+            try {
+                calTotalRain(selectTime, pathDtos);
+            } catch (NullPointerException e) {
+                log.info("기상 정보가 없습니다." + e.getMessage());
+            }
+
             return pathDtos;
         } catch (IOException e) {
             // IOException 처리 로직
@@ -80,6 +87,7 @@ public class PathService {
             e.printStackTrace();
             throw new RuntimeException("An error occurred", e);
         }
+
     }
 
     /**
