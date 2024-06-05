@@ -27,6 +27,7 @@ import static lombok.AccessLevel.PROTECTED;
 public class PathDto {
     private Long pathId;
     private Long routeRequesterId;
+    private Long index;
     private Long totalTime;
     private Long price;
     private Long totalDistance;
