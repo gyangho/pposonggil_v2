@@ -12,7 +12,6 @@ import { faBus, faSubway, faDroplet, faCircleDot, faPersonWalking, faLocationDot
 import MapBtn from "../components/MapBtn";
 
 const { kakao } = window;
-const apiUrl = "http://localhost:3001/paths";
 
 function RouteDetail() {
   const [map, setMap] = useState(null);
@@ -72,9 +71,7 @@ function RouteDetail() {
     setGridObjects(newGridObjects);  // 그리드 객체 상태 업데이트
   }, [gridBounds]);
 
-  const getGridWeatherFromServer = async () => {
-    const now = new Date();
-    // const time = now.getHours().toString().padStart(2, '0') + now.getMinutes().toString().padStart(2, '0');
+  const getGridWeatherFromServer = async () => { //격자 구간별 날씨 정보 get
     const url = 'http://localhost:8080/api/forecasts';
     try {
       const response = await axios.get(url);
@@ -84,8 +81,7 @@ function RouteDetail() {
     }
   };
   
-  //그리드 버튼 클릭 핸들러
-  const handleGridBtn = useCallback(() => {
+  const handleGridBtn = useCallback(() => { //그리드 버튼 클릭 핸들러
     if (isGridActive) {
       gridObjects.forEach(rectangle => rectangle.setMap(null));
       setGridObjects([]);
@@ -95,48 +91,46 @@ function RouteDetail() {
     setIsGridActive(!isGridActive);
   }, [isGridActive, gridObjects, showGrid]);
   
-    const handleTimeBtn = (index) => {
-      //인덱스에 해당하는 순서의 격자 강수량 정보 가져와서 Grid의 fillcolor 변경
-    
-      // index에 해당하는 키 가져옴
-      const Key = Object.keys(gridWeather)[index];
-      console.log('Key:', Key); // 해당 시간대
-    
-      // 키에 해당하는 배열. (총 30개 구간)
-      const Array = gridWeather[Key]; 
-      console.log('Array:', Array); //해당 시간대의 30개의 격자 구역별 날씨정보
-    
-      // 배열의 첫 번째 요소 (30개 중 하나의 격자에 해당하는 정보 접근)
-      const Element = Array[0];
-      console.log('Element:', Element);
-    
-      // 각 격자에 대해 강수량 반영 격자 색상 변경
-      gridObjects.forEach((rectangle, _index) => {
-        const item = Array[_index];
-        console.log(`Index: ${_index}, reh: ${item.reh}`);
-    
-        const gridData = item.reh;
-        let fillColor = '#ffffff'; // 기본 색상 (흰색)
-    
-        if (gridData) {
-          const reh = parseFloat(gridData);
-          if (reh > 0 && reh <= 40) {
-            fillColor = 'rgba(61, 213, 255, 0.5)'; // 하늘색
-            console.log('하늘색으로 변경')
-          } else if (reh > 40 && reh <= 60) {
-            fillColor = 'rgba(0, 60, 255, 0.5)'; // 파란색
-            console.log("파란색으로 변경");
-          } else if (reh > 60) {
-            fillColor = 'rgba(58, 0, 203, 0.5)'; // 남색
-            console.log("남색으로 변경");
-          }
+  const handleTimeBtn = (index) => { //클릭한 격자의 강수량 정보로 fillcolor 변경
+    // index에 해당하는 키 가져옴(키값: 시간대)
+    const Key = Object.keys(gridWeather)[index];
+    console.log('Key:', Key); // 해당 시간대
+  
+    // 키에 해당하는 배열. (총 30개 구간)
+    const Array = gridWeather[Key]; 
+    console.log('Array:', Array); //해당 시간대의 30개의 격자 구역별 날씨정보
+  
+    // 배열의 첫 번째 요소 (30개 중 하나의 격자에 해당하는 정보 접근)
+    const Element = Array[0];
+    console.log('Element:', Element);
+  
+    // 각 격자에 대해 강수량 반영 격자 색상 변경
+    gridObjects.forEach((rectangle, _index) => {
+      const item = Array[_index];
+      console.log(`Index: ${_index}, reh: ${item.reh}`);
+  
+      const gridData = item.reh;
+      let fillColor = '#ffffff'; // 기본 색상 (흰색)
+  
+      if (gridData) {
+        const reh = parseFloat(gridData);
+        if (reh > 0 && reh <= 40) {
+          fillColor = 'rgba(61, 213, 255, 0.5)'; // 하늘색
+          console.log('하늘색으로 변경')
+        } else if (reh > 40 && reh <= 60) {
+          fillColor = 'rgba(0, 60, 255, 0.5)'; // 파란색
+          console.log("파란색으로 변경");
+        } else if (reh > 60) {
+          fillColor = 'rgba(58, 0, 203, 0.5)'; // 남색
+          console.log("남색으로 변경");
         }
-        rectangle.setOptions({
-          fillColor,
-          fillOpacity: 0.5,
-        });
+      }
+      rectangle.setOptions({
+        fillColor,
+        fillOpacity: 0.5,
       });
-    };
+    });
+  };
   
   const handleLocationBtn = useCallback(() => {//위치 추적 버튼 핸들러
     setIsLocationLoading(true);
@@ -216,12 +210,6 @@ function RouteDetail() {
   useEffect(() => {
     getGridWeatherFromServer();
     getWalkPathWeatherFromServer();
-    // const script = document.createElement('script');
-    // script.async = true;
-    // script.src = "//dapi.kakao.com/v2/maps/sdk.js?appkey=fa3cd41b575ec5e015970670e786ea86&libraries=services&autoload=false";
-    // document.head.appendChild(script);
-    
-    // script.onload = () => {
       kakao.maps.load(() => {
         const container = mapRef.current;
         const options = {
@@ -233,7 +221,6 @@ function RouteDetail() {
         setMap(mapInstance.current);
         console.log("지도 랜더링");
       });
-    // };
   }, []);
 
   //지도에 경로 표시  
@@ -273,16 +260,13 @@ function RouteDetail() {
             } 
               
             /* 경로 구간별 시작점 마커 표시 및 클릭 시 해당 구간으로 이동 */
-            // subPath의 출발지/도착지 마커 이미지
-            const subPathMarkerImg = new kakao.maps.MarkerImage(
+            const subPathMarkerImg = new kakao.maps.MarkerImage( // subPath의 출발지/도착지 마커 이미지
               'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png', //별모양 마커 이미지
-              // 'http://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png', //기본 마커 이미지
-              new kakao.maps.Size(15, 25),
+              new kakao.maps.Size(15, 20),
               { offset: new kakao.maps.Point(10, 15) } // 마커 이미지의 중앙 하단을 지도 좌표에 일치시키기 위한 옵션
             );
 
-            // subPath의 출발구간 마커
-            const subPathStartMarker = new kakao.maps.Marker({
+            const subPathStartMarker = new kakao.maps.Marker({  // subPath의 출발구간에 마커 생성
               position: new kakao.maps.LatLng(subPath.startDto.latitude, subPath.startDto.longitude),
               map,
               zIndex: 10,
