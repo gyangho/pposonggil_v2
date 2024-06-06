@@ -68,7 +68,7 @@ public class PathService {
             }
 
             try {
-                calTotalRain(selectTime, pathDtos);
+                calTotalRains(pathDtos, selectTime);
             } catch (NullPointerException e) {
                 log.info("기상 정보가 없습니다." + e.getMessage());
             }
@@ -87,13 +87,50 @@ public class PathService {
             e.printStackTrace();
             throw new RuntimeException("An error occurred", e);
         }
+    }
 
+    /**
+     * 대중교통 경로 하나 생성
+     * 도보경로 X
+     */
+    public PathDto createPath(PointInformationDto start, PointInformationDto end, String selectTime, Long requesterId) throws IOException {
+        try {
+            memberRepository.findById(requesterId)
+                    .orElseThrow(() -> new NoSuchElementException("Member not found with id: " + requesterId));
+
+            String urlInfo = buildUrl(start, end);
+            StringBuilder sb = getResponse(urlInfo);
+            PathDto pathDto = getPathDto(sb, start, end, requesterId);
+
+            List<SubPathDto> defaultSubPaths = subPathService.createDefaultSubPaths(pathDto);
+            pathDto.setSubPathDtos(defaultSubPaths);
+
+            try {
+                calTotalRain(pathDto, selectTime);
+            } catch (NullPointerException e) {
+                log.info("기상 정보가 없습니다." + e.getMessage());
+            }
+
+            return pathDto;
+        } catch (IOException e) {
+            // IOException 처리 로직
+            e.printStackTrace();
+            throw new RuntimeException("IOException occurred", e);
+        } catch (NoSuchElementException e) {
+            // NoSuchElementException 처리 로직
+            e.printStackTrace();
+            throw e;
+        } catch (Exception e) {
+            // 기타 예외 처리 로직
+            e.printStackTrace();
+            throw new RuntimeException("An error occurred", e);
+        }
     }
 
     /**
      * 탐색한 경로들의 예상 강수량 계산
      */
-    private void calTotalRain(String selectTime, List<PathDto> pathDtos) {
+    private void calTotalRains(List<PathDto> pathDtos, String selectTime) {
         try {
             for (PathDto pathDto : pathDtos) {
                 List<ForecastSubPathDto> forecastSubPathDtos = createForecastBySubPath(pathDto, selectTime);
@@ -103,6 +140,24 @@ public class PathService {
                 }
                 pathDto.setTotalRain(totalRain);
             }
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Runtime exception in calTotalRain", e);
+        }
+    }
+
+    /**
+     * 탐색한 경로의 예상 강수량 계산
+     */
+    private void calTotalRain(PathDto pathDto, String selectTime) {
+        try {
+            List<ForecastSubPathDto> forecastSubPathDtos = createForecastBySubPath(pathDto, selectTime);
+            double totalRain = 0.0;
+            for (ForecastSubPathDto forecastSubPathDto : forecastSubPathDtos) {
+                totalRain = totalRain + Double.parseDouble(forecastSubPathDto.getExpectedRain());
+            }
+            pathDto.setTotalRain(totalRain);
+
         } catch (RuntimeException e) {
             e.printStackTrace();
             throw new RuntimeException("Runtime exception in calTotalRain", e);
@@ -166,6 +221,7 @@ public class PathService {
         return pathDto;
     }
 
+
     /**
      * pposong osrm을 이용한 뽀송 도보 경로가 포함된
      * 대중교통 경로
@@ -173,6 +229,17 @@ public class PathService {
     public PathDto selectPposongPath(PathDto pathDto) throws IOException {
         List<SubPathDto> walkSubPaths = subPathService.createPposongSubPaths(pathDto);
         pathDto.setSubPathDtos(walkSubPaths);
+        return pathDto;
+    }
+
+    /**
+     * 날씨 정보, 도보 경로가 포함된 osrm 및
+     * Odsay 대중교통 경로
+     */
+    public PathDto selectPathWithForecast(PathDto pathDto, String selectTime) throws IOException {
+        List<SubPathDto> walkSubPaths = subPathService.createSubPathsWithForecast(pathDto, selectTime);
+        pathDto.setSubPathDtos(walkSubPaths);
+        calTotalRain(pathDto, selectTime);
         return pathDto;
     }
 
@@ -244,6 +311,20 @@ public class PathService {
             pathDtos.add(setUpStartMidEndTime(pathDto));
         }
         return pathDtos;
+    }
+
+    private static PathDto getPathDto(StringBuilder sb, PointInformationDto start, PointInformationDto end, Long requesterId) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        JsonNode jsonNode = objectMapper.readTree(sb.toString());
+        JsonNode result = jsonNode.get("result");
+        JsonNode path = result.get("path");
+        JsonNode node = path.get(0);
+
+        PathDto pathDto = PathDto.fromJsonNode(node, start, end);
+        pathDto.setRouteRequesterId(requesterId);
+
+        return setUpStartMidEndTime(pathDto);
     }
 
     private static PathDto setUpStartMidEndTime(PathDto pathDto) {

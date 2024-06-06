@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import pposonggil.usedStuff.domain.Route.*;
 import pposonggil.usedStuff.dto.Color.BusColor;
 import pposonggil.usedStuff.dto.Color.SubwayColor;
+import pposonggil.usedStuff.dto.Forecast.ForecastDto;
 import pposonggil.usedStuff.dto.Route.Point.PointDto;
 import pposonggil.usedStuff.dto.Route.PointInformation.PointInformationDto;
 
@@ -28,6 +29,8 @@ import static pposonggil.usedStuff.dto.Color.BusColor.*;
 public class SubPathDto {
     private Long subPathId;
     private Long pathId;
+    private Double expectedRain;
+    private ForecastDto forecastDto;
     private String type;
     private Long distance;
     private Long time;

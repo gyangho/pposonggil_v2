@@ -65,7 +65,7 @@ public class PathApiController {
     }
 
     /**
-     * 상세 경로 검색
+     * default 상세 경로 검색
      *
      * @param pathDto : 경로 Dto
      * @return : default OSRM으로 탐색한 도보경로가 추가된 경로 Dto
@@ -86,6 +86,19 @@ public class PathApiController {
     @PostMapping("/api/path/pposong")
     public PathDto selectPposongtPath(@RequestBody PathDto pathDto) throws IOException {
         return pathService.selectPposongPath(pathDto);
+    }
+
+    /**
+     * 날씨 정보 포함 상세 경로 검색
+     *
+     * @param pathDto : 경로 Dto
+     * @return : OSRM으로 탐색한 도보경로 및 날씨 정보가 추가된 경로 Dto
+     * @throws IOException
+     */
+    @PostMapping("/api/path/with-forecast")
+    public PathDto selectPathWithForecast(@RequestPart PathDto pathDto,
+                                          @RequestPart String selectTime) throws IOException {
+        return pathService.selectPathWithForecast(pathDto, selectTime);
     }
 
     /**

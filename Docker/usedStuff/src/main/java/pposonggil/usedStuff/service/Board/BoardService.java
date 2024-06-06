@@ -64,7 +64,6 @@ public class BoardService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(NoSuchElementException::new);
 
-        List<BoardDto> result = new ArrayList<>();
         LocalTime curTime = LocalTime.now(ZoneId.of("Asia/Seoul"));
         DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("HHmm");
 
@@ -80,8 +79,8 @@ public class BoardService {
                     .latitude(address.getLatitude())
                     .longitude(address.getLongitude())
                     .build();
-            try {
-                PathDto pathDto = pathService.createPaths(startDto, endDto, curTime.format(inputFormatter), memberId).getFirst();
+            try {;
+                PathDto pathDto = pathService.createPath(startDto, endDto, curTime.format(inputFormatter), memberId);
                 boardDto.setExpectedRain(pathDto.getTotalRain());
             } catch (Exception e) {
               log.info("Forecast 정보를 가져오는 데 실패했습니다: " + e.getMessage());
@@ -97,7 +96,6 @@ public class BoardService {
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(NoSuchElementException::new);
 
-        List<BoardDto> result = new ArrayList<>();
         LocalTime curTime = LocalTime.now(ZoneId.of("Asia/Seoul"));
         DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("HHmm");
 
