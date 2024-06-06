@@ -107,8 +107,14 @@ function ChooseRoute() {
 
       // 지도의 중심 및 레벨 재설정
       map.setBounds(bounds);
-      mapInstance.current.panBy(0, 80); // 지도 중심 위로 60px 이동(경로 선택 박스 크기 반영)
-      const currentLevel = mapInstance.current.getLevel();
+      
+      const center = map.getCenter();
+      // 위도 값을 60px에 해당하는 거리만큼 조정하여 새로운 중심 좌표 계산
+      const newLat = center.getLat() - 0.01; // 위도 값 60px에 해당하는 거리는 약 0.001 정도로 설정
+      const newCenter = new kakao.maps.LatLng(newLat, center.getLng());
+      map.setCenter(newCenter); // 새로운 중심 좌표로 지도 중심 업데이트
+
+      const currentLevel = mapInstance.current.getLevel(); //지도 확대 레벨 재설정
       mapInstance.current.setLevel(currentLevel + 1);
 
       const pathStartMarkerImg = new kakao.maps.MarkerImage( // 출발지 마커 이미지
@@ -179,7 +185,7 @@ function ChooseRoute() {
           <div><p>{paths.defaultPath.price}</p>원</div>
         </Box>
         <Box id="pposongPath" onClick={choosePposongPath}>
-        <div style={{padding: "0"}}>
+        <div style={{padding: "0", marginBottom: "10px"}}>
             <FontAwesomeIcon icon={faCloud} style={{marginRight: "8px", color: "skyblue"}}/>
             <h2>뽀송 경로</h2>
           </div>

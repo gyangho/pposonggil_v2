@@ -7,7 +7,7 @@ import axios from "axios";
 import styled from "styled-components";
 import { motion, sync } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBus, faSubway, faDroplet, faCircleDot, faPersonWalking, faLocationDot, faWind, faCloudSunRain, faGlassWaterDroplet, faCloudRain } from "@fortawesome/free-solid-svg-icons";
+import { faBus, faSubway, faDroplet, faCircleDot, faPersonWalking, faLocationDot, faWind, faCloudSunRain, faGlassWaterDroplet, faCloudRain, faSun } from "@fortawesome/free-solid-svg-icons";
 
 import MapBtn from "../components/MapBtn";
 
@@ -194,7 +194,15 @@ function RouteDetail() {
   /* 지도 및 경로 표시 */
   const location = useLocation();
   const { path } = location.state || {};
+  const [walkPathIndex, setWalkPathIndex] = useState(0);
   const [walkPathsWeather, setWalkPathsWeather] = useState([]);
+
+  const [temp, setTemp] = useState("t1h"); //온도
+  const [rain, setRain] = useState("rn1"); //강수량
+  const [humid, setHumid] = useState("reh"); //습도
+  const [wind, setWind] = useState("wsd"); //풍속
+  const [expectedRain, setExpectedRain] = useState("rain"); //풍속
+  
 
   const getWalkPathWeatherFromServer = async () => {
     const url = 'http://localhost:8080/api/path/expected';
@@ -206,6 +214,17 @@ function RouteDetail() {
       console.error("도보구간 날씨 정보 get 에러", error);
     }
   };
+
+  /* 6월 6일 도보구간별 날씨 정보 매칭 안됨,.. */
+  // useEffect(() => {
+  //   // walkPathsWeather 상태가 변할 때마다 walkPathIndex를 1씩 증가시킴
+  //   setTemp(walkPathsWeather.forecast[walkPathIndex].tlh);
+  //   setRain(walkPathsWeather.forecast[walkPathIndex].rn1);
+  //   setHumid(walkPathsWeather.forecast[walkPathIndex].reh);
+  //   setWind(walkPathsWeather.forecast[walkPathIndex].wsd);
+  //   setExpectedRain(walkPathsWeather.forecast[walkPathIndex].expectedRain);
+
+  // }, [setWalkPathIndex]);
 
   useEffect(() => {
     getGridWeatherFromServer();
@@ -461,7 +480,6 @@ function RouteDetail() {
                             <br />
                             <div>{subPath.endDto.name}</div>
                             {/* <div> {subPathsWeather.forecast[0].expectedRain}</div> */}
-                            {/* {removeFirstForecast()} */}
                           </React.Fragment>
                         )}
                         {subPath.type !== "walk" && (
@@ -499,16 +517,14 @@ function RouteDetail() {
                       <WeatherColumn>
                         {subPath.type === "walk" && (
                           <React.Fragment>
-                            {walkPathsWeather.length > 0 && (
-                              <div><Icon><FontAwesomeIcon icon={faDroplet}/></Icon>예상 노출: {walkPathsWeather.forecast[subIndex].rn1}mm</div>
-                            )}
-                            <div><Icon><FontAwesomeIcon icon={faCloudRain}/></Icon>시간당: --mm</div>
-                            <div><Icon><FontAwesomeIcon icon={faGlassWaterDroplet}/></Icon>습도: --%</div>
-                            <div><Icon><FontAwesomeIcon icon={faWind}/></Icon>풍속: --m/s</div>
+                            <div><Icon><FontAwesomeIcon icon={faDroplet}/></Icon>예상 노출: {expectedRain}mm</div>
+                            <div><Icon><FontAwesomeIcon icon={faCloudRain}/></Icon>시간당: {rain}mm</div>
+                            <div><Icon><FontAwesomeIcon icon={faSun}/></Icon>기온: {temp}mm</div>
+                            <div><Icon><FontAwesomeIcon icon={faGlassWaterDroplet}/></Icon>습도: {humid}%</div>
+                            <div><Icon><FontAwesomeIcon icon={faWind}/></Icon>풍속: {wind}m/s</div>
                           </React.Fragment>
                         )}
                       </WeatherColumn>
-
                     </SubPath>
                   )}
                   {subIndex === array.length - 1 && (
