@@ -87,7 +87,7 @@ const SearchContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px 0px;
+  padding: 20px 0px 10px 0px;
   width: 100%;
   z-index: 100;
   position: sticky;

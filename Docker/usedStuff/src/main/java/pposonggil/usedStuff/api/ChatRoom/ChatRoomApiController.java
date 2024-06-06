@@ -30,7 +30,7 @@ public class ChatRoomApiController {
      * @param chatRoomId : 조회하려는 채팅방 아이디
      * @return 거래를 포함한 채팅방 Dto
      */
-    @GetMapping("/api/chatroom/{chatRoomId}")
+    @GetMapping("/api/chatroom/by-chatroom/{chatRoomId}")
     public ChatRoomDto getChatRoomByChatRoomId(@PathVariable Long chatRoomId) {
         return chatRoomService.findOne(chatRoomId);
     }
@@ -40,7 +40,7 @@ public class ChatRoomApiController {
      * @param boardId : 회원 아이디
      * @return 게시글 아이디가 일치하는 요청자를 포함한 채팅방 Dto
      */
-    @GetMapping("/api/chatroom/{tradeId}")
+    @GetMapping("/api/chatroom/by-board/{boardId}")
     public ChatRoomDto findChatRoomWithBoardRequesterByBoardId(@PathVariable Long boardId) {
         return chatRoomService.findChatRoomWithBoardRequesterByBoardId(boardId);
     }

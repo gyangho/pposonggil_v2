@@ -11,6 +11,9 @@ import pposonggil.usedStuff.service.Route.PathService;
 import pposonggil.usedStuff.service.Route.SubPathService;
 
 import java.io.IOException;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -89,13 +92,17 @@ public class PathApiController {
      * 상세 경로 검색 화면 내 도보경로의 기상 정보 리스트
      *
      * @param pathDto    : 경로 Dto
-     * @param selectTime : 선택한 시각
      * @return : 기상 정보 리스트
      */
-    @GetMapping("/api/path/expected")
-    public ResponseEntity<Object> selectPathWithRain(@RequestPart("pathDto") PathDto pathDto,
-                                                     @RequestPart("selectTime") String selectTime) {
-        List<ForecastSubPathDto> forecastBySubPath = pathService.createForecastBySubPath(pathDto, selectTime);
+    @PostMapping("/api/path/expected")
+    public ResponseEntity<Object> selectPathWithRain(@RequestBody PathDto pathDto){
+        LocalTime curTime = LocalTime.now(ZoneId.of("Asia/Seoul"));
+        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("HHmm");
+        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("HH00");
+
+        String formattedCurrentTime = curTime.format(inputFormatter);
+
+        List<ForecastSubPathDto> forecastBySubPath = pathService.createForecastBySubPath(pathDto, formattedCurrentTime);
         Double result = 0.0;
 
         for (ForecastSubPathDto forecastSubPathDto : forecastBySubPath) {
