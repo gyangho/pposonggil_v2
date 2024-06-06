@@ -197,6 +197,8 @@ function RouteDetail() {
   const [walkPathIndex, setWalkPathIndex] = useState(0);
   const [walkPathsWeather, setWalkPathsWeather] = useState([]);
 
+  const [isLoading, setIsLoading] = useState(true);
+
   const [temp, setTemp] = useState("t1h"); //온도
   const [rain, setRain] = useState("rn1"); //강수량
   const [humid, setHumid] = useState("reh"); //습도
@@ -214,6 +216,17 @@ function RouteDetail() {
       console.error("도보구간 날씨 정보 get 에러", error);
     }
   };
+
+  // walkPathsWeather가 업데이트되면 isLoading을 false로 변경하여 로딩 상태 해제
+  useEffect(() => {
+    if (walkPathsWeather.length > 0) {
+      setIsLoading(false);
+    }
+  }, [walkPathsWeather]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   /* 6월 6일 도보구간별 날씨 정보 매칭 안됨,.. */
   // useEffect(() => {
@@ -358,8 +371,6 @@ function RouteDetail() {
     console.log("해당 경로 구간으로 지도 부드럽게 이동: ", subIndex);
     console.log("도보구간 정보 출력 테스트: ", walkPathsWeather.forecast[0].reh);
   }
-
-  if (!path) return <div>Loading...</div>; //스피너
 
   return (
     <React.Fragment>
