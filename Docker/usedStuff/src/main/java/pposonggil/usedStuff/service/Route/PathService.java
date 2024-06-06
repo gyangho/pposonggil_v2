@@ -122,7 +122,7 @@ public class PathService {
             for (SubPathDto subPathDto : pathDto.getSubPathDtos()) {
                 duration = subPathDto.getTime();
 
-                if (Objects.equals(subPathDto.getType(), "walk")) {
+                if (Objects.equals(subPathDto.getType(), "walk") && subPathDto.getTime() != 0) {
                     ForecastDto forecastDto = ForecastDto.builder()
                             .time(standardTime)
                             .x(subPathDto.getMidDto().getX().toString())
@@ -143,6 +143,7 @@ public class PathService {
                             .build();
 
                     result.add(forecastSubPathDto);
+
                 }
                 LocalTime curTime = LocalTime.parse(selectTime, DateTimeFormatter.ofPattern("HHmm"));
                 LocalTime updateTime = curTime.plusMinutes(duration);
