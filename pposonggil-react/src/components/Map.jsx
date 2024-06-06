@@ -150,12 +150,12 @@ function Map() {
     };
     //현재 위치 정보로 지도 생성
     const loadMap = ({ lat, lon }) => {
-      const script = document.createElement('script');
-      script.async = true;
-      script.src = "//dapi.kakao.com/v2/maps/sdk.js?appkey=fa3cd41b575ec5e015970670e786ea86&autoload=false";
-      document.head.appendChild(script);
+      // const script = document.createElement('script');
+      // script.async = true;
+      // script.src = "//dapi.kakao.com/v2/maps/sdk.js?appkey=fa3cd41b575ec5e015970670e786ea86&autoload=false";
+      // document.head.appendChild(script);
       
-      script.onload = () => {
+      // script.onload = () => {
         kakao.maps.load(() => {
           const container = mapRef.current;
           if(!container) {
@@ -163,7 +163,7 @@ function Map() {
           }
           const options = {
             center: new kakao.maps.LatLng(lat, lon),
-            level: 4,
+            level: 2,
           };
           mapInstance.current = new kakao.maps.Map(container, options);
           geocoder.current = new kakao.maps.services.Geocoder();
@@ -229,7 +229,7 @@ function Map() {
           });
   
         });
-      };
+      // };
     };
   
     // 현재 위치 정보를 가져온 후 지도를 로드

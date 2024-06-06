@@ -6,7 +6,6 @@ import { faRotate, faEllipsisVertical, faBus, faSubway, faDroplet, faCircleDot }
 import { useNavigate } from "react-router-dom";
 import { useRecoilState, useResetRecoilState } from "recoil";
 import axios from "axios";
-
 import { routeInfoState } from "../recoil/atoms";
 
 function SearchRoutes() {
