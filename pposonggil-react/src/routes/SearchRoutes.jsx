@@ -6,7 +6,6 @@ import { faRotate, faEllipsisVertical, faBus, faSubway, faDroplet, faCircleDot }
 import { useNavigate } from "react-router-dom";
 import { useRecoilState, useResetRecoilState } from "recoil";
 import axios from "axios";
-
 import { routeInfoState } from "../recoil/atoms";
 
 function SearchRoutes() {
@@ -38,7 +37,6 @@ function SearchRoutes() {
       "name": route.origin[0].name,
       "latitude": parseFloat(route.origin[0].lat),
       "longitude": parseFloat(route.origin[0].lon),
-
       "x": 0,
       "y": 0
     };
@@ -84,6 +82,7 @@ function SearchRoutes() {
     }));
     console.log("전환 버튼 클릭: ", route);
   };
+
   // 출발지/목적지 리셋 버튼 핸들러
   const onResetClick = () => {
     resetRouteInfo();
@@ -120,7 +119,8 @@ function SearchRoutes() {
   // 클릭한 path 객체 state로 전송
   const goToRouteDetail = (path) => {
     console.log(path);
-    navigate(`/search/detail`, { state: { path } });
+    // navigate(`/search/detail`, { state: { path } });
+    navigate(`/search/choose`, { state: { path } });
   };
 
   return (

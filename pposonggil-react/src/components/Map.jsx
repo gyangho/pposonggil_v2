@@ -61,54 +61,17 @@ function Map() {
     });
     setGridObjects(newGridObjects);  // 그리드 객체 상태 업데이트
   }, [gridBounds]);
-   // 격자 구간별 날씨 정보 서버로부터 get
-  // const getGridWeatherFromServer = async () => {
-  //   const now = new Date();
-  //   const time = now.getHours().toString().padStart(2, '0') + now.getMinutes().toString().padStart(2, '0');
-  //   const url = 'http://localhost:8080/api/forecasts';
-  //   try {
-  //     const response = await axios.get(url);
-  //     setGridWeather(response.data);
-  //   } catch(error) {
-  //     console.error("격자 날씨 정보 get 에러", error);
-  //   }
-  // };
 
   const getGridWeatherFromServer = async () => {
     const now = new Date();
     const time = now.getHours().toString().padStart(2, '0') + now.getMinutes().toString().padStart(2, '0');
     const url = 'http://localhost:8080/api/forecasts';
-    const params = { time: time };
     try {
       const response = await axios.get(url);
       setGridWeather(response.data);
     } catch(error) {
       console.error("격자 날씨 정보 get 에러", error);
     }
-  };
-
-  //격자 내 색상 업데이트 
-  const updateGridColors = (weatherData) => {
-    gridObjects.forEach((rectangle, index) => {
-      const gridData = weatherData[index];
-      let fillColor = '#ffffff'; // 기본 색상 (흰색)
-
-      if (gridData) {
-        const reh = parseFloat(gridData.reh);
-        if (reh > 0 && reh <= 5) {
-          fillColor = 'rgba(135, 206, 250, 0.5)'; // 하늘색
-        } else if (reh > 5 && reh <= 10) {
-          fillColor = 'rgba(0, 0, 255, 0.5)'; // 파란색
-        } else if (reh > 10) {
-          fillColor = 'rgba(0, 0, 139, 0.5)'; // 남색
-        }
-      }
-
-      rectangle.setOptions({
-        fillColor,
-        fillOpacity: 0.5,
-      });
-    });
   };
 
   //그리드 버튼 클릭 핸들러(우측 하단 격자 버튼)
@@ -187,12 +150,12 @@ function Map() {
     };
     //현재 위치 정보로 지도 생성
     const loadMap = ({ lat, lon }) => {
-      const script = document.createElement('script');
-      script.async = true;
-      script.src = "//dapi.kakao.com/v2/maps/sdk.js?appkey=fa3cd41b575ec5e015970670e786ea86&autoload=false";
-      document.head.appendChild(script);
+      // const script = document.createElement('script');
+      // script.async = true;
+      // script.src = "//dapi.kakao.com/v2/maps/sdk.js?appkey=fa3cd41b575ec5e015970670e786ea86&autoload=false";
+      // document.head.appendChild(script);
       
-      script.onload = () => {
+      // script.onload = () => {
         kakao.maps.load(() => {
           const container = mapRef.current;
           if(!container) {
@@ -200,7 +163,7 @@ function Map() {
           }
           const options = {
             center: new kakao.maps.LatLng(lat, lon),
-            level: 4,
+            level: 2,
           };
           mapInstance.current = new kakao.maps.Map(container, options);
           geocoder.current = new kakao.maps.services.Geocoder();
@@ -266,7 +229,7 @@ function Map() {
           });
   
         });
-      };
+      // };
     };
   
     // 현재 위치 정보를 가져온 후 지도를 로드

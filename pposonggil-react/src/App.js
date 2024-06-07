@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import styled from 'styled-components';
 
 import RouteDetail from './routes/RouteDetail';
+import ChooseRoute from './routes/ChooseRoute';
 import SearchRoutes from './routes/SearchRoutes';
 import SearchPlace from './routes/SearchPlace';
 import Search from './routes/Search';
@@ -61,7 +62,7 @@ function App() {
 
           {/* <Route path="/search/routes/route-detail" element={<RouteDetail />} /> */}
           <Route path="/search/detail" element={<RouteDetail />} />
-
+          <Route path="/search/choose" element={<ChooseRoute />} />
           <Route path="/search/routes" element={<SearchRoutes />} />
           <Route path="/search/place" element={<SearchPlace />} />
           <Route path="/search" element={<Search />} />
