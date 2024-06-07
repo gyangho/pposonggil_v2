@@ -208,20 +208,7 @@ public class PathService {
             e.printStackTrace();
             throw new RuntimeException("Runtime exception in createForecastBySubPath", e);
         }
-                    result.add(forecastSubPathDto);
-
-                }
-                LocalTime curTime = LocalTime.parse(selectTime, DateTimeFormatter.ofPattern("HHmm"));
-                LocalTime updateTime = curTime.plusMinutes(duration);
-                standardTime = updateTime.format(DateTimeFormatter.ofPattern("HH")) + "00";
-            }
-            return result;
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Runtime exception in createForecastBySubPath", e);
-        }
     }
-
     /**
      * default osrm을 이용한 도보 경로가 포함된
      * 대중교통 경로
