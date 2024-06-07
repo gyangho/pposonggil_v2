@@ -7,12 +7,14 @@ import com.google.maps.model.LatLng;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pposonggil.usedStuff.dto.Forecast.ForecastDto;
 import pposonggil.usedStuff.dto.Route.Path.PathDto;
 import pposonggil.usedStuff.dto.Route.Point.PointDto;
 import pposonggil.usedStuff.dto.Route.PointInformation.PointInformationDto;
 import pposonggil.usedStuff.dto.Route.SubPath.SubPathDto;
 import pposonggil.usedStuff.repository.route.path.PathRepository;
 import pposonggil.usedStuff.repository.route.subpath.SubPathRepository;
+import pposonggil.usedStuff.service.Forecast.ForecastService;
 
 
 import java.io.BufferedReader;
@@ -22,9 +24,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 @Service
 @Transactional(readOnly = true)
@@ -32,9 +34,11 @@ import java.util.Objects;
 public class SubPathService {
     private final PathRepository pathRepository;
     private final SubPathRepository subPathRepository;
+    private final ForecastService forecastService;
 
     /**
      * default osrm 도보 경로
+     *
      * @param pathDto: 경로 Dto
      * @return 최적 도보 경로가 포함된 경로
      * @throws IOException
@@ -81,9 +85,9 @@ public class SubPathService {
                         pointDtos.add(pointDto);
                     }
                 }
-                double roundedTime = (totalTime % 60 >= 30) ? ((totalTime / 60) + 1) : (totalTime / 60);
+                long roundedTime = (long) ((totalTime % 60 >= 30) ? ((totalTime / 60) + 1) : (totalTime / 60));
                 subPathDto.setPointDtos(pointDtos);
-                subPathDto.setTime((long)roundedTime);
+                subPathDto.setTime(roundedTime);
                 subPathDto.setDistance((long) totalDistance);
             }
             result.add(subPathDto);
@@ -93,6 +97,7 @@ public class SubPathService {
 
     /**
      * 뽀송 osrm 도보 경로
+     *
      * @param pathDto : 경로 Dto
      * @return : 뽀송 도보 경로가 포함된 경로
      * @throws IOException
@@ -141,13 +146,48 @@ public class SubPathService {
                 }
                 double roundedTime = (totalTime % 60 >= 30) ? ((totalTime / 60) + 1) : (totalTime / 60);
                 subPathDto.setPointDtos(pointDtos);
-                subPathDto.setTime((long)roundedTime);
+                subPathDto.setTime((long) roundedTime);
                 subPathDto.setDistance((long) totalDistance);
             }
             result.add(subPathDto);
         }
         return result;
     }
+
+    /**
+     * 날씨 정보를 포함한 도보 경로
+     *
+     * @param pathDto: 경로 Dto
+     * @return 도보 경로와 날씨 정보가 포함된 경로
+     * @throws IOException
+     */
+    public List<SubPathDto> createSubPathsWithForecast(PathDto pathDto, String selectTime) throws IOException {
+        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("HHmm");
+        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("HH00");
+        LocalTime time = LocalTime.parse(selectTime, inputFormatter);
+        List<SubPathDto> subPathDtos = pathDto.getSubPathDtos();
+        List<SubPathDto> result = new ArrayList<>();
+
+        for (SubPathDto subPathDto : subPathDtos) {
+            time.plusMinutes(subPathDto.getTime()).format(outputFormatter);
+            if (Objects.equals(subPathDto.getType(), "walk")) {
+                ForecastDto forecastDto = ForecastDto.builder()
+                        .time(time.format(outputFormatter))
+                        .x(subPathDto.getMidDto().getX().toString())
+                        .y(subPathDto.getMidDto().getY().toString())
+                        .build();
+
+                ForecastDto forecastByTimeAndXAndY = forecastService.findForecastByTimeAndXAndY(forecastDto);
+                Double expectedRain = subPathDto.getTime() * Double.parseDouble(forecastByTimeAndXAndY.getRn1());
+
+                subPathDto.setForecastDto(forecastByTimeAndXAndY);
+                subPathDto.setExpectedRain(expectedRain);
+            }
+            result.add(subPathDto);
+        }
+        return result;
+    }
+
 
     private static StringBuilder getResponse(String urlInfo) throws IOException {
         URL url = new URL(urlInfo);

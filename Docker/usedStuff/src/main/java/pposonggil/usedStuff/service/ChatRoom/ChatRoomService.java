@@ -14,6 +14,7 @@ import pposonggil.usedStuff.repository.member.MemberRepository;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -48,11 +49,18 @@ public class ChatRoomService {
      */
     public ChatRoomDto findChatRoomWithBoardRequesterByBoardId(Long boardId) {
         ChatRoom chatRoom = chatRoomRepository.findChatRoomWithBoardRequesterByBoardId(boardId)
-                .orElseThrow(() -> new NoSuchElementException("ChatRoom not found with tradeId: " + boardId));
+                .orElseThrow(() -> new NoSuchElementException("ChatRoom not found with boardId: " + boardId));
 
         return ChatRoomDto.fromEntity(chatRoom);
     }
 
+    /**
+     * 게시글 아이디에 해당하는 채팅방이 있는지 확인
+     */
+    public boolean findChatRoomWithBoardRequesterByBoardId2(Long boardId) {
+        Optional<ChatRoom> optionalChatRoom = chatRoomRepository.findChatRoomWithBoardRequesterByBoardId(boardId);
+        return optionalChatRoom.isPresent();
+    }
 
     /**
      * 게시글 & 채팅방조회
@@ -79,10 +87,12 @@ public class ChatRoomService {
             throw new IllegalArgumentException("자기 자신과 채팅방을 만들 수 없습니다.");
         }
 
-        chatRoomRepository.findChatRoomWithBoardRequesterByBoardId(chatRoomDto.getBoardId())
-                .ifPresent(chatRoom -> {
-                    throw new IllegalArgumentException("이미 채팅방이 생성됐습니다.");
-                });
+        if(findChatRoomWithBoardRequesterByBoardId2(chatBoard.getId())) {
+            chatRoomRepository.findChatRoomWithBoardRequesterByBoardId(chatRoomDto.getBoardId())
+                    .ifPresent(chatRoom -> {
+                        throw new IllegalArgumentException("이미 채팅방이 생성됐습니다.");
+                    });
+        }
 
         ChatRoom chatRoom = ChatRoom.buildChatRoom(chatBoard, requester);
 
