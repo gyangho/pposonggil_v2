@@ -882,7 +882,7 @@ const IconBox = styled.div`
 /* Btn 컴포넌트 추가*/
 const TimeBar = styled(motion.div)`
   width: auto;
-  height: auto;
+  height: 10%;
   padding: 0px 20px;
   display: flex;
   justify-content: start;
@@ -894,7 +894,7 @@ const TimeBar = styled(motion.div)`
 `;
 const PosongBtn = styled.button`
   width: 55px;
-  height: 30px;
+  height: 35px;
   margin-right: 8px;
   margin-bottom: 10px;
   border-radius: 25px;
@@ -904,12 +904,13 @@ const PosongBtn = styled.button`
   border: none;
   &:hover {
     background-color: #63CAFF;
-    color: white;
+    /* color: white; */
+    border: 2px solid white;
   }
 `;
 const PosongTime = styled.div`
   width: auto;
-  height: 30px;
+  height: 35px;
   margin-right: 8px;
   margin-bottom: 10px;
   border-radius: 25px;
