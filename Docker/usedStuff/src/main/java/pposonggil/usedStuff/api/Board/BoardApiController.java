@@ -6,8 +6,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import pposonggil.usedStuff.dto.Board.BoardDto;
+import pposonggil.usedStuff.dto.Route.PointInformation.PointInformationDto;
 import pposonggil.usedStuff.service.Board.BoardService;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,12 +30,27 @@ public class BoardApiController {
     }
 
     /**
+     * 예상 강수량 정보를 포함한 게시글 조회
+     *
+     * @param startDto : 출발지 정보
+     * @param memberId : 회원 아이디
+     * @return : 강수량 정보가 포함된 게시글 Dto 리스트
+     * @throws IOException
+     */
+    @PostMapping("/api/boards/with-expected-rain/{memberId}")
+    public List<BoardDto> getBoardsWithExpectedRain(@RequestPart("startDto") PointInformationDto startDto,
+                                                    @PathVariable Long memberId) throws IOException {
+        return boardService.findBoardsWithExpectedRain(startDto, memberId);
+    }
+
+    /**
      * 특정 게시글 상세 조회
+     * 기상정보를 포함한다
      *
      * @param boardId : 조회할 게시글 아이디
      * @return 게시글 아이디로 조회한 게시글 Dto
      */
-    @GetMapping("/api/board/{boardId}")
+    @GetMapping("/api/board/by-board/{boardId}")
     public BoardDto getBoardByBoardId(@PathVariable Long boardId) {
         return boardService.findOne(boardId);
     }

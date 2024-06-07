@@ -5,5 +5,4 @@ import pposonggil.usedStuff.domain.ChatRoom;
 import pposonggil.usedStuff.repository.chatroom.custom.CustomChatRoomRepository;
 
 public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long>, CustomChatRoomRepository {
-
 }
