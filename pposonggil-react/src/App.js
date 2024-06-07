@@ -37,28 +37,28 @@ function App() {
       <Header />
       <Wrapper>
         <Routes>
-          <Route path="/bookmark" element={<Bookmark/>} />
-          <Route path="/mypage" element={<MyPage/>} />
+          <Route path="/bookmark" element={<Bookmark />} />
+          <Route path="/mypage" element={<MyPage />} />
 
-          
+
           <Route path="/market/schedule" element={<TransactionSchedule />} />
-          <Route path="/market/chat/:author"  exact    element={<Chat />} />         
-          <Route path="/market/post/:boardId" exact    element={<Post />} />
-          <Route path="/market/posting" element={<Posting/>} />
+          <Route path="/market/chat/:author" exact element={<Chat />} />
+          <Route path="/market/post/:boardId" exact element={<Post />} />
+          <Route path="/market/posting" element={<Posting />} />
           <Route path="/market" element={<Board />} />
 
           <Route path="/search/routes/:index" exact element={<RouteDetail />} />
           <Route path="/search/routes" element={<SearchRoutes />} />
           <Route path="/search/place" element={<SearchPlace />} />
           <Route path="/search" element={<Search />} />
-          
+
           <Route path="/home" element={<Home />} />
 
           <Route path="/login" element={<LogIn />} />
           <Route path="/oauth/kakao/callback" element={<KakaoRedirect />} />
           {/* 로그인 페이지로 수정 필요 */}
           <Route path="/" element={<Home />} />
-        </Routes>      
+        </Routes>
       </Wrapper>
       <Navigation />
     </Router>

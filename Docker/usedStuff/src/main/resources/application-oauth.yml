@@ -6,6 +6,7 @@ spring:
           google:
             client-id: ${oauth.googleid}
             client-secret: ${oauth.googlesecret}
+            redirect-uri: http://localhost:8080/login/oauth2/code/google
             scope: # google API의 범위 값
               - profile
               - email

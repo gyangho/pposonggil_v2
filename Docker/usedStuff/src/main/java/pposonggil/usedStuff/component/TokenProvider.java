@@ -10,11 +10,13 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.token.Token;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import pposonggil.usedStuff.domain.PrincipalDetails;
+import pposonggil.usedStuff.domain.RefreshToken;
 import pposonggil.usedStuff.service.Auth.TokenService;
 
 import javax.crypto.SecretKey;
@@ -28,7 +30,7 @@ public class TokenProvider {
     @Value("${jwt.key}")
     private String key;
     private SecretKey secretKey;
-    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30L;
+    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 10L;
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60L * 24 * 7;
     private static final String KEY_ROLE = "role";
     private final TokenService tokenService;
@@ -39,7 +41,7 @@ public class TokenProvider {
     }
 
     private String generateToken(Authentication authentication, long expireTime) {
-
+        String subject =null;
         Map<String, Object> claims = new HashMap<>();
         Date now = new Date();
         Date expiredDate = new Date(now.getTime() + expireTime);
@@ -47,10 +49,16 @@ public class TokenProvider {
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining());
-
+        try{
+            subject = ((PrincipalDetails)authentication.getPrincipal()).getName();
+        }
+        catch (ClassCastException e)
+        {
+            subject= ((User)authentication.getPrincipal()).getUsername();
+        }
         return Jwts.builder()
                 .setClaims(claims)
-                .setSubject(((PrincipalDetails)authentication.getPrincipal()).getName())
+                .setSubject(subject)
                 .setIssuedAt(now)
                 .setExpiration(expiredDate)
                 .claim(KEY_ROLE, authorities)
@@ -63,11 +71,12 @@ public class TokenProvider {
     }
 
     // 1. refresh token 발급
-    public void generateRefreshToken(Authentication authentication, String accessToken) {
+    public void generateRefreshToken(Authentication authentication) {
         PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
 
         String refreshToken = generateToken(authentication, REFRESH_TOKEN_EXPIRE_TIME);
-        tokenService.saveOrUpdate(principalDetails.getName(), refreshToken); // redis에 저장
+
+        tokenService.saveOrUpdate(principalDetails.member(), refreshToken); //DB에 저장
     }
 
     public Authentication getAuthentication(String token) {
@@ -91,7 +100,8 @@ public class TokenProvider {
             String refreshToken  = tokenService.findByAccessTokenOrThrow(userId);
 
             if (validateToken(refreshToken)) {
-                return generateAccessToken(getAuthentication(refreshToken));
+                Authentication authentication = getAuthentication(refreshToken);
+                return generateAccessToken(authentication);
             }
         }
         return null;
@@ -101,17 +111,25 @@ public class TokenProvider {
         if (!StringUtils.hasText(token)) {
             return false;
         }
-
         Claims claims = parseClaims(token);
-        return claims.getExpiration().after(new Date());
+        if(claims.getExpiration().before(new Date()))
+        {
+            SecurityContextHolder.clearContext();
+            return false; // 토큰이 만료된 경우 false 반환
+        }
+        return true;
     }
 
     private Claims parseClaims(String token) {
+        try {
             return Jwts.parserBuilder()
                     .setSigningKey(secretKey)
                     .build()
                     .parseClaimsJws(token)
                     .getBody();
+        } catch (ExpiredJwtException e) {
+            return e.getClaims();
+        }
 
     }
 }

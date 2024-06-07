@@ -26,7 +26,7 @@ public class MemberApiController {
         return memberService.createMember(member.getName(), member.getEmail(), member.getProvider());
     }
 
-    @GetMapping("/{name}")
+    @GetMapping("/find/{name}")
     public Optional<Member> getMember(@PathVariable String name) {
         return memberService.findMemberByName(name);
     }

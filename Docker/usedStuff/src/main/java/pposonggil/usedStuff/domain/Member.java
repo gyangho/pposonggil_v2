@@ -36,7 +36,6 @@ public class Member extends BaseEntity {
     private String provider;
     private String profile_image;
 
-
     @ElementCollection(fetch=FetchType.EAGER)
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;

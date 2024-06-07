@@ -5,27 +5,42 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fbc73a0f-9444-47e6-9457-7db026927fd3" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/api/Member/OauthController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/resources/static/public/js/intercept.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/resources/templates/test.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/api/Forecast/ForecastApiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/api/Forecast/ForecastApiController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/dto/Route/Path/PathDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/dto/Route/Path/PathDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/nginx/conf.d/api_gateway.conf" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/nginx/conf.d/api_gateway.conf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osm" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/osrm/data/seoul.osm" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.cell_metrics" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.cell_metrics" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.cells" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.cells" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.edges" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.edges" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.icd" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.icd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.mldgr" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.mldgr" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.partition" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.partition" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/osrm/profiles/foot_pposong.lua" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/osrm/profiles/foot_pposong.lua" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/api/Member/MemberApiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/api/Member/MemberApiController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/component/TokenAuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/component/TokenAuthenticationFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/component/TokenProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/component/TokenProvider.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/config/CustomAuthenticationEntryPoint.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/config/CustomAuthenticationEntryPoint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/config/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/domain/Member.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/domain/Member.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/domain/PrincipalDetails.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/domain/PrincipalDetails.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/domain/RefreshToken.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/domain/RefreshToken.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/handler/OAuth2SuccessHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/handler/OAuth2SuccessHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/repository/member/MemberRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/repository/member/MemberRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/service/Auth/CustomOAuth2UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/service/Auth/CustomOAuth2UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/service/Forecast/ForecastService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/service/Forecast/ForecastService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/service/Route/PathService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/service/Route/PathService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/repository/member/TokenRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/repository/member/TokenRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/service/Auth/TokenService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/service/Auth/TokenService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/service/Member/MemberService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/service/Member/MemberService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/resources/application-dev.yml" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/resources/application-dev.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/resources/application-oauth.yml" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/resources/application-oauth.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/resources/application-prod.yml" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/resources/application-prod.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/test/java/pposonggil/usedStuff/UsedStuffApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/test/java/pposonggil/usedStuff/UsedStuffApplicationTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/test/java/pposonggil/usedStuff/service/BlockServiceTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/test/java/pposonggil/usedStuff/service/BoardServiceTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/test/java/pposonggil/usedStuff/service/ChatRoomServiceTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/test/java/pposonggil/usedStuff/service/MemberServiceTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/test/java/pposonggil/usedStuff/service/MessageServiceTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/test/java/pposonggil/usedStuff/service/MockS3Config.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/test/java/pposonggil/usedStuff/service/ReportServiceTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/test/java/pposonggil/usedStuff/service/ReviewServiceTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/test/java/pposonggil/usedStuff/service/TradeServiceTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pposonggil-react/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pposonggil-react/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/App.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,6 +86,16 @@
       </state>
     </system>
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+        <option value="HTML File" />
+        <option value="JavaScript File" />
+        <option value="package.json" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -89,30 +114,34 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Gradle.Build usedStuff.executor": "Run",
-    "Gradle.usedStuff [build].executor": "Run",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "Spring Boot.UsedStuffApplication.executor": "Run",
-    "git-widget-placeholder": "develop",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/dydtk/Downloads/demo/build.gradle",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;Gradle.Build usedStuff.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.usedStuff [build].executor&quot;: &quot;Run&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;Spring Boot.UsedStuffApplication.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;temp2&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/dydtk/Downloads/demo/build.gradle&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="pposonggil.usedStuff.component" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\dydtk\OneDrive\2024\pposonggil_v2\Docker\usedStuff" />
     </key>
@@ -192,7 +221,15 @@
       <workItem from="1717502820131" duration="1278000" />
       <workItem from="1717504835274" duration="4402000" />
       <workItem from="1717509271842" duration="3997000" />
-      <workItem from="1717513500480" duration="2213000" />
+      <workItem from="1717513500480" duration="5416000" />
+      <workItem from="1717569167125" duration="9974000" />
+      <workItem from="1717639089417" duration="7274000" />
+      <workItem from="1717647620386" duration="182000" />
+      <workItem from="1717647823540" duration="62000" />
+      <workItem from="1717647903573" duration="16836000" />
+      <workItem from="1717689305915" duration="10363000" />
+      <workItem from="1717704942464" duration="1388000" />
+      <workItem from="1717740008451" duration="12594000" />
     </task>
     <servers />
   </component>

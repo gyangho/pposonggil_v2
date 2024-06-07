@@ -1,7 +1,6 @@
 package pposonggil.usedStuff.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
@@ -11,8 +10,13 @@ import lombok.*;
 @Builder
 public class RefreshToken {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter
     Long Id;
     @Getter
     String refreshToken;
+
+    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.REMOVE})
+    @JoinColumn(name = "member_id")
+    private Member member;
 }

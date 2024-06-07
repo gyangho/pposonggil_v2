@@ -7,6 +7,7 @@ import pposonggil.usedStuff.domain.Member;
 import pposonggil.usedStuff.domain.Role;
 import pposonggil.usedStuff.dto.Member.MemberDto;
 import pposonggil.usedStuff.repository.member.MemberRepository;
+import pposonggil.usedStuff.repository.member.TokenRepository;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
+    private final TokenRepository tokenRepository;
 
 
     public Member createMember(String name, String email, String provider) {
@@ -108,15 +110,13 @@ public class MemberService {
         }
         memberRepository.save(member);
     }
+     */
 
-    /**
-     * 회원 삭제
-
-    @Transactional
-    public void deleteMember(Long memberId) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(NoSuchElementException::new);
-        memberRepository.delete(member);
-    }
-    */
+     @Transactional
+     public void deleteMember(Long memberId) {
+     // Member를 먼저 삭제합니다.
+         memberRepository.deleteById(memberId);
+     // 해당 Member와 연관된 RefreshToken을 삭제합니다.
+         tokenRepository.deleteByMember_Id(memberId);
+     }
 }

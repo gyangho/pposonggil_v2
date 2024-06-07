@@ -19,6 +19,11 @@ public record PrincipalDetails(
         return member.getId().toString();
     }
 
+    public String getEmail()
+    {
+        return member.getEmail();
+    }
+
     @Override
     public Map<String, Object> getAttributes() {
         return attributes;
