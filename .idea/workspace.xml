@@ -5,8 +5,34 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fbc73a0f-9444-47e6-9457-7db026927fd3" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.cell_metrics" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.cells" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.cnbg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.cnbg_to_ebg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.datasource_names" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.ebg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.ebg_nodes" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.edges" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.enw" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.fileIndex" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.geometry" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.icd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.maneuver_overrides" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.mldgr" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.names" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.nbg_nodes" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.partition" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.ramIndex" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.restrictions" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.timestamp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.tld" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.tls" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.turn_duration_penalties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.turn_penalties_index" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.turn_weight_penalties" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -195,7 +221,7 @@
       <workItem from="1717647903573" duration="16836000" />
       <workItem from="1717689305915" duration="10363000" />
       <workItem from="1717704942464" duration="1388000" />
-      <workItem from="1717740008451" duration="13870000" />
+      <workItem from="1717740008451" duration="14267000" />
     </task>
     <servers />
   </component>
