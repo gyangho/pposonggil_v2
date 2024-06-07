@@ -223,31 +223,32 @@ const BoxContainer = styled.div`
 const Box = styled.div`
   width: 50%;
   height: 100%;
+  min-height: 150px;
   background-color: #ffffffd7;
   box-shadow: 0px 0px 6px 6px rgba(68, 68, 68, 0.1);
   border-radius: 20px;
   margin: 20px 10px;
-  padding: 20px;
+  padding:  10px 20px;
   cursor: pointer;
   display: flex;
   flex-direction: column;
   font-weight: 500;
   text-align: center;
   div {
-    flex: 1; // 동일한 크기로 확장
+    /* flex: 1; // 동일한 크기로 확장 */
     display: flex;
     align-items: center; //세로 가운데 정렬
     padding: 0px 10px;
     padding-bottom: 5px;
   }
   h1 {
-    font-size: 20px;
+    font-size: 18px;
     font-weight: bold;
     color: #F26500;
     padding-top: 4px;
   }
   h2 {
-    font-size: 20px;
+    font-size: 18px;
     font-weight: bold;
     color: #003E5E;
     padding-top: 4px;
@@ -263,6 +264,7 @@ const Box = styled.div`
 const Posong = styled.div`
   width: 50%;
   height: 30px;
+  min-height: 30px;
   right: 0;
   position: sticky;
   z-index: 500;
