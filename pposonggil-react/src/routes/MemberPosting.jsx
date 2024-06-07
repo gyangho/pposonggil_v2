@@ -16,7 +16,7 @@ const PostList = styled.div`
 
 const Post = styled.div`
   display: flex;
-  align-items: center;
+  align-items: start;
   margin-bottom: 15px;
   padding: 10px;
   border: 1px solid #ddd;
@@ -41,6 +41,7 @@ const PostImage = styled.img`
 const PostDetails = styled.div`
   display: flex;
   flex-direction: column;
+  width: 100%;
 `;
 
 const PostTitle = styled.h2`
@@ -55,6 +56,22 @@ const PostContent = styled.p`
   color: #777;
 `;
 
+const PostTimeLocation = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: 5px 0;
+`;
+
+const PostTime = styled.span`
+  font-size: 14px;
+  color: #777;
+`;
+
+const PostLocation = styled.span`
+  font-size: 14px;
+  color: #777;
+`;
+
 const PostPrice = styled.span`
   margin-top: 5px;
   font-size: 16px;
@@ -63,44 +80,48 @@ const PostPrice = styled.span`
 `;
 
 function MemberPosting() {
-    const [posts, setPosts] = useState([]);
-    const navigate = useNavigate();
-    const { writerId } = useParams(); // url에서 writerId 떼오기
+  const [posts, setPosts] = useState([]);
+  const navigate = useNavigate();
+  const { writerId } = useParams(); // url에서 writerId 떼오기
 
-    useEffect(() => {
-        axios.get(`http://localhost:8080/api/boards/by-member/${writerId}`) // 백엔드 url로 변경
-            .then(response => {
-                setPosts(response.data);
-            })
-            .catch(error => {
-                console.error('Error fetching posts:', error);
-            });
-    }, [writerId]);
+  useEffect(() => {
+    axios.get(`http://localhost:8080/api/boards/by-member/${writerId}`) // 백엔드 url로 변경
+      .then(response => {
+        setPosts(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching posts:', error);
+      });
+  }, [writerId]);
 
-    const handlePostClick = (boardId) => {
-        navigate(`/member-posting/post/${boardId}`);
-    };
+  const handlePostClick = (boardId) => {
+    navigate(`/member-posting/post/${boardId}`);
+  };
 
-    return (
-        <Container>
-            {posts.length === 0 ? (
-                <p>No posts found.</p>
-            ) : (
-                <PostList>
-                    {posts.map(post => (
-                        <Post key={post.boardId} onClick={() => handlePostClick(post.boardId)}>
-                            <PostImage src={post.imageUrl || "https://via.placeholder.com/80"} alt={post.title} />
-                            <PostDetails>
-                                <PostTitle>{post.title}</PostTitle>
-                                <PostContent>{post.content}</PostContent>
-                                <PostPrice>{post.price}원</PostPrice>
-                            </PostDetails>
-                        </Post>
-                    ))}
-                </PostList>
-            )}
-        </Container>
-    );
+  return (
+    <Container>
+      {posts.length === 0 ? (
+        <p>No posts found.</p>
+      ) : (
+        <PostList>
+          {posts.map(post => (
+            <Post key={post.boardId} onClick={() => handlePostClick(post.boardId)}>
+              <PostImage src={post.imageUrl || "https://via.placeholder.com/80"} alt={post.title} />
+              <PostDetails>
+                <PostTitle>{post.title}</PostTitle>
+                <PostContent>{post.content}</PostContent>
+                <PostTimeLocation>
+                  <PostTime>거래 가능 시간: {post.startTimeString} - {post.endTimeString}</PostTime>
+                  <PostLocation>거래 장소: {post.address.name}</PostLocation>
+                </PostTimeLocation>
+                <PostPrice>{post.price}원</PostPrice>
+              </PostDetails>
+            </Post>
+          ))}
+        </PostList>
+      )}
+    </Container>
+  );
 }
 
 export default MemberPosting;

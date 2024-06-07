@@ -92,7 +92,7 @@ function Posting({ onSave, editingPost, onUpdate }) {
       formData.append('file', post.image);
     }
 
-    console.log("여기까진 되나요?");
+
 
     try {
       const response = await axios.post(apiUrl, formData, {
