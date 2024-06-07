@@ -83,7 +83,7 @@ services:
       - mysql
     expose:
       - 3000
-    build: ./pposonggil-react
+    # build: ./pposonggil-react
     container_name: pposonggil-react
     restart: unless-stopped
     stdin_open: true # `-i`

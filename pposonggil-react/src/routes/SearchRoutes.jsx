@@ -6,23 +6,17 @@ import { faRotate, faEllipsisVertical, faBus, faSubway, faDroplet, faCircleDot }
 import { useNavigate } from "react-router-dom";
 import { useRecoilState, useResetRecoilState } from "recoil";
 import axios from "axios";
-
 import { routeInfoState } from "../recoil/atoms";
 
-const { kakao } = window;
-
-const apiUrl = "http://localhost:3001/paths"; //출발지 목적지 보내는 url
-
 function SearchRoutes() {
-  const [route, setRoute] = useRecoilState(routeInfoState);
+  const [route, setRoute] = useRecoilState(routeInfoState); // 검색할 경로의 출발지.도착지 저장 atom
   const resetRouteInfo = useResetRecoilState(routeInfoState);
   const navigate = useNavigate();
 
-  const [serverResponse, setServerResponse] = useState(null);
-  const [paths, setPaths] = useState([]); //서버로부터 받아온 경로 검색 결과 저장
+  const [paths, setPaths] = useState([]); // 서버로부터 받아온 경로 검색 결과 저장 객체
   const [filterOption, setFilterOption] = useState("all");
-  const [sortOption, setSortOption] = useState("walk"); // "walk" for 최소도보순, "time" for 최단시간순, "transit" for 최소환승순
-  const [activeButton, setActiveButton] = useState("all"); // 현재 활성화된 버튼 상태
+  const [sortOption, setSortOption] = useState("walk");
+  const [activeButton, setActiveButton] = useState("all"); // 현재 활성화된 버튼 상태 관리
 
   // Recoil 상태가 변경될 때마다 서버로 데이터를 전송(출발지 목적지 위경도 정보 있을 때만)
   useEffect(() => {
@@ -31,68 +25,42 @@ function SearchRoutes() {
     }
   }, [route]);
 
+  // 서버로 출발지/목적지 정보 post
   const sendRouteToServer = async (route) => {
-    // 현재 시간 정보를 hhmm 형식
+    
     const now = new Date();
-    const hhmm = now.getHours().toString().padStart(2, '0') + now.getMinutes().toString().padStart(2, '0');
-    //서버에 출발지/목적지/현재시간 정보 전달(post)
-    // try {
-    // const response = await axios.post("http://localhost:8080/api/paths/by-member/1", { //실제 url로 바꿔야함
-    //   startDto: {
-    //     name: route.origin[0].name,
-    //     latitude: parseFloat(route.origin[0].lat), //atom에는 다 문자열로 저장해놔서 변환 필요..
-    //     longitude: parseFloat(route.origin[0].lon),
-    //     x: 0,
-    //     y: 0
-    //   },
-    //   endDto: {
-    //     name: route.dest[0].name,
-    //     latitude: parseFloat(route.dest[0].lat),
-    //     longitude: parseFloat(route.dest[0].lon),
-    //     x: 0,
-    //     y: 0
-    //   },
-    //   selectTime : hhmm
-    // });
-    // console.log("서버 응답: ", response.data);
-    // setServerResponse(response.data); // 서버에서 response 값으로 경로 검색 결과 줄거임. 이거 setPaths로
-    // fetchPaths(); //테스트용
-    // } catch (error) {
-    // console.error("서버로 데이터 전송 실패: ", error);
-    // }
-    // }
+    const time = now.getHours().toString().padStart(2, '0') + now.getMinutes().toString().padStart(2, '0');
+    const url = 'http://localhost:8080/api/paths/by-member/2'; //postman이랑 매치해서 꼭 재확인 할 것!!
+    const formData = new FormData(); // form-data 객체 생성
 
-
-
-
-    const url = 'http://localhost:8080/api/paths/by-member/1';
-
-    // form-data 객체 생성
-    const formData = new FormData();
-  
-    // 첫 번째 form-data 추가
-    const startDto = {
-      "name": "숭실대",
-      "latitude": 37.4948,
-      "longitude": 126.9598,
+    const startDto = {  // 첫 번째 form-data 추가
+      "name": route.origin[0].name,
+      "latitude": parseFloat(route.origin[0].lat),
+      "longitude": parseFloat(route.origin[0].lon),
       "x": 0,
       "y": 0
     };
     formData.append('startDto', new Blob([JSON.stringify(startDto)], { type: 'application/json' }));
-
-    // 두 번째 form-data 추가
-    const endDto = {
-      "name": "이수역주변",
-      "latitude": 37.4857,
-      "longitude": 126.9815,
+    
+    const endDto = { // 두 번째 form-data 추가
+      "name": route.dest[0].name,
+      "latitude": parseFloat(route.dest[0].lat),
+      "longitude": parseFloat(route.dest[0].lon),
       "x": 0,
       "y": 0
     };
     formData.append('endDto', new Blob([JSON.stringify(endDto)], { type: 'application/json' }));
+    formData.append('selectTime', time ); // 세 번째 form-data 추가
 
-    // 세 번째 form-data 추가
-    formData.append('selectTime', '0014');
-
+    // FormData 내용 출력
+    for (let [key, value] of formData.entries()) {
+      console.log("서버로 보낸 데이터: ");
+      console.log(`${key}:`, value);
+      if (value instanceof Blob) {
+        value.text().then(text => console.log(`${key} content:`, text));
+      }
+    }
+    
     try {
       const response = await axios.post(url, formData, {
         headers: {
@@ -100,35 +68,28 @@ function SearchRoutes() {
         }
       });
       console.log('Response:', response.data);
-      setServerResponse(response.data); // 서버에서 response 값으로 경로 검색 결과 줄거임. 이거 setPaths로
-
+      setPaths(response.data);
     } catch (error) {
       console.error('Error:', error);
     }
   };
-  //임시로 서버에서 데이터 받는 것 구현.
-  const fetchPaths = async () => {
-    try {
-      const response = await axios.get(apiUrl);
-      setPaths(response.data);
-    } catch (error) {
-      console.error("Error fetching paths", error);
-    }
-  };
 
+  // 출발지/목적지 전환 버튼 핸들러
   const onReverseClick = () => {
     setRoute((prev) => ({
       origin: prev.dest,
       dest: prev.origin,
     }));
+    console.log("전환 버튼 클릭: ", route);
   };
 
+  // 출발지/목적지 리셋 버튼 핸들러
   const onResetClick = () => {
     resetRouteInfo();
-    setPaths([]);
+    setPaths([]); //검색된 이전 경로 검색 결과 있으면 초기화
   };
 
-  // 경로 검색 결과 필터 버튼 3개
+  // 경로 검색 결과 필터 버튼 3개(전체,버스만,지하철만)
   const filterPaths = () => {
     if (filterOption === "all") {
       return paths;
@@ -148,16 +109,18 @@ function SearchRoutes() {
       return filteredPaths.sort((a, b) => a.totalTransitCount - b.totalTransitCount);
     }
   };
-  //버스 버튼 => 도보 + 버스만 포함한 경로, 지하철 버튼 => 도보 + 지하철만 포함한 경로 필터링
+  // 버스 버튼 => 도보 + 버스만 포함한 경로, 지하철 버튼 => 도보 + 지하철만 포함한 경로 필터링
   const busPathsCount = paths.filter(path => path.subPathDtos.every(subPath => subPath.type === "walk" || subPath.type === "bus")).length;
   const subwayPathsCount = paths.filter(path => path.subPathDtos.every(subPath => subPath.type === "walk" || subPath.type === "subway")).length;
 
   const filteredPaths = filterPaths();
   const sortedPaths = sortPaths(filteredPaths);
 
-  //클릭한 경로의 index url 파라미터로 전달 (전: pathId, 현: index)
-  const goToRouteDetail = (index) => {
-    navigate(`/search/routes/${index}`);
+  // 클릭한 path 객체 state로 전송
+  const goToRouteDetail = (path) => {
+    console.log(path);
+    // navigate(`/search/detail`, { state: { path } });
+    navigate(`/search/choose`, { state: { path } });
   };
 
   return (
@@ -223,7 +186,7 @@ function SearchRoutes() {
 
       <ResultContainer>
         {sortedPaths.map((path, index) => (
-          <PathBox id="pathBox" key={index} onClick={() => goToRouteDetail(path.index)}>
+          <PathBox id="pathBox" key={index} onClick={() => goToRouteDetail(path)}>
             <PathSummary>
               <PathInfo id="timeAndPrice">
                 <span>{path.totalTime}</span>
@@ -295,8 +258,8 @@ function SearchRoutes() {
                   {subIndex === array.length - 1 && (
                     <SubPath>
                       <IconColumn>
-                        <FontAwesomeIcon icon={faCircleDot} style={{ color: "darkgray" }} />
-                        <div style={{ color: "darkgray" }}>하차</div>
+                        <FontAwesomeIcon icon={faCircleDot} style={{ color: "gray" }} />
+                        <div style={{ color: "gray" }}>하차</div>
                       </IconColumn>
                       <TextColumn>
                         <div>{subPath.endDto.name}</div>
@@ -401,9 +364,23 @@ const OptionBar = styled.div`
 `;
 
 const SortingBar = styled(OptionBar)`
+  display: flex;
   justify-content: space-between;
+  align-items: center;
   background-color: white;
   border: none;
+  font-weight: 500;
+  font-size: 15px;
+  select {
+    color: gray;
+    /* background-color: #003E5E; */
+    background-color: whitesmoke;
+    padding: 4px 5px;
+    border-radius: 25px;
+    border: 1.5px solid gray;
+    font-weight: bold;
+
+  }
 `;
 
 const PathBox = styled.div`
@@ -480,10 +457,7 @@ const SubPath = styled.div`
 const IconColumn = styled.div`
   width: 80px;
   display: flex;
-
-  /* margin-left: 5px; */
   justify-content: start;
-  /* background-color: pink; */
   font-weight: 700;
   font-size: 15px;
   * {
@@ -493,8 +467,6 @@ const IconColumn = styled.div`
 
 const TextColumn = styled.div`
   width: 75%;
-
-  /* background-color: skyblue; */
 `;
 
 const SummaryBar = styled.div`
@@ -551,4 +523,5 @@ const IconBox = styled.div`
   z-index: 2;
   font-size: 12px;
 `;
+
 

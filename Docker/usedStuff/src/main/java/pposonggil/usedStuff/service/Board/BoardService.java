@@ -14,25 +14,35 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import pposonggil.usedStuff.domain.Board;
 import pposonggil.usedStuff.domain.Member;
+import pposonggil.usedStuff.domain.Route.LatXLngY;
+import pposonggil.usedStuff.domain.TransactionAddress;
 import pposonggil.usedStuff.dto.Board.BoardDto;
+import pposonggil.usedStuff.dto.Forecast.ForecastDto;
+import pposonggil.usedStuff.dto.Route.Path.PathDto;
+import pposonggil.usedStuff.dto.Route.PointInformation.PointInformationDto;
 import pposonggil.usedStuff.repository.board.BoardRepository;
 import pposonggil.usedStuff.repository.member.MemberRepository;
+import pposonggil.usedStuff.service.Forecast.ForecastService;
+import pposonggil.usedStuff.service.Route.PathService;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.UUID;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class BoardService {
     private final BoardRepository boardRepository;
     private final MemberRepository memberRepository;
+    private final PathService pathService;
+    private final ForecastService forecastService;
     private final AwsS3 awsS3;
 
     /**
@@ -46,12 +56,67 @@ public class BoardService {
     }
 
     /**
+     * 거래장소 까지의 예상 강수량
+     * 거래 시작 시각 기준 기상정보
+     * 포함한 게시글 조회
+     */
+    public List<BoardDto> findBoardsWithExpectedRain(PointInformationDto startDto, Long memberId) throws IOException {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(NoSuchElementException::new);
+
+        LocalTime curTime = LocalTime.now(ZoneId.of("Asia/Seoul"));
+        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("HHmm");
+
+        List<Board> boards = boardRepository.findAll();
+        List<BoardDto> boardDtos = boards.stream()
+                .map(BoardDto::fromEntity)
+                .collect(Collectors.toList());
+
+        for (BoardDto boardDto : boardDtos) {
+            TransactionAddress address = boardDto.getAddress();
+            PointInformationDto endDto = PointInformationDto.builder()
+                    .name(address.getName())
+                    .latitude(address.getLatitude())
+                    .longitude(address.getLongitude())
+                    .build();
+            try {;
+                PathDto pathDto = pathService.createPath(startDto, endDto, curTime.format(inputFormatter), memberId);
+                boardDto.setExpectedRain(pathDto.getTotalRain());
+            } catch (Exception e) {
+              log.info("Forecast 정보를 가져오는 데 실패했습니다: " + e.getMessage());
+            }
+        }
+        return boardDtos;
+    }
+
+    /**
      * 게시글 상세 조회
      */
     public BoardDto findOne(Long boardId) {
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(NoSuchElementException::new);
-        return BoardDto.fromEntity(board);
+
+        LocalTime curTime = LocalTime.now(ZoneId.of("Asia/Seoul"));
+        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("HHmm");
+
+        BoardDto boardDto = BoardDto.fromEntity(board);
+
+        LatXLngY latXLngY = LatXLngY.convertGRID_GPS(LatXLngY.TO_GRID, board.getAddress().getLatitude(), boardDto.getAddress().getLongitude());
+
+        ForecastDto forecastDto = ForecastDto.builder()
+                .time(curTime.format(inputFormatter))
+                .x(String.format("%.0f", latXLngY.x))
+                .y(String.format("%.0f", latXLngY.y))
+                .build();
+
+        try {
+            ForecastDto forecastByTimeAndXAndY = forecastService.findForecastByTimeAndXAndY(forecastDto);
+            boardDto.setForecastDto(forecastByTimeAndXAndY);
+        } catch (Exception e) {
+            log.info("Forecast 정보를 가져오는 데 실패했습니다: " + e.getMessage());
+        }
+
+        return boardDto;
     }
 
     /**

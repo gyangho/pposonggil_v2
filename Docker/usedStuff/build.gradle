@@ -30,10 +30,10 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
-//	 // h2 설정
+////	 // h2 설정
 //	 runtimeOnly 'com.h2database:h2'
 
-//	// mysql 설정
+	// mysql 설정
 	runtimeOnly 'com.mysql:mysql-connector-j'
 
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'

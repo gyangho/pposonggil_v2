@@ -10,6 +10,7 @@ import pposonggil.usedStuff.dto.Route.PointInformation.PointInformationDto;
 import pposonggil.usedStuff.repository.forecast.ForecastRepository;
 
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -25,11 +26,14 @@ public class ForecastService {
     /**
      * 시각에 따른 기상 정보 Dto 리스트 조회
      */
-    public Map<String, List<ForecastDto>> getForecastsByTime(ForecastDto forecastDto) {
+    public Map<String, List<ForecastDto>> getForecastsByTime() {
+        LocalTime curTime = LocalTime.now(ZoneId.of("Asia/Seoul"));
         DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("HHmm");
-        LocalTime time = LocalTime.parse(forecastDto.getTime(), inputFormatter);
         DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("HH00");
         Map<String, List<ForecastDto>> results = new LinkedHashMap<>();
+
+        String formattedCurrentTime = curTime.format(inputFormatter);
+        LocalTime time = LocalTime.parse(formattedCurrentTime, inputFormatter);
 
         for(int i = 0; i < 6; i++){
             String formattedTime = time.plusHours(i).format(outputFormatter);

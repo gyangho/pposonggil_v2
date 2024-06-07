@@ -5,34 +5,52 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fbc73a0f-9444-47e6-9457-7db026927fd3" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/pposonggil-react/src/posting.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/ChooseRoute.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/MemberPosting.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/MemberPostingDetailed.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/Test.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/market/EditPost.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.cell_metrics" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.cells" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.cnbg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.cnbg_to_ebg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.datasource_names" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.ebg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.ebg_nodes" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.edges" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.enw" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.fileIndex" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.geometry" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.icd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.maneuver_overrides" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.mldgr" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.names" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.nbg_nodes" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.partition" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.ramIndex" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.restrictions" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.timestamp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.tld" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.tls" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.turn_duration_penalties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.turn_penalties_index" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.turn_weight_penalties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/Keys/key.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.cell_metrics" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.cell_metrics" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.cells" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.cells" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.edges" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.edges" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.icd" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.icd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.mldgr" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.mldgr" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.partition" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/osrm/data/seoul.osrm.partition" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/api/Board/BoardApiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/api/Board/BoardApiController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/api/ChatRoom/ChatRoomApiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/api/ChatRoom/ChatRoomApiController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/api/Forecast/ForecastApiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/api/Forecast/ForecastApiController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/api/Route/PathApiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/api/Route/PathApiController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/config/WebConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/config/WebConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/dto/Board/BoardDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/dto/Board/BoardDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/dto/Route/SubPath/SubPathDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/dto/Route/SubPath/SubPathDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/repository/chatroom/ChatRoomRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/repository/chatroom/ChatRoomRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/service/Board/BoardService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/service/Board/BoardService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/service/ChatRoom/ChatRoomService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/service/ChatRoom/ChatRoomService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/service/Forecast/ForecastService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/service/Forecast/ForecastService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/service/Route/PathService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/service/Route/PathService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/service/Route/SubPathService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/service/Route/SubPathService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pposonggil-react/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pposonggil-react/db.json" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/db.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/components/Map.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/components/Map.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/components/Map2.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/components/Map2.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/components/SearchBox.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/components/SearchBox.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/components/Weather.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/components/Weather.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/routes/Home.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/Home.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/routes/MyPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/MyPage.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/routes/RouteDetail.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/RouteDetail.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/routes/SearchRoutes.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/SearchRoutes.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/routes/market/Board.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/market/Board.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/routes/market/Chat.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/market/Chat.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/routes/market/Post.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/market/Post.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/routes/market/Posting.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/market/Posting.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -82,9 +100,9 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
-        <option value="HTML File" />
         <option value="JavaScript File" />
         <option value="package.json" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -118,7 +136,7 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;Spring Boot.UsedStuffApplication.executor&quot;: &quot;Run&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;temp2&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Merging temp2&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/dydtk/Downloads/demo/build.gradle&quot;,
@@ -138,7 +156,7 @@
       <recent name="C:\Users\dydtk\OneDrive\2024\pposonggil_v2\Docker\usedStuff" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.usedStuff [build]">
+  <component name="RunManager" selected="Spring Boot.UsedStuffApplication">
     <configuration name="usedStuff [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -221,7 +239,9 @@
       <workItem from="1717647903573" duration="16836000" />
       <workItem from="1717689305915" duration="10363000" />
       <workItem from="1717704942464" duration="1388000" />
-      <workItem from="1717740008451" duration="14267000" />
+      <workItem from="1717740008451" duration="16159000" />
+      <workItem from="1717758024503" duration="1954000" />
+      <workItem from="1717775048646" duration="22000" />
     </task>
     <servers />
   </component>
