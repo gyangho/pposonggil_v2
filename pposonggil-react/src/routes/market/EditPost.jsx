@@ -200,16 +200,39 @@ function EditPost() {
         }
     };
 
-    const updatePost = async (post) => {
-        try {
-            // boardId를 사용하여 PUT 요청 보내기
-            const response = await axios.put(`${apiUrl}/${editingPost.boardId}`, post);
-            console.log('Post updated successfully:', response.data);
-            navigate('/member-posting');
-        } catch (error) {
-            console.error("Error updating post", error);
-        }
-    };
+    // const updatePost = async (post) => {
+    //     try {
+    //         // boardId를 사용하여 PUT 요청 보내기
+    //         const response = await axios.put(`${apiUrl}/${editingPost.boardId}`, post);
+    //         console.log('Post updated successfully:', response.data);
+    //         navigate('/member-posting');
+    //     } catch (error) {
+    //         console.error("Error updating post", error);
+    //     }
+    // };
+
+    // const handleSubmit = (e) => {
+    //     e.preventDefault();
+    //     const currentDate = new Date().toISOString().split('T')[0]; // 현재 날짜 (YYYY-MM-DD 형식)
+
+    //     const post = {
+    //         ...editingPost, // 기존의 게시글 정보를 그대로 포함
+    //         title,
+    //         content,
+    //         startTimeString: `${currentDate}-${startTime}`,
+    //         endTimeString: `${currentDate}-${endTime}`,
+    //         address: {
+    //             name: locationInput,
+    //             latitude: editingPost.address?.latitude,
+    //             longitude: editingPost.address?.longitude,
+    //             street: editingPost.address?.street
+    //         },
+    //         price,
+    //         img: image
+    //     };
+
+    //     updatePost(post);
+    // };
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -228,11 +251,29 @@ function EditPost() {
                 street: editingPost.address?.street
             },
             price,
-            img: image
+            img: image // image는 file input의 파일 객체여야 합니다.
         };
 
-        updatePost(post);
+        const formData = new FormData();
+        formData.append('boardDto', new Blob([JSON.stringify(post)], { type: 'application/json' }));
+        if (image instanceof File) {
+            formData.append('file', image);
+        }
+
+        axios.put(`${apiUrl}/${editingPost.boardId}`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+            .then(response => {
+                console.log('Post updated successfully', response.data);
+                navigate(`/member-posting/post/${editingPost.boardId}`);
+            })
+            .catch(error => {
+                console.error('Error updating post', error);
+            });
     };
+
 
     return (
         <form onSubmit={handleSubmit} id="writeFrm">

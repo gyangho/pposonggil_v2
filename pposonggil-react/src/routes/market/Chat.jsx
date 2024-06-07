@@ -254,8 +254,14 @@ import { faUserCircle, faBan, faFlag } from "@fortawesome/free-solid-svg-icons";
 
 function Chat() {
   const { chatRoomId } = useParams(); // URL에서 chatRoomId를 가져옴
+  //const location = useLocation();
+  // const { userId } = location.state || {};
+  // console.log("받은 user state: ", userId);
   const setNav = useSetRecoilState(navState);
   setNav("market");
+
+  //const setNav = useSetRecoilState(navState);
+
 
   const navigate = useNavigate();
   const [messages, setMessages] = useState([]); // 메시지 상태
@@ -263,6 +269,7 @@ function Chat() {
   const [blocked, setBlocked] = useState(false); // 차단 여부 상태
 
   const myId = 1; // 본인의 ID, 실제 사용자 ID로 대체 필요
+
 
   const fetchMessages = async () => {
     try {
@@ -287,8 +294,9 @@ function Chat() {
     if (input.trim() && !blocked) {
       const newMessage = {
         chatRoomId: parseInt(chatRoomId, 10),
-        senderId: myId,
-        senderNickName: "nickName1", // 실제 사용자 닉네임으로 대체 필요
+        senderId: 1,
+        //   senderNickName: userId, // 실제 사용자 닉네임으로 대체 필요
+        senderNickName: "nickName",
         content: input,
       };
 
