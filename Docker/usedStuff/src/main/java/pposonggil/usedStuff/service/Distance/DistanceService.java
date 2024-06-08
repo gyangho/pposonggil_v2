@@ -25,7 +25,6 @@ public class DistanceService {
     private final TradeRepository tradeRepository;
     private final MemberRepository memberRepository;
     // 지구의 반지름 (미터 단위)
-//    private static final double EARTH_RADIUS = 6371e3;
     private static final double EARTH_RADIUS = 6371e3;
 
     /**

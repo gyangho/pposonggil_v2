@@ -9,7 +9,6 @@ import pposonggil.usedStuff.dto.Route.PointInformation.PointInformationDto;
 import pposonggil.usedStuff.service.Distance.DistanceService;
 import pposonggil.usedStuff.service.Trade.TradeService;
 
-import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -30,6 +29,7 @@ public class DistanceApiController {
 
     /**
      * 거리 아이디로 거리 조회
+     *
      * @param distanceId
      * @return 거리 아이디가 일치하는 거리 Dto
      */
@@ -40,6 +40,7 @@ public class DistanceApiController {
 
     /**
      * 거래 아이디로 거리 조회
+     *
      * @param tradeId : 거래 아이디
      * @return 거래 아이디가 일치하는 거리 Dto
      */
@@ -50,6 +51,7 @@ public class DistanceApiController {
 
     /**
      * 거리 생성
+     *
      * @param distanceDto : 거리 Dto
      * @return : 생성한 거리 아이디
      */
@@ -61,52 +63,39 @@ public class DistanceApiController {
 
     /**
      * 주체자 아이디로 주체자의 거리 업데이트
-     * @param memberId : 주체자 아이디
-     * @param startDto : 주체자의 출발지 Dto
-     * @param distanceDto : 업데이트할 거리 Dto
-     * @return : 성공 --> "주체자 거리를 업데이트 하였습니다."
+     *
+     * @param distanceId : 업데이트할 거리 아이디
+     * @param memberId   : 주체자 아이디
+     * @param startDto   : 주체자의 출발지 Dto
+     * @return : 성공 --> 업데이트된 거리 Dto
      */
-    @PutMapping("/api/distance/by-subject/{memberId}")
-    public ResponseEntity<Object> updateSubjectDistance(@PathVariable Long memberId,
-                                                         @RequestPart PointInformationDto startDto,
-                                                         @RequestPart DistanceDto distanceDto){
-        DistanceDto oldDistanceDto = distanceService.findOne(distanceDto.getDistanceId());
-        if (oldDistanceDto == null) {
-            return ResponseEntity.notFound().build();
-        }
-        distanceService.calSubjectDistance(startDto, distanceDto, memberId);
-
-        HashMap<Object, Object> response = new HashMap<>();
-        response.put("distanceId", distanceDto.getDistanceId());
-        response.put("message", "주체자 거리를 업데이트 하였습니다.");
-        return ResponseEntity.ok(response);
+    @PutMapping("/api/distance/{distanceId}/by-subject/{memberId}")
+    public DistanceDto updateSubjectDistance(@PathVariable Long distanceId,
+                                             @PathVariable Long memberId,
+                                             @RequestPart PointInformationDto startDto) {
+        DistanceDto distanceDto = distanceService.findOne(distanceId);
+        return distanceService.calSubjectDistance(startDto, distanceDto, memberId);
     }
 
     /**
      * 객체자 아이디로 객체자의 거리 업데이트
-     * @param memberId : 객체자 아이디
-     * @param startDto : 객체자의 출발지 Dto
-     * @param distanceDto : 업데이트할 거리 Dto
-     * @return : 성공 --> "객체자 거리를 업데이트 하였습니다."
+     *
+     * @param distanceId : 업데이트할 거리 아이디
+     * @param memberId   : 객체자 아이디
+     * @param startDto   : 객체자의 출발지 Dto
+     * @return : 성공 --> 업데이트된 거리 Dto
      */
-    @PutMapping("/api/distance/by-object/{memberId}")
-    public ResponseEntity<Object> updateObjectDistance(@PathVariable Long memberId,
-                                                         @RequestPart PointInformationDto startDto,
-                                                         @RequestPart DistanceDto distanceDto){
-        DistanceDto oldDistanceDto = distanceService.findOne(distanceDto.getDistanceId());
-        if (oldDistanceDto == null) {
-            return ResponseEntity.notFound().build();
-        }
-        distanceService.calObjectDistance(startDto, distanceDto, memberId);
-
-        HashMap<Object, Object> response = new HashMap<>();
-        response.put("distanceId", distanceDto.getDistanceId());
-        response.put("message", "객체자 거리를 업데이트 하였습니다.");
-        return ResponseEntity.ok(response);
+    @PutMapping("/api/distance/{distanceId}/by-object/{memberId}")
+    public DistanceDto updateObjectDistance(@PathVariable Long distanceId,
+                                            @PathVariable Long memberId,
+                                            @RequestPart PointInformationDto startDto) {
+        DistanceDto distanceDto = distanceService.findOne(distanceId);
+        return distanceService.calObjectDistance(startDto, distanceDto, memberId);
     }
 
     /**
      * 거리 아이디로 거리 삭제
+     *
      * @param distanceId: 거리 아이디
      * @return 성공 --> "거리를 삭제하였습니다."
      */
