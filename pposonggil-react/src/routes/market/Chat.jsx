@@ -248,7 +248,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import { navState } from "../../recoil/atoms";
 import styled from "styled-components";
-import axios from "axios";
+import api from "../../api/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCircle, faBan, faFlag } from "@fortawesome/free-solid-svg-icons";
 
@@ -273,7 +273,7 @@ function Chat() {
 
   const fetchMessages = async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/api/messages/by-chatroom/${chatRoomId}`);
+      const response = await api.get(`http://localhost:8080/api/messages/by-chatroom/${chatRoomId}`);
       const formattedMessages = response.data.map(msg => ({
         ...msg,
         timestamp: new Date(msg.createdAt).toLocaleTimeString(),
@@ -301,7 +301,7 @@ function Chat() {
       };
 
       try {
-        await axios.post('http://localhost:8080/api/message', newMessage);
+        await api.post('http://localhost:8080/api/message', newMessage);
         setMessages(prevMessages => [
           ...prevMessages,
           { ...newMessage, timestamp: new Date().toLocaleTimeString() }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -9,6 +9,7 @@ import SearchPlace from './routes/SearchPlace';
 import Search from './routes/Search';
 import Home from './routes/Home';
 import Login from './routes/Login';
+import Welcome from './routes/Welcome';
 import Header from './layouts/Header';
 import Navigation from './layouts/Navigation';
 
@@ -29,6 +30,7 @@ import TransactionSchedule from './routes/market/TransactionSchedule';
 import MemberPosting from './routes/MemberPosting';
 import MemberPostingDetailed from './routes/MemberPostingDetailed';
 import EditPost from './routes/market/EditPost';
+
 
 
 const Wrapper = styled.div`
@@ -68,6 +70,8 @@ function App() {
           <Route path="/search" element={<Search />} />
 
           <Route path="/home" element={<Home />} />
+
+          <Route path="/auth/success" element={<Welcome />} />
 
           <Route path="/login" element={<LogIn />} />
           <Route path="/oauth/kakao/callback" element={<KakaoRedirect />} />

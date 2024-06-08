@@ -10,8 +10,10 @@
 Docker/usedStuff/src/main/resources/application-secret.yml
 static/
 templates/
-!/Docker/osrm/data/seoul.osm
+*.osrm
+*.osrm.*
 *.txt
+*.ps1
 build/
 .gradle/
 sessions/

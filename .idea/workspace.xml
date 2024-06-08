@@ -5,8 +5,32 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fbc73a0f-9444-47e6-9457-7db026927fd3" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/service/Route/PathService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/service/Route/PathService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/nginx/conf.d/api_gateway.conf" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/nginx/conf.d/api_gateway.conf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/api/Trade/TradeInformationApiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/api/Trade/TradeInformationApiController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/component/TokenProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/component/TokenProvider.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/config/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/config/WebConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/handler/OAuth2SuccessHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/handler/OAuth2SuccessHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pposonggil-react/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/public/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/components/Map.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/components/Map.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/routes/ChooseRoute.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/ChooseRoute.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/routes/Login.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/Login.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/routes/MemberPosting.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/MemberPosting.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/routes/MemberPostingDetailed.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/MemberPostingDetailed.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/routes/MyPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/MyPage.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/routes/RouteDetail.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/RouteDetail.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/routes/SearchRoutes.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/SearchRoutes.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/routes/market/Board.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/market/Board.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/routes/market/Chat.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/market/Chat.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/routes/market/EditPost.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/market/EditPost.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/routes/market/Post.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/market/Post.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/routes/market/Posting.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/market/Posting.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,10 +79,10 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="JavaScript File" />
         <option value="package.json" />
         <option value="HTML File" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -80,30 +104,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "DefaultHtmlFileTemplate": "HTML File",
-    "Gradle.Build usedStuff.executor": "Run",
-    "Gradle.usedStuff [build].executor": "Run",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "Spring Boot.UsedStuffApplication.executor": "Run",
-    "git-widget-placeholder": "temp2",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/dydtk/Downloads/demo/build.gradle",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;Gradle.Build usedStuff.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.usedStuff [build].executor&quot;: &quot;Run&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;Spring Boot.UsedStuffApplication.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;temp2&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/dydtk/Downloads/demo/build.gradle&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;spring&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="pposonggil.usedStuff.component" />
@@ -112,7 +137,7 @@
       <recent name="C:\Users\dydtk\OneDrive\2024\pposonggil_v2\Docker\usedStuff" />
     </key>
   </component>
-  <component name="RunManager" selected="Spring Boot.UsedStuffApplication">
+  <component name="RunManager" selected="Gradle.usedStuff [build]">
     <configuration name="usedStuff [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -197,11 +222,17 @@
       <workItem from="1717704942464" duration="1388000" />
       <workItem from="1717740008451" duration="16159000" />
       <workItem from="1717758024503" duration="1954000" />
-      <workItem from="1717775048646" duration="315000" />
+      <workItem from="1717775048646" duration="8978000" />
+      <workItem from="1717823440827" duration="1397000" />
+      <workItem from="1717824851369" duration="11224000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

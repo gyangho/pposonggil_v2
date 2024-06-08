@@ -1,6 +1,8 @@
 package pposonggil.usedStuff.api.Trade;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 import pposonggil.usedStuff.dto.Trade.TradeInformationDto;
 import pposonggil.usedStuff.service.Trade.TradeInformationService;
@@ -29,8 +31,9 @@ public class TradeInformationApiController {
      * @param memberId : 회원 아이디
      * @return 해당 회원이 참가중인 모든 정보거래 Dto 리스트
      */
-    @GetMapping("/api/trades/with-information/by-member/{memberId}")
-    public List<TradeInformationDto> getInformationTradesByMemberId(@PathVariable Long memberId) {
+    @GetMapping("/api/trades/with-information/by-member/")
+    public List<TradeInformationDto> getInformationTradesByMemberId() {
+        Long memberId = Long.valueOf(((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername());
         return tradeInformationService.findTradesWithInformationByMemberId(memberId);
     }
 

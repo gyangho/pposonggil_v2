@@ -7,11 +7,11 @@ import { navState } from "../recoil/atoms";
 
 // .env 파일 만들어서 따로 빼야함
 const REST_API = "b2cb574b3ea6b4bcd7e9738fd6dc75c2";
-const REDIRECT_URI =  "http://localhost:3000/oauth/kakao/callback";
+const REDIRECT_URI = "http://localhost:3000/oauth/kakao/callback";
 
 export const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API}&redirect_uri=${REDIRECT_URI}&response_type=code`;
 
-export const GOOGLE_AUTH_URL = `/oauth2/authorization/google`;
+export const GOOGLE_AUTH_URL = `http://localhost:8080/oauth2/authorization/google`;
 
 const LoginContainer = styled.div`
   display: flex;
@@ -92,27 +92,27 @@ function LogIn() {
   const resetNav = useResetRecoilState(navState);
   resetNav();
   const handleLogin = () => {
-    window.location.href = KAKAO_AUTH_URL;
+    window.location.href = GOOGLE_AUTH_URL;
     // window.location.href = "/oauth2/authorization/google"; //구글
   };
 
   return (
-    <LoginContainer>  
+    <LoginContainer>
       <LoginBox>
         <Logo><FontAwesomeIcon icon={faCloud} /></Logo>
         <Title>뽀송길</Title>
-        <SubTitle>뽀송길과 함께 시작하는<br/> 쾌적한 경로 탐색</SubTitle>
+        <SubTitle>뽀송길과 함께 시작하는<br /> 쾌적한 경로 탐색</SubTitle>
 
         <KakaoBtn>
           <img
-          style={{cursor: "pointer", width: "70%" }} 
-          src={ kakaoImage } 
-          onClick={ handleLogin }
+            style={{ cursor: "pointer", width: "70%" }}
+            src={kakaoImage}
+            onClick={handleLogin}
           >
           </img>
         </KakaoBtn>
         <Footer>
-          <div style={{marginBottom: "5px"}}>안경과 수건</div>
+          <div style={{ marginBottom: "5px" }}>안경과 수건</div>
           <div>2024 캡스톤 디자인 프로젝트 2</div>
 
         </Footer>
