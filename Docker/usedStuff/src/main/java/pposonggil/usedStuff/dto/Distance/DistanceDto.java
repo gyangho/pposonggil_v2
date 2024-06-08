@@ -11,7 +11,7 @@ import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
 
 @Data
-@Builder
+    @Builder
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PRIVATE)
 public class DistanceDto {
@@ -21,10 +21,12 @@ public class DistanceDto {
     private Long objectId;
     private String subjectName;
     private String objectName;
+    private Long subjectTotalDistance;
     private Long subjectDistance;
+    private Long objectTotalDistance;
     private Long objectDistance;
-    private Double subjectRemainRate;
-    private Double objectRemainRate;
+    private Long subjectRemainRate;
+    private Long objectRemainRate;
     private TransactionAddressDto transactionAddressDto;
 
     public static DistanceDto fromEntity(Distance distance) {
@@ -35,6 +37,12 @@ public class DistanceDto {
                 .objectId(distance.getDistanceTrade().getTradeObject().getId())
                 .subjectName(distance.getDistanceTrade().getTradeSubject().getName())
                 .objectName(distance.getDistanceTrade().getTradeObject().getName())
+                .subjectTotalDistance(distance.getSubjectTotalDistance())
+                .objectTotalDistance(distance.getObjectTotalDistance())
+                .subjectDistance(distance.getSubjectDistance())
+                .objectDistance(distance.getObjectDistance())
+                .subjectRemainRate(distance.getSubjectRemainRate())
+                .objectRemainRate(distance.getObjectRemainRate())
                 .transactionAddressDto(TransactionAddressDto.fromEntity(distance.getAddress()))
                 .build();
     }

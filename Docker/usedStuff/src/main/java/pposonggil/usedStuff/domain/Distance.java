@@ -15,7 +15,7 @@ import static lombok.AccessLevel.PROTECTED;
 @DynamicInsert
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PRIVATE)
-public class Distance{
+public class Distance {
     @Id
     @GeneratedValue
     @Column(name = "distance_id")
@@ -26,10 +26,12 @@ public class Distance{
     @JoinColumn(name = "trade_id")
     private Trade distanceTrade;
 
+    private Long subjectTotalDistance;
+    private Long objectTotalDistance;
     private Long subjectDistance;
     private Long objectDistance;
-    private Double subjectRemainRate;
-    private Double objectRemainRate;
+    private Long subjectRemainRate;
+    private Long objectRemainRate;
 
     @Embedded
     private TransactionAddress address;
@@ -38,8 +40,25 @@ public class Distance{
         this.distanceTrade = trade;
     }
 
+    public void changeSubjectTotalDistance(Long subjectTotalDistance) {
+        this.subjectTotalDistance = subjectTotalDistance;
+    }
+
+    public void changeObjectTotalDistance(Long objectTotalDistance) {
+        this.objectTotalDistance = objectTotalDistance;
+    }
+
+    public void changeSubject(Long subjectDistance, Long subjectRemainRate){
+        this.subjectDistance = subjectDistance;
+        this.subjectRemainRate = subjectRemainRate;
+    }
+
+    public void changeObject(Long objectDistance, Long objectRemainRate){
+        this.objectDistance = objectDistance;
+        this.objectRemainRate = objectRemainRate;
+    }
     public static DistanceBuilder builder(Trade distanceTrade) {
-        if(distanceTrade == null){
+        if (distanceTrade == null) {
             throw new IllegalArgumentException("필수 파라미터 누락");
         }
         return new DistanceBuilder()
@@ -49,6 +68,10 @@ public class Distance{
     public static Distance buildDistance(Trade distanceTrade) {
         return Distance.builder(distanceTrade)
                 .address(distanceTrade.getAddress())
+                .subjectTotalDistance(-1L)
+                .objectTotalDistance(-1L)
+                .subjectRemainRate(0L)
+                .objectRemainRate(0L)
                 .build();
     }
 }
