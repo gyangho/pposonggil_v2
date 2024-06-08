@@ -155,8 +155,14 @@ services:
     container_name: osrm-extract
     command: osrm-extract -p /opt/foot_pposong.lua /data/seoul.osm
     volumes:
-      - "${PWD}/Docker/osrm/data:/data"
-      - "${PWD}/Docker/osrm/profiles/foot_pposong.lua:/opt/foot_pposong.lua"
+#      - "${PWD}/Docker/osrm/data:/data"
+      - type: bind
+        source: ./Docker/osrm/data
+        target: /data
+#      - "${PWD}/Docker/osrm/profiles/foot_pposong.lua:/opt/foot_pposong.lua"
+      - type: bind
+        source: ./Docker/osrm/profiles/foot_pposong.lua
+        target: /opt/foot_pposong.lua
     networks:
       - osrm-network
 
@@ -165,7 +171,10 @@ services:
     container_name: osrm-partition
     command: osrm-partition /data/seoul.osrm
     volumes:
-      - "${PWD}/Docker/osrm/data:/data"
+      #- "${PWD}/Docker/osrm/data:/data"
+      - type: bind
+        source: ./Docker/osrm/data
+        target: /data
     depends_on:
       - osrm-extract
     networks:
@@ -176,7 +185,10 @@ services:
     container_name: osrm-customize
     command: osrm-customize /data/seoul.osrm
     volumes:
-      - "${PWD}/Docker/osrm/data:/data"
+      #- "${PWD}/Docker/osrm/data:/data"
+      - type: bind
+        source: ./Docker/osrm/data
+        target: /data
     depends_on:
       - osrm-partition
     networks:
@@ -189,7 +201,10 @@ services:
     ports:
       - "5000:5000"
     volumes:
-      - "${PWD}/Docker/osrm/data:/data"
+      #- "${PWD}/Docker/osrm/data:/data"
+      - type: bind
+        source: ./Docker/osrm/data
+        target: /data
     depends_on:
       - osrm-customize
     networks:
