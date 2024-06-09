@@ -7,7 +7,7 @@ import { faBookmark } from "@fortawesome/free-regular-svg-icons";
 
 import { useNavigate } from "react-router-dom";
 import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil";
-import axios from "axios";
+import api from "../api/api";
 import { bookmarkRouteState, navState, routeInfoState } from "../recoil/atoms";
 
 function SearchRoutes() {

@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef, useCallback } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { useRecoilState } from 'recoil';
 import { addressState, currentAddressState, markerState } from '../recoil/atoms';
-import axios from "axios";
+import api from "../api/api";
 
 import styled from "styled-components";
 import { motion, sync } from "framer-motion";

@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef, useCallback } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useRecoilState } from 'recoil';
 import { addressState, currentAddressState, markerState, routeInfoState } from '../recoil/atoms';
-import axios from "axios";
+import api from "../api/api";
 
 import styled from "styled-components";
 import { motion, sync } from "framer-motion";
@@ -40,7 +40,7 @@ function TransactionStatus() {
   const lonLine = [126.7851093, 126.8432583, 126.9010823, 126.9599082, 127.0180783, 127.0766389, 127.1340031, 127.1921521];
   const gridBounds = [];
 
-   // 그리드 경계 좌표 생성
+  // 그리드 경계 좌표 생성
   for (let latIdx = 1; latIdx < latLine.length; latIdx++) {
     for (let lonIdx = 0; lonIdx < lonLine.length - 1; lonIdx++) {
       if (latIdx === 1 && lonIdx !== 4 && lonIdx !== 5) continue;
@@ -74,9 +74,9 @@ function TransactionStatus() {
   const getGridWeatherFromServer = async () => { //격자 구간별 날씨 정보 get
     const url = 'http://localhost:8080/api/forecasts';
     try {
-      const response = await axios.get(url);
+      const response = await api.get(url);
       setGridWeather(response.data);
-    } catch(error) {
+    } catch (error) {
       console.error("격자 날씨 정보 get 에러", error);
     }
   };
@@ -105,7 +105,7 @@ function TransactionStatus() {
       handleTimeBtn(0);
     }
   }, [gridObjects, isGridActive]);
-  
+
   const handleGridBtn = useCallback(() => { //그리드 버튼 클릭 핸들러
     if (isGridActive) {
       gridObjects.forEach(rectangle => rectangle.setMap(null));
@@ -115,21 +115,21 @@ function TransactionStatus() {
     }
     setIsGridActive(!isGridActive);
   }, [isGridActive, gridObjects, showGrid]);
-  
+
   const handleTimeBtn = (index) => { //클릭한 격자의 강수량 정보로 fillcolor 변경
     // index에 해당하는 키 가져옴(키값: 시간대)
     const Key = Object.keys(gridWeather)[index];
     // 키에 해당하는 배열. (총 30개 구간)
-    const Array = gridWeather[Key]; 
+    const Array = gridWeather[Key];
     // 각 격자에 대해 강수량 반영 격자 색상 변경
     gridObjects.forEach((rectangle, _index) => {
       const item = Array[_index];
       const gridData = item.rn1;
       let fillColor = '#ffffff';
-  
+
       if (gridData) {
         const rain = parseFloat(gridData);
-        if (rain >= 0 && rain <=  10) {
+        if (rain >= 0 && rain <= 10) {
           fillColor = 'rgba(255, 255, 255, 0.64)';
         } else if (rain > 10 && rain <= 15) {
           fillColor = 'rgba(77, 216, 255, 0.5)';
@@ -138,7 +138,7 @@ function TransactionStatus() {
           // fillColor = 'rgba(0, 106, 255, 0.5)';
         } else if (rain > 25 && rain <= 30) {
           fillColor = 'rgba(0, 98, 255, 0.5)';
-        } else if (rain > 30 && rain <= 35){
+        } else if (rain > 30 && rain <= 35) {
           fillColor = 'rgba(0, 59, 197, 0.5)';
         } else if (rain > 35 && rain <= 40) {
         } else {
@@ -151,10 +151,10 @@ function TransactionStatus() {
       });
     });
   };
-  
+
   const handleLocationBtn = useCallback(() => {//위치 추적 버튼 핸들러
     setIsLocationLoading(true);
-    if (!activeTracking) { 
+    if (!activeTracking) {
       if (navigator.geolocation) {
         // 현재 위치 추적 및 지도 확대/이동
         navigator.geolocation.getCurrentPosition((position) => {
@@ -180,7 +180,7 @@ function TransactionStatus() {
               });
             }
           });
-          
+
           //마커 업데이트
           if (!markerInstance.current) {
             markerInstance.current = new kakao.maps.Marker({
@@ -226,9 +226,9 @@ function TransactionStatus() {
       // 현재 위치 추적 및 지도 확대/이동
       navigator.geolocation.getCurrentPosition((position) => {
         const lat = position.coords.latitude; //float타입으로 반환해줌
-        const lon = position.coords.longitude; 
+        const lon = position.coords.longitude;
         const curPosition = new kakao.maps.LatLng(lat, lon);
-        
+
         // 좌표를 주소로 변환 + 현재 위치 주소 정보로 currentAddress atom값 업데이트
         geocoder.current.coord2Address(lon, lat, (result, status) => {
           if (status === kakao.maps.services.Status.OK) {
@@ -244,13 +244,13 @@ function TransactionStatus() {
         });
       });
     }
-    console.log("현재 위치를 업데이트 했습니다");    
+    console.log("현재 위치를 업데이트 했습니다");
   };
 
   const onSearchBtnClick = () => {
     console.log("현재 위치: ", currentAddress);
     //현재 위치 (recoilState이용) 출발지, 거래장소 도착지로 routeInfoState atom값 설정한 후 serach/routes 페이지로 이동
-    if(currentAddress.addr) {
+    if (currentAddress.addr) {
       const searchOrigin = {
         name: currentAddress.addr,
         lat: currentAddress.lat,
@@ -267,29 +267,29 @@ function TransactionStatus() {
     }
   };
 
-  useEffect(()=> {
+  useEffect(() => {
     console.log("거래장소로 routeInfoState 업데이트: ", routeInfo);
   }, [routeInfo]);
-  
+
   return (
     <React.Fragment>
-      <MapContainer id="map" ref={mapRef} style={{position:"relative"}}>
+      <MapContainer id="map" ref={mapRef} style={{ position: "relative" }}>
         <TimeBtnBar>
-        {isGridActive && (
-          <TimeBtns
-            initial={{ x: -50, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: -50, opacity: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <TimeBtn onClick={()=>handleTimeBtn(0)}>현재</TimeBtn>
-            <TimeBtn onClick={()=>handleTimeBtn(1)}>+ 1시간</TimeBtn>
-            <TimeBtn onClick={()=>handleTimeBtn(2)}>+ 2시간</TimeBtn>
-            <TimeBtn onClick={()=>handleTimeBtn(3)}>+ 3시간</TimeBtn>
-            <TimeBtn onClick={()=>handleTimeBtn(4)}>+ 4시간</TimeBtn>
-            <TimeBtn onClick={()=>handleTimeBtn(5)}>+ 5시간</TimeBtn>
-          </TimeBtns>
-         )}
+          {isGridActive && (
+            <TimeBtns
+              initial={{ x: -50, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: -50, opacity: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <TimeBtn onClick={() => handleTimeBtn(0)}>현재</TimeBtn>
+              <TimeBtn onClick={() => handleTimeBtn(1)}>+ 1시간</TimeBtn>
+              <TimeBtn onClick={() => handleTimeBtn(2)}>+ 2시간</TimeBtn>
+              <TimeBtn onClick={() => handleTimeBtn(3)}>+ 3시간</TimeBtn>
+              <TimeBtn onClick={() => handleTimeBtn(4)}>+ 4시간</TimeBtn>
+              <TimeBtn onClick={() => handleTimeBtn(5)}>+ 5시간</TimeBtn>
+            </TimeBtns>
+          )}
         </TimeBtnBar>
         <MapBtn
           isGridActive={isGridActive}
@@ -301,14 +301,14 @@ function TransactionStatus() {
         />
       </MapContainer>
       <TimeBar
-          initial={{ height: "0%" }}
-          animate={{ height: isExpanded ? "20%" : "0%" }}
-          transition={{ duration: 0.4 }}
-          >
-              <RouteBtn onClick={() => onSearchBtnClick()}>
-                <FontAwesomeIcon icon={faRoute} style={{color: "#63CAFF", paddingRight: "5px"}}/>
-                <p>길찾기</p>
-              </RouteBtn>
+        initial={{ height: "0%" }}
+        animate={{ height: isExpanded ? "20%" : "0%" }}
+        transition={{ duration: 0.4 }}
+      >
+        <RouteBtn onClick={() => onSearchBtnClick()}>
+          <FontAwesomeIcon icon={faRoute} style={{ color: "#63CAFF", paddingRight: "5px" }} />
+          <p>길찾기</p>
+        </RouteBtn>
       </TimeBar>
       <BottomContainer
         initial={{ height: "40%" }}
@@ -334,35 +334,35 @@ function TransactionStatus() {
             </TransactionTime>
           </Block>
           <Block>
-            <FontAwesomeIcon icon={faFlag} style={{fontSize: "18px", paddingRight: "5px", paddingBottom: "5px"}}/>
+            <FontAwesomeIcon icon={faFlag} style={{ fontSize: "18px", paddingRight: "5px", paddingBottom: "5px" }} />
             <span>숭실대학교 정문</span>
           </Block>
           <Block>
-            <p style={{fontSize: "16px", fontWeight: "500", color: "#656565"}}>동작구 상도동</p>
+            <p style={{ fontSize: "16px", fontWeight: "500", color: "#656565" }}>동작구 상도동</p>
           </Block>
           {/* 거래 진행 상황 상태 바 */}
           <StatusBar id="StatusBar">
-            <BarContainer style={{justifyContent: "space-between"}}>
-              <Bar style={{width: "50%", backgroundColor: "#E6E6E6", justifyContent:"start"}}>
+            <BarContainer style={{ justifyContent: "space-between" }}>
+              <Bar style={{ width: "50%", backgroundColor: "#E6E6E6", justifyContent: "start" }}>
                 {/* 나의 위치 상태 바 */}
-                <Bar style={{width: "80%", backgroundColor: "#63CAFF", justifyContent:"end"}}>
+                <Bar style={{ width: "80%", backgroundColor: "#63CAFF", justifyContent: "end" }}>
                   <p>200m</p>
                   <IconBox>
-                    <FontAwesomeIcon icon={faPersonWalking} style={{color: "white"}} />
+                    <FontAwesomeIcon icon={faPersonWalking} style={{ color: "white" }} />
                   </IconBox>
                 </Bar>
-              </Bar>  
-              <DestIconBox><FontAwesomeIcon icon={faFlag}/></DestIconBox>
-              
-              <Bar style={{width: "50%", backgroundColor: "#E6E6E6", justifyContent: "end"}}>
-                <Bar style={{width: "50%", backgroundColor: "#FFCE1F"}}>
+              </Bar>
+              <DestIconBox><FontAwesomeIcon icon={faFlag} /></DestIconBox>
+
+              <Bar style={{ width: "50%", backgroundColor: "#E6E6E6", justifyContent: "end" }}>
+                <Bar style={{ width: "50%", backgroundColor: "#FFCE1F" }}>
                   <IconBox>
-                    <FontAwesomeIcon icon={faPersonWalking} style={{color: "white"}} />
+                    <FontAwesomeIcon icon={faPersonWalking} style={{ color: "white" }} />
                   </IconBox>
                   <p>200m</p>
                 </Bar>
               </Bar>
-                {/* {path.subPathDtos.map((subPath, subIndex) => (
+              {/* {path.subPathDtos.map((subPath, subIndex) => (
                   subPath.time !== 0 && (
                     <React.Fragment key={subIndex}>
                       <Bar
@@ -382,13 +382,13 @@ function TransactionStatus() {
                     </React.Fragment>
                   )
                 ))} */}
-              </BarContainer>
-            </StatusBar>
-            <StatusBarText
-              style={{display: "flex", justifyContent: "space-between", paddingBottom: "20px"}}
-            >
-              <p>나</p><span>맥도날드</span><p>거래자</p>
-            </StatusBarText>
+            </BarContainer>
+          </StatusBar>
+          <StatusBarText
+            style={{ display: "flex", justifyContent: "space-between", paddingBottom: "20px" }}
+          >
+            <p>나</p><span>맥도날드</span><p>거래자</p>
+          </StatusBarText>
         </TransactionBox>
       </BottomContainer>
     </React.Fragment>
