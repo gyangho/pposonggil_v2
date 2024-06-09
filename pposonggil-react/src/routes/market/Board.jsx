@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faRotateRight, faDroplet } from "@fortawesome/free-solid-svg-icons";
 import { currentAddressState, navState } from "../../recoil/atoms";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../../api/api";
 
 //JSON 서버 API URL(json-server 이용한 프톤트 테스트 용)
 // const apiUrl = "http://localhost:3001/boards"
@@ -81,7 +81,7 @@ function Board() {
     // }
 
     try {
-      const response = await axios.post(url, formData, {
+      const response = await api.post(url, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -96,7 +96,7 @@ function Board() {
 
   const addPost = async (post) => {
     try {
-      const response = await axios.post(apiUrl, post);
+      const response = await api.post(apiUrl, post);
       setPosts([...posts, response.data]);
     } catch (error) {
       console.error("Error adding post", error);

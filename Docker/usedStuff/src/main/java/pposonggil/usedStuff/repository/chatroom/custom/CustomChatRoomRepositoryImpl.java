@@ -4,6 +4,8 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
 import pposonggil.usedStuff.domain.ChatRoom;
+import pposonggil.usedStuff.domain.QBoard;
+import pposonggil.usedStuff.domain.QChatRoom;
 
 import java.util.List;
 import java.util.Optional;
@@ -38,5 +40,21 @@ public class CustomChatRoomRepositoryImpl implements CustomChatRoomRepository {
         return chatRooms.stream()
                 .filter(chatRoom -> chatRoom.getChatBoard().getId().equals(boardId))
                 .findFirst();
+    }
+
+    @Override
+    public Optional<ChatRoom> findChatRoomWithSenderAndReceiver(Long sender, Long receiver)
+    {
+        QBoard board = QBoard.board;
+        QChatRoom chatRoom = QChatRoom.chatRoom;
+
+        ChatRoom result = query
+                .select(chatRoom)
+                .from(chatRoom)
+                .innerJoin(board).on(chatRoom.chatBoard.eq(board))
+                .where(chatRoom.requester.id.eq(sender).and(board.writer.id.eq(receiver))
+                        .or(chatRoom.requester.id.eq(receiver).and(board.writer.id.eq(sender))))
+                .fetchOne();
+        return Optional.ofNullable(result);
     }
 }

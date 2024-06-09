@@ -151,7 +151,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
 import '../../../src/posting.css'; //css파일 import
-import axios from 'axios';
+import api from "../../api/api";
 import { useNavigate, useLocation, useParams } from 'react-router-dom';
 
 const apiUrl = "http://localhost:8080/api/board";
@@ -238,7 +238,7 @@ function EditPost() {
             formData.append('file', image);
         }
 
-        axios.put(`${apiUrl}/${editingPost.boardId}`, formData, {
+        api.put(`${apiUrl}/${editingPost.boardId}`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }

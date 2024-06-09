@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faListUl, faBookmark, faUserCircle, faComments, faBan, faFlag, faPen, faUmbrella } from "@fortawesome/free-solid-svg-icons";
-import axios from "axios";
+import api from "../api/api";
 
 const Container = styled.div`
 width: 100%;

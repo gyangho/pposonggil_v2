@@ -1,13 +1,13 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { useRecoilState } from 'recoil';
-import { addressState, currentAddressState, mapCenterState, locationBtnState, markerState } from '../recoil/atoms';
-import axios from "axios";
+import { addressState, currentAddressState, markerState } from '../recoil/atoms';
+import api from "../api/api";
 
 import styled from "styled-components";
 import { motion, sync } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBus, faSubway, faDroplet, faCircleDot, faPersonWalking, faLocationDot, faWind, faCloudSunRain, faGlassWaterDroplet, faCloudRain, faSun, faCloud } from "@fortawesome/free-solid-svg-icons";
+import { faBus, faSubway, faDroplet, faCircleDot, faPersonWalking, faLocationDot, faWind, faGlassWaterDroplet, faCloudRain, faSun, faCloud } from "@fortawesome/free-solid-svg-icons";
 
 import MapBtn from "../components/MapBtn";
 
@@ -15,7 +15,6 @@ const { kakao } = window;
 
 function RouteDetail() {
   const [map, setMap] = useState(null);
-  const [isInfoVisible, setIsInfoVisible] = useState(false);
   const [infoWindow, setInfoWindow] = useState(null);
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -41,7 +40,7 @@ function RouteDetail() {
   const lonLine = [126.7851093, 126.8432583, 126.9010823, 126.9599082, 127.0180783, 127.0766389, 127.1340031, 127.1921521];
   const gridBounds = [];
 
-   // 그리드 경계 좌표 생성
+  // 그리드 경계 좌표 생성
   for (let latIdx = 1; latIdx < latLine.length; latIdx++) {
     for (let lonIdx = 0; lonIdx < lonLine.length - 1; lonIdx++) {
       if (latIdx === 1 && lonIdx !== 4 && lonIdx !== 5) continue;
@@ -53,6 +52,8 @@ function RouteDetail() {
       gridBounds.push(new kakao.maps.LatLngBounds(sw, ne));
     }
   }
+
+
   // 격자 지도 위에 그리고 기본값으로 세팅
   const showGrid = useCallback(() => {
     const newGridObjects = gridBounds.map(bounds => {
@@ -74,13 +75,19 @@ function RouteDetail() {
   const getGridWeatherFromServer = async () => { //격자 구간별 날씨 정보 get
     const url = 'http://localhost:8080/api/forecasts';
     try {
-      const response = await axios.get(url);
+      const response = await api.get(url);
       setGridWeather(response.data);
-    } catch(error) {
+    } catch (error) {
       console.error("격자 날씨 정보 get 에러", error);
     }
   };
-  
+
+  useEffect(() => { //그리드객체 showGrid로 업데이트 된 후에 적용되게 하기 위해서 useEffect 사용
+    if (isGridActive && gridObjects.length > 0) {
+      handleTimeBtn(0);
+    }
+  }, [gridObjects, isGridActive]);
+
   const handleGridBtn = useCallback(() => { //그리드 버튼 클릭 핸들러
     if (isGridActive) {
       gridObjects.forEach(rectangle => rectangle.setMap(null));
@@ -90,51 +97,57 @@ function RouteDetail() {
     }
     setIsGridActive(!isGridActive);
   }, [isGridActive, gridObjects, showGrid]);
-  
+
   const handleTimeBtn = (index) => { //클릭한 격자의 강수량 정보로 fillcolor 변경
     // index에 해당하는 키 가져옴(키값: 시간대)
     const Key = Object.keys(gridWeather)[index];
-    console.log('Key:', Key); // 해당 시간대
-  
+    // console.log('Key:', Key); // 해당 시간대
+
     // 키에 해당하는 배열. (총 30개 구간)
-    const Array = gridWeather[Key]; 
-    console.log('Array:', Array); //해당 시간대의 30개의 격자 구역별 날씨정보
-  
+    const Array = gridWeather[Key];
+    // console.log('Array:', Array); //해당 시간대의 30개의 격자 구역별 날씨정보
+
     // 배열의 첫 번째 요소 (30개 중 하나의 격자에 해당하는 정보 접근)
     const Element = Array[0];
-    console.log('Element:', Element);
-  
+    // console.log('Element:', Element);
+
     // 각 격자에 대해 강수량 반영 격자 색상 변경
     gridObjects.forEach((rectangle, _index) => {
       const item = Array[_index];
-      console.log(`Index: ${_index}, reh: ${item.reh}`);
-  
-      const gridData = item.reh;
+      // console.log(`Index: ${_index}, reh: ${item.reh}`);
+
+      const gridData = item.rn1;
       let fillColor = '#ffffff'; // 기본 색상 (흰색)
-  
+
       if (gridData) {
-        const reh = parseFloat(gridData);
-        if (reh > 0 && reh <= 40) {
-          fillColor = 'rgba(61, 213, 255, 0.5)'; // 하늘색
-          console.log('하늘색으로 변경')
-        } else if (reh > 40 && reh <= 60) {
-          fillColor = 'rgba(0, 60, 255, 0.5)'; // 파란색
-          console.log("파란색으로 변경");
-        } else if (reh > 60) {
-          fillColor = 'rgba(58, 0, 203, 0.5)'; // 남색
-          console.log("남색으로 변경");
+        const rain = parseFloat(gridData);
+        if (rain >= 0 && rain <= 10) {
+          fillColor = 'rgba(255, 255, 255, 0.64)';
+        } else if (rain > 10 && rain <= 15) {
+          fillColor = 'rgba(77, 216, 255, 0.5)';
+        } else if (rain > 15 && rain <= 20) {
+          fillColor = 'rgba(0, 130, 255, 0.5)';
+          // fillColor = 'rgba(0, 106, 255, 0.5)';
+        } else if (rain > 25 && rain <= 30) {
+          fillColor = 'rgba(0, 98, 255, 0.5)';
+        } else if (rain > 30 && rain <= 35) {
+          fillColor = 'rgba(0, 59, 197, 0.5)';
+        } else if (rain > 35 && rain <= 40) {
+        } else {
+          fillColor = 'rgba(3, 0, 197, 0.5)';
+          console.log("남색으로 설정");
         }
       }
       rectangle.setOptions({
         fillColor,
-        fillOpacity: 0.5,
+        // fillOpacity: 0.5,
       });
     });
   };
-  
+
   const handleLocationBtn = useCallback(() => {//위치 추적 버튼 핸들러
     setIsLocationLoading(true);
-    if (!activeTracking) { 
+    if (!activeTracking) {
       if (navigator.geolocation) {
         // 현재 위치 추적 및 지도 확대/이동
         navigator.geolocation.getCurrentPosition((position) => {
@@ -160,7 +173,7 @@ function RouteDetail() {
               });
             }
           });
-          
+
           //마커 업데이트
           if (!markerInstance.current) {
             markerInstance.current = new kakao.maps.Marker({
@@ -197,8 +210,6 @@ function RouteDetail() {
   const [forecastPath, setForecastPath] = useState([]);
 
   /* 뽀송타임 */
-  // const time = []; //현재 시간부터 30분 간격 시간 (hhmm) 4개 ?
-  // const timeColon = [];
   const [timeWithColon, setTimeWithColon] = useState([]); //현재 시간부터 30분 간격 시간(hh:mm) 4개
   const [time, setTime] = useState([]);
 
@@ -221,9 +232,13 @@ function RouteDetail() {
     setTimeWithColon(timeColonArray);
   };
 
-  useEffect(()=> {
+  useEffect(() => {
     console.log("Time with colon: ", timeWithColon);
   }, [time, timeWithColon]);
+
+  useEffect(() => {
+    console.log("forecastpath!", forecastPath);
+  }, [forecastPath]);
 
   const handlePosongBtnClick = (index) => {
     const getWalkPathWeatherByTime = async () => {
@@ -235,11 +250,11 @@ function RouteDetail() {
       formData.append('selectTime', time[index]);
 
       try {
-        const response = await axios.post(url, formData, { headers: { 'Content-Type': 'multipart/form-data' }});
+        const response = await api.post(url, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
         setForecastPath(response.data);
-        console.log("time[index]: ", time[index]);
+        console.log("time[", index, "]: ", time[index]);
         console.log("도보구간 날씨 정보 get 성공");
-      } catch(error) {
+      } catch (error) {
         console.error("도보구간 날씨 정보 합한 경로 데이터 get 에러", error);
       }
     };
@@ -251,15 +266,22 @@ function RouteDetail() {
     const url = 'http://localhost:8080/api/path/with-forecast';
     const formData = new FormData();
     const pathDto = path;
+    const now = new Date();
+    const time = new Date(now.getTime());
+    //HHMM으로 포맷팅
+    const hours = time.getHours().toString().padStart(2, '0');
+    const minutes = time.getMinutes().toString().padStart(2, '0');
+    const hhmm = hours + minutes;
 
     formData.append('pathDto', new Blob([JSON.stringify(pathDto)], { type: 'application/json' }));
-    formData.append('selectTime', time[0] );
+    formData.append('selectTime', hhmm);
 
     try {
-      const response = await axios.post(url, formData, { headers: { 'Content-Type': 'multipart/form-data' }});
+      const response = await api.post(url, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
       setForecastPath(response.data);
+      console.log("time: ", hhmm);
       console.log("도보구간 날씨 정보 get 성공");
-    } catch(error) {
+    } catch (error) {
       console.error("도보구간 날씨 정보 합한 경로 데이터 get 에러", error);
     }
   };
@@ -292,13 +314,13 @@ function RouteDetail() {
           return !isNaN(lat) && !isNaN(lon) && lat !== null && lon !== null;
         };
         if (path.subPathDtos) {
-          path.subPathDtos.forEach((subPath, index) => {     
+          path.subPathDtos.forEach((subPath, index) => {
             const eachSubPath = [];
             subPath.pointDtos.forEach(point => {
               eachSubPath.push(new kakao.maps.LatLng(point.pointInformationDto.latitude, point.pointInformationDto.longitude));
               bounds.extend(new kakao.maps.LatLng(point.pointInformationDto.latitude, point.pointInformationDto.longitude));
             });
-            if(subPath.type==="walk" && subPath.time !== 0) {
+            if (subPath.type === "walk" && subPath.time !== 0) {
               const walkPolyline = new kakao.maps.Polyline({
                 path: eachSubPath,
                 strokeWeight: 6,
@@ -308,17 +330,17 @@ function RouteDetail() {
               });
               walkPolyline.setMap(map);
             }
-            else { 
+            else {
               const transportPolyline = new kakao.maps.Polyline({
                 path: eachSubPath,
                 strokeWeight: 8,
-                strokeColor: subPath.type  === "bus" ? subPath.busColor : subPath.subwayColor,
+                strokeColor: subPath.type === "bus" ? subPath.busColor : subPath.subwayColor,
                 strokeOpacity: 0.4,
                 strokeStyle: 'solid',
               });
               transportPolyline.setMap(map);
-            } 
-              
+            }
+
             /* 경로 구간별 시작점 마커 표시 및 클릭 시 해당 구간으로 이동 */
             const subPathMarkerImg = new kakao.maps.MarkerImage( // subPath의 출발지/도착지 마커 이미지
               'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png', //별모양 마커 이미지
@@ -374,24 +396,8 @@ function RouteDetail() {
         image: pathEndMarkerImg,
 
       });
-
-      //인포 윈도우에 띄울 내용
-      const infoWindow = new kakao.maps.InfoWindow({
-        content: `<div style="padding:5px;">출발지: ${path.startDto.name}<br>도착지: ${path.endDto.name}</div>`,
-      });
-      setInfoWindow(infoWindow);
-
-      // 마커 클릭 이벤트: 출발지/목적지 클릭시 인포 윈도우 show 함수
-      const addMarkerClickListener = (marker) => {
-        kakao.maps.event.addListener(marker, 'click', () => {
-          infoWindow.open(map, marker);
-        });
-      };
-      addMarkerClickListener(startMarker); //경로 출발지 마커 클릭 이벤트 등록
-      addMarkerClickListener(endMarker); //경로 도착지 마커 클릭 이벤트 등록
-      
     }
-  }, [path, map, isInfoVisible]);
+  }, [path, map]);
 
   //구간별 경로 박스 클릭 시 해당 경로로 지도 중심 이동(아직 구현 안함)
   const focusSubPath = (subIndex) => {
@@ -401,23 +407,23 @@ function RouteDetail() {
 
   return (
     <React.Fragment>
-      <MapContainer id="map" ref={mapRef} style={{position:"relative"}}>
+      <MapContainer id="map" ref={mapRef} style={{ position: "relative" }}>
         <TimeBtnBar>
-        {isGridActive && (
-          <TimeBtns
-            initial={{ x: -50, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: -50, opacity: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <TimeBtn onClick={()=>handleTimeBtn(0)}>현재</TimeBtn>
-            <TimeBtn onClick={()=>handleTimeBtn(1)}>+ 1시간</TimeBtn>
-            <TimeBtn onClick={()=>handleTimeBtn(2)}>+ 2시간</TimeBtn>
-            <TimeBtn onClick={()=>handleTimeBtn(3)}>+ 3시간</TimeBtn>
-            <TimeBtn onClick={()=>handleTimeBtn(4)}>+ 4시간</TimeBtn>
-            <TimeBtn onClick={()=>handleTimeBtn(5)}>+ 5시간</TimeBtn>
-          </TimeBtns>
-         )}
+          {isGridActive && (
+            <TimeBtns
+              initial={{ x: -50, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: -50, opacity: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <TimeBtn onClick={() => handleTimeBtn(0)}>현재</TimeBtn>
+              <TimeBtn onClick={() => handleTimeBtn(1)}>+ 1시간</TimeBtn>
+              <TimeBtn onClick={() => handleTimeBtn(2)}>+ 2시간</TimeBtn>
+              <TimeBtn onClick={() => handleTimeBtn(3)}>+ 3시간</TimeBtn>
+              <TimeBtn onClick={() => handleTimeBtn(4)}>+ 4시간</TimeBtn>
+              <TimeBtn onClick={() => handleTimeBtn(5)}>+ 5시간</TimeBtn>
+            </TimeBtns>
+          )}
         </TimeBtnBar>
         <MapBtn
           isGridActive={isGridActive}
@@ -428,11 +434,15 @@ function RouteDetail() {
           handleLocationBtn={handleLocationBtn}
         />
         {timeWithColon[0] && (
-          <TimeBar>
-            <PosongTime><FontAwesomeIcon icon={faCloud} style={{color: "#63CAFF", paddingRight: "5px"}}/>뽀송타임</PosongTime>
+          <TimeBar
+            initial={{ height: "10%" }}
+            animate={{ height: isExpanded ? "143%" : "10%" }}
+            transition={{ duration: 0.5 }}
+          >
+            <PosongTime><FontAwesomeIcon icon={faCloud} style={{ color: "#63CAFF", paddingRight: "5px" }} />뽀송타임</PosongTime>
             {timeWithColon.map((time, index) => (
               <PosongBtn key={index} onClick={() => handlePosongBtnClick(index)}>
-              {time}
+                {time}
               </PosongBtn>
             ))}
           </TimeBar>
@@ -446,8 +456,8 @@ function RouteDetail() {
       >
 
         <ResultContainer>
-      
-        <ToggleBar><TBar /></ToggleBar>
+
+          <ToggleBar><TBar /></ToggleBar>
           <PathBox id="pathBox">
             <PathSummary>
               <PathInfo id="timeAndPrice">
@@ -455,8 +465,10 @@ function RouteDetail() {
                 <div>분 <p>|</p> 도보 {path.totalWalkTime}분 {path.totalWalkDistance}m<p>|</p>{path.price}원</div>
               </PathInfo>
               <PathWeatherInfo>
-                <FontAwesomeIcon icon={faDroplet}/>
-                <p>{path.totalRain}<span style={{fontSize:"11px"}}>mm</span></p>
+                <FontAwesomeIcon icon={faDroplet} />
+                {forecastPath.subPathDtos && (
+                  <p>{forecastPath.totalRain.toFixed(2)}<span style={{ fontSize: "11px" }}>mm</span></p>
+                )}
               </PathWeatherInfo>
             </PathSummary>
 
@@ -470,10 +482,10 @@ function RouteDetail() {
                         color={subPath.type === 'walk' ? 'darkgray' : (subPath.type === 'subway' ? subPath.subwayColor : subPath.busColor)}
                       >
                         {subPath.type !== 'walk' && (
-                          <IconBox style={{backgroundColor: subPath.type === 'bus' ? subPath.busColor : subPath.subwayColor}}>
+                          <IconBox style={{ backgroundColor: subPath.type === 'bus' ? subPath.busColor : subPath.subwayColor }}>
                             <FontAwesomeIcon
                               icon={subPath.type === 'bus' ? faBus : faSubway}
-                              style={{color: "white"}}
+                              style={{ color: "white" }}
                             />
                           </IconBox>
                         )}
@@ -489,7 +501,7 @@ function RouteDetail() {
               {path.subPathDtos.map((subPath, subIndex, array) => (
                 <React.Fragment key={subIndex}>
                   {subPath.time !== 0 && (
-                    <SubPath onClick={()=> focusSubPath(subIndex)}>
+                    <SubPath onClick={() => focusSubPath(subIndex)}>
                       <IconColumn id="subPathIconColumn">
                         {subPath.type === "walk" && (
                           <React.Fragment>
@@ -504,14 +516,14 @@ function RouteDetail() {
                                 <div style={{ color: "gray" }}>도보</div>
                               </React.Fragment>
                             )}
-                            
+
                           </React.Fragment>
                         )}
                         {subPath.type === "bus" && <FontAwesomeIcon icon={faBus} style={{ color: subPath.busColor, marginLeft: "-1.7px" }} />}
                         {subPath.busColor === "#0068b7" && <div style={{ color: subPath.busColor }}>간선</div>}
                         {subPath.busColor === "#53b332" && <div style={{ color: subPath.busColor }}>지선</div>}
                         {subPath.busColor === "#ffc600" && <div style={{ color: subPath.busColor }}>마을</div>}
-                        
+
                         {subPath.type === "subway" && (
                           <React.Fragment>
                             <FontAwesomeIcon icon={faSubway} style={{ color: subPath.subwayColor }} />
@@ -536,49 +548,47 @@ function RouteDetail() {
                               {subPath.type !== "walk" && " 승차"}
                               {subPath.type === "subway" && <br />}
                               {subPath.type === "bus" && (
-                                <div style={{display: "flex", paddingTop: "5px"}}>
-                                  <FontAwesomeIcon icon={faBus} style={{color: subPath.busColor, paddingLeft: "0"}}/>
-                                  <div style={{fontWeight: "900", paddingLeft: "5px"}}>{subPath.busNo}</div>
+                                <div style={{ display: "flex", paddingTop: "5px" }}>
+                                  <FontAwesomeIcon icon={faBus} style={{ color: subPath.busColor, paddingLeft: "0" }} />
+                                  <div style={{ fontWeight: "900", paddingLeft: "5px" }}>{subPath.busNo}</div>
                                 </div>
                               )}
-                              <br/>
+                              <br />
                               {subPath.endDto.name}
                               {subPath.type === "subway" && "역 하차"}
                               {subPath.type === "bus" && " 하차"}
-                              </div>
+                            </div>
                           </React.Fragment>
                         )}
                       </TextColumn>
-                      {console.log("버튼 클릭 반영 확인: ", )}
-                      {subPath.type === "walk" && forecastPath.subPathDtos &&(
-                      <WeatherColumn>
-                        {console.log("test: ", forecastPath.subPathDtos[subIndex].time)}
-                        <div>
-                          <Icon><FontAwesomeIcon icon={faDroplet} style={{color: "#63CAFF"}}/></Icon>
-                          예상 노출: {forecastPath.subPathDtos[subIndex].expectedRain}mm
-                        </div>
-                        <div>
-                          <Icon><FontAwesomeIcon icon={faCloudRain} style={{color: "gray"}}/></Icon>
-                          시간당: {forecastPath.subPathDtos[subIndex].forecastDto.rn1}mm
-                        </div>
-                        <div>
-                          <Icon><FontAwesomeIcon icon={faSun} style={{color: "orange"}}/></Icon>
-                          기온: {forecastPath.subPathDtos[subIndex].forecastDto.t1h}°
-                        </div>
-                        <div>
-                          <Icon><FontAwesomeIcon icon={faGlassWaterDroplet} style={{color: "#1ef4ff"}}/></Icon>
-                          습도: {forecastPath.subPathDtos[subIndex].forecastDto.reh}%
-                        </div>
-                        <div>
-                          <Icon><FontAwesomeIcon icon={faWind} style={{color: "#216DFF"}}/></Icon>
-                          풍속: {forecastPath.subPathDtos[subIndex].forecastDto.wsd}m/s
-                        </div>
-                      </WeatherColumn>
+                      {subPath.type === "walk" && forecastPath.subPathDtos && (
+                        <WeatherColumn>
+                          <div>
+                            <Icon><FontAwesomeIcon icon={faDroplet} style={{ color: "#63CAFF" }} /></Icon>
+                            예상 노출: {forecastPath.subPathDtos[subIndex].expectedRain.toFixed(2)}mm
+                          </div>
+                          <div>
+                            <Icon><FontAwesomeIcon icon={faCloudRain} style={{ color: "gray" }} /></Icon>
+                            시간당: {forecastPath.subPathDtos[subIndex].forecastDto.rn1}mm
+                          </div>
+                          <div>
+                            <Icon><FontAwesomeIcon icon={faSun} style={{ color: "orange" }} /></Icon>
+                            기온: {forecastPath.subPathDtos[subIndex].forecastDto.t1h}°
+                          </div>
+                          <div>
+                            <Icon><FontAwesomeIcon icon={faGlassWaterDroplet} style={{ color: "#1ef4ff" }} /></Icon>
+                            습도: {forecastPath.subPathDtos[subIndex].forecastDto.reh}%
+                          </div>
+                          <div>
+                            <Icon><FontAwesomeIcon icon={faWind} style={{ color: "#216DFF" }} /></Icon>
+                            풍속: {forecastPath.subPathDtos[subIndex].forecastDto.wsd}m/s
+                          </div>
+                        </WeatherColumn>
                       )}
                     </SubPath>
                   )}
                   {subIndex === array.length - 1 && (
-                    <SubPath onClick={()=> focusSubPath(subIndex)}>
+                    <SubPath onClick={() => focusSubPath(subIndex)}>
                       <IconColumn>
                         <FontAwesomeIcon icon={faCircleDot} style={{ color: "#216CFF" }} />
                         <div style={{ color: "#216CFF" }}>도착</div>
@@ -605,35 +615,58 @@ const MapContainer = styled(motion.div)`
   height: 60%;
   position: relative;
 `;
+
 const TimeBtnBar = styled.div`
   width: 100%;
-  height: 40px;
+  /* height: 40px; */
   display: flex;
   justify-content: start;
   z-index: 500;
   position: sticky;
+  padding: 20px 0px;
 `;
 const TimeBtns = styled(motion.div)`
   padding: 0px 20px;
   * {
-    margin-right: 8px;
-    margin-top: 15px;
-
+    margin-right: 10px;
+    margin-bottom: 5px;
   }
 `;
 const TimeBtn = styled.button`
+  font-family: 'Bagel Fat One', cursive;
   border-radius: 25px;
-  /* border: 2px solid #626161; */
+  border: 2px solid #424040d2;
   border: none;
-  background-color: #626161;
-  color: #7ccdffc9;
+  box-shadow: 0px 0px 3px 3px rgba(0, 0, 0, 0.1);
+  background-color: #424040d2;
   color: white;
-  padding: 6px 7px;
+  padding: 5px 10px;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  box-shadow: 0px 0px 3px 3px rgba(0, 0, 0, 0.1);
-
+  /* margin: 10px 0px; */
+  &:first-child {
+    border: 2px solid #003E5E;  
+    background-color: #003E5E;
+    color: white;
+    &:hover {
+      background-color: #88D6FF;
+      border-color: #88D6FF;
+      color: white;
+    }
+  }
+  &:not(:first-child) {
+    
+    &:focus {
+      background-color: #88d5ffd1;
+      color: #424040;
+      border: 2px solid #424040d2;
+    }
+    &:hover {
+      background-color: #88d5ffd1;
+      color: white;
+    }
+  }
 `;
 
 const PathInfoContainer = styled(motion.div)`
@@ -881,9 +914,11 @@ const IconBox = styled.div`
 
 /* Btn 컴포넌트 추가*/
 const TimeBar = styled(motion.div)`
-  width: auto;
-  height: 10%;
-  padding: 0px 20px;
+  width: 90%;
+  /* max-width: 75%; */
+  /* height: 10%; */
+  height: auto;
+  padding: 0px 10px;
   display: flex;
   justify-content: start;
   align-items: center;
@@ -893,38 +928,43 @@ const TimeBar = styled(motion.div)`
   z-index: 1000;
 `;
 const PosongBtn = styled.button`
-  width: 55px;
+  width: 45px;
   height: 35px;
-  margin-right: 8px;
-  margin-bottom: 10px;
-  border-radius: 25px;
-  font-family: 'Bagel Fat One', cursive;
-  font-size: 11px;
-  box-shadow: 0px 0px 5px 3px rgba(0, 0, 0, 0.1);
-  border: none;
-  &:hover {
-    background-color: #63CAFF;
-    /* color: white; */
-    border: 2px solid white;
-  }
-`;
-const PosongTime = styled.div`
-  width: auto;
-  height: 35px;
-  margin-right: 8px;
+  margin-right: 3px;
   margin-bottom: 10px;
   border-radius: 25px;
   font-family: 'Bagel Fat One', cursive;
   font-size: 12px;
+  /* font-weight: 900; */
+  box-shadow: 0px 0px 5px 3px rgba(0, 0, 0, 0.1);
+  border: 2px solid #003E5E;
+  color: #003E5E;
+  padding: 5px;
+  &:hover {
+    background-color: #88D6FF;
+    border: 2px solid white;
+  }
+  &:focus {
+    background-color: #88D6FF;
+  }
+`;
+const PosongTime = styled.div`
+  width: auto;
+  min-width: 83px;
+  height: 35px;
+  margin-right: 5px;
+  margin-bottom: 10px;
+  border-radius: 25px;
+  font-family: 'Bagel Fat One', cursive;
+  font-size: 13px;
   background-color: #003E5E;
   color: white;
   display: flex;
   justify-content: start;
   align-items: center;
   text-align: center;
-  padding: 0px 10px;
+  padding: 0px 8px;
   box-shadow: 0px 0px 3px 3px rgba(0, 0, 0, 0.1);
-
 `;
 
 

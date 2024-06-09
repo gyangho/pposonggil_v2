@@ -160,7 +160,7 @@ import styled from 'styled-components';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faListUl } from "@fortawesome/free-solid-svg-icons";
-import axios from 'axios';
+import api from '../api/api';
 
 const Container = styled.div`
   width: 100%;
@@ -275,7 +275,7 @@ function MemberPosting() {
   const { writerId } = useParams(); // url에서 writerId 떼오기
 
   useEffect(() => {
-    axios.get(`http://localhost:8080/api/boards/by-member/${writerId}`) // 백엔드 url로 변경
+    api.get(`http://localhost:8080/api/boards/by-member/${writerId}`) // 백엔드 url로 변경
       .then(response => {
         setPosts(response.data);
       })
