@@ -50,7 +50,6 @@ public class BoardService {
     private final AwsS3 awsS3;
     private final DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm");
 
-
     /**
      * 전체 게시글 조회
      */
@@ -79,7 +78,6 @@ public class BoardService {
                 .orElseThrow(NoSuchElementException::new);
 
         LocalTime curTime = LocalTime.now(ZoneId.of("Asia/Seoul"));
-        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("HHmm");
 
         List<BoardDto> boardDtos = findBoards();
 
