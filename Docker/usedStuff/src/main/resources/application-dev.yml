@@ -4,7 +4,7 @@ spring:
     active:
       on-profile: dev
   datasource:
-    url: jdbc:h2:tcp://localhost/~/Desktop/pposonggil_v2/Docker/usedStuff
+    url: jdbc:h2:tcp://localhost/~/Desktop/OneDrive/2024/pposonggil_v2/Docker/usedStuff
     username: sa
     password:
     driver-class-name: org.h2.Driver

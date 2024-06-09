@@ -1,12 +1,13 @@
 version: "3.2"
 services:
   nginx:
-    image: gonaging/nginx:1.25
+    image: nginx:latest
     container_name: nginx
     ports:
       - 80:80
       - 443:443
       - 3000:3000
+      - 8080:8080
     volumes:
       - type: bind
         source: ./Docker/Keys
@@ -24,7 +25,7 @@ services:
     depends_on:
       - server
       - api_gateway
-      - usedStuff
+      - usedstuff.com
       - pposonggil-react
       - mysql
 
@@ -82,7 +83,7 @@ services:
       - mysql
     expose:
       - 3000
-    # build: ./pposonggil-react
+    build: ./pposonggil-react
     container_name: pposonggil-react
     restart: unless-stopped
     stdin_open: true # `-i`
@@ -97,17 +98,17 @@ services:
         source: ./pposonggil-react
         target: /usr/src/app/pposonggil-react
 
-  usedStuff:
-    image: gonaging/usedstuff:1.1
+  usedstuff.com:
+    image: gyaaaangho/usedstuff:1.0
     build:
       context: ./Docker/usedStuff
       dockerfile: Dockerfile
-    container_name: usedstuff
-    ports:
-      - "8080:8080"
+    container_name: usedstuff.com
+    expose:
+      - 8080
     environment:
       - SPRING_PROFILES_ACTIVE=prod
-      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/Tables_in_nodejs # MySQL 컨테이너에 연결
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/Tables_in_nodejs # MySQL ? ⑦???  ???곌껐
       - SPRING_DATASOURCE_USERNAME=pposong
       - SPRING_DATASOURCE_PASSWORD=000000
     depends_on:
@@ -155,8 +156,15 @@ services:
     container_name: osrm-extract
     command: osrm-extract -p /opt/foot_pposong.lua /data/seoul.osm
     volumes:
-      - "${PWD}/Docker/osrm/data:/data"
-      - "${PWD}/Docker/osrm/profiles/foot_pposong.lua:/opt/foot_pposong.lua"
+#      - "${PWD}/Docker/osrm/data:/data"
+      - type: bind
+        source: ./Docker/osrm/data
+        target: /data
+#      - "${PWD}/Docker/osrm/profiles/foot_pposong.lua:/opt/foot_pposong.lua"
+      - type: bind
+        source: ./Docker/osrm/profiles/foot_pposong.lua
+        target: /opt/foot_pposong.lua
+    #
     networks:
       - osrm-network
 
@@ -165,7 +173,14 @@ services:
     container_name: osrm-partition
     command: osrm-partition /data/seoul.osrm
     volumes:
-      - "${PWD}/Docker/osrm/data:/data"
+      #- "${PWD}/Docker/osrm/data:/data"
+      - type: bind
+        source: ./Docker/osrm/data
+        target: /data
+      #- "${PWD}/Docker/osrm/data:/data"
+      - type: bind
+        source: ./Docker/osrm/data
+        target: /data
     depends_on:
       - osrm-extract
     networks:
@@ -176,7 +191,14 @@ services:
     container_name: osrm-customize
     command: osrm-customize /data/seoul.osrm
     volumes:
-      - "${PWD}/Docker/osrm/data:/data"
+      #- "${PWD}/Docker/osrm/data:/data"
+      - type: bind
+        source: ./Docker/osrm/data
+        target: /data
+      #- "${PWD}/Docker/osrm/data:/data"
+      - type: bind
+        source: ./Docker/osrm/data
+        target: /data
     depends_on:
       - osrm-partition
     networks:
@@ -189,7 +211,14 @@ services:
     ports:
       - "5000:5000"
     volumes:
-      - "${PWD}/Docker/osrm/data:/data"
+      #- "${PWD}/Docker/osrm/data:/data"
+      - type: bind
+        source: ./Docker/osrm/data
+        target: /data
+      #- "${PWD}/Docker/osrm/data:/data"
+      - type: bind
+        source: ./Docker/osrm/data
+        target: /data
     depends_on:
       - osrm-customize
     networks:

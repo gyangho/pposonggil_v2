@@ -100,8 +100,8 @@ function Weather() {
         <WeatherBox><HumidIcon icon={faDroplet} />습도 {weatherData.main.humidity}%</WeatherBox>
       </Row>
       <Row id="wind_humid">
-        <WeatherBox>날씨 정보</WeatherBox>
-        <WeatherBox>날씨 정보</WeatherBox>
+        <WeatherBox>미세 <p>보통</p></WeatherBox>
+        <WeatherBox>초미세 <p>보통</p></WeatherBox>
       </Row>
       
     </Container>
@@ -217,6 +217,11 @@ const WeatherBox = styled(Box)`
   padding: 10px 12px;
   margin-top: 0px;
   margin-bottom: 15px;
+  display: flex;
+  p {
+    color:#02C73C;
+    margin-left: 6px;
+  }
 `;
 
 const Spinner = styled(motion.div)`

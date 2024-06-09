@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
+import api from "../api/api";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleUser, faWonSign, faTemperatureHalf } from "@fortawesome/free-solid-svg-icons";
@@ -24,7 +24,7 @@ function MemberPostingDetailed() {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const response = await axios.get(`${apiUrl}/${boardId}`);
+        const response = await api.get(`${apiUrl}/${boardId}`);
         // const postList = response.data; 백엔드 코드 합치면
         // const postList = response.data;
         // const foundPost = postList.find((item) => item.boardId.toString() === boardId);
@@ -49,7 +49,7 @@ function MemberPostingDetailed() {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`http://localhost:8080/api/board/${boardId}`);
+      await api.delete(`http://localhost:8080/api/board/${boardId}`);
       navigate(`/member-posting/${post.writerId}`);
     } catch (error) {
       console.error("Error deleting post", error);

@@ -151,7 +151,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
 import '../../../src/posting.css'; //css파일 import
-import axios from 'axios';
+import api from "../../api/api";
 import { useNavigate, useLocation, useParams } from 'react-router-dom';
 
 const apiUrl = "http://localhost:8080/api/board";
@@ -168,6 +168,7 @@ function EditPost() {
     const [locationInput, setLocationInput] = useState('');
     const [price, setPrice] = useState('');
     const [image, setImage] = useState('');
+    const [imagePreview, setImagePreview] = useState('');
     const fileInputRef = useRef(null);
     const navigate = useNavigate();
 
@@ -185,54 +186,31 @@ function EditPost() {
 
             setLocationInput(editingPost.address?.name);
             setPrice(editingPost.price);
-            setImage(editingPost.img || '');
+            setImage(editingPost.imageUrl || '');
+            setImagePreview(editingPost.img || '');
         }
     }, [editingPost]);
 
     const handleImageUpload = (e) => {
         const file = e.target.files[0];
+        // if (file) {
+        //     // const reader = new FileReader();
+        //     // reader.onload = (e) => {
+        //     //     setImage(e.target.result);
+        //     setImage(file);
+        // };
+        // // reader.readAsDataURL(file);
         if (file) {
+            setImage(file);
             const reader = new FileReader();
-            reader.onload = (e) => {
-                setImage(e.target.result);
+            reader.onloadend = () => {
+                setImagePreview(reader.result);
+                // setImage(reader.result);
             };
             reader.readAsDataURL(file);
         }
     };
 
-    // const updatePost = async (post) => {
-    //     try {
-    //         // boardId를 사용하여 PUT 요청 보내기
-    //         const response = await axios.put(`${apiUrl}/${editingPost.boardId}`, post);
-    //         console.log('Post updated successfully:', response.data);
-    //         navigate('/member-posting');
-    //     } catch (error) {
-    //         console.error("Error updating post", error);
-    //     }
-    // };
-
-    // const handleSubmit = (e) => {
-    //     e.preventDefault();
-    //     const currentDate = new Date().toISOString().split('T')[0]; // 현재 날짜 (YYYY-MM-DD 형식)
-
-    //     const post = {
-    //         ...editingPost, // 기존의 게시글 정보를 그대로 포함
-    //         title,
-    //         content,
-    //         startTimeString: `${currentDate}-${startTime}`,
-    //         endTimeString: `${currentDate}-${endTime}`,
-    //         address: {
-    //             name: locationInput,
-    //             latitude: editingPost.address?.latitude,
-    //             longitude: editingPost.address?.longitude,
-    //             street: editingPost.address?.street
-    //         },
-    //         price,
-    //         img: image
-    //     };
-
-    //     updatePost(post);
-    // };
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -251,7 +229,7 @@ function EditPost() {
                 street: editingPost.address?.street
             },
             price,
-            img: image // image는 file input의 파일 객체여야 합니다.
+            img: imagePreview // image는 file input의 파일 객체여야 합니다.
         };
 
         const formData = new FormData();
@@ -260,7 +238,7 @@ function EditPost() {
             formData.append('file', image);
         }
 
-        axios.put(`${apiUrl}/${editingPost.boardId}`, formData, {
+        api.put(`${apiUrl}/${editingPost.boardId}`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
@@ -297,10 +275,28 @@ function EditPost() {
                     required
                 />
             </div>
-            <div className="image-container" id="image-container">
+            {/* <div className="image-container" id="image-container">
                 <div className="image-upload" onClick={() => fileInputRef.current.click()}>
                     {image ? (
                         <img src={image} alt="upload" style={{ width: '100%', height: '100%' }} />
+                    ) : (
+                        <FontAwesomeIcon icon={faCamera} style={{ fontSize: '30px', color: '#ccc' }} />
+                    )}
+                    <input
+                        type="file"
+                        id="file-input"
+                        accept="image/*"
+                        onChange={handleImageUpload}
+                        ref={fileInputRef}
+                        style={{ display: 'none' }}
+                    />
+                </div>
+            </div> */}
+            <div className="image-container" id="image-container">
+                <div className="image-upload" onClick={() => fileInputRef.current.click()}>
+                    {image ? (
+                        // <img src={imagePreview} alt="upload" style={{ width: '100%', height: '100%' }} />
+                        <img src={editingPost.imageUrl} alt="upload" style={{ width: '100%', height: '100%' }} />
                     ) : (
                         <FontAwesomeIcon icon={faCamera} style={{ fontSize: '30px', color: '#ccc' }} />
                     )}

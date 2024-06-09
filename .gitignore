@@ -6,12 +6,12 @@
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
 
-*.osrm
-*.osrm.*
 .idea/
 Docker/usedStuff/src/main/resources/application-secret.yml
 static/
 templates/
+*.osrm
+*.osrm.*
 *.txt
 *.ps1
 build/

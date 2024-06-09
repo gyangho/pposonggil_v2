@@ -118,7 +118,7 @@ const Input = styled(motion.input)`
   width: 100%;
   height: 100%;
   font-size: 17px;
-  font-weight: 600;
+  font-weight: 700;
   border: none;
   background-color: inherit;
   &:focus {
@@ -143,7 +143,7 @@ const Btn = styled.button`
   width: 100%;
   height: 100%;
   border-radius: 15px;
-  font-size: 15px;
-  font-weight: 600;
+  font-size: 16px;
+  font-weight: 700;
   color: white;
 `;

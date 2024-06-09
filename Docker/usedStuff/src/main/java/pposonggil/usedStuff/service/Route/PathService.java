@@ -198,7 +198,6 @@ public class PathService {
                             .build();
 
                     result.add(forecastSubPathDto);
-
                 }
                 LocalTime curTime = LocalTime.parse(selectTime, DateTimeFormatter.ofPattern("HHmm"));
                 LocalTime updateTime = curTime.plusMinutes(duration);
@@ -210,7 +209,6 @@ public class PathService {
             throw new RuntimeException("Runtime exception in createForecastBySubPath", e);
         }
     }
-
     /**
      * default osrm을 이용한 도보 경로가 포함된
      * 대중교통 경로

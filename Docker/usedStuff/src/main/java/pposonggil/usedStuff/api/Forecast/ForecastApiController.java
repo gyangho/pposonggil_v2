@@ -24,6 +24,7 @@ public class ForecastApiController {
     @GetMapping("/api/forecasts")
     public Map<String, List<ForecastDto>> forecastsByTime() {
         return forecastService.getForecastsByTime();
+
     }
 
     /**

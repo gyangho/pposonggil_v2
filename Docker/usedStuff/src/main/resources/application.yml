@@ -7,3 +7,4 @@ spring:
       - application-secret.yml
       - application-dev.yml
       - application-prod.yml
+      - application-oauth.yml

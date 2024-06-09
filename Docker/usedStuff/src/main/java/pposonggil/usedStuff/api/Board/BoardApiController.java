@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import pposonggil.usedStuff.dto.Board.BoardDto;
 import pposonggil.usedStuff.dto.Route.PointInformation.PointInformationDto;
+import pposonggil.usedStuff.service.Auth.ValidateService;
 import pposonggil.usedStuff.service.Board.BoardService;
 
 import java.io.IOException;
@@ -18,6 +19,8 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class BoardApiController {
     private final BoardService boardService;
+    private final ValidateService validateService;
+
 
     /**
      * 전체 게시글 조회
@@ -25,8 +28,9 @@ public class BoardApiController {
      * @return 게시글 Dto 리스트
      */
     @GetMapping("/api/boards")
-    public List<BoardDto> boards() {
-        return boardService.findBoards();
+    public List<BoardDto> boards()
+    {
+        return boardService.findBoardsByMember(validateService.getMyId());
     }
 
     /**
@@ -39,7 +43,8 @@ public class BoardApiController {
      */
     @PostMapping("/api/boards/with-expected-rain/{memberId}")
     public List<BoardDto> getBoardsWithExpectedRain(@RequestPart("startDto") PointInformationDto startDto,
-                                                    @PathVariable Long memberId) throws IOException {
+                                                    @PathVariable Long memberId) throws IOException
+    {
         return boardService.findBoardsWithExpectedRain(startDto, memberId);
     }
 
@@ -77,6 +82,7 @@ public class BoardApiController {
     }
 
     /**
+     * 본인
      * 게시글 작성
      *
      * @param boardDto : 작성할 내용이 담긴 게시글 Dto
@@ -87,6 +93,7 @@ public class BoardApiController {
     @PostMapping("/api/board")
     public ResponseEntity<Object> createBoard(@RequestPart("boardDto") BoardDto boardDto,
                                               @RequestPart(value = "file", required = false) MultipartFile file) throws Exception {
+        validateService.validateMemberIdAndThrow(boardDto.getWriterId());
         Long boardId = boardService.createBoard(boardDto, file);
 
         Map<String, Object> response = new HashMap<>();
@@ -96,6 +103,7 @@ public class BoardApiController {
     }
 
     /**
+     * 본인
      * 게시글 수정
      *
      * @param boardId  : 게시글 아이디
@@ -109,6 +117,7 @@ public class BoardApiController {
     public ResponseEntity<Object> updateBoard(@PathVariable Long boardId,
                                               @RequestPart("boardDto") BoardDto boardDto,
                                               @RequestPart(value = "file", required = false) MultipartFile file) throws Exception {
+        validateService.validateMemberIdAndThrow(boardDto.getWriterId());
         BoardDto oldBoardDto = boardService.findOne(boardId);
         if (oldBoardDto == null) {
             return ResponseEntity.notFound().build();
@@ -122,6 +131,7 @@ public class BoardApiController {
     }
 
     /**
+     * 본인
      * 게시글 삭제
      *
      * @param boardId : 게시글 아이디
@@ -129,8 +139,12 @@ public class BoardApiController {
      */
     @DeleteMapping("/api/board/{boardId}")
     public ResponseEntity<String> deleteBoard(@PathVariable Long boardId) {
-        boardService.deleteBoard(boardId);
+        BoardDto boardDto =  boardService.findOne(boardId);
+        Long writerId =  boardDto.getWriterId();
 
+        validateService.checkAdminMemberIdAndThrow(writerId);
+        
+        boardService.deleteBoard(boardId);
         return ResponseEntity.ok("게시글을 삭제하였습니다.");
     }
 

@@ -28,8 +28,8 @@ public class BlockDto {
                 .blockId(block.getId())
                 .subjectId(block.getBlockSubject().getId())
                 .objectId(block.getBlockObject().getId())
-                .subjectNickName(block.getBlockSubject().getNickName())
-                .objectNickName(block.getBlockObject().getNickName())
+                .subjectNickName(block.getBlockSubject().getName())
+                .objectNickName(block.getBlockObject().getName())
                 .createdAt(block.getCreatedAt())
                 .build();
     }
