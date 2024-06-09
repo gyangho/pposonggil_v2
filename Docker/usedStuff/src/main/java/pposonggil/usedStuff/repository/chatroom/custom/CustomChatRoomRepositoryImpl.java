@@ -55,6 +55,7 @@ public class CustomChatRoomRepositoryImpl implements CustomChatRoomRepository {
                 .where((chatRoom.requester.id.eq(sender).and(board.writer.id.eq(receiver)))
                         .or(chatRoom.requester.id.eq(receiver).and(board.writer.id.eq(sender))))
                 .fetchOne();
+        System.out.println("******************RESULT: " + result);
         return Optional.ofNullable(result);
     }
 }

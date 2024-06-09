@@ -6,18 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="fbc73a0f-9444-47e6-9457-7db026927fd3" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/api/Member/MemberApiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/api/Member/MemberApiController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/component/TokenAuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/component/TokenAuthenticationFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/component/TokenProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/component/TokenProvider.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/domain/Member.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/domain/Member.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/handler/OAuth2SuccessHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/handler/OAuth2SuccessHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/repository/chatroom/custom/CustomChatRoomRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/repository/chatroom/custom/CustomChatRoomRepositoryImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/service/Auth/CustomOAuth2UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/service/Auth/CustomOAuth2UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/service/Auth/ValidateService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/service/Auth/ValidateService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/resources/templates/test.html" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/resources/templates/test.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -91,32 +80,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "DefaultHtmlFileTemplate": "HTML File",
-    "Gradle.Build usedStuff.executor": "Run",
-    "Gradle.usedStuff [buildDependents].executor": "Run",
-    "Gradle.usedStuff [build].executor": "Run",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "Spring Boot.UsedStuffApplication.executor": "Run",
-    "git-widget-placeholder": "feature-Security",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/dydtk/Downloads/demo/build.gradle",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "spring",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;Gradle.Build usedStuff.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.usedStuff [buildDependents].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.usedStuff [build].executor&quot;: &quot;Run&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;Spring Boot.UsedStuffApplication.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature-Security&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/dydtk/Downloads/demo/build.gradle&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;spring&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="pposonggil.usedStuff.component" />
@@ -239,7 +228,8 @@
       <workItem from="1717902006360" duration="11914000" />
       <workItem from="1717917217681" duration="34000" />
       <workItem from="1717917333513" duration="4190000" />
-      <workItem from="1717921667541" duration="19699000" />
+      <workItem from="1717921667541" duration="21644000" />
+      <workItem from="1717945096239" duration="333000" />
     </task>
     <servers />
   </component>
