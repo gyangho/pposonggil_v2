@@ -11,9 +11,13 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import pposonggil.usedStuff.domain.TransactionAddress;
 import pposonggil.usedStuff.dto.Board.BoardDto;
+import pposonggil.usedStuff.dto.ChatRoom.ChatRoomDto;
 import pposonggil.usedStuff.dto.Member.MemberDto;
+import pposonggil.usedStuff.dto.Trade.TradeDto;
 import pposonggil.usedStuff.service.Board.BoardService;
+import pposonggil.usedStuff.service.ChatRoom.ChatRoomService;
 import pposonggil.usedStuff.service.Member.MemberService;
+import pposonggil.usedStuff.service.Trade.TradeService;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -34,8 +38,12 @@ class BoardServiceTest {
     BoardService boardService;
     @Autowired
     MemberService memberService;
+    @Autowired
+    ChatRoomService chatRoomService;
+    @Autowired
+    TradeService tradeService;
 
-    private Long memberId1, memberId2;
+    private Long memberId1, memberId2, memberId3;
     private Long boardId1, boardId2;
     private MockMultipartFile mockMultipartFile1, mockMultipartFile2;
 
@@ -44,6 +52,7 @@ class BoardServiceTest {
         // 회원 1, 2 생성
         memberId1 = createMember("name1", "nickName1", "01011111111");
         memberId2 = createMember("name2", "nickName2", "01022222222");
+        memberId3 = createMember("name3", "nickName3", "01033333333");
 
         // 게시글 1, 2 생성
         boardId1 = createBoard(memberId1, "title1", "우산 팔아요1", LocalDateTime.now(), LocalDateTime.now().plusMinutes(30),
@@ -51,7 +60,7 @@ class BoardServiceTest {
         boardId2 = createBoard(memberId2, "title2", "우산 팔아요2", LocalDateTime.now(), LocalDateTime.now().plusHours(1),
                 new TransactionAddress("숭실대2", 37.5000, 126.9500, "주소2"), 2000L, false);
 
-                MockitoAnnotations.openMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         Path path1 = Paths.get("src/test/resources/test1.png");
         byte[] content1 = Files.readAllBytes(path1.toAbsolutePath().normalize());
@@ -242,6 +251,27 @@ class BoardServiceTest {
         assertThrows(NoSuchElementException.class, () -> boardService.findOne(memberId1));
     }
 
+    @Test
+    public void 게시글과_시간이_겹치는_게시판을_생성할_수_없습니다() throws Exception {
+        assertThrows(IllegalArgumentException.class, () -> {
+            createBoard(memberId1, "title1", "우산 팔아요1", LocalDateTime.now(), LocalDateTime.now().plusMinutes(2),
+                    new TransactionAddress("숭실대1", 37.4958, 126.9583, "주소1"), 1000L, false);
+        });
+
+    }
+
+    @Test
+    public void 거래와_시간이_겹치는_게시판을_생성할_수_없습니다() throws Exception {
+        Long chatRoomId1 = createChatRoom(boardId1, memberId3);
+        Long tradeId1 = createTrade(chatRoomId1, memberId1, memberId3);
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            createBoard(memberId3, "title3", "우산 팔아요3", LocalDateTime.now(), LocalDateTime.now().plusMinutes(20),
+                    new TransactionAddress("숭실대3", 37.4958, 126.9583, "주소1"), 1000L, false);
+        });
+    }
+
+
     public Long createMember(String name, String nickName, String phone) {
         MemberDto memberDto = MemberDto.builder()
                 .name(name)
@@ -270,5 +300,23 @@ class BoardServiceTest {
                 .isFreebie(isFreebie)
                 .build();
         return boardService.createBoard(boardDto);
+    }
+
+    public Long createChatRoom(Long boardId, Long requestId) {
+        ChatRoomDto chatRoomDto = ChatRoomDto.builder()
+                .boardId(boardId)
+                .requesterId(requestId)
+                .build();
+
+        return chatRoomService.createChatRoom(chatRoomDto);
+    }
+
+    public Long createTrade(Long chatRoomId, Long subjectId, Long objectId) {
+        TradeDto tradeDto = TradeDto.builder()
+                .chatRoomId(chatRoomId)
+                .subjectId(subjectId)
+                .objectId(objectId)
+                .build();
+        return tradeService.createTrade(tradeDto);
     }
 }

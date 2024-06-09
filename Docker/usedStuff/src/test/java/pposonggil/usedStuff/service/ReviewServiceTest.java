@@ -348,7 +348,7 @@ class ReviewServiceTest {
     public void 리뷰_점수의_범위를_벗어난_점수로_평가할_수_없다() throws Exception {
         // given
         // 게시글 3 생성
-        Long boardId3 = createBoard(memberId3, "title3", "우산 팔아요3", LocalDateTime.now(), LocalDateTime.now().plusHours(2),
+        Long boardId3 = createBoard(memberId3, "title3", "우산 팔아요3", LocalDateTime.now().plusHours(4), LocalDateTime.now().plusHours(5),
                 new TransactionAddress("숭실대3", 37.0600, 126.9600, "주소3"), 3000L, false);
 
         // 채팅방 3 생성

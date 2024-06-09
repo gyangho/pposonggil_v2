@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequiredArgsConstructor
@@ -87,12 +88,20 @@ public class BoardApiController {
     @PostMapping("/api/board")
     public ResponseEntity<Object> createBoard(@RequestPart("boardDto") BoardDto boardDto,
                                               @RequestPart(value = "file", required = false) MultipartFile file) throws Exception {
-        Long boardId = boardService.createBoard(boardDto, file);
+        try {
+            Long boardId = boardService.createBoard(boardDto, file);
 
-        Map<String, Object> response = new HashMap<>();
-        response.put("boardId", boardId);
-        response.put("message", "게시글을 작성을 완료했습니다.");
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+            Map<String, Object> response = new HashMap<>();
+            response.put("boardId", boardId);
+            response.put("message", "게시글을 작성을 완료했습니다.");
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 오류가 발생했습니다.");
+        }
     }
 
     /**

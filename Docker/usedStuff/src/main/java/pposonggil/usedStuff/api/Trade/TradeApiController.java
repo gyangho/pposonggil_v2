@@ -47,7 +47,6 @@ public class TradeApiController {
     @GetMapping("/api/trades/by-member/{memberId}")
     public List<TradeDto> getTradesByMemberId(@PathVariable Long memberId) {
         return tradeService.findTradesByMemberId(memberId);
-
     }
 
     /**
