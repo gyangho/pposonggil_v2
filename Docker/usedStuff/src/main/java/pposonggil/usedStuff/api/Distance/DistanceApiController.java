@@ -1,7 +1,6 @@
 package pposonggil.usedStuff.api.Distance;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pposonggil.usedStuff.dto.Distance.DistanceDto;
@@ -31,6 +30,7 @@ public class DistanceApiController {
      * 거리 아이디로 거리 조회
      *
      * @param distanceId
+     *
      * @return 거리 아이디가 일치하는 거리 Dto
      */
     @GetMapping("/api/distance/by-distance/{distanceId}")
@@ -47,18 +47,6 @@ public class DistanceApiController {
     @GetMapping("/api/distance/by-trade/{tradeId}")
     public DistanceDto findDistanceWithTradeByTradeId(@PathVariable Long tradeId) {
         return distanceService.findDistacneByTradeId(tradeId);
-    }
-
-    /**
-     * 거리 생성
-     *
-     * @param distanceDto : 거리 Dto
-     * @return : 생성한 거리 아이디
-     */
-    @PostMapping("/api/distance")
-    public ResponseEntity<Object> createDistance(@RequestBody DistanceDto distanceDto) {
-        Long distanceId = distanceService.createDistance(distanceDto);
-        return ResponseEntity.status(HttpStatus.OK).body(distanceId);
     }
 
     /**

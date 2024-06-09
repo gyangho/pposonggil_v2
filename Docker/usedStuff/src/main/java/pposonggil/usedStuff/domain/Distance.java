@@ -22,7 +22,7 @@ public class Distance {
     private Long id;
 
     @JsonIgnore
-    @ManyToOne(fetch = LAZY)
+    @OneToOne(fetch = LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "trade_id")
     private Trade distanceTrade;
 

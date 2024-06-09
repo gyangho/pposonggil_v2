@@ -4,13 +4,18 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pposonggil.usedStuff.domain.ChatRoom;
+import pposonggil.usedStuff.domain.Distance;
 import pposonggil.usedStuff.domain.Member;
 import pposonggil.usedStuff.domain.Trade;
 import pposonggil.usedStuff.dto.Trade.TradeDto;
+import pposonggil.usedStuff.repository.Distance.DistanceRepository;
 import pposonggil.usedStuff.repository.chatroom.ChatRoomRepository;
 import pposonggil.usedStuff.repository.member.MemberRepository;
 import pposonggil.usedStuff.repository.trade.TradeRepository;
 
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -22,6 +27,7 @@ public class TradeService {
     private final TradeRepository tradeRepository;
     private final ChatRoomRepository chatRoomRepository;
     private final MemberRepository memberRepository;
+    private final DistanceRepository distanceRepository;
 
     /**
      * 전체 거래 조회
@@ -135,6 +141,49 @@ public class TradeService {
     public void deleteTrade(Long tradeId) {
         Trade trade = tradeRepository.findById(tradeId)
                 .orElseThrow(NoSuchElementException::new);
+
+        distanceRepository.findDistanceByTrade(tradeId)
+                .ifPresent(distanceRepository::delete);
+
         tradeRepository.delete(trade);
     }
+
+    /**
+     * 거래 시작 시각이 지나고
+     * 상대방의 거리가 500m 초과했을 때만
+     * 거래 취소 가능
+     */
+    @Transactional
+    public void deleteTradeByMember(Long tradeId, Long memberId) throws IllegalAccessException {
+        Trade trade = tradeRepository.findById(tradeId)
+                .orElseThrow(NoSuchElementException::new);
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(NoSuchElementException::new);
+        Distance distance = distanceRepository.findDistanceByTrade(tradeId)
+                .orElseThrow(NoSuchElementException::new);
+
+        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm");
+        String startTimeString = trade.getStartTimeString();
+        LocalTime startTime = LocalTime.parse(startTimeString, inputFormatter);
+        LocalTime curTime = LocalTime.now(ZoneId.of("Asia/Seoul"));
+
+        if (!trade.getTradeSubject().getId().equals(memberId) && !trade.getTradeObject().getId().equals(memberId)) {
+            throw new IllegalArgumentException("거래 회원이 아닙니다.");
+        }
+
+        if (curTime.isBefore(startTime)) {
+            throw new IllegalAccessException("거래 시작 시간 이후에 취소할 수 있습니다.");
+        }
+
+        if ((trade.getTradeSubject().getId().equals(memberId) && distance.getObjectDistance() < 500) ||
+                (trade.getTradeObject().getId().equals(memberId) && distance.getSubjectDistance() < 500)) {
+            throw new IllegalArgumentException("상대방이 주변에 있습니다. 조금만 기다려주세요");
+        }
+
+        distanceRepository.findDistanceByTrade(tradeId)
+                .ifPresent(distanceRepository::delete);
+
+        tradeRepository.delete(trade);
+    }
+
 }

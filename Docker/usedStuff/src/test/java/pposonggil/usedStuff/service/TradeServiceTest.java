@@ -368,8 +368,8 @@ class TradeServiceTest {
         List<TradeDto> tradeDtos = tradeService.findTrades();
         assertEquals(2, tradeDtos.size());
         assertThrows(NoSuchElementException.class, () -> tradeService.findOne(tradeId1));
-
     }
+
 
 
     public Long createMember(String name, String nickName, String phone) {
