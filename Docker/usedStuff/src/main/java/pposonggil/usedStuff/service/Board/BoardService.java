@@ -102,20 +102,23 @@ public class BoardService {
         for (BoardDto boardDto : boardDtos) {
             String boardStartTimeString = boardDto.getStartTimeString();
             String boardEndTimeString = boardDto.getEndTimeString();
+            if (tradeDtos.isEmpty()) {
+                results.add(boardDto);
+            } else {
+                for (int idx = 0; idx < tradeDtos.size(); idx++) {
+                    String tradeEndTimeString = tradeDtos.get(idx).getEndTimeString();
+                    String tradeStartTimeString = tradeDtos.get(idx).getStartTimeString();
 
-            for (int idx = 0; idx < tradeDtos.size(); idx++) {
-                String tradeEndTimeString = tradeDtos.get(idx).getEndTimeString();
-                String tradeStartTimeString = tradeDtos.get(idx).getStartTimeString();
+                    LocalTime tradeStartTime = LocalTime.parse(tradeStartTimeString, inputFormatter);
+                    LocalTime boardStartTime = LocalTime.parse(boardStartTimeString, inputFormatter);
+                    LocalTime tradeEndTime = LocalTime.parse(tradeEndTimeString, inputFormatter);
+                    LocalTime boardEndTime = LocalTime.parse(boardEndTimeString, inputFormatter);
 
-                LocalTime tradeStartTime = LocalTime.parse(tradeStartTimeString, inputFormatter);
-                LocalTime boardStartTime = LocalTime.parse(boardStartTimeString, inputFormatter);
-                LocalTime tradeEndTime = LocalTime.parse(tradeEndTimeString, inputFormatter);
-                LocalTime boardEndTime = LocalTime.parse(boardEndTimeString, inputFormatter);
-
-                if (boardEndTime.isAfter(tradeStartTime) && boardStartTime.isBefore(tradeEndTime))
-                    break;
-                if (idx == tradeDtos.size() - 1)
-                    results.add(boardDto);
+                    if (!(boardEndTime.isBefore(tradeStartTime) || boardStartTime.isAfter(tradeEndTime)))
+                        break;
+                    if (idx == tradeDtos.size() - 1)
+                        results.add(boardDto);
+                }
             }
         }
 
@@ -133,7 +136,7 @@ public class BoardService {
                 log.info("Forecast 정보를 가져오는 데 실패했습니다: " + e.getMessage());
             }
         }
-        return boardDtos;
+        return results;
     }
 
     /**
@@ -237,7 +240,7 @@ public class BoardService {
             LocalTime requestEndTime = LocalTime.parse(boardDto.getEndTimeString(), inputFormatter);
             LocalTime boardEndTime = LocalTime.parse(boardEndTimeString, inputFormatter);
 
-            if(!(requestEndTime.isBefore(boardStartTime) || requestStartTime.isAfter(boardEndTime)))
+            if (!(requestEndTime.isBefore(boardStartTime) || requestStartTime.isAfter(boardEndTime)))
                 return false;
         }
         return true;
@@ -259,7 +262,7 @@ public class BoardService {
             LocalTime tradeEndTime = LocalTime.parse(tradeEndTimeString, inputFormatter);
             LocalTime boardEndTime = LocalTime.parse(boardEndTimeString, inputFormatter);
 
-            if(!(boardEndTime.isBefore(tradeStartTime) || boardStartTime.isAfter(tradeEndTime)))
+            if (!(boardEndTime.isBefore(tradeStartTime) || boardStartTime.isAfter(tradeEndTime)))
                 return false;
         }
         return true;
