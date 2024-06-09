@@ -62,35 +62,19 @@ public class DistanceApiController {
     }
 
     /**
-     * 주체자 아이디로 주체자의 거리 업데이트
+     * 회원 아이디로 회원의 거리 업데이트
      *
      * @param distanceId : 업데이트할 거리 아이디
-     * @param memberId   : 주체자 아이디
-     * @param startDto   : 주체자의 출발지 Dto
+     * @param memberId   : 회원 아이디
+     * @param startDto   : 현재 출발지 Dto
      * @return : 성공 --> 업데이트된 거리 Dto
      */
-    @PutMapping("/api/distance/{distanceId}/by-subject/{memberId}")
+    @PutMapping("/api/distance/{distanceId}/by-member/{memberId}")
     public DistanceDto updateSubjectDistance(@PathVariable Long distanceId,
                                              @PathVariable Long memberId,
                                              @RequestPart PointInformationDto startDto) {
         DistanceDto distanceDto = distanceService.findOne(distanceId);
-        return distanceService.calSubjectDistance(startDto, distanceDto, memberId);
-    }
-
-    /**
-     * 객체자 아이디로 객체자의 거리 업데이트
-     *
-     * @param distanceId : 업데이트할 거리 아이디
-     * @param memberId   : 객체자 아이디
-     * @param startDto   : 객체자의 출발지 Dto
-     * @return : 성공 --> 업데이트된 거리 Dto
-     */
-    @PutMapping("/api/distance/{distanceId}/by-object/{memberId}")
-    public DistanceDto updateObjectDistance(@PathVariable Long distanceId,
-                                            @PathVariable Long memberId,
-                                            @RequestPart PointInformationDto startDto) {
-        DistanceDto distanceDto = distanceService.findOne(distanceId);
-        return distanceService.calObjectDistance(startDto, distanceDto, memberId);
+        return distanceService.calMemberDistance(startDto, distanceDto, memberId);
     }
 
     /**

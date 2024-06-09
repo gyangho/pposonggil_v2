@@ -200,7 +200,7 @@ class DistanceServiceTest {
         DistanceDto distanceDto1 = distanceService.findDistacneByTradeId(tradeId1);
 
         // then
-        DistanceDto calSubjectDistanceDto = distanceService.calSubjectDistance(startDto, distanceDto1, memberId1);
+        DistanceDto calSubjectDistanceDto = distanceService.calMemberDistance(startDto, distanceDto1, memberId1);
         Optional.of(calSubjectDistanceDto)
                 .ifPresent(distanceDto -> assertAll("주체 아이디의 거리 변화 정보 검증",
                         () -> assertNotEquals(-1, distanceDto.getSubjectTotalDistance(), "주체-거래장소 초기 거리 변경안됨"),
@@ -218,7 +218,7 @@ class DistanceServiceTest {
                 .longitude(127.0044)
                 .build();
         DistanceDto distanceDto1 = distanceService.findDistacneByTradeId(tradeId1);
-        DistanceDto calSubjectDistanceDto1 = distanceService.calSubjectDistance(startDto1, distanceDto1, memberId1);
+        DistanceDto calSubjectDistanceDto1 = distanceService.calMemberDistance(startDto1, distanceDto1, memberId1);
         System.out.println("AAAAAAAAAAAA");
         System.out.println(calSubjectDistanceDto1);
         System.out.println(calSubjectDistanceDto1.getSubjectTotalDistance());
@@ -240,7 +240,7 @@ class DistanceServiceTest {
                 .build();
 
         // then
-        DistanceDto calSubjectDistanceDto2 = distanceService.calSubjectDistance(startDto2, distanceDto1, memberId1);
+        DistanceDto calSubjectDistanceDto2 = distanceService.calMemberDistance(startDto2, distanceDto1, memberId1);
 
         System.out.println("AAAAAAAAAAAA");
         System.out.println(calSubjectDistanceDto2);
