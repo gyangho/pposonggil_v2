@@ -32,26 +32,26 @@ const TradeList = styled.div`
 `;
 
 const TradeItem = styled.div`
-background-color: #f9f9f9;
-padding: 20px;
-border-radius: 10px;
-margin-bottom: 10px;
-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-display: flex;
-flex-direction: column;
-
-&:last-child {
-  margin-bottom: 0;
-}
-
-div {
-  margin-bottom: 8px;
-  font-size: 16px;
-
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  &:hover {
+    background-color: #bbe8ff1e;
+  }
   &:last-child {
     margin-bottom: 0;
   }
-}
+  div {
+    margin-bottom: 8px;
+    font-size: 16px;
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
 `;
 
 const Highlight = styled.span`
