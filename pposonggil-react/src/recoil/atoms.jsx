@@ -90,6 +90,23 @@ export const routeInfoState = atom({
   }
 });
 
+//북마크한 경로의 출발지/도착지 정보 저장 atom
+export const bookmarkRouteState = atom({
+  key: 'bookmarkRoute',
+  default: {
+    origin: {
+      name: '',
+      lat: '',
+      lon: '',
+    },
+    dest: {
+      name:'',
+      lat: '',
+      lon: '',
+    }
+  }
+});
+
 //서버에서 받아온 사용자 정보 저장 atom
 export const userState = atom({
   key: 'userState',
