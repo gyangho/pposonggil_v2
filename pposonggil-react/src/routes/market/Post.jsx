@@ -9,9 +9,10 @@ import { navState } from "../../recoil/atoms";
 
 // JSON 서버 API URL, 백이랑 연동 시 수정 필요
 // const apiUrl = "http://localhost:8080/api/boards"
-const apiUrl = "http://localhost:8080/api/board/by-board"
+const apiUrl = "http://localhost:8080/api/board/by-board";
 
-const chatApiUrl = "http://localhost:8080/api/chatroom";
+const chatApiUrl1 = "http://localhost:8080/api/chatroom/by-board";
+const chatApiUrl2 = "http://localhost:8080/api/chatroom";
 
 function Post() {
   const { boardId } = useParams();//url 뒤에서 boardId 가져옴
@@ -45,7 +46,8 @@ function Post() {
   const handleChatRequest = async () => {
     try {
       // 먼저 GET 요청으로 해당 boardId에 맞는 채팅방이 있는지 확인
-      const existingChatResponse = await axios.get(`${chatApiUrl}/by-board/${post.boardId}`);
+      const existingChatResponse = await axios.get(`${chatApiUrl1}/${post.boardId}`);
+      console.log(`${chatApiUrl1}/${post.boardId}`);
       if (existingChatResponse.data && existingChatResponse.data.chatRoomId) {
         // 기존 채팅방이 있는 경우 해당 채팅방으로 이동
         navigate(`/market/chat/${existingChatResponse.data.chatRoomId}`);
@@ -55,9 +57,9 @@ function Post() {
       if (error.response && error.response.status === 500) {
         // 채팅방이 없는 경우 새로운 채팅방 생성
         try {
-          const response = await axios.post(chatApiUrl, {
+          const response = await axios.post(chatApiUrl2, {
             boardId: post.boardId,
-            requesterId: 2 // 실제 요청자의 ID로 수정 필요
+            requesterId: 3 // 실제 요청자의 ID로 수정 필요
           });
           console.log('Chat room created:', response.data);
           // 채팅방이 생성된 후, 해당 채팅방으로 이동
