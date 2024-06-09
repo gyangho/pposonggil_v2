@@ -5,8 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
+import pposonggil.usedStuff.component.TokenProvider;
 import pposonggil.usedStuff.domain.Member;
 import pposonggil.usedStuff.domain.RefreshToken;
 import pposonggil.usedStuff.domain.Role;
@@ -27,6 +29,7 @@ public class MemberApiController {
     @Autowired
     private MemberService memberService;
     private final ValidateService validateService;
+    private final TokenProvider tokenProvider;
     private final MemberRepository memberRepository;
 
     @PostMapping
@@ -39,7 +42,8 @@ public class MemberApiController {
         return memberService.findMemberByName(name);
     }
 
-    @GetMapping("/getadmin")
+    @GetMapping("/api/getadmin")
+    @ResponseBody
     public String getadmin()
     {
         Long myid = validateService.getMyId();
@@ -47,11 +51,17 @@ public class MemberApiController {
         {
             throw new AccessDeniedException("로그인해야 관리자 권한을 받을 수 있습니다.");
         }
+        Authentication newAuthentication = validateService.giveAdminAuthentication(myid);
+        String token = tokenProvider.generateAccessToken(newAuthentication);
+
         Optional<Member> existingMember = memberRepository.findById(myid);
         Member memberToUpdate = existingMember.get();
         memberToUpdate.addRole(Role.ADMIN);
         memberRepository.save(memberToUpdate);
-        //memberToUpdate
-        return "<script> window.history.back()</script>";
+        return "<script> " +
+                "localStorage.setItem('token','"+ token +"');" +
+                "localStorage.setItem('authority', 'ADMIN');"+
+                "window.location.href('/test')"+
+                "</script>";
     }
 }

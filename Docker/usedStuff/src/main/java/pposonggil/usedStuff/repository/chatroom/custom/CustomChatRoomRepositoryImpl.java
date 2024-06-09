@@ -52,7 +52,7 @@ public class CustomChatRoomRepositoryImpl implements CustomChatRoomRepository {
                 .select(chatRoom)
                 .from(chatRoom)
                 .innerJoin(board).on(chatRoom.chatBoard.eq(board))
-                .where(chatRoom.requester.id.eq(sender).and(board.writer.id.eq(receiver))
+                .where((chatRoom.requester.id.eq(sender).and(board.writer.id.eq(receiver)))
                         .or(chatRoom.requester.id.eq(receiver).and(board.writer.id.eq(sender))))
                 .fetchOne();
         return Optional.ofNullable(result);

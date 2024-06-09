@@ -97,5 +97,6 @@ public class Member extends BaseEntity {
     {
         roles.add(role);
     }
+    public void deleteRole(Role role) {roles.remove(role);}
 
 }

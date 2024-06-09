@@ -30,7 +30,7 @@ public class TokenProvider {
     @Value("${jwt.key}")
     private String key;
     private SecretKey secretKey;
-    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60L;
+    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 60L;
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60L * 24 * 7;
     private static final String KEY_ROLE = "role";
     private final TokenService tokenService;
@@ -108,7 +108,15 @@ public class TokenProvider {
     }
 
     public boolean validateToken(String token) {
+        try{
+            token.length();
+        }
+        catch (NullPointerException e)
+        {
+            return false;
+        }
         if (!StringUtils.hasText(token)) {
+            System.out.println("VALIDATETOKENNULL");
             return false;
         }
         Claims claims = parseClaims(token);

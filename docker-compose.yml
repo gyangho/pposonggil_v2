@@ -177,10 +177,6 @@ services:
       - type: bind
         source: ./Docker/osrm/data
         target: /data
-      #- "${PWD}/Docker/osrm/data:/data"
-      - type: bind
-        source: ./Docker/osrm/data
-        target: /data
     depends_on:
       - osrm-extract
     networks:
@@ -191,10 +187,6 @@ services:
     container_name: osrm-customize
     command: osrm-customize /data/seoul.osrm
     volumes:
-      #- "${PWD}/Docker/osrm/data:/data"
-      - type: bind
-        source: ./Docker/osrm/data
-        target: /data
       #- "${PWD}/Docker/osrm/data:/data"
       - type: bind
         source: ./Docker/osrm/data
@@ -211,10 +203,6 @@ services:
     ports:
       - "5000:5000"
     volumes:
-      #- "${PWD}/Docker/osrm/data:/data"
-      - type: bind
-        source: ./Docker/osrm/data
-        target: /data
       #- "${PWD}/Docker/osrm/data:/data"
       - type: bind
         source: ./Docker/osrm/data

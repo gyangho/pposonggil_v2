@@ -46,7 +46,7 @@ function Post() {
   const handleChatRequest = async () => {
     try {
       // 먼저 GET 요청으로 해당 boardId에 맞는 채팅방이 있는지 확인
-      const existingChatResponse = await api.get(`${chatApiUrl}/by-board/${post.boardId}`);
+      const existingChatResponse = await api.get(`${chatApiUrl2}/by-board/${post.boardId}`);
       if (existingChatResponse.data && existingChatResponse.data.chatRoomId) {
         // 기존 채팅방이 있는 경우 해당 채팅방으로 이동
         navigate(`/market/chat/${existingChatResponse.data.chatRoomId}`);
@@ -56,7 +56,7 @@ function Post() {
       if (error.response && error.response.status === 500) {
         // 채팅방이 없는 경우 새로운 채팅방 생성
         try {
-          const response = await api.post(chatApiUrl, {
+          const response = await api.post(chatApiUrl1, {
             boardId: post.boardId,
             requesterId: 1 // 실제 요청자의 ID로 수정 필요
           });
