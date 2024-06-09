@@ -113,6 +113,7 @@ public class TokenProvider {
         }
         catch (NullPointerException e)
         {
+            System.out.println("NULLPOINTEREXCEPTION");
             return false;
         }
         if (!StringUtils.hasText(token)) {

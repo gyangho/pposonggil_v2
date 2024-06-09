@@ -108,7 +108,8 @@ public class BlockService {
         blockRepository.save(block);
         ChatRoom chatRoominfo = chatRoomRepository.findChatRoomWithSenderAndReceiver(blockObject.getId(), blockSubject.getId())
                 .orElseThrow(() -> new NoSuchElementException("존재하지 않는 채팅방입니다: " + blockObject.getId() + blockSubject.getId()));
-        chatRoomRepository.delete(chatRoominfo);
+
+        chatRoomRepository.deleteById(chatRoominfo.getId());
         return block.getId();
     }
 

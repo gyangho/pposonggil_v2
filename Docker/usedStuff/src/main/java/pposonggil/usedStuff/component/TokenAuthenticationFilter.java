@@ -67,7 +67,6 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     private String resolveToken(HttpServletRequest request) {
         String token = request.getHeader(AUTHORIZATION);
         if (ObjectUtils.isEmpty(token) || !token.startsWith(TOKEN_PREFIX)) {
-            System.out.println("NULL======================================++++++");
             return null;
         }
         return token.substring(TOKEN_PREFIX.length());
