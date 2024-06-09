@@ -5,52 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fbc73a0f-9444-47e6-9457-7db026927fd3" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/api/Distance/DistanceApiController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/domain/Distance.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/dto/Distance/DistanceDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/dto/TransactionAddres/TransactionAddressDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/repository/Distance/DistanceRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/repository/Distance/custom/CustomDistanceRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/repository/Distance/custom/CustomDistanceRepositoryImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/service/Distance/DistanceService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Docker/usedStuff/src/test/java/pposonggil/usedStuff/service/DistanceServiceTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/OngoingTrades.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/TransactionStatus.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/api/Block/BlockApiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/api/Block/BlockApiController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/api/Member/MemberBlockApiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/api/Member/MemberBlockApiController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/api/Member/MemberBoardApiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/api/Member/MemberBoardApiController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/api/Trade/TradeInformationApiController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/domain/Block.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/domain/Block.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/domain/Information.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/domain/Trade.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/domain/Trade.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/dto/Information/InformationDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/dto/Trade/TradeInformationDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/dto/Trade/TradeInformationDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/service/ChatRoom/ChatRoomService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/service/ChatRoom/ChatRoomService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/service/Route/SubPathService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/service/Route/SubPathService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/service/Trade/TradeInformationService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pposonggil-react/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pposonggil-react/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/components/KakaoRedirect.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/components/Map.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/components/Map.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/components/SearchBox.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/components/SearchBox.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/components/Weather.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/components/Weather.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/posting.css" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/posting.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/recoil/atoms.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/recoil/atoms.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/routes/Bookmark.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/Bookmark.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/routes/ChooseRoute.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/ChooseRoute.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/routes/Login.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/Login.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/routes/MemberPosting.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/MemberPosting.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/routes/MyPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/MyPage.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/routes/RouteDetail.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/RouteDetail.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/routes/SearchRoutes.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/SearchRoutes.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/routes/Test.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/routes/market/Board.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/market/Board.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/routes/market/Chat.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/market/Chat.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/routes/market/EditPost.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/market/EditPost.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/routes/market/Post.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/market/Post.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/api/Member/MemberApiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/api/Member/MemberApiController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/service/Auth/CustomOAuth2UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/service/Auth/CustomOAuth2UserService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -124,31 +81,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "DefaultHtmlFileTemplate": "HTML File",
-    "Gradle.Build usedStuff.executor": "Run",
-    "Gradle.usedStuff [build].executor": "Run",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "Spring Boot.UsedStuffApplication.executor": "Run",
-    "git-widget-placeholder": "Merging feature-Security",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/dydtk/Downloads/demo/build.gradle",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "spring",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;Gradle.Build usedStuff.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.usedStuff [build].executor&quot;: &quot;Run&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;Spring Boot.UsedStuffApplication.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature-Security&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/dydtk/Downloads/demo/build.gradle&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;spring&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="pposonggil.usedStuff.component" />
@@ -247,6 +204,8 @@
       <workItem from="1717824851369" duration="15480000" />
       <workItem from="1717902006360" duration="11914000" />
       <workItem from="1717917217681" duration="34000" />
+      <workItem from="1717917333513" duration="4190000" />
+      <workItem from="1717921667541" duration="41000" />
     </task>
     <servers />
   </component>
