@@ -10,10 +10,12 @@ import org.springframework.transaction.annotation.Transactional;
 import pposonggil.usedStuff.domain.*;
 import pposonggil.usedStuff.dto.Board.BoardDto;
 import pposonggil.usedStuff.dto.ChatRoom.ChatRoomDto;
+import pposonggil.usedStuff.dto.Distance.DistanceDto;
 import pposonggil.usedStuff.dto.Member.MemberDto;
 import pposonggil.usedStuff.dto.Trade.TradeDto;
 import pposonggil.usedStuff.service.Board.BoardService;
 import pposonggil.usedStuff.service.ChatRoom.ChatRoomService;
+import pposonggil.usedStuff.service.Distance.DistanceService;
 import pposonggil.usedStuff.service.Member.MemberService;
 import pposonggil.usedStuff.service.Trade.TradeService;
 
@@ -37,11 +39,14 @@ class TradeServiceTest {
     MemberService memberService;
     @Autowired
     ChatRoomService chatRoomService;
+    @Autowired
+    DistanceService distanceService;
 
     private Long memberId1, memberId2, memberId3;
     private Long boardId1, boardId2, boardId3;
     private Long chatRoomId1, chatRoomId2, chatRoomId3;
     private Long tradeId1, tradeId2, tradeId3;
+    private Long distanceId1, distanceId2, distanceId3;
 
     @BeforeEach
     public void setUp() throws Exception {
@@ -55,7 +60,7 @@ class TradeServiceTest {
                 new TransactionAddress("숭실대1", 37.4958, 126.9583, "주소1"), 1000L, false);
         boardId2 = createBoard(memberId2, "title2", "우산 팔아요2", LocalDateTime.now(), LocalDateTime.now().plusHours(1),
                 new TransactionAddress("숭실대2", 37.5000, 126.9500, "주소2"), 2000L, false);
-        boardId3 = createBoard(memberId3, "title3", "우산 팔아요3", LocalDateTime.now(), LocalDateTime.now().plusHours(2),
+        boardId3 = createBoard(memberId3, "title3", "우산 팔아요3", LocalDateTime.now().plusMinutes(1), LocalDateTime.now().plusHours(2),
                 new TransactionAddress("숭실대3", 37.0600, 126.9600, "주소3"), 3000L, false);
 
         // 채팅방 1, 2, 3생성
@@ -73,6 +78,11 @@ class TradeServiceTest {
         tradeId1 = createTrade(chatRoomId1, memberId1, memberId3);
         tradeId2 = createTrade(chatRoomId2, memberId2, memberId3);
         tradeId3 = createTrade(chatRoomId3, memberId3, memberId1);
+
+        // 거리 1, 2, 3 생성
+        distanceId1 = createDistance(tradeId1);
+        distanceId2 = createDistance(tradeId2);
+        distanceId3 = createDistance(tradeId3);
     }
 
     @Test
@@ -159,7 +169,7 @@ class TradeServiceTest {
     public void 게시글_작성한_회원의_아이디로_거래_조회() throws Exception {
         // given
         // 게시글 4 생성(회원1)
-        Long boardId4 = createBoard(memberId1, "title4", "우산 팔아요4", LocalDateTime.now(), LocalDateTime.now().plusHours(2),
+        Long boardId4 = createBoard(memberId1, "title4", "우산 팔아요4", LocalDateTime.now().plusHours(4), LocalDateTime.now().plusHours(5),
                 new TransactionAddress("숭실대4", 37.4000, 126.9400, "주소4"), 4000L, false);
 
         // 채팅방 4 생성(게시글4 (회원1) - 회원2)
@@ -326,8 +336,6 @@ class TradeServiceTest {
         // 채팅방4 (게시글4(회원4) - 회원1)
         Long chatRoomId4 = createChatRoom(boardId4, memberId1);
 
-        // then
-        // 거래4(회원4 - 회원2) 생성하려는 상황
         assertThrows(IllegalArgumentException.class, () ->{
             createTrade(chatRoomId4, memberId4, memberId2);
         });
@@ -337,7 +345,7 @@ class TradeServiceTest {
     public void 자기_자신과_거래할_수_없다() throws Exception {
         // given
         // 게시글 4
-        Long boardId4 = createBoard(memberId1, "title4", "우산 팔아요4", LocalDateTime.now(), LocalDateTime.now().plusHours(2),
+        Long boardId4 = createBoard(memberId1, "title4", "우산 팔아요4", LocalDateTime.now().plusHours(4), LocalDateTime.now().plusHours(5),
                 new TransactionAddress("숭실대4", 37.4000, 126.9400, "주소4"), 4000L, false);
 
         // 채팅방4 (게시글4(회원1) - 회원2)
@@ -370,7 +378,19 @@ class TradeServiceTest {
         assertThrows(NoSuchElementException.class, () -> tradeService.findOne(tradeId1));
     }
 
+    @Test
+    public void  거래_회원이_아닐_때_거래_삭제할_수_없다() {
+        assertThrows(IllegalArgumentException.class, () ->{
+            tradeService.deleteTradeByMember(tradeId1, memberId2);
+        });
+    }
 
+    @Test
+    public void 거래_시작_이전에_취소할_수_없다() {
+        assertThrows(IllegalAccessException.class, () ->{
+            tradeService.deleteTradeByMember(tradeId3, memberId1);
+        });
+    }
 
     public Long createMember(String name, String nickName, String phone) {
         MemberDto memberDto = MemberDto.builder()
@@ -418,5 +438,12 @@ class TradeServiceTest {
                 .build();
 
         return chatRoomService.createChatRoom(chatRoomDto);
+    }
+
+    public Long createDistance(Long tradeId){
+        DistanceDto distanceDto = DistanceDto.builder()
+                .tradeId(tradeId)
+                .build();
+        return distanceService.createDistance(distanceDto);
     }
 }

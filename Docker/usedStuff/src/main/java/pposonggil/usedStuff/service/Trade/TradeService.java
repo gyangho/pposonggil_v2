@@ -13,6 +13,7 @@ import pposonggil.usedStuff.repository.chatroom.ChatRoomRepository;
 import pposonggil.usedStuff.repository.member.MemberRepository;
 import pposonggil.usedStuff.repository.trade.TradeRepository;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -28,6 +29,7 @@ public class TradeService {
     private final ChatRoomRepository chatRoomRepository;
     private final MemberRepository memberRepository;
     private final DistanceRepository distanceRepository;
+    private final DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm");
 
     /**
      * 전체 거래 조회
@@ -56,6 +58,11 @@ public class TradeService {
 
         return trades.stream()
                 .map(TradeDto::fromEntity)
+                .sorted((trade1, trade2) -> {
+                    LocalDateTime startTime1 = LocalDateTime.parse(trade1.getStartTimeString(), inputFormatter);
+                    LocalDateTime startTime2 = LocalDateTime.parse(trade2.getStartTimeString(), inputFormatter);
+                    return startTime1.compareTo(startTime2);
+                })
                 .collect(Collectors.toList());
     }
 
@@ -67,6 +74,11 @@ public class TradeService {
 
         return trades.stream()
                 .map(TradeDto::fromEntity)
+                .sorted((trade1, trade2) -> {
+                    LocalDateTime startTime1 = LocalDateTime.parse(trade1.getStartTimeString(), inputFormatter);
+                    LocalDateTime startTime2 = LocalDateTime.parse(trade2.getStartTimeString(), inputFormatter);
+                    return startTime1.compareTo(startTime2);
+                })
                 .collect(Collectors.toList());
     }
 
@@ -78,6 +90,11 @@ public class TradeService {
 
         return trades.stream()
                 .map(TradeDto::fromEntity)
+                .sorted((trade1, trade2) -> {
+                    LocalDateTime startTime1 = LocalDateTime.parse(trade1.getStartTimeString(), inputFormatter);
+                    LocalDateTime startTime2 = LocalDateTime.parse(trade2.getStartTimeString(), inputFormatter);
+                    return startTime1.compareTo(startTime2);
+                })
                 .collect(Collectors.toList());
     }
 
