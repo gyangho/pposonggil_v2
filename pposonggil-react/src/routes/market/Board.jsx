@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faRotateRight, faDroplet } from "@fortawesome/free-solid-svg-icons";
-import { currentAddressState, navState } from "../../recoil/atoms";
+import { currentAddressState, navState, userState } from "../../recoil/atoms";
 import { useNavigate } from "react-router-dom";
 import api from "../../api/api";
 
@@ -13,7 +13,9 @@ import api from "../../api/api";
 // const apiUrl = "http://localhost:3001/postList"
 
 //서버 제공 url(실제 url)
-const apiUrl = "http://localhost:8080/api/boards/with-expected-rain/1" //마지막 1은 userId로 나중에 바꾸기
+const myId = localStorage.getItem('id');
+const apiUrl = `http://localhost:8080/api/boards/with-expected-rain/${myId}`; // myId를 포함
+
 
 function Board() {
   const [isRotating, setIsRotating] = useState(false);
@@ -21,8 +23,13 @@ function Board() {
   const [editPost, setEditPost] = useState(null);
   const [sorted, setSorted] = useState(false);//sorting
 
+
   const curAddr = useRecoilValue(currentAddressState);
   const setNav = useSetRecoilState(navState);
+  // const [user, setUser] = useRecoilState(userState); //초기 유저 세팅
+
+  //const user = useRecoilValue(userState); //다른 페이지에서 유저의 id나 닉네임 값을 불러오고 싶을 때
+  // user.userId => 유저 아이디 필요할 때,  user.userNickName => 유저 닉네임 필요할 때
 
   const navigate = useNavigate();
 
@@ -57,7 +64,7 @@ function Board() {
 
 
   const fetchPosts = async () => {
-    const url = 'http://localhost:8080/api/boards/with-expected-rain/1'; //postman이랑 매치해서 꼭 재확인 할 것!!
+    // const url = 'http://localhost:8080/api/boards/with-expected-rain/1'; //postman이랑 매치해서 꼭 재확인 할 것!!
     // const url = "http://localhost:8080/api/board"
     const formData = new FormData(); // form-data 객체 생성
 
@@ -81,7 +88,7 @@ function Board() {
     // }
 
     try {
-      const response = await api.post(url, formData, {
+      const response = await api.post(apiUrl, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }

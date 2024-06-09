@@ -47,7 +47,7 @@ function Post() {
         try {
           const response = await api.post(chatApiUrl, {
             boardId: post.boardId,
-            requesterId: localStorage.getItem('id') // 실제 요청자의 ID로 수정 필요
+            requesterId: localStorage.getItem('id')// 실제 요청자의 ID로 수정 필요
           });
           console.log('Chat room created:', response.data);
           // 채팅방이 생성된 후, 해당 채팅방으로 이동

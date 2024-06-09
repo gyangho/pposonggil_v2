@@ -59,10 +59,12 @@ svg {
 }
 `;
 
+const myId = localStorage.getItem('id');
+const myNickName = localStorage.getItem('nickname');
 
 function MyPage() {
   const navigate = useNavigate();
-  const writerId = 1; // 실제 사용자의 writerId로 대체해야 함
+  const writerId = myId; // 실제 사용자의 writerId로 대체해야 함
 
   const handleButtonClick = async (type) => {
     if (!writerId) {
@@ -72,15 +74,13 @@ function MyPage() {
 
     try {
       if (type === 'member-posting') {
-        const response = await api.get(`http://localhost:8080/api/boards/by-member/${writerId}`);
-        const userPosts = response.data.filter(post => post.writerId === writerId);
-        if (userPosts.length > 0) {
-          navigate(`/member-posting/${writerId}`);
-        } else {
-          alert('작성한 게시글이 없습니다.');
-        }
-      } else if (type === 'reserved-trades') {
+        navigate(`/member-posting/${writerId}`);
+      } else if (type === 'reserved-trades') {//진행중인 중고 거래
         navigate('/OngoingTrades');
+      } else if (type === 'blocked-list') {//내가 차단한 사람 목록
+        navigate('/blockList');
+      } else if (type === 'reported-list') {//내가 차단한 사람 목록
+        navigate('/reportList');
       } else {
         alert('해당 기능은 아직 구현되지 않았습니다.');
       }
@@ -89,34 +89,12 @@ function MyPage() {
     }
   };
 
-
-
-  //   try {
-  //     let response;
-  //     let userPosts;
-
-  //     if (type === 'member-posting') {
-  //       response = await axios.get(`http://localhost:8080/api/boards/by-member/1`);
-  //       userPosts = response.data.filter(post => post.writerId === writerId);
-  //       if (userPosts.length > 0) {
-  //         navigate(`/member-posting/${writerId}`);
-  //       } else {
-  //         alert('작성한 게시글이 없습니다.');
-  //       }
-  //     } else {
-  //       alert('해당 기능은 아직 구현되지 않았습니다.');
-  //     }
-  //   } catch (error) {
-  //     console.error('Error fetching posts:', error);
-  //   }
-  // };
-
   return (
     <React.Fragment>
       <Container>
         <ProfileSection>
           <ProfileIcon icon={faUserCircle} />
-          <UserName>nickName1</UserName>
+          <UserName>{myNickName}</UserName>
         </ProfileSection>
         <Button onClick={() => handleButtonClick('member-posting')}>
           내가 작성한 게시글
@@ -126,11 +104,11 @@ function MyPage() {
           진행중인 중고우산 거래
           <FontAwesomeIcon icon={faUmbrella} />
         </Button>
-        <Button onClick={() => alert('내가 차단한 차단 목록')}>
+        <Button onClick={() => handleButtonClick('blocked-list')}>
           내가 차단한 차단 목록
           <FontAwesomeIcon icon={faBan} />
         </Button>
-        <Button onClick={() => alert('내가 신고한 신고 목록')}>
+        <Button onClick={() => handleButtonClick('reported-list')}>
           내가 신고한 신고 목록
           <FontAwesomeIcon icon={faFlag} />
         </Button>
