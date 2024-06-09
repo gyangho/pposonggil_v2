@@ -260,6 +260,15 @@ const PostPrice = styled.span`
   color: #333;
 `;
 
+
+const NoTradesMessage = styled.div`
+  margin-top: 20px;
+  font-size: 18px;
+  color: #555;
+  font-weight: bold; /* 글씨를 굵게 */
+`;
+
+
 function MemberPosting() {
   const [posts, setPosts] = useState([]);
   const navigate = useNavigate();
@@ -283,7 +292,8 @@ function MemberPosting() {
     <Container>
       <Title>내가 작성한 게시글 <FontAwesomeIcon icon={faListUl} /></Title>
       {posts.length === 0 ? (
-        <p>No posts found.</p>
+        // <p>No posts found.</p>
+        <NoTradesMessage>작성한 게시글이 없습니다.</NoTradesMessage>
       ) : (
         <PostList>
           {posts.map(post => (

@@ -30,6 +30,8 @@ import MemberPosting from './routes/MemberPosting';
 import MemberPostingDetailed from './routes/MemberPostingDetailed';
 import EditPost from './routes/market/EditPost';
 import OngoingTrades from './routes/OngoingTrades'; // 새로 추가된 컴포넌트
+import BlockList from './routes/BlockList';
+import ReportList from './routes/ReportList';
 
 
 const Wrapper = styled.div`
@@ -46,6 +48,8 @@ function App() {
       <Header />
       <Wrapper>
         <Routes>
+          <Route path="/blockList" element={<BlockList />} />
+          <Route path="/reportList" element={<ReportList />} />
           <Route path="/bookmark" element={<Bookmark />} />
           <Route path="/mypage" element={<MyPage />} />
           {/* 멤버가 작성한 게시글 페이지 추가 */}
