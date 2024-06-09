@@ -51,7 +51,7 @@ public class MemberApiController {
         Member memberToUpdate = existingMember.get();
         memberToUpdate.addRole(Role.ADMIN);
         memberRepository.save(memberToUpdate);
-        memberToUpdate
+        //memberToUpdate
         return "<script> window.history.back()</script>";
     }
 }
