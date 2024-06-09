@@ -12,14 +12,11 @@ const { kakao } = window;
 // SearchPlace.js에 들어가는 지도 (홈화면 지도와 다른 설정)
 function Map2() {
   const [isLoading, setIsLoading] = useState(false);
-  const [isGridLoading, setIsGridLoading] = useState(false);
   const [activeTracking, setActiveTracking] = useState(true);
   const [activeMarker, setActiveMarker] = useState(true);
-  const [activeGrid, setActiveGrid] = useState(false);
 
   const place = useRecoilValue(searchPlace);
 
-  const mapRef = useRef(null);
   const mapInstance = useRef(null);
   const markerInstance = useRef(null);
   const geocoder = useRef(null);
@@ -37,7 +34,7 @@ function Map2() {
 
     script.onload = () => {
       kakao.maps.load(() => {
-        const container = mapRef.current;
+        const container = mapInstance.current;
         const options = {
           center: new kakao.maps.LatLng(place.lat, place.lon),
           level: 3,
@@ -94,36 +91,9 @@ function Map2() {
     }
   }, [activeTracking]);
 
-  //격자 표시 함수(아직 구현 안함)
-  const handleGridBtn = useCallback(() => {
-    setIsGridLoading(true);
-    //지도 중심 서울 중심으로 이동 및 지도 확대 레벨 변경
-    const seoulPosition = new kakao.maps.LatLng(37.5665, 126.9780);
-    mapInstance.current.setCenter(seoulPosition);
-    mapInstance.current.setLevel(8);
-    
-    if(!activeGrid) {
-      console.log("show grid!");
-    } else {
-      console.log("hide grid!");
-    }
-    setActiveGrid(prev=> !prev);
-    setIsGridLoading(false);
-  }, [activeGrid]);
-
   return (
-    <KakaoMap id="map" ref={mapRef}>
+    <KakaoMap id="map" ref={mapInstance}>
       <BtnContainer>
-        <GridBtn
-          onClick={handleGridBtn}
-          isGridLoading={isGridLoading}
-        >
-          <Icon
-            icon={isGridLoading ? faSpinner : faBorderAll}
-            style={{ color: activeGrid ? "tomato" : "#216CFF" }}
-          />
-        </GridBtn>
-
         <LocationBtn
           onClick={handleLocationBtn}
           isLoading={isLoading}
@@ -171,10 +141,6 @@ const LocationBtn = styled(motion.button)`
   padding: 12px;
   box-shadow: 0px 0px 3px 3px rgba(0, 0, 0, 0.1);
   cursor: ${props => (props.isLoading ? 'not-allowed' : 'pointer')};
-`;
-
-const GridBtn = styled(LocationBtn)`
-  cursor: ${props => (props.isGridLoading ? 'not-allowed' : 'pointer')};
 `;
 
 const Icon = styled(FontAwesomeIcon)`

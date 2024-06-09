@@ -107,8 +107,11 @@ export const bookmarkRouteState = atom({
   }
 });
 
-//서버에서 받아온 사용자 정보 저장 atom
+//서버에서 받아온 현재 로그인 사용자 정보 저장 atom (테스트용으로 1, test로 설정)
 export const userState = atom({
   key: 'userState',
-  default: null,
+  default: {
+    userId: 1, //0으로 바꿔놓기
+    userNickName: 'test', // ''로 바꿔놓기
+  },
 });

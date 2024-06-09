@@ -7,7 +7,7 @@ import api from "../api/api";
 import styled from "styled-components";
 import { motion, sync } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBus, faSubway, faDroplet, faCircleDot, faPersonWalking, faLocationDot, faWind, faGlassWaterDroplet, faCloudRain, faSun, faCloud, faDisplay, faRoute, faFlag } from "@fortawesome/free-solid-svg-icons";
+import { faBus, faSubway, faDroplet, faCircleDot, faPersonWalking, faLocationDot, faWind, faGlassWaterDroplet, faCloudRain, faSun, faCloud, faDisplay, faRoute, faFlag, faArrowRotateRight } from "@fortawesome/free-solid-svg-icons";
 
 import MapBtn from "../components/MapBtn";
 
@@ -24,11 +24,14 @@ function TransactionStatus() {
   const markerInstance = useRef(null);
   const geocoder = useRef(null);
 
+  const hasCurrentAddressBeenSet = useRef(false); //
   const [currentAddress, setCurrentAddress] = useRecoilState(currentAddressState); // 현재 위치 추적 주소
   const [activeMarker, setActiveMarker] = useRecoilState(markerState);
 
   const [isLocationLoading, setIsLocationLoading] = useState(false);
   const [activeTracking, setActiveTracking] = useState(false);
+
+  const [initialPosition, setInitialPosition] = useState({}); // 페이지 처음 렌딩할 때 현위치 정보 저장
 
   const [isGridLoading, setIsGridLoading] = useState(false); // 그리드 버튼 로딩 상태
   const [isGridActive, setIsGridActive] = useState(false); // 그리드 활성화 상태
@@ -80,25 +83,6 @@ function TransactionStatus() {
       console.error("격자 날씨 정보 get 에러", error);
     }
   };
-
-  /* 지도 생성 */
-  useEffect(() => {
-    getGridWeatherFromServer();
-    getCurrentAddress();
-    kakao.maps.load(() => {
-      const container = mapRef.current;
-      const options = {
-        center: new kakao.maps.LatLng(37.5642135, 127.0016985),
-        level: 4,
-      };
-      mapInstance.current = new kakao.maps.Map(container, options);
-      geocoder.current = new kakao.maps.services.Geocoder();
-      setMap(mapInstance.current);
-      /* 거래 장소로 마크업 및 지도 확대 */
-      //
-      console.log("지도 랜더링");
-    });
-  }, []);
 
   useEffect(() => { //그리드객체 showGrid로 업데이트 된 후에 적용되게 하기 위해서 useEffect 사용
     if (isGridActive && gridObjects.length > 0) {
@@ -211,19 +195,51 @@ function TransactionStatus() {
     }
   }, [activeTracking]);
 
+  /* 지도 생성 */
+  useEffect(() => {
+    console.log("전달받은 transaction: ", transaction);
+    getGridWeatherFromServer();
+    getCurrentAddress();
+    // onUpdateBtnClick();
+    kakao.maps.load(() => {
+      const container = mapInstance.current;
+      const options = {
+        center: new kakao.maps.LatLng(37.5642135, 127.0016985),
+        level: 4,
+      };
+      mapInstance.current = new kakao.maps.Map(container, options);
+      geocoder.current = new kakao.maps.services.Geocoder();
+      setMap(mapInstance.current);
+      /* 거래 장소로 마크업 및 지도 확대 */
+
+      console.log("지도 랜더링");
+    });
+  }, []);
+
+  // currentAddress가 처음 설정된 경우에만 함수를 실행 => useRef 사용해서 처음 한 번만 PUT 요청이 자동으로 보내지게 함
+  useEffect(() => {
+    if (currentAddress.lat && !hasCurrentAddressBeenSet.current) {
+      onUpdateBtnClick();
+      hasCurrentAddressBeenSet.current = true;
+    }
+  }, [currentAddress]);
   /* 6월 9일 오전 6시 추가 */
   // 거래장소 임의로 설정해놓고 코드 작성, 후에 서버측에서 정보 가져와서 바꿔줘야함
+  const location = useLocation();
+  const { transaction } = location.state || [];
   const navigate = useNavigate();
-  const [routeInfo, setRouteInfo] = useRecoilState(routeInfoState);
-  const meetingPlace = {
-    name: "거래 약속 장소(임시 서울 중심)",
-    lat: 37.5642135,
-    lon: 127.0016985,
-  }
+  const [tsData, setTsData] = useState([]); //서버로부터 받을 response.data 저장
+  const [user, setUser] = useRecoilState(userState);
+  const [remainingTime, setRemainingTime] = useState({
+    hrs: 0,
+    mins: 0
+  });
+  const [routeInfo, setRouteInfo] = useRecoilState(routeInfoState); //경로 찾기시 출발지 목적지 저장 atom
 
+  // 현재 위치 추적
   const getCurrentAddress = () => {
     if (navigator.geolocation) {
-      // 현재 위치 추적 및 지도 확대/이동
+
       navigator.geolocation.getCurrentPosition((position) => {
         const lat = position.coords.latitude; //float타입으로 반환해줌
         const lon = position.coords.longitude;
@@ -232,6 +248,13 @@ function TransactionStatus() {
         // 좌표를 주소로 변환 + 현재 위치 주소 정보로 currentAddress atom값 업데이트
         geocoder.current.coord2Address(lon, lat, (result, status) => {
           if (status === kakao.maps.services.Status.OK) {
+            //첫 위치 추적(페이지 첫 렌더링 시)시 initialPosition에 저장
+            if (!initialPosition) {
+              setInitialPosition({
+                lat: lat,
+                lon: lon,
+              })
+            }
             setCurrentAddress({
               depth2: result[0].address.region_2depth_name,
               depth3: result[0].address.region_3depth_name,
@@ -247,6 +270,49 @@ function TransactionStatus() {
     console.log("현재 위치를 업데이트 했습니다");
   };
 
+  //거래까지 남은 시간 계산 함수
+  const calculateTimeRemaining = () => {
+    const tsStartTimeString = transaction.startTimeString; // 거래 시작 시간
+    const currentTime = new Date(); // 현재 시간
+    // 년, 월, 일, 시, 분 분리
+    const [year, month, day, hour, minute] = tsStartTimeString.split(/[-:]/);
+    const tsStartTime = new Date(year, month - 1, day, hour, minute);
+
+    // 시간 차이 계산 (밀리초 단위)
+    const timeDifference = tsStartTime - currentTime;
+    if (timeDifference <= 0) {
+      setRemainingTime({
+        hrs: 0,
+        mins: 0
+      });
+      return;
+    }
+
+    // 밀리초를 시간과 분으로 변환
+    const remainingHours = Math.floor(timeDifference / (1000 * 60 * 60));
+    const remainingMinutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+
+    console.log(`남은 시간: ${remainingHours}시간 ${remainingMinutes}분`);
+    setRemainingTime({
+      hrs: remainingHours,
+      mins: remainingMinutes
+    });
+  }
+  //거래까지 남은 시간 계산 함수 1분마다 실행
+  useEffect(() => {
+    console.log("거래까지 남은 시간을 계산합니다.");
+    calculateTimeRemaining(); // 초기 호출
+
+    // 1분 간격으로 호출하는 Interval 설정
+    const intervalId = setInterval(() => {
+      calculateTimeRemaining();
+    }, 60000); // 1분은 60초이므로 60000밀리초
+
+    // 컴포넌트가 언마운트되거나 업데이트되면 Interval 정리
+    return () => clearInterval(intervalId);
+  }, []);
+
+  //현재 위치에서 거래장소까지의 경로 검색 버튼
   const onSearchBtnClick = () => {
     console.log("현재 위치: ", currentAddress);
     //현재 위치 (recoilState이용) 출발지, 거래장소 도착지로 routeInfoState atom값 설정한 후 serach/routes 페이지로 이동
@@ -256,7 +322,12 @@ function TransactionStatus() {
         lat: currentAddress.lat,
         lon: currentAddress.lon,
       };
-      const searchDest = meetingPlace;
+      // const searchDest = meetingPlace;
+      const searchDest = {
+        name: transaction.address.name,
+        lat: transaction.address.latitude,
+        lon: transaction.address.longitude,
+      }
       setRouteInfo({
         origin: [searchOrigin],
         dest: [searchDest]
@@ -268,12 +339,65 @@ function TransactionStatus() {
   };
 
   useEffect(() => {
-    console.log("거래장소로 routeInfoState 업데이트: ", routeInfo);
+    console.log("routeInfoState: ", routeInfo);
   }, [routeInfo]);
+
+  /* 서버로 내 위치 데이터, 아이디 보내고 정보 받기 */
+  // 현재 내위치~거래장소와의 거리 계산 함수 추가하기
+
+  const sendDtosToServer = async () => {
+    console.log("서버에 put합니다");
+    //url에 tradeId와 유저의 id 붙여서 보내기 //테스트용으로 일단 거래아이디로 확인해봄
+    const url = `http://localhost:8080/api/distance/${transaction.tradeId}/by-member/${user.userId}`;
+    const formData = new FormData(); // form-data 객체 생성
+
+    const startDto = {
+      "latitude": parseFloat(currentAddress.lat),
+      "longitude": parseFloat(currentAddress.lon),
+    };
+    formData.append('startDto', new Blob([JSON.stringify(startDto)], { type: 'application/json' }));
+
+    // // FormData 내용 출력(프론트 확인용)
+    for (let [key, value] of formData.entries()) {
+      console.log("서버로 보낸 데이터: ");
+      console.log(`${key}:`, value);
+      if (value instanceof Blob) {
+        value.text().then(text => console.log(`${key} content:`, text));
+      }
+    }
+
+    try {
+      const response = await api.put(url, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+      console.log('Response:', response.data);
+      setTsData(response.data);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  //
+  const onUpdateBtnClick = () => {
+    console.log('업데이트 버튼 클릭');
+    getCurrentAddress(); //내위치 정보 업데이트
+    //여기서 문제,, 내 위치정보는 recoilState로 저장하고 잇는데 업데이트한 위치 정보가 여기서 바로 반영이 되나..?
+    // 렌더링이 한번 일어나야 값아 반영 되는 거라면, 여기서 오류날거임(현재위치 반영안되고 예전 위치나, 위치 정보 없다거나..)
+    sendDtosToServer();
+    //내위치 정보 서버에 put 하고 response.data로 화면에 뿌리기.
+    //맨 처음 렌더링 될 때 내위치 따로 저장해서 비교하기. 얼마나 줄었는지.
+    //내위치 정보 서버에 put 하고 response.data로 화면에 뿌리기.
+  };
+
+  // useEffect(()=> {
+  //   console.log("거래 정보 서버로부터 받아 화면을 업데이트 합니다");
+  // }, [tsData]);
 
   return (
     <React.Fragment>
-      <MapContainer id="map" ref={mapRef} style={{ position: "relative" }}>
+      <MapContainer id="map" ref={mapInstance} style={{ position: "relative" }}>
         <TimeBtnBar>
           {isGridActive && (
             <TimeBtns
@@ -300,95 +424,128 @@ function TransactionStatus() {
           handleLocationBtn={handleLocationBtn}
         />
       </MapContainer>
-      <TimeBar
-        initial={{ height: "0%" }}
-        animate={{ height: isExpanded ? "20%" : "0%" }}
+      <SearchRouteBtn
+        initial={{ height: "10%" }}
+        animate={{ height: isExpanded ? "20%" : "10%" }}
         transition={{ duration: 0.4 }}
       >
         <RouteBtn onClick={() => onSearchBtnClick()}>
-          <FontAwesomeIcon icon={faRoute} style={{ color: "#63CAFF", paddingRight: "5px" }} />
-          <p>길찾기</p>
+          <FontAwesomeIcon icon={faRoute} style={{ color: "#13C87C", paddingRight: "8px" }} />
+          <p>경로 안내</p>
         </RouteBtn>
-      </TimeBar>
+      </SearchRouteBtn>
       <BottomContainer
-        initial={{ height: "40%" }}
-        animate={{ height: isExpanded ? "50%" : "40%" }}
+        initial={{ height: "45%" }}
+        animate={{ height: isExpanded ? "50%" : "45%" }}
         transition={{ duration: 0.4 }}
-        onClick={() => setIsExpanded(!isExpanded)}
+      // onClick={() => setIsExpanded(!isExpanded)}
       >
 
         <ToggleBar><TBar /></ToggleBar>
         <TransactionBox>
           <Block>
-            <TransactionNotice>
+            <BlockColumnL>
               <div>
                 <h1>거래 시간이<br />다가오고 있어요<br /></h1>
                 <p>서둘러 약속 장소로 이동해주세요!</p>
               </div>
-            </TransactionNotice>
-            <TransactionTime>
+            </BlockColumnL>
+            <BlockColumnR>
               <Text>
                 <h2>남은시간</h2>
-                <h1>190분</h1>
+                <h1>{remainingTime.hrs}<p>시간</p></h1>
+                <h1>{remainingTime.mins}<p>분</p></h1>
               </Text>
-            </TransactionTime>
+            </BlockColumnR>
           </Block>
           <Block>
-            <FontAwesomeIcon icon={faFlag} style={{ fontSize: "18px", paddingRight: "5px", paddingBottom: "5px" }} />
-            <span>숭실대학교 정문</span>
+            <BlockColumnL>
+              <div>
+                <FontAwesomeIcon icon={faFlag} style={{ fontSize: "18px", paddingRight: "5px" }} />
+                <span>{transaction.address.name}</span>
+                <p style={{ fontSize: "16px", fontWeight: "500", color: "#656565" }}>
+                  {transaction.address.street}
+                </p>
+              </div>
+            </BlockColumnL>
           </Block>
-          <Block>
-            <p style={{ fontSize: "16px", fontWeight: "500", color: "#656565" }}>동작구 상도동</p>
-          </Block>
+
           {/* 거래 진행 상황 상태 바 */}
+          <RefreshBlock>
+            <RefreshIcon onClick={() => onUpdateBtnClick()}>
+              위치 업데이트<FontAwesomeIcon icon={faArrowRotateRight} style={{ marginLeft: "5px" }} />
+            </RefreshIcon>
+          </RefreshBlock>
+
+          {/* <div 
+          style={{width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "5px"}}
+          > 
+            <span style={{width: "50%", textAlign: "center", fontSize: "16px", fontWeight: "bold" }}>200m</span>
+            <span style={{width: "50%", textAlign: "center", fontSize: "16px", fontWeight: "bold" }}>200m</span>
+          </div> */}
+
           <StatusBar id="StatusBar">
+
             <BarContainer style={{ justifyContent: "space-between" }}>
               <Bar style={{ width: "50%", backgroundColor: "#E6E6E6", justifyContent: "start" }}>
                 {/* 나의 위치 상태 바 */}
-                <Bar style={{ width: "80%", backgroundColor: "#63CAFF", justifyContent: "end" }}>
-                  <p>200m</p>
-                  <IconBox>
-                    <FontAwesomeIcon icon={faPersonWalking} style={{ color: "white" }} />
-                  </IconBox>
-                </Bar>
+                {tsData.subjectId === user.userId ? (
+                  <Bar style={{ width: "{tsData.subjectRemainRate}%", backgroundColor: "#63CAFF", justifyContent: "end" }}>
+                    <IconBox>
+                      <FontAwesomeIcon icon={faPersonWalking} style={{ color: "white" }} />
+                    </IconBox>
+                  </Bar>
+                ) : (
+                  <Bar style={{ width: "{tsData.objectRemainRate}%", backgroundColor: "#63CAFF", justifyContent: "end" }}>
+                    <IconBox>
+                      <FontAwesomeIcon icon={faPersonWalking} style={{ color: "white" }} />
+                    </IconBox>
+                  </Bar>
+                )}
               </Bar>
               <DestIconBox><FontAwesomeIcon icon={faFlag} /></DestIconBox>
-
+              {/* 상대방 위치 상태 바 */}
               <Bar style={{ width: "50%", backgroundColor: "#E6E6E6", justifyContent: "end" }}>
-                <Bar style={{ width: "50%", backgroundColor: "#FFCE1F" }}>
-                  <IconBox>
-                    <FontAwesomeIcon icon={faPersonWalking} style={{ color: "white" }} />
-                  </IconBox>
-                  <p>200m</p>
-                </Bar>
+                {tsData.subjectId === user.userId ? (
+                  <Bar style={{ width: "{tsData.objectRemainRate}%", backgroundColor: "#FFCE1F" }}>
+                    <IconBox>
+                      <FontAwesomeIcon icon={faPersonWalking} style={{ color: "white" }} />
+                    </IconBox>
+                  </Bar>
+                ) : (
+                  <Bar style={{ width: "{tsData.subjectRemainRate}%", backgroundColor: "#FFCE1F", justifyContent: "end" }}>
+                    <IconBox>
+                      <FontAwesomeIcon icon={faPersonWalking} style={{ color: "white" }} />
+                    </IconBox>
+                  </Bar>
+                )}
               </Bar>
-              {/* {path.subPathDtos.map((subPath, subIndex) => (
-                  subPath.time !== 0 && (
-                    <React.Fragment key={subIndex}>
-                      <Bar
-                        width={(subPath.time / path.totalTime) * 100}
-                        color={subPath.type === 'walk' ? 'darkgray' : (subPath.type === 'subway' ? subPath.subwayColor : subPath.busColor)}
-                      >
-                        {subPath.type !== 'walk' && (
-                          <IconBox style={{backgroundColor: subPath.type === 'bus' ? subPath.busColor : subPath.subwayColor}}>
-                            <FontAwesomeIcon
-                              icon={subPath.type === 'bus' ? faBus : faSubway}
-                              style={{color: "white"}}
-                            />
-                          </IconBox>
-                        )}
-                        <p>{subPath.time}분</p>
-                      </Bar>
-                    </React.Fragment>
-                  )
-                ))} */}
+
             </BarContainer>
           </StatusBar>
-          <StatusBarText
-            style={{ display: "flex", justifyContent: "space-between", paddingBottom: "20px" }}
-          >
-            <p>나</p><span>맥도날드</span><p>거래자</p>
-          </StatusBarText>
+          {tsData.subjectId === user.userId ? (
+            <React.Fragment>
+              <StatusBarText
+                style={{ display: "flex", justifyContent: "space-between", paddingBottom: "20px" }}
+              >
+                <p>{tsData.subjectName}</p>
+                <span>{transaction.address.name}</span>
+                <p>{tsData.objectName}</p>
+              </StatusBarText>
+            </React.Fragment>
+          ) : (
+            <React.Fragment>
+              <StatusBarText
+                style={{ display: "flex", justifyContent: "space-between", paddingBottom: "20px" }}
+              >
+                <p>{tsData.objectName}</p>
+                <span>{transaction.address.name}</span>
+                <p>{tsData.subjectName}</p>
+              </StatusBarText>
+              <StatusBarText></StatusBarText>
+            </React.Fragment>
+          )}
+
         </TransactionBox>
       </BottomContainer>
     </React.Fragment>
@@ -399,7 +556,7 @@ export default TransactionStatus;
 
 const MapContainer = styled(motion.div)`
   width: 100%;
-  height: 60%;
+  height: 55%;
   position: relative;
 `;
 
@@ -492,13 +649,14 @@ const TBar = styled.div` //중앙 막대기
 // 하단창 토글바 제외 부분(컨텐츠 들어가는 부분)
 const TransactionBox = styled.div`
   background-color: white;
-  padding: 15px 20px;
+  padding: 20px 30px;
 
   margin-bottom: 10px;
 `;
 
 /* 하단창 박스 contents */
 const Block = styled.div` //row기준 박스
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -507,14 +665,34 @@ const Block = styled.div` //row기준 박스
     margin-bottom: 20px;
   }
   &:nth-child(2) { //거래장소 박스
-    justify-content: start;
+    /* justify-content: start; */
     font-size: 20px;
     font-weight: 600;
     margin-bottom: 5px;
+    justify-content: space-between;
   }
 `;
+const RefreshBlock = styled.div`
+  width: 100%;
+  display: flex;
+  /* justify-content: end; */
+  justify-content: center;
+  align-items: center;
+  font-size: 15px;
+  font-weight: bold;
+  margin-bottom: 20px;
+`;
+const RefreshIcon = styled.div`
+  background-color: whitesmoke;
+  font-size: 15px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 2px solid #dddddd;
+  cursor: pointer;
+  margin-bottom: 15px;
+`;
 
-const TransactionNotice = styled.div` //거래 안내 박스
+const BlockColumnL = styled.div` //거래 안내 박스
   width: 70%;
   height: auto;
   font-weight: bold;
@@ -523,7 +701,6 @@ const TransactionNotice = styled.div` //거래 안내 박스
   div {
     display: block;
     justify-content: center;
-    align-items: end;
     padding-bottom: 5px;
     height: 100%;
     h1 { //거래시간이 다가오고 있어요
@@ -537,10 +714,10 @@ const TransactionNotice = styled.div` //거래 안내 박스
     }
   }
 `;
-const TransactionTime = styled.div` //시간 박스
+const BlockColumnR = styled.div` //시간 박스
   display: block;
-  height: 80px;
-  width: 80px;
+  height: 90px;
+  width: 90px;
   justify-content: center;
   align-items: center;
   text-align: center;
@@ -558,21 +735,29 @@ const Text = styled.div` //시간
   text-align: center;
   h1 {
     font-weight: 900;
-    font-size: 23px;
+    font-size: 22px;
     color: #004263;
-    margin-top: 2px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    p {
+      font-size: 15px;
+      font-weight: bold;
+      color: black;
+    }
   }
   h2 {
-    font-weight: bold;
-    font-size: 16px;
+    font-weight: 900;
+    font-size: 14px;
     color: #004263;
     margin-top: 5px;
+    color: black;
   }
 `;
 
 /* 나~거래장소~거래자 거리 현황 바 */
 const StatusBar = styled.div`
-  padding: 10px 0px;
+  padding-bottom: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -629,7 +814,6 @@ const BarContainer = styled.div`
   height: 18px;
   background-color: #E6E6E6;
   border-radius: 25px;
-  margin-top: 30px;
 `;
 
 const Bar = styled.div`
@@ -656,10 +840,10 @@ const Bar = styled.div`
 
 
 /* Btn 컴포넌트 추가*/
-const TimeBar = styled(motion.div)`
+const SearchRouteBtn = styled(motion.div)`
   width: 90%;
   /* max-width: 75%; */
-  /* height: 10%; */
+  height: 10%;
   height: auto;
   padding: 0px 10px;
   display: flex;
@@ -672,11 +856,11 @@ const TimeBar = styled(motion.div)`
 `;
 const RouteBtn = styled.button`
   width: auto;
-  height: 40px;
+  height: 45px;
   margin-bottom: 5px;
   border-radius: 25px;
   font-family: 'Bagel Fat One', cursive;
-  font-size: 14px;
+  font-size: 16px;
   box-shadow: 0px 0px 5px 3px rgba(0, 0, 0, 0.1);
   background-color: #003E5E;
   color: white;
