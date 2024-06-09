@@ -178,7 +178,7 @@ public class SubPathService {
                         .build();
 
                 ForecastDto forecastByTimeAndXAndY = forecastService.findForecastByTimeAndXAndY(forecastDto);
-                Double expectedRain = subPathDto.getTime() * Double.parseDouble(forecastByTimeAndXAndY.getRn1());
+                Double expectedRain = subPathDto.getTime() * Double.parseDouble(forecastByTimeAndXAndY.getRn1()) / 60;
 
                 subPathDto.setForecastDto(forecastByTimeAndXAndY);
                 subPathDto.setExpectedRain(expectedRain);

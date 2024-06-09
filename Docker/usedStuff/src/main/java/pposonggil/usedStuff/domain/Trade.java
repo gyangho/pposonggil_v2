@@ -30,10 +30,6 @@ public class Trade extends BaseEntity {
     private ChatRoom tradeChatRoom;
 
     @Builder.Default
-    @OneToMany(mappedBy = "informationTrade", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Information> informations = new ArrayList<>();
-
-    @Builder.Default
     @OneToMany(mappedBy = "reviewTrade")
     private List<Review> reviews = new ArrayList<>();
 

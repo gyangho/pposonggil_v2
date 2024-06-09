@@ -28,7 +28,7 @@ public class MemberBlockApiController {
      * @param memberId : 조회하려는 회원 아이디
      * @return 차단 회원 Dto
      */
-    @GetMapping("/api/member//with-block/by-member/{memberId}")
+    @GetMapping("/api/member/with-block/by-member/{memberId}")
     public MemberBlockDto getMemberWithBlock(@PathVariable Long memberId) {
         return memberBlockService.findOneWithBlock(memberId);
     }
