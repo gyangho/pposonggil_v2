@@ -257,8 +257,12 @@ function Chat() {
   //const location = useLocation();
   // const { userId } = location.state || {};
   // console.log("받은 user state: ", userId);
+
+
   const setNav = useSetRecoilState(navState);
-  setNav("market");
+  useEffect(() => {
+    setNav("market");
+  }, [setNav]);
 
   //const setNav = useSetRecoilState(navState);
 
@@ -267,13 +271,16 @@ function Chat() {
   const [messages, setMessages] = useState([]); // 메시지 상태
   const [input, setInput] = useState(""); // 입력 필드 상태
   const [blocked, setBlocked] = useState(false); // 차단 여부 상태
+  // const chatContainerRef = useRef(null); // ref 추가
 
   const myId = 1; // 본인의 ID, 실제 사용자 ID로 대체 필요
+  const otherUserId = 3; // 실제 상대방의 ID로 대체 필요
 
 
-  const fetchMessages = async () => {
+  const fetchMessages = async () => {//메시지 가져오기
     try {
-      const response = await api.get(`http://localhost:8080/api/messages/by-chatroom/${chatRoomId}`);
+      const response = await axios.get(`http://localhost:8080/api/messages/by-chatroom/${chatRoomId}`);
+      const sortedMessages = response.data.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
       const formattedMessages = response.data.map(msg => ({
         ...msg,
         timestamp: new Date(msg.createdAt).toLocaleTimeString(),
@@ -286,15 +293,17 @@ function Chat() {
 
   useEffect(() => {
     fetchMessages();
-    const interval = setInterval(fetchMessages, 5000);
+    const interval = setInterval(fetchMessages, 2000);//메시지 가져오는 주기 2초
     return () => clearInterval(interval);
   }, [chatRoomId]);
+
+
 
   const handleSendMessage = async () => {
     if (input.trim() && !blocked) {
       const newMessage = {
         chatRoomId: parseInt(chatRoomId, 10),
-        senderId: 1,
+        senderId: myId,
         //   senderNickName: userId, // 실제 사용자 닉네임으로 대체 필요
         senderNickName: "nickName",
         content: input,
@@ -313,15 +322,25 @@ function Chat() {
     }
   };
 
-  const handleKeyPress = (event) => {
+  const handleKeyPress = (event) => {//엔터치면 메시지 가게
     if (event.key === "Enter") {
       handleSendMessage();
     }
   };
 
-  const handleBlockUser = () => {
-    setBlocked(true);
-    alert(`상대를 차단하였습니다.`);
+  const handleBlockUser = async () => {
+    try {
+      const blockData = {
+        subjectId: myId,
+        objectId: otherUserId
+      };
+      const response = await axios.post('http://localhost:8080/api/block', blockData);
+      console.log('Block ID:', response.data.blockId);
+      setBlocked(true);
+      alert(response.data.message);
+    } catch (error) {
+      console.error('Failed to block user:', error);
+    }
   };
 
   const handleReportUser = async () => {
@@ -411,13 +430,27 @@ const Button = styled.button`
 `;
 
 const ScheduleBtn = styled.div`
-  background-color: tomato;
-  padding: 30px;
-  cursor: pointer;
-  &:hover {
-    background-color: whitesmoke;
-  }
+background-color: #87cfeb44;
+// background-color: #98d8e0;
+padding: 15px 30px;
+margin: auto; // 가운데 정렬을 위해 추가
+border-radius: 25px; // 둥근 모서리를 위해 추가
+max-width: 300px; // 최대 너비 설정
+border-radius: 25px; // 둥근 모서리를 위해 추가
+cursor: pointer;
+text-align: center; // 텍스트 가운데 정렬을 위해 추가
+&:hover {
+  background-color: #ff7f50; // 약간의 색 변화
+}
 `;
+
+//   background-color: tomato;
+//   padding: 30px;
+//   cursor: pointer;
+//   &:hover {
+//     background-color: whitesmoke;
+//   }
+// `;
 
 const ChatContainer = styled.div`
   display: flex;
@@ -459,14 +492,26 @@ const ChatInput = styled.input`
   margin-right: 10px;
 `;
 
+// const SendButton = styled.button`
+//   padding: 10px 20px;
+//   background-color: tomato;
+//   color: #fff;
+//   border: none;
+//   border-radius: 5px;
+//   cursor: pointer;
+//   &:hover {
+//     background-color: #e67e22;
+//   }
+// `;
+
 const SendButton = styled.button`
   padding: 10px 20px;
-  background-color: tomato;
-  color: #fff;
+  background-color: ${props => props.blocked ? 'gray' : 'tomato'};
+  color: ${props => props.blocked ? '#888' : '#fff'};
   border: none;
   border-radius: 5px;
-  cursor: pointer;
+  cursor: ${props => props.blocked ? 'not-allowed' : 'pointer'};
   &:hover {
-    background-color: #e67e22;
+    background-color: ${props => props.blocked ? 'gray' : '#e67e22'};
   }
 `;

@@ -103,7 +103,7 @@ public class BlockApiController {
      * @param blockId : 해제할 차단 아이디
      * @return 성공 --> "차단을 해제하였습니다."
      */
-    @DeleteMapping("/api/block/{blockID}")
+    @DeleteMapping("/api/block/{blockId}")
     public ResponseEntity<String> deleteBlock(@PathVariable Long blockId) {
         BlockDto blockDto =  blockService.findBlocksByBlockID(blockId);
         Long subjectId = blockDto.getSubjectId();

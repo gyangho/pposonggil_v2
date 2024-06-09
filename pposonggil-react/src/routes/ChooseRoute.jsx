@@ -49,8 +49,6 @@ function ChooseRoute() {
     getPathsFromServer();
   }, [getPathsFromServer]);
 
-
-
   /* 지도 초기화 */
   useEffect(() => {
     kakao.maps.load(() => {
@@ -144,15 +142,28 @@ function ChooseRoute() {
       });
 
       // 출발지 목적지 클릭시 인포윈도우
-      const infoWindowContent = `<div style="padding:5px;">출발지: ${path.startDto.name}<br>도착지: ${path.endDto.name}</div>`;
-      const infoWindow = new kakao.maps.InfoWindow({
-        content: infoWindowContent,
-      });
-      setInfoWindow(infoWindow);
+      const infoWindowStart = `<div style="padding:10px;width:auto;height:60px;font-weight:bold;">${path.startDto.name}</div>`;
+      const infoWindowEnd = `<div style="padding:10px;width:auto;height:60px;font-weight:bold;">${path.endDto.name}</div>`;
 
       const addMarkerClickListener = (marker) => {
         kakao.maps.event.addListener(marker, 'click', () => {
-          infoWindow.open(map, marker);
+          if(marker === startMarker) {
+            const infoWindow = new kakao.maps.InfoWindow({
+              content: infoWindowStart,
+              removable: true,
+
+            });
+            setInfoWindow(infoWindow);
+            infoWindow.open(map, marker);
+          }
+          else {
+            const infoWindow = new kakao.maps.InfoWindow({
+              content: infoWindowEnd,
+              removable: true,
+            });
+            setInfoWindow(infoWindow);
+            infoWindow.open(map, marker);
+          }
         });
       };
 

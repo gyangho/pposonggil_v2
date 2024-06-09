@@ -31,7 +31,7 @@ public class MemberBoardApiController {
      * @param memberId : 조회하려는 회원 아이디
      * @return 게시글 회원 Dto
      */
-    @GetMapping("/api/member//with-board/by-member/{memberId}")
+    @GetMapping("/api/member/with-board/by-member/{memberId}")
     public MemberBoardDto getMemberWithBoard(@PathVariable Long memberId) {
         validateService.checkAdminMemberIdAndThrow(memberId);
         return memberBoardService.findOneWithBoard(memberId);
