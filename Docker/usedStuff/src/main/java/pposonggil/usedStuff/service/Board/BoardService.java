@@ -21,15 +21,18 @@ import pposonggil.usedStuff.dto.Board.BoardDto;
 import pposonggil.usedStuff.dto.Forecast.ForecastDto;
 import pposonggil.usedStuff.dto.Route.Path.PathDto;
 import pposonggil.usedStuff.dto.Route.PointInformation.PointInformationDto;
+import pposonggil.usedStuff.dto.Trade.TradeDto;
 import pposonggil.usedStuff.repository.board.BoardRepository;
 import pposonggil.usedStuff.repository.member.MemberRepository;
 import pposonggil.usedStuff.service.Block.BlockService;
 import pposonggil.usedStuff.service.Forecast.ForecastService;
 import pposonggil.usedStuff.service.Route.PathService;
+import pposonggil.usedStuff.service.Trade.TradeService;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -43,10 +46,13 @@ import java.util.stream.Collectors;
 public class BoardService {
     private final BoardRepository boardRepository;
     private final MemberRepository memberRepository;
+    private final TradeService tradeService;
     private final PathService pathService;
     private final ForecastService forecastService;
     private final BlockService blockService;
     private final AwsS3 awsS3;
+    private final DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm");
+
 
     /**
      * 전체 게시글 조회
@@ -55,6 +61,11 @@ public class BoardService {
         List<Board> boards = boardRepository.findAll();
         return boards.stream()
                 .map(BoardDto::fromEntity)
+                .sorted((board1, board2) -> {
+                    LocalDateTime startTime1 = LocalDateTime.parse(board1.getStartTimeString(), inputFormatter);
+                    LocalDateTime startTime2 = LocalDateTime.parse(board2.getStartTimeString(), inputFormatter);
+                    return startTime1.compareTo(startTime2);
+                })
                 .collect(Collectors.toList());
     }
 
@@ -69,6 +80,36 @@ public class BoardService {
 
         Boards.removeIf(boardDto -> objectIdList.contains(boardDto.getWriterId()));
         return Boards;
+    }
+
+    /**
+     * 예약된 거래 시간을 뺀 게시글 조회
+     */
+    public List<BoardDto> findCheckBoards(Long memberId) {
+        List<BoardDto> results = new ArrayList<>();
+        List<BoardDto> boardDtos = findBoards();
+        List<TradeDto> tradeDtos = tradeService.findTradesByMemberId(memberId);
+
+        for (BoardDto boardDto : boardDtos) {
+            String boardStartTimeString = boardDto.getStartTimeString();
+            String boardEndTimeString = boardDto.getEndTimeString();
+
+            for (int idx = 0; idx < tradeDtos.size(); idx++) {
+                String tradeEndTimeString = tradeDtos.get(idx).getEndTimeString();
+                String tradeStartTimeString = tradeDtos.get(idx).getStartTimeString();
+
+                LocalTime tradeStartTime = LocalTime.parse(tradeStartTimeString, inputFormatter);
+                LocalTime boardStartTime = LocalTime.parse(boardStartTimeString, inputFormatter);
+                LocalTime tradeEndTime = LocalTime.parse(tradeEndTimeString, inputFormatter);
+                LocalTime boardEndTime = LocalTime.parse(boardEndTimeString, inputFormatter);
+
+                if (boardEndTime.isAfter(tradeStartTime) && boardStartTime.isBefore(tradeEndTime))
+                    break;
+                if (idx == tradeDtos.size() - 1)
+                    results.add(boardDto);
+            }
+        }
+        return results;
     }
 
     /**
@@ -95,11 +136,11 @@ public class BoardService {
                     .latitude(address.getLatitude())
                     .longitude(address.getLongitude())
                     .build();
-            try {;
+            try {
                 PathDto pathDto = pathService.createPath(startDto, endDto, curTime.format(inputFormatter), memberId);
                 boardDto.setExpectedRain(pathDto.getTotalRain());
             } catch (Exception e) {
-              log.info("Forecast 정보를 가져오는 데 실패했습니다: " + e.getMessage());
+                log.info("Forecast 정보를 가져오는 데 실패했습니다: " + e.getMessage());
             }
         }
         return boardDtos;
@@ -143,6 +184,11 @@ public class BoardService {
 
         return boards.stream()
                 .map(BoardDto::fromEntity)
+                .sorted((board1, board2) -> {
+                    LocalDateTime startTime1 = LocalDateTime.parse(board1.getStartTimeString(), inputFormatter);
+                    LocalDateTime startTime2 = LocalDateTime.parse(board2.getStartTimeString(), inputFormatter);
+                    return startTime1.compareTo(startTime2);
+                })
                 .collect(Collectors.toList());
     }
 
@@ -164,6 +210,14 @@ public class BoardService {
         Member writer = memberRepository.findById(boardDto.getWriterId())
                 .orElseThrow(() -> new NoSuchElementException("Member not found with id: " + boardDto.getWriterId()));
 
+        if (!checkBoardTime(boardDto)) {
+            throw new IllegalArgumentException("작성한 게시글의 거래 시간이 겹칩니다.");
+        }
+
+        if (!checkTradeTime(boardDto)) {
+            throw new IllegalArgumentException("거래중인 거래와 시간이 겹칩니다.");
+        }
+
         Board board = Board.buildBoard(writer, boardDto.getTitle(), boardDto.getContent(), boardDto.getStartTimeString(),
                 boardDto.getEndTimeString(), boardDto.getAddress(), boardDto.getPrice(), boardDto.isFreebie());
 
@@ -175,10 +229,50 @@ public class BoardService {
         }
         boardRepository.save(board);
         return board.getId();
+
     }
 
     public Long createBoard(BoardDto boardDto) throws Exception {
         return createBoard(boardDto, null); // 파일이 없는 경우 null을 전달
+    }
+
+    public boolean checkBoardTime(BoardDto boardDto) {
+        List<BoardDto> boardDtos = findBoardsByWriterId(boardDto.getWriterId());
+        for (BoardDto boardDto1 : boardDtos) {
+            String boardStartTimeString = boardDto1.getStartTimeString();
+            String boardEndTimeString = boardDto1.getEndTimeString();
+
+            LocalTime requestStartTime = LocalTime.parse(boardDto.getStartTimeString(), inputFormatter);
+            LocalTime boardStartTime = LocalTime.parse(boardStartTimeString, inputFormatter);
+            LocalTime requestEndTime = LocalTime.parse(boardDto.getEndTimeString(), inputFormatter);
+            LocalTime boardEndTime = LocalTime.parse(boardEndTimeString, inputFormatter);
+
+            if(!(requestEndTime.isBefore(boardStartTime) || requestStartTime.isAfter(boardEndTime)))
+                return false;
+        }
+        return true;
+    }
+
+    public boolean checkTradeTime(BoardDto boardDto) {
+        List<TradeDto> tradeDtos = tradeService.findTradesByMemberId(boardDto.getWriterId());
+
+
+        String boardStartTimeString = boardDto.getStartTimeString();
+        String boardEndTimeString = boardDto.getEndTimeString();
+
+        for (TradeDto tradeDto : tradeDtos) {
+            String tradeEndTimeString = tradeDto.getEndTimeString();
+            String tradeStartTimeString = tradeDto.getStartTimeString();
+
+            LocalTime tradeStartTime = LocalTime.parse(tradeStartTimeString, inputFormatter);
+            LocalTime boardStartTime = LocalTime.parse(boardStartTimeString, inputFormatter);
+            LocalTime tradeEndTime = LocalTime.parse(tradeEndTimeString, inputFormatter);
+            LocalTime boardEndTime = LocalTime.parse(boardEndTimeString, inputFormatter);
+
+            if(!(boardEndTime.isBefore(tradeStartTime) || boardStartTime.isAfter(tradeEndTime)))
+                return false;
+        }
+        return true;
     }
 
     /**
