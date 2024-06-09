@@ -260,20 +260,30 @@ const PostPrice = styled.span`
   color: #333;
 `;
 
+
+const NoTradesMessage = styled.div`
+  margin-top: 20px;
+  font-size: 18px;
+  color: #555;
+  font-weight: bold; /* 글씨를 굵게 */
+`;
+
+
 function MemberPosting() {
   const [posts, setPosts] = useState([]);
   const navigate = useNavigate();
-  const { writerId } = useParams(); // url에서 writerId 떼오기
+  // const { writerId } = useParams(); // url에서 writerId 떼오기
+  const myId = localStorage.getItem('id');
 
   useEffect(() => {
-    api.get(`http://localhost:8080/api/boards/by-member/${writerId}`) // 백엔드 url로 변경
+    api.get(`http://localhost:8080/api/boards/by-member/${myId}`) // 백엔드 url로 변경
       .then(response => {
         setPosts(response.data);
       })
       .catch(error => {
         console.error('Error fetching posts:', error);
       });
-  }, [writerId]);
+  }, [myId]);
 
   const handlePostClick = (boardId) => {
     navigate(`/member-posting/post/${boardId}`);
@@ -283,7 +293,8 @@ function MemberPosting() {
     <Container>
       <Title>내가 작성한 게시글 <FontAwesomeIcon icon={faListUl} /></Title>
       {posts.length === 0 ? (
-        <p>No posts found.</p>
+        // <p>No posts found.</p>
+        <NoTradesMessage>작성한 게시글이 없습니다.</NoTradesMessage>
       ) : (
         <PostList>
           {posts.map(post => (
