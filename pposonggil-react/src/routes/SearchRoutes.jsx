@@ -7,23 +7,23 @@ import { faBookmark } from "@fortawesome/free-regular-svg-icons";
 
 import { useNavigate } from "react-router-dom";
 import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil";
-import axios from "axios";
+import api from "../api/api";
 import { bookmarkRouteState, navState, routeInfoState } from "../recoil/atoms";
 
 function SearchRoutes() {
   const [route, setRoute] = useRecoilState(routeInfoState); // 검색할 경로의 출발지.도착지 저장 atom
   const navigate = useNavigate();
-  const setNav =useSetRecoilState(navState);
+  const setNav = useSetRecoilState(navState);
 
   const [paths, setPaths] = useState([]); // 서버로부터 받아온 경로 검색 결과 저장 객체
   const [filterOption, setFilterOption] = useState("all");
   const [sortOption, setSortOption] = useState("walk");
   const [activeButton, setActiveButton] = useState("all"); // 현재 활성화된 버튼 상태 관리
-  
-  useEffect(()=> {
+
+  useEffect(() => {
     setNav("search");
   }, [])
-  
+
   // Recoil 상태가 변경될 때마다 서버로 데이터를 전송(출발지 목적지 위경도 정보 있을 때만)
   useEffect(() => {
     if (route.origin[0].lat && route.dest[0].lat) {
@@ -35,7 +35,7 @@ function SearchRoutes() {
   const sendRouteToServer = async (route) => {
     const now = new Date();
     const time = now.getHours().toString().padStart(2, '0') + now.getMinutes().toString().padStart(2, '0');
-    const url = 'http://localhost:8080/api/paths/by-member/2'; //postman이랑 매치해서 꼭 재확인 할 것!!
+    const url = 'http://localhost:8080/api/paths/by-member/1'; //postman이랑 매치해서 꼭 재확인 할 것!!
     const formData = new FormData(); // form-data 객체 생성
 
     const startDto = {  // 첫 번째 form-data 추가
@@ -46,7 +46,7 @@ function SearchRoutes() {
       "y": 0
     };
     formData.append('startDto', new Blob([JSON.stringify(startDto)], { type: 'application/json' }));
-    
+
     const endDto = { // 두 번째 form-data 추가
       "name": route.dest[0].name,
       "latitude": parseFloat(route.dest[0].lat),
@@ -55,7 +55,7 @@ function SearchRoutes() {
       "y": 0
     };
     formData.append('endDto', new Blob([JSON.stringify(endDto)], { type: 'application/json' }));
-    formData.append('selectTime', time ); // 세 번째 form-data 추가
+    formData.append('selectTime', time); // 세 번째 form-data 추가
 
     // // FormData 내용 출력(프론트 확인용)
     // for (let [key, value] of formData.entries()) {
@@ -65,9 +65,9 @@ function SearchRoutes() {
     //     value.text().then(text => console.log(`${key} content:`, text));
     //   }
     // }
-    
+
     try {
-      const response = await axios.post(url, formData, {
+      const response = await api.post(url, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -80,61 +80,61 @@ function SearchRoutes() {
   };
 
   // 출발지/목적지 전환 버튼 핸들러
-  const onReverseClick = () => { 
+  const onReverseClick = () => {
     setRoute((prev) => ({
       origin: prev.dest,
       dest: prev.origin,
     }));
     console.log("전환 버튼 클릭: ", route);
   };
-/* 북마크 */
+  /* 북마크 */
   const [bookmark, setBookmark] = useState([]);
 
-// 페이지가 로드될 때 로컬 스토리지에서 북마크를 불러와서 설정
-useEffect(() => {
-  const storedBookmark = loadBookmarkFromLocalStorage();
-  setBookmark(storedBookmark);
-}, []);
+  // 페이지가 로드될 때 로컬 스토리지에서 북마크를 불러와서 설정
+  useEffect(() => {
+    const storedBookmark = loadBookmarkFromLocalStorage();
+    setBookmark(storedBookmark);
+  }, []);
 
-// 로컬 스토리지에서 북마크를 불러오는 함수
-const loadBookmarkFromLocalStorage = () => {
-  const storedBookmark = localStorage.getItem('bookmark');
-  return storedBookmark ? JSON.parse(storedBookmark) : [];
-};
+  // 로컬 스토리지에서 북마크를 불러오는 함수
+  const loadBookmarkFromLocalStorage = () => {
+    const storedBookmark = localStorage.getItem('bookmark');
+    return storedBookmark ? JSON.parse(storedBookmark) : [];
+  };
 
-// 북마크를 로컬 스토리지에 저장하는 함수
-const saveBookmarkToLocalStorage = (bookmark) => {
-  localStorage.setItem('bookmark', JSON.stringify(bookmark));
-};
+  // 북마크를 로컬 스토리지에 저장하는 함수
+  const saveBookmarkToLocalStorage = (bookmark) => {
+    localStorage.setItem('bookmark', JSON.stringify(bookmark));
+  };
 
-// 북마크를 추가하는 핸들러 함수
-const onBookmarkClick = () => {
-  if (route.origin[0].lat && route.dest[0].lat) {
-    const isRouteBookmarked = loadBookmarkFromLocalStorage().some(
-      (bm) => bm.origin.name === route.origin[0].name && bm.dest.name === route.dest[0].name
-    );
-    if (!isRouteBookmarked) {
-      const newBookmark = [
-        ...bookmark,
-        {
-          origin: {
-            name: route.origin[0].name,
-            lat: route.origin[0].lat,
-            lon: route.origin[0].lon,
-          },
-          dest: {
-            name: route.dest[0].name,
-            lat: route.dest[0].lat,
-            lon: route.dest[0].lon,
+  // 북마크를 추가하는 핸들러 함수
+  const onBookmarkClick = () => {
+    if (route.origin[0].lat && route.dest[0].lat) {
+      const isRouteBookmarked = loadBookmarkFromLocalStorage().some(
+        (bm) => bm.origin.name === route.origin[0].name && bm.dest.name === route.dest[0].name
+      );
+      if (!isRouteBookmarked) {
+        const newBookmark = [
+          ...bookmark,
+          {
+            origin: {
+              name: route.origin[0].name,
+              lat: route.origin[0].lat,
+              lon: route.origin[0].lon,
+            },
+            dest: {
+              name: route.dest[0].name,
+              lat: route.dest[0].lat,
+              lon: route.dest[0].lon,
+            }
           }
-        }
-      ];
-      setBookmark(newBookmark);
-      saveBookmarkToLocalStorage(newBookmark); // 로컬 스토리지에 북마크 저장
-      console.log("로컬스토리지에 북마크 저장 성공");
+        ];
+        setBookmark(newBookmark);
+        saveBookmarkToLocalStorage(newBookmark); // 로컬 스토리지에 북마크 저장
+        console.log("로컬스토리지에 북마크 저장 성공");
+      }
     }
-  }
-};
+  };
 
 
   // 경로 검색 결과 필터 버튼 3개(전체,버스만,지하철만)
@@ -200,7 +200,7 @@ const onBookmarkClick = () => {
           <FontAwesomeIcon icon={faBookmark} />
         </Container>
       </SearchContainer>
-     
+
       <OptionBar id="sortingByTransport">
         <button
           className={activeButton === "all" ? "active" : ""}
@@ -215,8 +215,8 @@ const onBookmarkClick = () => {
           버스 {busPathsCount}
         </button>
         <button
-        className={activeButton === "subway" ? "active" : ""}
-        onClick={() => { setFilterOption("subway"); setActiveButton("subway"); }}
+          className={activeButton === "subway" ? "active" : ""}
+          onClick={() => { setFilterOption("subway"); setActiveButton("subway"); }}
         >
           지하철 {subwayPathsCount}
         </button>
@@ -240,8 +240,8 @@ const onBookmarkClick = () => {
                 <div>분 <p>|</p> 도보 {path.totalWalkTime}분 {path.totalWalkDistance}m<p>|</p>{path.price}원</div>
               </PathInfo>
               <PathWeatherInfo>
-                <FontAwesomeIcon icon={faDroplet}/>
-                <p>{path.totalRain.toFixed(2)}<span style={{fontSize:"11px"}}>mm</span></p>
+                <FontAwesomeIcon icon={faDroplet} />
+                <p>{path.totalRain.toFixed(2)}<span style={{ fontSize: "11px" }}>mm</span></p>
               </PathWeatherInfo>
             </PathSummary>
 
@@ -255,10 +255,10 @@ const onBookmarkClick = () => {
                         color={subPath.type === 'walk' ? 'darkgray' : (subPath.type === 'subway' ? subPath.subwayColor : subPath.busColor)}
                       >
                         {subPath.type !== 'walk' && (
-                          <IconBox style={{backgroundColor: subPath.type === 'bus' ? subPath.busColor : subPath.subwayColor}}>
+                          <IconBox style={{ backgroundColor: subPath.type === 'bus' ? subPath.busColor : subPath.subwayColor }}>
                             <FontAwesomeIcon
                               icon={subPath.type === 'bus' ? faBus : (subPath.type === 'subway' && faSubway)}
-                              style={{color: "white"}}
+                              style={{ color: "white" }}
                             />
                           </IconBox>
                         )}
@@ -293,14 +293,14 @@ const onBookmarkClick = () => {
                         {subPath.type === "subway" && "역"}
                       </div>
                       {subPath.type === "bus" && (
-                        <div style={{display: "flex", paddingTop: "5px"}}>
-                          <FontAwesomeIcon icon={faBus} style={{color: subPath.busColor, marginRight: "3px"}}/>
-                          <div style={{fontWeight: "600"}}>{subPath.busNo}</div>
+                        <div style={{ display: "flex", paddingTop: "5px" }}>
+                          <FontAwesomeIcon icon={faBus} style={{ color: subPath.busColor, marginRight: "3px" }} />
+                          <div style={{ fontWeight: "600" }}>{subPath.busNo}</div>
                         </div>
                       )}
                     </TextColumn>
                   </SubPath>
-                      
+
                   {/* 마지막 subPath인 경우 하차 정보를 표시 */}
                   {subIndex === array.length - 1 && (
                     <SubPath>
@@ -321,7 +321,7 @@ const onBookmarkClick = () => {
         ))}
       </ResultContainer>
     </Wrapper>
-  ); 
+  );
 }
 export default SearchRoutes;
 

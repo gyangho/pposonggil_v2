@@ -17,6 +17,7 @@ spring:
         show_sql: true
         format_sql: true
         default_batch_fetch_size: 100
+    database-platform: org.hibernate.dialect.MySQLDialect
   servlet:
     multipart:
       max-file-size: 50MB
@@ -33,7 +34,7 @@ cloud:
       auto: false
     credentials:
       access-key: ${api-key.s3-access-key}
-      secret-key: ${api-key.s3-secret-key}
+      secret-key: ${api-key.s3-secret-key}z
 
 server:
   address: 0.0.0.0

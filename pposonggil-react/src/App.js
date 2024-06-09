@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -9,6 +9,7 @@ import SearchRoutes from './routes/SearchRoutes';
 import SearchPlace from './routes/SearchPlace';
 import Search from './routes/Search';
 import Home from './routes/Home';
+import Welcome from './routes/Welcome';
 import Header from './layouts/Header';
 import Navigation from './layouts/Navigation';
 
@@ -74,7 +75,10 @@ function App() {
 
           <Route path="/home" element={<Home />} />
 
-          <Route path="/login" element={<Login/>} />
+          <Route path="/auth/success" element={<Welcome />} />
+
+          <Route path="/login" element={<LogIn />} />
+          <Route path="/oauth/kakao/callback" element={<KakaoRedirect />} />
           {/* 로그인 페이지로 수정 필요 */}
           <Route path="/" element={<Home />} />
 

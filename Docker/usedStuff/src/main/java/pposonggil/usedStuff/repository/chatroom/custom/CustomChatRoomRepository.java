@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface CustomChatRoomRepository  {
     List<ChatRoom> findChatRoomsWithBoardRequester();
     Optional<ChatRoom> findChatRoomWithBoardRequesterByBoardId(Long boardId);
+    Optional<ChatRoom> findChatRoomWithSenderAndReceiver(Long sender, Long receiver);
 }

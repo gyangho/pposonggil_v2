@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../api/api";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBolt, faCloud } from "@fortawesome/free-solid-svg-icons";
@@ -23,14 +23,14 @@ function ChooseRoute() {
   const mapRef = useRef(null);
   const mapInstance = useRef(null);
   const geocoder = useRef(null);
-  
+
   const getPathsFromServer = useCallback(async () => { // post 요청이 2개라 렌더링 최소화를 위해 useCallback으로 감쌈
     const defaultUrl = "http://localhost:8080/api/path/default";
     const pposongUrl = "http://localhost:8080/api/path/pposong";
     try {
       const [defaultResponse, pposongResponse] = await Promise.all([
-        axios.post(defaultUrl, path, { headers: { 'Content-Type': 'application/json' } }),
-        axios.post(pposongUrl, path, { headers: { 'Content-Type': 'application/json' } })
+        api.post(defaultUrl, path, { headers: { 'Content-Type': 'application/json' } }),
+        api.post(pposongUrl, path, { headers: { 'Content-Type': 'application/json' } })
       ]);
 
       setPaths({
@@ -105,7 +105,7 @@ function ChooseRoute() {
 
       // 지도의 중심 및 레벨 재설정
       map.setBounds(bounds);
-      
+
       const center = map.getCenter();
       // 위도 값을 60px에 해당하는 거리만큼 조정하여 새로운 중심 좌표 계산
       const newLat = center.getLat() - 0.01; // 위도 값 60px에 해당하는 거리는 약 0.001 정도로 설정
@@ -170,7 +170,7 @@ function ChooseRoute() {
       addMarkerClickListener(startMarker);
       addMarkerClickListener(endMarker);
     }
-    
+
   }, [path, map]);
 
   const chooseDefaultPath = () => {
@@ -187,21 +187,21 @@ function ChooseRoute() {
 
       <BoxContainer>
         <Box id="defaultPath" onClick={chooseDefaultPath}>
-          <div style={{padding: "0", marginBottom: "10px"}}>
-            <FontAwesomeIcon icon={faBolt} style={{marginRight: "8px", color: "orange"}}/>
+          <div style={{ padding: "0", marginBottom: "10px" }}>
+            <FontAwesomeIcon icon={faBolt} style={{ marginRight: "8px", color: "orange" }} />
             <h1>기본 경로</h1>
           </div>
-          <div><p style={{fontSize: "30px"}}>{paths.defaultPath.totalTime}</p>분</div>
-          <div>도보 <p>{paths.defaultPath.totalWalkTime}</p>분 <p style={{marginLeft: "5px"}}>{paths.defaultPath.totalWalkDistance}</p>m</div>
+          <div><p style={{ fontSize: "30px" }}>{paths.defaultPath.totalTime}</p>분</div>
+          <div>도보 <p>{paths.defaultPath.totalWalkTime}</p>분 <p style={{ marginLeft: "5px" }}>{paths.defaultPath.totalWalkDistance}</p>m</div>
           <div><p>{paths.defaultPath.price}</p>원</div>
         </Box>
         <Box id="pposongPath" onClick={choosePposongPath}>
-        <div style={{padding: "0", marginBottom: "10px"}}>
-            <FontAwesomeIcon icon={faCloud} style={{marginRight: "8px", color: "skyblue"}}/>
+          <div style={{ padding: "0", marginBottom: "10px" }}>
+            <FontAwesomeIcon icon={faCloud} style={{ marginRight: "8px", color: "skyblue" }} />
             <h2>뽀송 경로</h2>
           </div>
-          <div><p style={{fontSize: "30px"}}>{paths.pposongPath.totalTime}</p>분</div>
-          <div>도보 <p>{paths.pposongPath.totalWalkTime}</p>분 <p style={{marginLeft: "5px"}}>{paths.pposongPath.totalWalkDistance}</p>m</div>
+          <div><p style={{ fontSize: "30px" }}>{paths.pposongPath.totalTime}</p>분</div>
+          <div>도보 <p>{paths.pposongPath.totalWalkTime}</p>분 <p style={{ marginLeft: "5px" }}>{paths.pposongPath.totalWalkDistance}</p>m</div>
           <div><p>{paths.pposongPath.price}</p>원</div>
         </Box>
       </BoxContainer>

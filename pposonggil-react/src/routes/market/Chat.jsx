@@ -248,7 +248,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import { navState } from "../../recoil/atoms";
 import styled from "styled-components";
-import axios from "axios";
+import api from "../../api/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCircle, faBan, faFlag } from "@fortawesome/free-solid-svg-icons";
 
@@ -279,7 +279,7 @@ function Chat() {
 
   const fetchMessages = async () => {//메시지 가져오기
     try {
-      const response = await axios.get(`http://localhost:8080/api/messages/by-chatroom/${chatRoomId}`);
+      const response = await api.get(`http://localhost:8080/api/messages/by-chatroom/${chatRoomId}`);
       const sortedMessages = response.data.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
       const formattedMessages = response.data.map(msg => ({
         ...msg,
@@ -310,7 +310,7 @@ function Chat() {
       };
 
       try {
-        await axios.post('http://localhost:8080/api/message', newMessage);
+        await api.post('http://localhost:8080/api/message', newMessage);
         setMessages(prevMessages => [
           ...prevMessages,
           { ...newMessage, timestamp: new Date().toLocaleTimeString() }
@@ -334,7 +334,7 @@ function Chat() {
         subjectId: myId,
         objectId: otherUserId
       };
-      const response = await axios.post('http://localhost:8080/api/block', blockData);
+      const response = await api.post('http://localhost:8080/api/block', blockData);
       console.log('Block ID:', response.data.blockId);
       setBlocked(true);
       alert(response.data.message);
