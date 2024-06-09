@@ -61,7 +61,7 @@ class DistanceServiceTest {
                 new TransactionAddress("숭실대1", 37.4958, 126.9583, "주소1"), 1000L, false);
         boardId2 = createBoard(memberId2, "title2", "우산 팔아요2", LocalDateTime.now(), LocalDateTime.now().plusHours(1),
                 new TransactionAddress("숭실대2", 37.5000, 126.9500, "주소2"), 2000L, false);
-        boardId3 = createBoard(memberId3, "title3", "우산 팔아요3", LocalDateTime.now(), LocalDateTime.now().plusHours(2),
+        boardId3 = createBoard(memberId3, "title3", "우산 팔아요3", LocalDateTime.now().plusHours(1), LocalDateTime.now().plusHours(2),
                 new TransactionAddress("숭실대3", 37.0600, 126.9600, "주소3"), 3000L, false);
 
         // 채팅방 1, 2, 3생성
@@ -242,13 +242,6 @@ class DistanceServiceTest {
         // then
         DistanceDto calSubjectDistanceDto2 = distanceService.calMemberDistance(startDto2, distanceDto1, memberId1);
 
-        System.out.println("AAAAAAAAAAAA");
-        System.out.println(calSubjectDistanceDto2);
-        System.out.println(calSubjectDistanceDto2.getSubjectTotalDistance());
-        System.out.println(calSubjectDistanceDto2.getSubjectDistance());
-        System.out.println(calSubjectDistanceDto2.getSubjectRemainRate());
-        System.out.println("AAAAAAAAAAAA");
-
         Optional.of(calSubjectDistanceDto2)
                 .ifPresent(distanceDto -> assertAll("주체 아이디의 거리 변화 정보 검증",
                         () -> assertNotEquals(-1, distanceDto.getSubjectTotalDistance(), "주체-거래장소 거리 변경안됨"),
@@ -267,6 +260,22 @@ class DistanceServiceTest {
         assertEquals(2, distanceDtos.size());
         assertThrows(NoSuchElementException.class, () -> distanceService.findOne(distance1));
     }
+
+    @Test
+    public void  거래_회원이_아닐_때_거래_삭제할_수_없다() {
+        assertThrows(IllegalArgumentException.class, () ->{
+            tradeService.deleteTradeByMember(tradeId1, memberId2);
+        });
+    }
+
+    @Test
+    public void 거래_시작_이전에_취소할_수_없다() {
+        assertThrows(IllegalAccessException.class, () ->{
+            tradeService.deleteTradeByMember(tradeId3, memberId1);
+        });
+    }
+
+
 
     public Long createMember(String name, String nickName, String phone) {
         MemberDto memberDto = MemberDto.builder()
