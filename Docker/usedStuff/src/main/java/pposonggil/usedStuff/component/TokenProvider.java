@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import pposonggil.usedStuff.domain.PrincipalDetails;
 import pposonggil.usedStuff.domain.RefreshToken;
+import pposonggil.usedStuff.domain.Role;
 import pposonggil.usedStuff.service.Auth.TokenService;
 
 import javax.crypto.SecretKey;
@@ -122,7 +123,8 @@ public class TokenProvider {
             return false;
         }
         Claims claims = parseClaims(token);
-        if(((String)claims.get(KEY_ROLE)).contains("BLOCKED"))
+        System.out.println("ROles: " + claims.get(KEY_ROLE).toString());
+        if((claims.get(KEY_ROLE)).toString().contains(Role.BLOCKED.toString()))
         {
             throw new AccessDeniedException("403");
         }
