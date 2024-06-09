@@ -3,22 +3,27 @@ import { motion } from "framer-motion";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRotate, faEllipsisVertical, faBus, faSubway, faDroplet, faCircleDot } from "@fortawesome/free-solid-svg-icons";
-import { useNavigate } from "react-router-dom";
-import { useRecoilState, useResetRecoilState } from "recoil";
-import axios from "axios";
+import { faBookmark } from "@fortawesome/free-regular-svg-icons";
 
-import { routeInfoState } from "../recoil/atoms";
+import { useNavigate } from "react-router-dom";
+import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil";
+import axios from "axios";
+import { bookmarkRouteState, navState, routeInfoState } from "../recoil/atoms";
 
 function SearchRoutes() {
   const [route, setRoute] = useRecoilState(routeInfoState); // 검색할 경로의 출발지.도착지 저장 atom
-  const resetRouteInfo = useResetRecoilState(routeInfoState);
   const navigate = useNavigate();
+  const setNav =useSetRecoilState(navState);
 
   const [paths, setPaths] = useState([]); // 서버로부터 받아온 경로 검색 결과 저장 객체
   const [filterOption, setFilterOption] = useState("all");
   const [sortOption, setSortOption] = useState("walk");
   const [activeButton, setActiveButton] = useState("all"); // 현재 활성화된 버튼 상태 관리
-
+  
+  useEffect(()=> {
+    setNav("search");
+  }, [])
+  
   // Recoil 상태가 변경될 때마다 서버로 데이터를 전송(출발지 목적지 위경도 정보 있을 때만)
   useEffect(() => {
     if (route.origin[0].lat && route.dest[0].lat) {
@@ -28,7 +33,6 @@ function SearchRoutes() {
 
   // 서버로 출발지/목적지 정보 post
   const sendRouteToServer = async (route) => {
-    
     const now = new Date();
     const time = now.getHours().toString().padStart(2, '0') + now.getMinutes().toString().padStart(2, '0');
     const url = 'http://localhost:8080/api/paths/by-member/2'; //postman이랑 매치해서 꼭 재확인 할 것!!
@@ -38,7 +42,6 @@ function SearchRoutes() {
       "name": route.origin[0].name,
       "latitude": parseFloat(route.origin[0].lat),
       "longitude": parseFloat(route.origin[0].lon),
-
       "x": 0,
       "y": 0
     };
@@ -54,14 +57,14 @@ function SearchRoutes() {
     formData.append('endDto', new Blob([JSON.stringify(endDto)], { type: 'application/json' }));
     formData.append('selectTime', time ); // 세 번째 form-data 추가
 
-    // FormData 내용 출력
-    for (let [key, value] of formData.entries()) {
-      console.log("서버로 보낸 데이터: ");
-      console.log(`${key}:`, value);
-      if (value instanceof Blob) {
-        value.text().then(text => console.log(`${key} content:`, text));
-      }
-    }
+    // // FormData 내용 출력(프론트 확인용)
+    // for (let [key, value] of formData.entries()) {
+    //   console.log("서버로 보낸 데이터: ");
+    //   console.log(`${key}:`, value);
+    //   if (value instanceof Blob) {
+    //     value.text().then(text => console.log(`${key} content:`, text));
+    //   }
+    // }
     
     try {
       const response = await axios.post(url, formData, {
@@ -77,18 +80,62 @@ function SearchRoutes() {
   };
 
   // 출발지/목적지 전환 버튼 핸들러
-  const onReverseClick = () => {
+  const onReverseClick = () => { 
     setRoute((prev) => ({
       origin: prev.dest,
       dest: prev.origin,
     }));
     console.log("전환 버튼 클릭: ", route);
   };
-  // 출발지/목적지 리셋 버튼 핸들러
-  const onResetClick = () => {
-    resetRouteInfo();
-    setPaths([]); //검색된 이전 경로 검색 결과 있으면 초기화
-  };
+/* 북마크 */
+  const [bookmark, setBookmark] = useState([]);
+
+// 페이지가 로드될 때 로컬 스토리지에서 북마크를 불러와서 설정
+useEffect(() => {
+  const storedBookmark = loadBookmarkFromLocalStorage();
+  setBookmark(storedBookmark);
+}, []);
+
+// 로컬 스토리지에서 북마크를 불러오는 함수
+const loadBookmarkFromLocalStorage = () => {
+  const storedBookmark = localStorage.getItem('bookmark');
+  return storedBookmark ? JSON.parse(storedBookmark) : [];
+};
+
+// 북마크를 로컬 스토리지에 저장하는 함수
+const saveBookmarkToLocalStorage = (bookmark) => {
+  localStorage.setItem('bookmark', JSON.stringify(bookmark));
+};
+
+// 북마크를 추가하는 핸들러 함수
+const onBookmarkClick = () => {
+  if (route.origin[0].lat && route.dest[0].lat) {
+    const isRouteBookmarked = loadBookmarkFromLocalStorage().some(
+      (bm) => bm.origin.name === route.origin[0].name && bm.dest.name === route.dest[0].name
+    );
+    if (!isRouteBookmarked) {
+      const newBookmark = [
+        ...bookmark,
+        {
+          origin: {
+            name: route.origin[0].name,
+            lat: route.origin[0].lat,
+            lon: route.origin[0].lon,
+          },
+          dest: {
+            name: route.dest[0].name,
+            lat: route.dest[0].lat,
+            lon: route.dest[0].lon,
+          }
+        }
+      ];
+      setBookmark(newBookmark);
+      saveBookmarkToLocalStorage(newBookmark); // 로컬 스토리지에 북마크 저장
+      console.log("로컬스토리지에 북마크 저장 성공");
+    }
+  }
+};
+
 
   // 경로 검색 결과 필터 버튼 3개(전체,버스만,지하철만)
   const filterPaths = () => {
@@ -120,7 +167,7 @@ function SearchRoutes() {
   // 클릭한 path 객체 state로 전송
   const goToRouteDetail = (path) => {
     console.log(path);
-    navigate(`/search/detail`, { state: { path } });
+    navigate(`/search/choose`, { state: { path } });
   };
 
   return (
@@ -149,8 +196,8 @@ function SearchRoutes() {
             placeholder="도착지 입력"
           />
         </Container>
-        <Container onClick={onResetClick}>
-          <FontAwesomeIcon icon={faEllipsisVertical} />
+        <Container onClick={onBookmarkClick}>
+          <FontAwesomeIcon icon={faBookmark} />
         </Container>
       </SearchContainer>
      
@@ -194,7 +241,7 @@ function SearchRoutes() {
               </PathInfo>
               <PathWeatherInfo>
                 <FontAwesomeIcon icon={faDroplet}/>
-                <p>{path.totalRain}<span style={{fontSize:"11px"}}>mm</span></p>
+                <p>{path.totalRain.toFixed(2)}<span style={{fontSize:"11px"}}>mm</span></p>
               </PathWeatherInfo>
             </PathSummary>
 
@@ -258,8 +305,8 @@ function SearchRoutes() {
                   {subIndex === array.length - 1 && (
                     <SubPath>
                       <IconColumn>
-                        <FontAwesomeIcon icon={faCircleDot} style={{ color: "gray" }} />
-                        <div style={{ color: "gray" }}>하차</div>
+                        <FontAwesomeIcon icon={faCircleDot} style={{ color: "#216CFF" }} />
+                        <div style={{ color: "black" }}>하차</div>
                       </IconColumn>
                       <TextColumn>
                         <div>{subPath.endDto.name}</div>
@@ -294,7 +341,7 @@ const SearchContainer = styled.div`
 
 const Container = styled.div`
   width: 65%;
-  height: 35px;
+  height: 45px;
   background-color: whitesmoke;
   padding: 0px 20px;
   display: flex;
@@ -310,9 +357,14 @@ const Container = styled.div`
     justify-content: flex-end;
     color: white;
     display: flex;
+    font-size: 20px;
+    font-weight: 900;
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    &:hover {
+      color: #FFCE1F;
+    }
   }
 `;
 
@@ -320,7 +372,7 @@ const Input = styled(motion.input)`
   text-align: left;
   width: 100%;
   height: 100%;
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 600;
   border: none;
   background-color: whitesmoke;
@@ -334,11 +386,13 @@ const Input = styled(motion.input)`
 const ResultContainer = styled.div`
   background-color: whitesmoke;
   width: 100%;
+  font-size: 13px;
+  font-weight: 600;
 `;
 
 const OptionBar = styled.div`
   width: 100%;
-  height: 40px;
+  height: 50px;
   background-color: white;
   border-top: 1px solid darkgrey;
   border-bottom: 1px solid darkgrey;
@@ -346,17 +400,26 @@ const OptionBar = styled.div`
   justify-content: start;
   align-items: center;
   text-align: center;
-  padding: 0px 20px;
+  padding: 8px 20px;
+  font-size: 18px;
   background-color: #cbf0ff5a;
   button {
     background-color: white;
     border-radius: 25px;
     margin-right: 15px;
     padding: 4px 8px;
-    border: 1.5px solid #FFC512;
-    font-weight: bold;
+    border: 2px solid #FFC512;
+    font-weight: 900;
     color: #FFC512;
-    &:focus {
+    height: 100%;
+    width: auto;
+
+    &:focus{
+      background-color: #FFC512;
+      color: white;
+    }
+
+    &:hover {
       background-color: #FFC512;
       color: white;
     }
@@ -369,8 +432,9 @@ const SortingBar = styled(OptionBar)`
   align-items: center;
   background-color: white;
   border: none;
-  font-weight: 500;
-  font-size: 15px;
+  font-weight: bold;
+  font-size: 16px;
+
   select {
     color: gray;
     /* background-color: #003E5E; */
@@ -379,6 +443,7 @@ const SortingBar = styled(OptionBar)`
     border-radius: 25px;
     border: 1.5px solid gray;
     font-weight: bold;
+    font-size: 15px;
 
   }
 `;
@@ -389,6 +454,7 @@ const PathBox = styled.div`
   border-top: 1px solid #dddddd;
   border-bottom: 1px solid #dddddd;
   margin-bottom: 10px;
+  font-size: 13px;
 `;
 
 const PathSummary = styled.div`
@@ -400,7 +466,7 @@ const PathSummary = styled.div`
 const PathInfo = styled.div`
   width: 100%;
   height: auto;
-  font-weight: 600;
+  font-weight: bold;
   display: flex;
   justify-content: start;
   align-items: end;
@@ -467,6 +533,8 @@ const IconColumn = styled.div`
 
 const TextColumn = styled.div`
   width: 75%;
+  font-size: 14px;
+  font-weight: 500;
 `;
 
 const SummaryBar = styled.div`
