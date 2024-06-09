@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import styled from 'styled-components';
 
-import TransactionStatus from './routes/TransactionStatus';
 import RouteDetail from './routes/RouteDetail';
 import ChooseRoute from './routes/ChooseRoute';
 import SearchRoutes from './routes/SearchRoutes';
@@ -22,7 +21,7 @@ import Post from './routes/market/Post';
 import Posting from './routes/market/Posting';
 import Chat from './routes/market/Chat';
 import TransactionSchedule from './routes/market/TransactionSchedule';
-
+import TransactionStatus from './routes/TransactionStatus';
 
 /* (By 채수아)새로 추가된 컴포넌트 */
 import MemberPosting from './routes/MemberPosting';
@@ -60,17 +59,20 @@ function App() {
           <Route path="/market" element={<Board />} />
           <Route path="/OngoingTrades" element={<OngoingTrades />} />
 
-          {/* 구매자~거래장소~판매자 위치 및 거래 진행 현황 페이지 */}
-          <Route path="/transaction" element={<TransactionStatus />} />
-
           <Route path="/search/detail" element={<RouteDetail />} />
           <Route path="/search/choose" element={<ChooseRoute />} />
           <Route path="/search/routes" element={<SearchRoutes />} />
           <Route path="/search/place" element={<SearchPlace />} />
           <Route path="/search" element={<Search />} />
 
-          <Route path="/bookmark" element={<Bookmark />} />
+          <Route path="/mypage/ongoings/status" element={<TransactionStatus />} />
+          {/*수아랑 상의하고 밑에 라우팅 주소로 수정하기 */}
+          {/* <Route path="/mypage/ongoings" element={<OngoingTrades />} /> */}
           <Route path="/mypage" element={<MyPage />} />
+
+
+
+          <Route path="/bookmark" element={<Bookmark />} />
 
           <Route path="/home" element={<Home />} />
 
