@@ -93,5 +93,9 @@ public class Member extends BaseEntity {
 
     private boolean isActivated;
 
+    public void addRole(Role role)
+    {
+        roles.add(role);
+    }
 
 }
