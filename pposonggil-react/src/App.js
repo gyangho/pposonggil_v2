@@ -28,6 +28,7 @@ import TransactionSchedule from './routes/market/TransactionSchedule';
 import MemberPosting from './routes/MemberPosting';
 import MemberPostingDetailed from './routes/MemberPostingDetailed';
 import EditPost from './routes/market/EditPost';
+import OngoingTrades from './routes/OngoingTrades'; // 새로 추가된 컴포넌트
 
 
 const Wrapper = styled.div`
@@ -57,6 +58,7 @@ function App() {
           <Route path="/market/post/:boardId" exact element={<Post />} />
           <Route path="/market/posting" element={<Posting />} />
           <Route path="/market" element={<Board />} />
+          <Route path="/OngoingTrades" element={<OngoingTrades />} />
 
           {/* 구매자~거래장소~판매자 위치 및 거래 진행 현황 페이지 */}
           <Route path="/transaction" element={<TransactionStatus />} />
@@ -76,7 +78,7 @@ function App() {
           {/* 로그인 페이지로 수정 필요 */}
           <Route path="/" element={<Home />} />
 
-        </Routes>      
+        </Routes>
       </Wrapper>
       <Navigation />
     </Router>
