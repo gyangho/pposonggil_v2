@@ -154,7 +154,7 @@ import '../../../src/posting.css'; //css파일 import
 import api from "../../api/api";
 import { useNavigate, useLocation, useParams } from 'react-router-dom';
 
-const apiUrl = "http://localhost:8080/api/board";
+const apiUrl = "https://pposong.ddns.net/api/board";
 
 function EditPost() {
     const location = useLocation();

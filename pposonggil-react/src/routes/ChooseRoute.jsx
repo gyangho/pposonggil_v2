@@ -25,8 +25,8 @@ function ChooseRoute() {
   const geocoder = useRef(null);
 
   const getPathsFromServer = useCallback(async () => { // post 요청이 2개라 렌더링 최소화를 위해 useCallback으로 감쌈
-    const defaultUrl = "http://localhost:8080/api/path/default";
-    const pposongUrl = "http://localhost:8080/api/path/pposong";
+    const defaultUrl = "https://pposong.ddns.net/api/path/default";
+    const pposongUrl = "https://pposong.ddns.net/api/path/pposong";
     try {
       const [defaultResponse, pposongResponse] = await Promise.all([
         api.post(defaultUrl, path, { headers: { 'Content-Type': 'application/json' } }),
@@ -147,7 +147,7 @@ function ChooseRoute() {
 
       const addMarkerClickListener = (marker) => {
         kakao.maps.event.addListener(marker, 'click', () => {
-          if(marker === startMarker) {
+          if (marker === startMarker) {
             const infoWindow = new kakao.maps.InfoWindow({
               content: infoWindowStart,
               removable: true,

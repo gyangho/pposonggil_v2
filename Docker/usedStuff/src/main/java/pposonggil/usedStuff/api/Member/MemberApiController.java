@@ -49,7 +49,7 @@ public class MemberApiController {
         Long myid = validateService.getMyId();
         if(myid == null)
         {
-            throw new AccessDeniedException("로그인해야 관리자 권한을 받을 수 있습니다.");
+            throw new AccessDeniedException("401");
         }
         Authentication newAuthentication = validateService.giveAdminAuthentication(myid);
         String token = tokenProvider.generateAccessToken(newAuthentication);

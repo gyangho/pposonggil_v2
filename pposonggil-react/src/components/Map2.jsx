@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import {useRecoilValue } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import { searchPlace } from '../recoil/atoms';
 
 import styled from "styled-components";
@@ -26,10 +26,10 @@ function Map2() {
     // setActiveMarker();
     // setActiveTracking();
     // setActiveGrid();
-    
+
     const script = document.createElement('script');
     script.async = true;
-    script.src = "//dapi.kakao.com/v2/maps/sdk.js?appkey=fa3cd41b575ec5e015970670e786ea86&autoload=false";
+    script.src = "//dapi.kakao.com/v2/maps/sdk.js?appkey=819399e434bd90427a278678b6e68250&autoload=false";
     document.head.appendChild(script);
 
     script.onload = () => {
@@ -54,29 +54,29 @@ function Map2() {
   //위치 추적 버튼 핸들러
   const handleLocationBtn = useCallback(() => {
     setIsLoading(true);
-    if (!activeTracking) { 
+    if (!activeTracking) {
       if (navigator.geolocation) {
         // 검색 장소 위치로 지도 중심 이동 및 마크업
         const lat = place.lat;
         const lon = place.lon;
         const locPosition = new kakao.maps.LatLng(lat, lon);
-        
+
         mapInstance.current.setCenter(locPosition);
         mapInstance.current.setLevel(2);
         setActiveTracking(true);
-          
+
         //마커 업데이트
         if (!markerInstance.current) {
-            markerInstance.current = new kakao.maps.Marker({
-              position: locPosition,
-              map: mapInstance.current,
-            });
+          markerInstance.current = new kakao.maps.Marker({
+            position: locPosition,
+            map: mapInstance.current,
+          });
         } else {
           markerInstance.current.setPosition(locPosition);
           markerInstance.current.setMap(mapInstance.current);
         }
         setActiveMarker(true);
-          setIsLoading(false);    
+        setIsLoading(false);
       } else {
         alert('Geolocation을 사용할 수 없습니다.');
         setIsLoading(false);

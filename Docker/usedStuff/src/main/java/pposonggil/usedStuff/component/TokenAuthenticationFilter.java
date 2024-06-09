@@ -44,10 +44,10 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
                     setAuthentication(reissueAccessToken);
 
                     // 클라이언트에게 JSON 응답으로 새로운 accessToken 전달
-                    response.setStatus(401);
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
                     response.getWriter().write("{\"accessToken\": \"" + reissueAccessToken + "\"}");
+                    response.sendError(401);
                     return;
                 }
             }

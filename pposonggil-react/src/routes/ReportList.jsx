@@ -57,7 +57,7 @@
 //         const fetchReports = async () => {
 //             try {
 //                 const myId = 1; // 실제 사용자의 ID로 대체해야 합니다.
-//                 const response = await axios.get(`http://localhost:8080/api/reports/by-subject/${myId}`);
+//                 const response = await axios.get(`https://pposong.ddns.net/api/reports/by-subject/${myId}`);
 //                 setReports(response.data);
 //             } catch (error) {
 //                 console.error('신고 목록을 불러오는 중 오류 발생:', error);
@@ -152,44 +152,44 @@ const NoReportsMessage = styled.div`
 // const myId = localStorage.getItem('id');
 
 function ReportList() {
-    const [reports, setReports] = useState([]);
+  const [reports, setReports] = useState([]);
 
-    useEffect(() => {
-        const fetchReports = async () => {
-            try {
-                const myId = localStorage.getItem('id');; // 실제 사용자의 ID로 대체해야 합니다.
-                const response = await api.get(`http://localhost:8080/api/reports/by-subject/${myId}`);
-                setReports(response.data);
-            } catch (error) {
-                console.error('신고 목록을 불러오는 중 오류 발생:', error);
-            }
-        };
+  useEffect(() => {
+    const fetchReports = async () => {
+      try {
+        const myId = localStorage.getItem('id');; // 실제 사용자의 ID로 대체해야 합니다.
+        const response = await api.get(`https://pposong.ddns.net/api/reports/by-subject/${myId}`);
+        setReports(response.data);
+      } catch (error) {
+        console.error('신고 목록을 불러오는 중 오류 발생:', error);
+      }
+    };
 
-        fetchReports();
-    }, []);
+    fetchReports();
+  }, []);
 
-    return (
-        <Container>
-            <Title>내가 신고한 신고 목록 <FontAwesomeIcon icon={faFlag} /></Title>
-            {reports.length === 0 ? (
-                <NoReportsMessage>신고한 사람이 없습니다.</NoReportsMessage>
-            ) : (
-                <ReportListForm>
-                    {reports.map((report) => (
-                        <ReportItem key={report.reportId}>
-                            <ReportContent>
-                                {/* <FontAwesomeIcon icon={faUser} /> */}
-                                <ReportText>
-                                    {report.subjectNickName} <FontAwesomeIcon icon={faArrowRight} /> {report.objectNickName}
-                                    <br /> 신고사유 : {report.reportType}
-                                </ReportText>
-                            </ReportContent>
-                        </ReportItem>
-                    ))}
-                </ReportListForm>
-            )}
-        </Container>
-    );
+  return (
+    <Container>
+      <Title>내가 신고한 신고 목록 <FontAwesomeIcon icon={faFlag} /></Title>
+      {reports.length === 0 ? (
+        <NoReportsMessage>신고한 사람이 없습니다.</NoReportsMessage>
+      ) : (
+        <ReportListForm>
+          {reports.map((report) => (
+            <ReportItem key={report.reportId}>
+              <ReportContent>
+                {/* <FontAwesomeIcon icon={faUser} /> */}
+                <ReportText>
+                  {report.subjectNickName} <FontAwesomeIcon icon={faArrowRight} /> {report.objectNickName}
+                  <br /> 신고사유 : {report.reportType}
+                </ReportText>
+              </ReportContent>
+            </ReportItem>
+          ))}
+        </ReportListForm>
+      )}
+    </Container>
+  );
 }
 
 export default ReportList;

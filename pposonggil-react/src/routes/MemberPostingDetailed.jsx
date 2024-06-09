@@ -8,8 +8,8 @@ import { useSetRecoilState } from "recoil";
 import { navState } from "../recoil/atoms";
 
 // JSON 서버 API URL, 백이랑 연동 시 수정 필요
-// const apiUrl = "http://localhost:8080/api/board/${boardId}";
-const apiUrl = "http://localhost:8080/api/board/by-board";
+// const apiUrl = "https://pposong.ddns.net/api/board/${boardId}";
+const apiUrl = "https://pposong.ddns.net/api/board/by-board";
 const myId = localStorage.getItem('id');
 
 function MemberPostingDetailed() {
@@ -49,7 +49,7 @@ function MemberPostingDetailed() {
 
   const handleDelete = async () => {
     try {
-      await api.delete(`http://localhost:8080/api/board/${boardId}`);
+      await api.delete(`https://pposong.ddns.net/api/board/${boardId}`);
       navigate(`/member-posting/${myId}`);
     } catch (error) {
       console.error("Error deleting post", error);

@@ -108,7 +108,7 @@ public class ChatRoomApiController {
         {
             if(Objects.equals(requesterId, i))
             {
-                throw new AccessDeniedException("채팅방을 생성할 수 없습니다.");
+                throw new AccessDeniedException("500");
             }
         }
 
@@ -116,7 +116,7 @@ public class ChatRoomApiController {
         {
             if(Objects.equals(writerId, i))
             {
-                throw new AccessDeniedException("채팅방을 생성할 수 없습니다.");
+                throw new AccessDeniedException("500");
             }
         }
 

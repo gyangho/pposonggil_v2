@@ -46,7 +46,8 @@ public class ValidateService {
         }
         catch (ClassCastException e)
         {
-            throw new AccessDeniedException("비정상적인 접근입니다.");
+            //
+            throw new AccessDeniedException("405");
         }
         System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         // User 객체의 username을 memberId로 사용한다고 가정
@@ -58,7 +59,8 @@ public class ValidateService {
         User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal == null)
         {
-            return false;
+            //인증정보 없음.
+            throw new AccessDeniedException("401");
         }
         // User 객체의 username을 memberId로 사용한다고 가정
         String authenticatedMemberId = principal.getUsername();
@@ -80,7 +82,7 @@ public class ValidateService {
     public void checkAdminAndThrow()
     {
         if (!checkAdmin()) {
-            throw new AccessDeniedException("관리자가 아닙니다");
+            throw new AccessDeniedException("406");
         }
     }
 
@@ -88,7 +90,7 @@ public class ValidateService {
     {
         if(!validateMemberId(memberId))
         {
-            throw new AccessDeniedException("인증정보가 일치하지 않습니다.");
+            throw new AccessDeniedException("406");
         }
     }
 
@@ -96,7 +98,7 @@ public class ValidateService {
     {
         if(!validateMemberId(RequesterId) && !validateMemberId(WriterId))
         {
-            throw new AccessDeniedException("인증정보가 일치하지 않습니다.");
+            throw new AccessDeniedException("406");
         }
     }
 
@@ -105,7 +107,7 @@ public class ValidateService {
     {
         if(!checkAdmin() && !validateMemberId(memberId))
         {
-            throw new AccessDeniedException("인증정보가 일치하지 않습니다.");
+            throw new AccessDeniedException("406");
         }
     }
 }

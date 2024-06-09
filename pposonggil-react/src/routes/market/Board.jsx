@@ -14,7 +14,7 @@ import api from "../../api/api";
 
 //서버 제공 url(실제 url)
 const myId = localStorage.getItem('id');
-const apiUrl = `http://localhost:8080/api/boards/with-expected-rain/${myId}`; // myId를 포함
+const apiUrl = `https://pposong.ddns.net/api/boards/with-expected-rain/${myId}`; // myId를 포함
 
 
 function Board() {
@@ -64,16 +64,16 @@ function Board() {
 
 
   const fetchPosts = async () => {
-    // const url = 'http://localhost:8080/api/boards/with-expected-rain/1'; //postman이랑 매치해서 꼭 재확인 할 것!!
-    // const url = "http://localhost:8080/api/board"
+    // const url = 'https://pposong.ddns.net/api/boards/with-expected-rain/1'; //postman이랑 매치해서 꼭 재확인 할 것!!
+    // const url = "https://pposong.ddns.net/api/board"
     const formData = new FormData(); // form-data 객체 생성
 
     const startDto = {
-      // "latitude": parseFloat(curAddr.lat),
-      // "longitude": parseFloat(curAddr.lon),
+      "latitude": parseFloat(curAddr.lat),
+      "longitude": parseFloat(curAddr.lon),
       // "latitude": 37.5042,
-      "latitude": 37.5042,
-      "longitude": 127.0044,
+      //"latitude": 37.5042,
+      //"longitude": 127.0044,
     };
 
     formData.append('startDto', new Blob([JSON.stringify(startDto)], { type: 'application/json' }));

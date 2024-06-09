@@ -6,12 +6,38 @@
   <component name="ChangeListManager">
     <list default="true" id="fbc73a0f-9444-47e6-9457-7db026927fd3" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/nginx/conf.d/api_gateway.conf" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/nginx/conf.d/api_gateway.conf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/api/ChatRoom/ChatRoomApiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/api/ChatRoom/ChatRoomApiController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/domain/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/domain/Board.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/domain/ChatRoom.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/domain/ChatRoom.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/api/Forecast/ForecastApiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/api/Forecast/ForecastApiController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/api/Member/MemberApiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/api/Member/MemberApiController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/component/TokenAuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/component/TokenAuthenticationFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/component/TokenProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/component/TokenProvider.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/handler/CustomAccessDeniedHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/handler/CustomAccessDeniedHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/handler/OAuth2SuccessHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/handler/OAuth2SuccessHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/repository/chatroom/custom/CustomChatRoomRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/repository/chatroom/custom/CustomChatRoomRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/repository/chatroom/custom/CustomChatRoomRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/repository/chatroom/custom/CustomChatRoomRepositoryImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/service/Auth/ValidateService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/service/Auth/ValidateService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/service/Block/BlockService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/service/Block/BlockService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/service/Board/BoardService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/service/Board/BoardService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/resources/application-oauth.yml" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/resources/application-oauth.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/api/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/api/api.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/components/Map.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/components/Map.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/components/Map2.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/components/Map2.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/routes/BlockList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/BlockList.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/routes/ChooseRoute.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/ChooseRoute.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/routes/MemberPosting.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/MemberPosting.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/routes/MemberPostingDetailed.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/MemberPostingDetailed.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/routes/OngoingTrades.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/OngoingTrades.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/routes/ReportList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/ReportList.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/routes/RouteDetail.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/RouteDetail.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/routes/SearchRoutes 2.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/SearchRoutes 2.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/routes/SearchRoutes.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/SearchRoutes.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/routes/TransactionStatus.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/TransactionStatus.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/routes/Welcome.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/Welcome.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/routes/market/Board.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/market/Board.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/routes/market/Chat.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/market/Chat.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/routes/market/EditPost.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/market/EditPost.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/routes/market/Post.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/market/Post.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/routes/market/Posting.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/market/Posting.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -234,7 +260,10 @@
       <workItem from="1717917217681" duration="34000" />
       <workItem from="1717917333513" duration="4190000" />
       <workItem from="1717921667541" duration="21644000" />
-      <workItem from="1717945096239" duration="11871000" />
+      <workItem from="1717945096239" duration="12594000" />
+      <workItem from="1717964160513" duration="4331000" />
+      <workItem from="1717969149610" duration="880000" />
+      <workItem from="1717970042883" duration="827000" />
     </task>
     <servers />
   </component>

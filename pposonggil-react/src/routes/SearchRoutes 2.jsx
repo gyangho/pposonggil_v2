@@ -28,10 +28,10 @@ function SearchRoutes() {
 
   // 서버로 출발지/목적지 정보 post
   const sendRouteToServer = async (route) => {
-    
+
     const now = new Date();
     const time = now.getHours().toString().padStart(2, '0') + now.getMinutes().toString().padStart(2, '0');
-    const url = 'http://localhost:8080/api/paths/by-member/1';
+    const url = 'https://pposong.ddns.net/api/paths/by-member/1';
     const formData = new FormData(); // form-data 객체 생성
 
     const startDto = {  // 첫 번째 form-data 추가
@@ -42,7 +42,7 @@ function SearchRoutes() {
       "y": 0
     };
     formData.append('startDto', new Blob([JSON.stringify(startDto)], { type: 'application/json' }));
-    
+
     const endDto = { // 두 번째 form-data 추가
       "name": route.dest[0].name,
       "latitude": parseFloat(route.dest[0].lat),
@@ -51,7 +51,7 @@ function SearchRoutes() {
       "y": 0
     };
     formData.append('endDto', new Blob([JSON.stringify(endDto)], { type: 'application/json' }));
-    formData.append('selectTime', time ); // 세 번째 form-data 추가
+    formData.append('selectTime', time); // 세 번째 form-data 추가
 
     // FormData 내용 출력
     for (let [key, value] of formData.entries()) {
@@ -62,7 +62,7 @@ function SearchRoutes() {
       }
     }
     try {
-      const response = await axios.post(url, { 
+      const response = await axios.post(url, {
         startDto: {
           name: route.origin[0].name,
           latitude: parseFloat(route.origin[0].lat), //atom에는 다 문자열로 저장해놔서 변환 필요..
@@ -77,7 +77,7 @@ function SearchRoutes() {
           x: 0,
           y: 0
         },
-        selectTime : time
+        selectTime: time
       });
       console.log('Response:', response.data);
       setPaths(response.data);
@@ -163,7 +163,7 @@ function SearchRoutes() {
           <FontAwesomeIcon icon={faEllipsisVertical} />
         </Container>
       </SearchContainer>
-     
+
       <OptionBar id="sortingByTransport">
         <button
           className={activeButton === "all" ? "active" : ""}
@@ -178,8 +178,8 @@ function SearchRoutes() {
           버스 {busPathsCount}
         </button>
         <button
-        className={activeButton === "subway" ? "active" : ""}
-        onClick={() => { setFilterOption("subway"); setActiveButton("subway"); }}
+          className={activeButton === "subway" ? "active" : ""}
+          onClick={() => { setFilterOption("subway"); setActiveButton("subway"); }}
         >
           지하철 {subwayPathsCount}
         </button>
@@ -203,8 +203,8 @@ function SearchRoutes() {
                 <div>분 <p>|</p> 도보 {path.totalWalkTime}분 {path.totalWalkDistance}m<p>|</p>{path.price}원</div>
               </PathInfo>
               <PathWeatherInfo>
-                <FontAwesomeIcon icon={faDroplet}/>
-                <p>{path.totalRain}<span style={{fontSize:"11px"}}>mm</span></p>
+                <FontAwesomeIcon icon={faDroplet} />
+                <p>{path.totalRain}<span style={{ fontSize: "11px" }}>mm</span></p>
               </PathWeatherInfo>
             </PathSummary>
 
@@ -218,10 +218,10 @@ function SearchRoutes() {
                         color={subPath.type === 'walk' ? 'darkgray' : (subPath.type === 'subway' ? subPath.subwayColor : subPath.busColor)}
                       >
                         {subPath.type !== 'walk' && (
-                          <IconBox style={{backgroundColor: subPath.type === 'bus' ? subPath.busColor : subPath.subwayColor}}>
+                          <IconBox style={{ backgroundColor: subPath.type === 'bus' ? subPath.busColor : subPath.subwayColor }}>
                             <FontAwesomeIcon
                               icon={subPath.type === 'bus' ? faBus : (subPath.type === 'subway' && faSubway)}
-                              style={{color: "white"}}
+                              style={{ color: "white" }}
                             />
                           </IconBox>
                         )}
@@ -256,14 +256,14 @@ function SearchRoutes() {
                         {subPath.type === "subway" && "역"}
                       </div>
                       {subPath.type === "bus" && (
-                        <div style={{display: "flex", paddingTop: "5px"}}>
-                          <FontAwesomeIcon icon={faBus} style={{color: subPath.busColor, marginRight: "3px"}}/>
-                          <div style={{fontWeight: "600"}}>{subPath.busNo}</div>
+                        <div style={{ display: "flex", paddingTop: "5px" }}>
+                          <FontAwesomeIcon icon={faBus} style={{ color: subPath.busColor, marginRight: "3px" }} />
+                          <div style={{ fontWeight: "600" }}>{subPath.busNo}</div>
                         </div>
                       )}
                     </TextColumn>
                   </SubPath>
-                      
+
                   {/* 마지막 subPath인 경우 하차 정보를 표시 */}
                   {subIndex === array.length - 1 && (
                     <SubPath>
@@ -284,7 +284,7 @@ function SearchRoutes() {
         ))}
       </ResultContainer>
     </Wrapper>
-  ); 
+  );
 }
 export default SearchRoutes;
 

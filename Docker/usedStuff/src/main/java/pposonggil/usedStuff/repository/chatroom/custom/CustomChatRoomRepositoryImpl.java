@@ -43,19 +43,18 @@ public class CustomChatRoomRepositoryImpl implements CustomChatRoomRepository {
     }
 
     @Override
-    public Optional<ChatRoom> findChatRoomWithSenderAndReceiver(Long sender, Long receiver)
+    public Optional<List<ChatRoom>> findChatRoomWithSenderAndReceiver(Long sender, Long receiver)
     {
         QBoard board = QBoard.board;
         QChatRoom chatRoom = QChatRoom.chatRoom;
 
-        ChatRoom result = query
+        List<ChatRoom> result = query
                 .select(chatRoom)
                 .from(chatRoom)
                 .innerJoin(board).on(chatRoom.chatBoard.eq(board))
                 .where((chatRoom.requester.id.eq(sender).and(board.writer.id.eq(receiver)))
                         .or(chatRoom.requester.id.eq(receiver).and(board.writer.id.eq(sender))))
-                .fetchOne();
-        System.out.println("******************RESULT"+ result.getId());
+                .fetch();
         return Optional.ofNullable(result);
     }
 }

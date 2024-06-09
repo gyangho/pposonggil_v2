@@ -6,6 +6,7 @@ import io.jsonwebtoken.security.SecurityException;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -121,6 +122,10 @@ public class TokenProvider {
             return false;
         }
         Claims claims = parseClaims(token);
+        if(((String)claims.get(KEY_ROLE)).contains("BLOCKED"))
+        {
+            throw new AccessDeniedException("403");
+        }
         if(claims.getExpiration().before(new Date()))
         {
             SecurityContextHolder.clearContext();
@@ -138,6 +143,9 @@ public class TokenProvider {
                     .getBody();
         } catch (ExpiredJwtException e) {
             return e.getClaims();
+        } catch (MalformedJwtException e)
+        {
+            throw new AccessDeniedException("401");
         }
 
     }

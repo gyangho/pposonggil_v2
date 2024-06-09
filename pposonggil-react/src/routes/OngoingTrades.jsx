@@ -80,7 +80,7 @@
 //     useEffect(() => {
 //         const fetchTrades = async () => {
 //             try {
-//                 const response = await axios.get(`http://localhost:8080/api/trades/by-member/${myId}`);
+//                 const response = await axios.get(`https://pposong.ddns.net/api/trades/by-member/${myId}`);
 //                 setTrades(response.data);
 //             } catch (error) {
 //                 console.error('Error fetching trades:', error);
@@ -138,7 +138,7 @@ const ReservedTrades = () => {
   useEffect(() => {
     const fetchTrades = async () => {
       try {
-        const response = await api.get(`http://localhost:8080/api/trades/by-member/${myId}`);
+        const response = await api.get(`https://pposong.ddns.net/api/trades/by-member/${myId}`);
         const formattedTrades = response.data.map(trade => {
           const TransactionTarget = myId === trade.subjectId ? trade.objectNickName : trade.subjectNickName;
           return { ...trade, TransactionTarget };
@@ -162,7 +162,7 @@ const ReservedTrades = () => {
 
   const handleCancelTrade = async (tradeId) => {
     try {
-      await api.delete(`http://localhost:8080/api/trade/${tradeId}`);
+      await api.delete(`https://pposong.ddns.net/api/trade/${tradeId}`);
       setTrades(prevTrades => prevTrades.filter(trade => trade.tradeId !== tradeId));
       alert('거래를 취소했습니다.');
     } catch (error) {

@@ -9,7 +9,7 @@ const { kakao } = window;
 
 // JSON 서버 API URL로 변경해야 함
 // const apiUrl = "http://localhost:3001/postList"; // JSON 서버
-const apiUrl = "http://localhost:8080/api/board"; //백엔드 연동
+const apiUrl = "https://pposong.ddns.net/api/board"; //백엔드 연동
 const myId = localStorage.getItem('id');
 
 function Posting({ onSave, editingPost, onUpdate }) {
@@ -245,7 +245,7 @@ export default Posting;
 
 // // JSON 서버 API URL로 변경해야 함
 // // const apiUrl = "http://localhost:3001/postList"; // JSON 서버
-// const apiUrl = "http://localhost:8080/api/board";
+// const apiUrl = "https://pposong.ddns.net/api/board";
 
 // function Posting({ onSave, editingPost, onUpdate }) {
 //   const [title, setTitle] = useState('');

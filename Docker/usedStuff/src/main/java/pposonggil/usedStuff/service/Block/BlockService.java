@@ -108,10 +108,14 @@ public class BlockService {
         block.setBlockSubject(blockSubject);
         block.setBlockObject(blockObject);
         blockRepository.save(block);
-        ChatRoom chatRoominfo = chatRoomRepository.findChatRoomWithSenderAndReceiver(blockObject.getId(), blockSubject.getId())
+        List<ChatRoom> chatRoominfo = chatRoomRepository.findChatRoomWithSenderAndReceiver(blockObject.getId(), blockSubject.getId())
                 .orElseThrow(() -> new NoSuchElementException("존재하지 않는 채팅방입니다: " + blockObject.getId() + blockSubject.getId()));
-
-        chatRoomRepository.deleteById(chatRoominfo.getId());
+        List<Long> chatRoomIds =  chatRoominfo.stream()
+                        .map(ChatRoom::getId)
+                                .toList();
+        for(Long i : chatRoomIds) {
+            chatRoomRepository.deleteById(i);
+        }
         return block.getId();
     }
 

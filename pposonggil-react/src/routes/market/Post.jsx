@@ -8,10 +8,10 @@ import { useSetRecoilState } from "recoil";
 import { navState } from "../../recoil/atoms";
 
 // JSON 서버 API URL, 백이랑 연동 시 수정 필요
-// const apiUrl = "http://localhost:8080/api/boards"
-const apiUrl = "http://localhost:8080/api/board/by-board";
+// const apiUrl = "https://pposong.ddns.net/api/boards"
+const apiUrl = "https://pposong.ddns.net/api/board/by-board";
 
-const chatApiUrl = "http://localhost:8080/api/chatroom";
+const chatApiUrl = "https://pposong.ddns.net/api/chatroom";
 
 function Post() {
   const { boardId } = useParams();//url 뒤에서 boardId 가져옴

@@ -75,7 +75,7 @@ function TransactionStatus() {
   }, [gridBounds]);
 
   const getGridWeatherFromServer = async () => { //격자 구간별 날씨 정보 get
-    const url = 'http://localhost:8080/api/forecasts';
+    const url = 'https://pposong.ddns.net/api/forecasts';
     try {
       const response = await api.get(url);
       setGridWeather(response.data);
@@ -229,7 +229,7 @@ function TransactionStatus() {
   const { transaction } = location.state || [];
   const navigate = useNavigate();
   const [tsData, setTsData] = useState([]); //서버로부터 받을 response.data 저장
-  const [user, setUser] = useRecoilState(userState);
+  const [user, setUser] = useRecoilState(useState);
   const [remainingTime, setRemainingTime] = useState({
     hrs: 0,
     mins: 0
@@ -348,7 +348,7 @@ function TransactionStatus() {
   const sendDtosToServer = async () => {
     console.log("서버에 put합니다");
     //url에 tradeId와 유저의 id 붙여서 보내기 //테스트용으로 일단 거래아이디로 확인해봄
-    const url = `http://localhost:8080/api/distance/${transaction.tradeId}/by-member/${user.userId}`;
+    const url = `https://pposong.ddns.net/api/distance/${transaction.tradeId}/by-member/${user.userId}`;
     const formData = new FormData(); // form-data 객체 생성
 
     const startDto = {

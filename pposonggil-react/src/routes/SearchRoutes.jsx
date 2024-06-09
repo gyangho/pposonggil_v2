@@ -35,7 +35,7 @@ function SearchRoutes() {
   const sendRouteToServer = async (route) => {
     const now = new Date();
     const time = now.getHours().toString().padStart(2, '0') + now.getMinutes().toString().padStart(2, '0');
-    const url = 'http://localhost:8080/api/paths/by-member/1'; //postman이랑 매치해서 꼭 재확인 할 것!!
+    const url = 'https://pposong.ddns.net/api/paths/by-member/1'; //postman이랑 매치해서 꼭 재확인 할 것!!
     const formData = new FormData(); // form-data 객체 생성
 
     const startDto = {  // 첫 번째 form-data 추가
