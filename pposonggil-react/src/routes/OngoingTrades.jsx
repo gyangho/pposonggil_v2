@@ -164,7 +164,7 @@ const ReservedTrades = () => {
     try {
       await api.delete(`http://localhost:8080/api/trade/${tradeId}`);
       setTrades(prevTrades => prevTrades.filter(trade => trade.tradeId !== tradeId));
-      alert('거래를 삭제하였습니다.');
+      alert('거래를 취소했습니다.');
     } catch (error) {
       console.error('Failed to cancel trade:', error);
     }
@@ -177,7 +177,7 @@ const ReservedTrades = () => {
         <TradeList>
           {trades.map(trade => (
             <TradeItem key={trade.tradeId}>
-              <div><BoldLabel>거래 ID:</BoldLabel> <Highlight>{trade.tradeId}</Highlight></div>
+              {/* <div><BoldLabel>거래 ID:</BoldLabel> <Highlight>{trade.tradeId}</Highlight></div> */}
               <div><BoldLabel>거래 상대:</BoldLabel><Highlight>{trade.TransactionTarget}</Highlight></div>
               <div><BoldLabel>거래 시간:</BoldLabel> <Highlight>{trade.startTimeString} - {trade.endTimeString}</Highlight></div>
               <div><BoldLabel>거래 장소:</BoldLabel> <Highlight>{trade.address.name}</Highlight></div>
