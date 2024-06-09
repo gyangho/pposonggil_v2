@@ -67,12 +67,21 @@ public class BoardService {
     }
 
     /**
-     * 예약된 거래 시간을 뺀 게시글 조회
+     * 거래장소 까지의 예상 강수량
+     * 거래 시작 시각 기준 기상정보
+     * 포함한 게시글 조회
      */
-    public List<BoardDto> findCheckBoards(Long memberId) {
+    public List<BoardDto> findBoardsWithExpectedRain(PointInformationDto startDto, Long memberId) throws IOException {
         List<BoardDto> results = new ArrayList<>();
-        List<BoardDto> boardDtos = findBoards();
         List<TradeDto> tradeDtos = tradeService.findTradesByMemberId(memberId);
+
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(NoSuchElementException::new);
+
+        LocalTime curTime = LocalTime.now(ZoneId.of("Asia/Seoul"));
+        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("HHmm");
+
+        List<BoardDto> boardDtos = findBoards();
 
         for (BoardDto boardDto : boardDtos) {
             String boardStartTimeString = boardDto.getStartTimeString();
@@ -93,27 +102,8 @@ public class BoardService {
                     results.add(boardDto);
             }
         }
-        return results;
-    }
 
-    /**
-     * 거래장소 까지의 예상 강수량
-     * 거래 시작 시각 기준 기상정보
-     * 포함한 게시글 조회
-     */
-    public List<BoardDto> findBoardsWithExpectedRain(PointInformationDto startDto, Long memberId) throws IOException {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(NoSuchElementException::new);
-
-        LocalTime curTime = LocalTime.now(ZoneId.of("Asia/Seoul"));
-        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("HHmm");
-
-        List<Board> boards = boardRepository.findAll();
-        List<BoardDto> boardDtos = boards.stream()
-                .map(BoardDto::fromEntity)
-                .collect(Collectors.toList());
-
-        for (BoardDto boardDto : boardDtos) {
+        for (BoardDto boardDto : results) {
             TransactionAddress address = boardDto.getAddress();
             PointInformationDto endDto = PointInformationDto.builder()
                     .name(address.getName())
