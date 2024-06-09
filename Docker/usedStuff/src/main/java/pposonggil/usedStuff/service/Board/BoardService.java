@@ -16,12 +16,14 @@ import pposonggil.usedStuff.domain.Board;
 import pposonggil.usedStuff.domain.Member;
 import pposonggil.usedStuff.domain.Route.LatXLngY;
 import pposonggil.usedStuff.domain.TransactionAddress;
+import pposonggil.usedStuff.dto.Block.BlockDto;
 import pposonggil.usedStuff.dto.Board.BoardDto;
 import pposonggil.usedStuff.dto.Forecast.ForecastDto;
 import pposonggil.usedStuff.dto.Route.Path.PathDto;
 import pposonggil.usedStuff.dto.Route.PointInformation.PointInformationDto;
 import pposonggil.usedStuff.repository.board.BoardRepository;
 import pposonggil.usedStuff.repository.member.MemberRepository;
+import pposonggil.usedStuff.service.Block.BlockService;
 import pposonggil.usedStuff.service.Forecast.ForecastService;
 import pposonggil.usedStuff.service.Route.PathService;
 
@@ -43,6 +45,7 @@ public class BoardService {
     private final MemberRepository memberRepository;
     private final PathService pathService;
     private final ForecastService forecastService;
+    private final BlockService blockService;
     private final AwsS3 awsS3;
 
     /**
@@ -53,6 +56,19 @@ public class BoardService {
         return boards.stream()
                 .map(BoardDto::fromEntity)
                 .collect(Collectors.toList());
+    }
+
+    public List<BoardDto> findBoardsByMember(Long memberId)
+    {
+        List<BoardDto> Boards = findBoards();
+        List<BlockDto> blocks = blockService.findBlocksBySubjectId(memberId);
+
+        List<Long> objectIdList = blocks.stream()
+                .map(BlockDto::getObjectId)
+                .toList();
+
+        Boards.removeIf(boardDto -> objectIdList.contains(boardDto.getWriterId()));
+        return Boards;
     }
 
     /**

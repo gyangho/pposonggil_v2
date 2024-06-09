@@ -4,9 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pposonggil.usedStuff.domain.Block;
+import pposonggil.usedStuff.domain.ChatRoom;
 import pposonggil.usedStuff.domain.Member;
 import pposonggil.usedStuff.dto.Block.BlockDto;
 import pposonggil.usedStuff.repository.block.BlockRepository;
+import pposonggil.usedStuff.repository.chatroom.ChatRoomRepository;
 import pposonggil.usedStuff.repository.member.MemberRepository;
 
 import java.util.List;
@@ -19,6 +21,14 @@ import java.util.stream.Collectors;
 public class BlockService {
     private final BlockRepository blockRepository;
     private final MemberRepository memberRepository;
+    private final ChatRoomRepository chatRoomRepository;
+
+    public BlockDto findBlocksByBlockID(Long blockId)
+    {
+        Block block = blockRepository.findById(blockId).orElseThrow(NoSuchElementException::new);
+        return BlockDto.fromEntity(block);
+
+    }
 
     /**
      * 전체 차단 조회
@@ -96,7 +106,9 @@ public class BlockService {
         block.setBlockSubject(blockSubject);
         block.setBlockObject(blockObject);
         blockRepository.save(block);
-
+        ChatRoom chatRoominfo = chatRoomRepository.findChatRoomWithSenderAndReceiver(blockObject.getId(), blockSubject.getId())
+                .orElseThrow(() -> new NoSuchElementException("존재하지 않는 채팅방입니다: " + blockObject.getId() + blockSubject.getId()));
+        chatRoomRepository.delete(chatRoominfo);
         return block.getId();
     }
 
