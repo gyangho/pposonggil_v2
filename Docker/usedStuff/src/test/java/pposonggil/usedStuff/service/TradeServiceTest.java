@@ -44,7 +44,7 @@ class TradeServiceTest {
     private Long tradeId1, tradeId2, tradeId3;
 
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws Exception {
         // 회원 1, 2, 3생성
         memberId1 = createMember("name1", "nickName1", "01011111111");
         memberId2 = createMember("name2", "nickName2", "01022222222");
@@ -156,7 +156,7 @@ class TradeServiceTest {
     }
 
     @Test
-    public void 게시글_작성한_회원의_아이디로_거래_조회() {
+    public void 게시글_작성한_회원의_아이디로_거래_조회() throws Exception {
         // given
         // 게시글 4 생성(회원1)
         Long boardId4 = createBoard(memberId1, "title4", "우산 팔아요4", LocalDateTime.now(), LocalDateTime.now().plusHours(2),
@@ -384,7 +384,7 @@ class TradeServiceTest {
 
 
     public Long createBoard(Long savedId, String title, String content, LocalDateTime startTime, LocalDateTime endTime,
-                            TransactionAddress address, Long price, boolean isFreebie) {
+                            TransactionAddress address, Long price, boolean isFreebie) throws Exception {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm");
         String formatStartTime = startTime.format(formatter);
         String formatEndTime = endTime.format(formatter);

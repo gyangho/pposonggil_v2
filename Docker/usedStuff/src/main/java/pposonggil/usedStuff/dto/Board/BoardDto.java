@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import pposonggil.usedStuff.domain.Board;
 import pposonggil.usedStuff.domain.TransactionAddress;
+import pposonggil.usedStuff.dto.Forecast.ForecastDto;
 
 import java.time.LocalDateTime;
 
@@ -23,8 +24,11 @@ public class BoardDto {
     private Double ratingScore;
     private String title;
     private String content;
+    private Double expectedRain;
+    private ForecastDto forecastDto;
     private String startTimeString;
     private String endTimeString;
+    private String imageUrl;
     private TransactionAddress address;
     private LocalDateTime createdAt;
     private LocalDateTime updateAt;
@@ -41,6 +45,7 @@ public class BoardDto {
                 .content(board.getContent())
                 .startTimeString(board.getStartTimeString())
                 .endTimeString(board.getEndTimeString())
+                .imageUrl(board.getImageUrl())
                 .address(board.getAddress())
                 .createdAt(board.getCreatedAt())
                 .updateAt(board.getUpdateAt())

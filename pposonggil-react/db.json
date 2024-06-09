@@ -1,0 +1,203 @@
+{
+  "expected": {
+    "result": 0,
+    "forecast": [
+      {
+        "time": "1",
+        "expectedRain": "0.01",
+        "rn1": "0",
+        "t1h": "16",
+        "reh": "65",
+        "wsd": "1",
+        "latitude": 37.503835499999994,
+        "longitude": 127.004462
+      },
+      {
+        "time": "8",
+        "expectedRain": "0.22",
+        "rn1": "0.02",
+        "t1h": "17",
+        "reh": "50",
+        "wsd": "4",
+        "latitude": 37.4952805,
+        "longitude": 126.9569455
+      },
+      {
+        "time": "8",
+        "expectedRain": "0.33",
+        "rn1": "0.03",
+        "t1h": "17",
+        "reh": "23",
+        "wsd": "6",
+        "latitude": 37.4952805,
+        "longitude": 126.9569455
+      },
+      {
+        "time": "8",
+        "expectedRain": "0.44",
+        "rn1": "0.44",
+        "t1h": "12",
+        "reh": "38",
+        "wsd": "8",
+        "latitude": 37.4952805,
+        "longitude": 126.9569455
+      }
+    ]
+  },
+  "boards": [
+    {
+      "boardId": 1,
+      "writerId": 2,
+      "title": "중고 우산 판매!",
+      "content": "딱 한번 사용했어요~",
+      "price": "2000원",
+      "image": "",
+      "id": "1",
+      "img": "https://www.wishbucket.io/_next/image?url=https%3A%2F%2Fd2gfz7wkiigkmv.cloudfront.net%2Fpickin%2F2%2F1%2F2%2FFr4m2M5JTemNu--TcHL5MQ&w=1080&q=75"
+    },
+    {
+      "boardId": 2,
+      "writerId": 1,
+      "id": "2",
+      "author": "ooo",
+      "title": "1회사용 편의점 우산 팔아요",
+      "date": "2024-05-28",
+      "content": "저렴히 내놓습니당",
+      "price": "1500원",
+      "img": "https://img.danawa.com/prod_img/500000/393/837/img/29837393_1.jpg?_v=20231107131415"
+    },
+    {
+      "boardId": 3,
+      "writerId": 2,
+      "id": "3",
+      "author": "ooo",
+      "title": "안쓰는 우산 내놓아요",
+      "date": "2024-05-28",
+      "content": "급히 필요하신 분들 저렴히 가져가세용",
+      "price": "1000원",
+      "img": "https://sitem.ssgcdn.com/35/49/51/item/1000533514935_i1_750.jpg"
+    },
+    {
+      "boardId": 4,
+      "writerId": 1,
+      "title": "우산 팔아요",
+      "content": "상태 굳",
+      "startTimeString": "2024-06-03-13:42",
+      "endTimeString": "2024-06-03-13:52",
+      "address": {
+        "name": "신논현역 9호선",
+        "latitude": "37.504811111562",
+        "longitude": "127.025492036104",
+        "street": "서울 강남구 봉은사로 지하 102"
+      },
+      "price": "2000원",
+      "isFreebie": false,
+      "img": "https://localhost:3000/11da0b91-0bb6-414c-be29-e236044dae83"
+    },
+    {
+      "boardId": 5,
+      "writerId": 1,
+      "title": "a",
+      "content": "ad",
+      "startTimeString": "2024-06-03-13:48",
+      "endTimeString": "2024-06-03-13:51",
+      "address": {
+        "name": "감성스터디카페 숭실대입구역점",
+        "latitude": "37.4989259414531",
+        "longitude": "126.951982835988",
+        "street": "서울 동작구 상도로37길 60"
+      },
+      "price": "3000원",
+      "isFreebie": false,
+      "img": "https://localhost:3000/69d06e02-c682-4f19-a4f1-7f0a497b8ea9"
+    },
+    {
+      "boardId": 6,
+      "id": "18eb",
+      "writerId": 1,
+      "title": "test",
+      "content": "test1",
+      "startTimeString": "2024-06-03-14:27",
+      "endTimeString": "2024-06-03-14:31",
+      "address": {
+        "name": "강남역 2호선",
+        "latitude": "37.49808633653005",
+        "longitude": "127.02800140627488",
+        "street": "서울 강남구 강남대로 지하 396"
+      },
+      "price": "2000원",
+      "isFreebie": false,
+      "img": "http://localhost:3000/6fa208fb-c2a6-473b-a795-d938e3cbe990"
+    }
+  ],
+  "message": [
+    {
+      "id": "dfef",
+      "chatRoomId": 1,
+      "senderId": 2,
+      "content": "as"
+    },
+    {
+      "id": "8c64",
+      "chatRoomId": 1,
+      "senderId": 2,
+      "content": "dd"
+    },
+    {
+      "id": "7a9f",
+      "chatRoomId": 1,
+      "senderId": 1,
+      "senderNickName": "nickName1",
+      "content": "난 nickname1"
+    },
+    {
+      "id": "5e8c",
+      "chatRoomId": 1,
+      "senderId": 2,
+      "senderNickName": "nickName2",
+      "content": "난 2번임"
+    },
+    {
+      "id": "ddbb",
+      "chatRoomId": 1,
+      "senderId": 1,
+      "senderNickName": "nickName1",
+      "content": "hehe"
+    },
+    {
+      "id": "b073",
+      "chatRoomId": 1,
+      "senderId": 2,
+      "senderNickName": "nickName2",
+      "content": "djksjd"
+    },
+    {
+      "id": "29d3",
+      "chatRoomId": 1,
+      "senderId": 2,
+      "senderNickName": "nickName3",
+      "content": "ss"
+    },
+    {
+      "id": "5bb5",
+      "chatRoomId": 1,
+      "senderId": 2,
+      "senderNickName": "nickName2",
+      "content": "ㅇ"
+    },
+    {
+      "id": "d97d",
+      "chatRoomId": 1,
+      "senderId": 2,
+      "senderNickName": "nickName2",
+      "content": "ㅇㅇ"
+    },
+    {
+      "id": "d98d",
+      "chatRoomId": 1,
+      "senderId": 1,
+      "senderNickName": "nickName1",
+      "content": "ㅇㅇ"
+    }
+  ]
+}

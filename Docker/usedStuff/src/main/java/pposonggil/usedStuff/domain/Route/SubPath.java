@@ -44,29 +44,40 @@ public class SubPath extends BaseEntity {
     private String busNo;
     private String subwayColor;
     private String busColor;
-//
-//    @Embedded
-//    @AttributeOverrides({
-//            @AttributeOverride(name = "name", column = @Column(name = "start_name")),
-//            @AttributeOverride(name = "latitude", column = @Column(name = "start_latitude")),
-//            @AttributeOverride(name = "longitude", column = @Column(name = "start_longitude")),
-//            @AttributeOverride(name = "x", column = @Column(name = "start_x")),
-//            @AttributeOverride(name = "y", column = @Column(name = "start_y"))
-//    })
-//    private PointInformation startInfo;
-//
-//    @Embedded
-//    @AttributeOverrides({
-//            @AttributeOverride(name = "name", column = @Column(name = "end_name")),
-//            @AttributeOverride(name = "latitude", column = @Column(name = "end_latitude")),
-//            @AttributeOverride(name = "longitude", column = @Column(name = "end_longitude")),
-//            @AttributeOverride(name = "x", column = @Column(name = "end_x")),
-//            @AttributeOverride(name = "y", column = @Column(name = "end_y"))
-//    })
-//    private PointInformation endInfo;
+
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "name", column = @Column(name = "start_name")),
+            @AttributeOverride(name = "latitude", column = @Column(name = "start_latitude")),
+            @AttributeOverride(name = "longitude", column = @Column(name = "start_longitude")),
+            @AttributeOverride(name = "x", column = @Column(name = "start_x")),
+            @AttributeOverride(name = "y", column = @Column(name = "start_y"))
+    })
+    private PointInformation start;
+
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "name", column = @Column(name = "end_name")),
+            @AttributeOverride(name = "latitude", column = @Column(name = "end_latitude")),
+            @AttributeOverride(name = "longitude", column = @Column(name = "end_longitude")),
+            @AttributeOverride(name = "x", column = @Column(name = "end_x")),
+            @AttributeOverride(name = "y", column = @Column(name = "end_y"))
+    })
+    private PointInformation end;
+
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "name", column = @Column(name = "mid_name")),
+            @AttributeOverride(name = "latitude", column = @Column(name = "mid_latitude")),
+            @AttributeOverride(name = "longitude", column = @Column(name = "mid_longitude")),
+            @AttributeOverride(name = "x", column = @Column(name = "mid_x")),
+            @AttributeOverride(name = "y", column = @Column(name = "mid_y"))
+    })
+    private PointInformation mid;
 
     public void setPath(Path path) {
         this.path = path;
+//        path.getSubPaths().add(this);
     }
 
     public void setPoints(List<Point> points) {
@@ -79,21 +90,12 @@ public class SubPath extends BaseEntity {
         return new SubPathBuilder();
     }
 
-//    public static SubPathBuilder builder(Path path, PointInformation startInfo, PointInformation endInfo) {
-//        if (path == null || startInfo == null || endInfo == null)
-//            throw new IllegalArgumentException("필수 파라미터 누락");
-//        return new SubPathBuilder()
-//                .path(path)
-//                .startInfo(startInfo)
-//                .endInfo(endInfo);
-//    }
-
-    public static SubPath buildSubPath(Path path, PointInformation startInfo, PointInformation endInfo, String type, Long distance,
+    public static SubPath buildSubPath(Path path, PointInformation start, PointInformation end, String type, Long distance,
                                        Long time, Long stationCount, String subwayName, String busNo, String subwayColor, String busColor) {
         return SubPath.builder()
                 .path(path)
-//                .startInfo(startInfo)
-//                .endInfo(endInfo)
+                .start(start)
+                .end(end)
                 .type(type)
                 .distance(distance)
                 .time(time)

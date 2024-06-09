@@ -48,7 +48,7 @@ public class ChatRoomService {
      */
     public ChatRoomDto findChatRoomWithBoardRequesterByBoardId(Long boardId) {
         ChatRoom chatRoom = chatRoomRepository.findChatRoomWithBoardRequesterByBoardId(boardId)
-                .orElseThrow(() -> new NoSuchElementException("ChatRoom not found with tradeId: " + boardId));
+                .orElseThrow(() -> new NoSuchElementException("ChatRoom not found with boardId: " + boardId));
 
         return ChatRoomDto.fromEntity(chatRoom);
     }
@@ -79,10 +79,8 @@ public class ChatRoomService {
             throw new IllegalArgumentException("자기 자신과 채팅방을 만들 수 없습니다.");
         }
 
-        chatRoomRepository.findChatRoomWithBoardRequesterByBoardId(chatRoomDto.getBoardId())
-                .ifPresent(chatRoom -> {
-                    throw new IllegalArgumentException("이미 채팅방이 생성됐습니다.");
-                });
+        // 채팅방이 이미 존재하는지 확인
+        checkChatRoomExists(chatBoard.getId());
 
         ChatRoom chatRoom = ChatRoom.buildChatRoom(chatBoard, requester);
 
@@ -92,6 +90,15 @@ public class ChatRoomService {
         chatRoomRepository.save(chatRoom);
 
         return chatRoom.getId();
+    }
+
+    /**
+     * 게시글 아이디에 해당하는 채팅방이 있는지 확인하고, 이미 존재하면 예외 던짐
+     */
+    public void checkChatRoomExists(Long boardId) {
+        chatRoomRepository.findChatRoomWithBoardRequesterByBoardId(boardId).ifPresent(chatRoom -> {
+            throw new IllegalArgumentException("이미 채팅방이 생성됐습니다.");
+        });
     }
 
     /**

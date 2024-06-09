@@ -9,49 +9,6 @@ import { faLocationDot, faSpinner, faBorderAll } from "@fortawesome/free-solid-s
 
 const { kakao } = window;
 
-const BtnContainer = styled.div`
-  z-index: 100;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: flex-end;
-  bottom: 20px;
-  right: 20px;
-  position: absolute;
-`;
-
-const LocationBtn = styled(motion.button)`
-  all: unset;
-  margin-top: 20px;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  right: 0;
-  bottom: 0;
-  z-index: 100;
-  position: sticky;
-  border-radius: 50%;
-  background-color: white;
-  padding: 12px;
-  box-shadow: 0px 0px 3px 3px rgba(0, 0, 0, 0.1);
-  cursor: ${props => (props.isLoading ? 'not-allowed' : 'pointer')};
-`;
-
-const GridBtn = styled(LocationBtn)`
-  cursor: ${props => (props.isGridLoading ? 'not-allowed' : 'pointer')};
-`;
-
-const Icon = styled(FontAwesomeIcon)`
-  width: 22px;
-  height: 22px;
-  transition: color 0.2s ease;
-`;
-
-const KakaoMap = styled.div`
-  width: 100%;
-  height: 100%;
-`;
-
 // SearchPlace.js에 들어가는 지도 (홈화면 지도와 다른 설정)
 function Map2() {
   const [isLoading, setIsLoading] = useState(false);
@@ -83,7 +40,7 @@ function Map2() {
         const container = mapRef.current;
         const options = {
           center: new kakao.maps.LatLng(place.lat, place.lon),
-          level: 2,
+          level: 3,
         };
         mapInstance.current = new kakao.maps.Map(container, options);
         geocoder.current = new kakao.maps.services.Geocoder();
@@ -158,7 +115,6 @@ function Map2() {
     <KakaoMap id="map" ref={mapRef}>
       <BtnContainer>
         <GridBtn
-          id="grid"
           onClick={handleGridBtn}
           isGridLoading={isGridLoading}
         >
@@ -169,7 +125,6 @@ function Map2() {
         </GridBtn>
 
         <LocationBtn
-          id="location"
           onClick={handleLocationBtn}
           isLoading={isLoading}
           initial={{ rotate: 0 }}
@@ -189,4 +144,47 @@ function Map2() {
 export default Map2;
 
 
+const BtnContainer = styled.div`
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+  bottom: 20px;
+  right: 20px;
+  position: absolute;
+
+`;
+
+const LocationBtn = styled(motion.button)`
+  all: unset;
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  right: 0;
+  bottom: 0;
+  z-index: 100;
+  position: sticky;
+  border-radius: 50%;
+  background-color: white;
+  padding: 12px;
+  box-shadow: 0px 0px 3px 3px rgba(0, 0, 0, 0.1);
+  cursor: ${props => (props.isLoading ? 'not-allowed' : 'pointer')};
+`;
+
+const GridBtn = styled(LocationBtn)`
+  cursor: ${props => (props.isGridLoading ? 'not-allowed' : 'pointer')};
+`;
+
+const Icon = styled(FontAwesomeIcon)`
+  width: 22px;
+  height: 22px;
+  transition: color 0.2s ease;
+`;
+
+const KakaoMap = styled.div`
+  width: 100%;
+  height: 100%;
+`;
 

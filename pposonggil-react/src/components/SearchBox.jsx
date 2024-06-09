@@ -8,72 +8,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass, faBars } from "@fortawesome/free-solid-svg-icons";
 
-const SearchContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px 0px;
-  width: 100%;
-  z-index: 100;
-  position: sticky;
-  background-color: inherit;
-`;
-
-const Container = styled.div`
-  width: 85%;
-  height: 45px;
-  background-color: whitesmoke;
-  box-shadow: 0px 0px 5px 4px rgba(109, 109, 109, 0.15);
-  /* padding: 0px 20px; */
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  border-radius: 15px;
-  padding: 12px;
-  margin: 0px 20px;
-  &:last-child { //버튼 컨테이너
-    width: 15%;
-    padding: 0px;
-    margin-left: 0px;
-    justify-content: flex-end;
-  }
-`;
-
-const Input = styled(motion.input)`
-  text-align: left;
-  width: 100%;
-  height: 100%;
-  font-size: 17px;
-  border: none;
-  background-color: inherit;
-  &:focus {
-    outline: none;
-  }
-`;
-
-const Icon = styled(FontAwesomeIcon)`
-  /* margin: 0px 20px 0px 10px ; */
-  cursor: pointer;
-  padding: 10px;
-  &:first-child {
-    margin-right: 5px;
-  }
-`;
-
-const Btn = styled.button`
-  border: none;
-  cursor: pointer;
-  text-align: center;
-  background-color: #003E5E;
-  width: 100%;
-  height: 100%;
-  border-radius: 15px;
-  font-size: 14px;
-  font-weight: 600;
-  color: white;
-`;
-
-
 function SearchBox() {
   const mapCenterAddress = useRecoilValue(mapCenterState);
   const [placeholderText, setPlaceholderText] = useState("장소·주소 검색");
@@ -94,7 +28,7 @@ function SearchBox() {
     navigate('/search/routes');
   };
 
-  const clickedBars = (e) => {
+  const handleBarClick = (e) => {
     //왼쪽에서 오른쪽으로 화면 절반정도 뽀송길 설명 페이지 토글되게
     //새로운 화면 아니고 map위에 zindex값으로 레이아웃처럼 위로 뜨게.
     //atom값으로 State 값 변경하고 Map.js에서 띄우는 걸로..!
@@ -116,7 +50,7 @@ function SearchBox() {
       <Container>
         <Icon 
           icon={faBars} 
-          onClick={clickedBars}
+          onClick={handleBarClick}
         />
         <AnimatePresence>
           <Input 
@@ -146,5 +80,70 @@ function SearchBox() {
 
   );
 }
-
 export default SearchBox;
+
+
+const SearchContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 0px 10px 0px;
+  width: 100%;
+  z-index: 100;
+  position: sticky;
+  background-color: inherit;
+`;
+
+const Container = styled.div`
+  width: 80%;
+  height: 45px;
+  background-color: whitesmoke;
+  box-shadow: 0px 0px 5px 4px rgba(109, 109, 109, 0.15);
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  border-radius: 15px;
+  padding: 12px;
+  margin: 0px 20px;
+  &:last-child { //버튼 컨테이너
+    width: 20%;
+    padding: 0px;
+    margin-left: 0px;
+    justify-content: flex-end;
+  }
+`;
+
+const Input = styled(motion.input)`
+  text-align: left;
+  width: 100%;
+  height: 100%;
+  font-size: 17px;
+  font-weight: 700;
+  border: none;
+  background-color: inherit;
+  &:focus {
+    outline: none;
+  }
+`;
+
+const Icon = styled(FontAwesomeIcon)`
+  /* margin: 0px 20px 0px 10px ; */
+  cursor: pointer;
+  padding: 10px;
+  &:first-child {
+    margin-right: 5px;
+  }
+`;
+
+const Btn = styled.button`
+  border: none;
+  cursor: pointer;
+  text-align: center;
+  background-color: #003E5E;
+  width: 100%;
+  height: 100%;
+  border-radius: 15px;
+  font-size: 16px;
+  font-weight: 700;
+  color: white;
+`;

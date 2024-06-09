@@ -76,8 +76,8 @@ a {
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    <RecoilRoot>
-      <GlobalStyle />
-      <App />
-    </RecoilRoot>
+  <RecoilRoot>
+    <GlobalStyle />
+    <App />
+  </RecoilRoot>
 );
