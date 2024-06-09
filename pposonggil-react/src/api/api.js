@@ -45,7 +45,7 @@ api.interceptors.response.use(
                     window.location.href = '/login';
                 }
             }
-            else if (error.response.status === 403) {
+            else if (error.response.status === 999) {
                 alert("차단되었습니다.");
                 window.location.href = '/login';
             }
@@ -61,7 +61,7 @@ api.interceptors.response.use(
             }
 
             else {
-                alert("알 수 없는 오류\n" + error.response);
+                alert("알 수 없는 오류\n" + error.response.data);
                 window.location.href = '/';
             }
         } catch (refreshError) {

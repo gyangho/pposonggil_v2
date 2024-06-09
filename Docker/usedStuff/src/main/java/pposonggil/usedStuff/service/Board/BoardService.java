@@ -89,10 +89,11 @@ public class BoardService {
     public List<BoardDto> findBoardsWithExpectedRain(PointInformationDto startDto, Long memberId) throws IOException {
         List<BoardDto> results = new ArrayList<>();
         List<TradeDto> tradeDtos = tradeService.findTradesByMemberId(memberId);
+        System.out.println("TRADEDTOS++++++++++");
 
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(NoSuchElementException::new);
-
+        System.out.println("Memeber++++++++++");
         LocalTime curTime = LocalTime.now(ZoneId.of("Asia/Seoul"));
 
         List<BoardDto> boardDtos = findBoards();
@@ -131,7 +132,7 @@ public class BoardService {
                 PathDto pathDto = pathService.createPath(startDto, endDto, curTime.format(inputFormatter), memberId);
                 boardDto.setExpectedRain(pathDto.getTotalRain());
             } catch (Exception e) {
-                log.info("Forecast 정보를 가져오는 데 실패했습니다: " + e.getMessage());
+                System.out.println("Forecast 정보를 가져오는 데 실패했습니다: " + e.getMessage());
             }
         }
         return results;

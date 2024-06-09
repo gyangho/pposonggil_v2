@@ -6,8 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="fbc73a0f-9444-47e6-9457-7db026927fd3" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/nginx/conf.d/api_gateway.conf" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/nginx/conf.d/api_gateway.conf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/component/TokenProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/component/TokenProvider.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/config/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/service/Board/BoardService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/service/Board/BoardService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -234,7 +235,7 @@
       <workItem from="1717964160513" duration="4331000" />
       <workItem from="1717969149610" duration="880000" />
       <workItem from="1717970042883" duration="827000" />
-      <workItem from="1717971323412" duration="300000" />
+      <workItem from="1717971323412" duration="3371000" />
     </task>
     <servers />
   </component>

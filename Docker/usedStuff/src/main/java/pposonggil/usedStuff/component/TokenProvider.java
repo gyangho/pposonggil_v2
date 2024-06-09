@@ -123,10 +123,10 @@ public class TokenProvider {
             return false;
         }
         Claims claims = parseClaims(token);
-        System.out.println("ROles: " + claims.get(KEY_ROLE).toString());
+        System.out.println("ROles: " + claims.get(KEY_ROLE).toString() + Role.BLOCKED.toString());
         if((claims.get(KEY_ROLE)).toString().contains(Role.BLOCKED.toString()))
         {
-            throw new AccessDeniedException("403");
+            throw new AccessDeniedException("999");
         }
         if(claims.getExpiration().before(new Date()))
         {
