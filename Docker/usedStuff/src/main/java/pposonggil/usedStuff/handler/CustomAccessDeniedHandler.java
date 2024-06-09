@@ -11,12 +11,19 @@ public class CustomAccessDeniedHandler implements org.springframework.security.w
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
         String message =accessDeniedException.getMessage();
+        response.sendError(500,"accessDenied");
+        response.setStatus(500);
         response.setContentType("text/html;charset=UTF-8");
         response.getWriter().write(
-                    "<script>" +
-                        "alert('"+ message + "');" +
-                        "window.location.href='http://localhost:3000/';" +
-                        "</script>"
+                "<html>" +
+                        "<head>" +
+                        "<script type='text/javascript'>" +
+                        "alert('" + message + "');" +
+                        "window.location.href='/';" +
+                        "</script>" +
+                        "</head>" +
+                        "<body></body>" +
+                        "</html>"
         );
     }
 }

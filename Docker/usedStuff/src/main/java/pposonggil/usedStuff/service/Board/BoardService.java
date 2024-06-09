@@ -95,7 +95,6 @@ public class BoardService {
                 .orElseThrow(NoSuchElementException::new);
 
         LocalTime curTime = LocalTime.now(ZoneId.of("Asia/Seoul"));
-        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("HHmm");
 
         List<BoardDto> boardDtos = findBoards();
 

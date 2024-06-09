@@ -33,6 +33,10 @@ public class Board extends BaseEntity{
     private String endTimeString;
     private String imageUrl;
 
+    @OneToOne(mappedBy = "chatBoard", cascade = CascadeType.ALL, orphanRemoval = true)
+    private ChatRoom chatRoom;
+
+
     @Embedded
     private TransactionAddress address;
 

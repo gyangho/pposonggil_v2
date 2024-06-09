@@ -10,6 +10,7 @@ import pposonggil.usedStuff.dto.Block.BlockDto;
 import pposonggil.usedStuff.repository.block.BlockRepository;
 import pposonggil.usedStuff.repository.chatroom.ChatRoomRepository;
 import pposonggil.usedStuff.repository.member.MemberRepository;
+import pposonggil.usedStuff.repository.message.MessageRepository;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -22,6 +23,7 @@ public class BlockService {
     private final BlockRepository blockRepository;
     private final MemberRepository memberRepository;
     private final ChatRoomRepository chatRoomRepository;
+    private final MessageRepository messageRepository;
 
     public BlockDto findBlocksByBlockID(Long blockId)
     {

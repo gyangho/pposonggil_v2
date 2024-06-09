@@ -3,20 +3,28 @@ package pposonggil.usedStuff.api.ChatRoom;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.*;
+import pposonggil.usedStuff.dto.Block.BlockDto;
 import pposonggil.usedStuff.dto.ChatRoom.ChatRoomDto;
 import pposonggil.usedStuff.service.Auth.ValidateService;
+import pposonggil.usedStuff.service.Block.BlockService;
+import pposonggil.usedStuff.service.Board.BoardService;
 import pposonggil.usedStuff.service.ChatRoom.ChatRoomService;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
 public class ChatRoomApiController {
     public final ChatRoomService chatRoomService;
     public final ValidateService validateService;
+    public final BlockService blockService;
+    public final BoardService boardService;
 
     /**
      * admin
@@ -85,7 +93,32 @@ public class ChatRoomApiController {
     @PostMapping("/api/chatroom")
     public ResponseEntity<Object> createChatRoom(@RequestBody ChatRoomDto chatRoomDto)
     {
-        validateService.validateMemberIdAndThrow(chatRoomDto.getRequesterId());
+        Long requesterId =chatRoomDto.getRequesterId();
+        validateService.validateMemberIdAndThrow(requesterId);
+        Long writerId = boardService.findOne(chatRoomDto.getBoardId()).getWriterId();
+        List<BlockDto> objblocks = blockService.findBlocksByObjectId(requesterId);
+        List<Long> subjectIds = objblocks.stream()
+                .map(BlockDto::getSubjectId)
+                .toList();
+        List<BlockDto> subjblocks = blockService.findBlocksBySubjectId(requesterId);
+        List<Long> objectIds = subjblocks.stream()
+                .map(BlockDto::getSubjectId)
+                .toList();
+        for(Long i: objectIds)
+        {
+            if(Objects.equals(requesterId, i))
+            {
+                throw new AccessDeniedException("채팅방을 생성할 수 없습니다.");
+            }
+        }
+
+        for(Long i : subjectIds)
+        {
+            if(Objects.equals(writerId, i))
+            {
+                throw new AccessDeniedException("채팅방을 생성할 수 없습니다.");
+            }
+        }
 
         Long chatRoomId = chatRoomService.createChatRoom(chatRoomDto);
 

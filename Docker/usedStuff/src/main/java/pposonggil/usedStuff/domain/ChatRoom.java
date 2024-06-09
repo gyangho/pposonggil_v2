@@ -30,7 +30,7 @@ public class ChatRoom extends BaseEntity {
     private Board chatBoard;
 
     @Builder.Default
-    @OneToMany(mappedBy = "messageChatRoom")
+    @OneToMany(mappedBy = "messageChatRoom", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Message> messages = new ArrayList<>();
 
     @JsonIgnore

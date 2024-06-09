@@ -54,7 +54,8 @@ function Post() {
           navigate(`/market/chat/${response.data.chatRoomId}`);
           // navigate(`/market/chat/${response.data.chatRoomId}`, { state: { user } });
         } catch (postError) {
-          console.error('Error creating chat room', postError);
+          alert("채팅방을 생성할 수 없습니다.");
+          navigate('/home');
         }
       } else {
         console.error('Error checking existing chat room', error);
