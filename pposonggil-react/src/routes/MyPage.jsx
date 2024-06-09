@@ -59,10 +59,12 @@ svg {
 }
 `;
 
+const myId = localStorage.getItem('id');
+const myNickName = localStorage.getItem('nickname');
 
 function MyPage() {
   const navigate = useNavigate();
-  const writerId = 1; // 실제 사용자의 writerId로 대체해야 함
+  const writerId = myId; // 실제 사용자의 writerId로 대체해야 함
 
   const handleButtonClick = async (type) => {
     if (!writerId) {
@@ -71,15 +73,7 @@ function MyPage() {
     }
 
     try {
-      if (type === 'member-posting') {//내가 작성한 게시글
-        // const response = await axios.get(`http://localhost:8080/api/boards/by-member/${writerId}`);
-        // const userPosts = response.data.filter(post => post.writerId === writerId);
-        // if (userPosts.length > 0) {
-        //   navigate(`/member-posting/${writerId}`);
-        // }
-        // else {
-        // alert('작성한 게시글이 없습니다.');
-        // }
+      if (type === 'member-posting') {
         navigate(`/member-posting/${writerId}`);
       } else if (type === 'reserved-trades') {//진행중인 중고 거래
         navigate('/OngoingTrades');
@@ -100,7 +94,7 @@ function MyPage() {
       <Container>
         <ProfileSection>
           <ProfileIcon icon={faUserCircle} />
-          <UserName>nickName1</UserName>
+          <UserName>{myNickName}</UserName>
         </ProfileSection>
         <Button onClick={() => handleButtonClick('member-posting')}>
           내가 작성한 게시글

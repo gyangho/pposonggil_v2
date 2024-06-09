@@ -272,17 +272,18 @@ const NoTradesMessage = styled.div`
 function MemberPosting() {
   const [posts, setPosts] = useState([]);
   const navigate = useNavigate();
-  const { writerId } = useParams(); // url에서 writerId 떼오기
+  // const { writerId } = useParams(); // url에서 writerId 떼오기
+  const myId = localStorage.getItem('id');
 
   useEffect(() => {
-    api.get(`http://localhost:8080/api/boards/by-member/${writerId}`) // 백엔드 url로 변경
+    api.get(`http://localhost:8080/api/boards/by-member/${myId}`) // 백엔드 url로 변경
       .then(response => {
         setPosts(response.data);
       })
       .catch(error => {
         console.error('Error fetching posts:', error);
       });
-  }, [writerId]);
+  }, [myId]);
 
   const handlePostClick = (boardId) => {
     navigate(`/member-posting/post/${boardId}`);

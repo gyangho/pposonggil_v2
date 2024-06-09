@@ -82,8 +82,8 @@ function App() {
 
           <Route path="/auth/success" element={<Welcome />} />
 
-          <Route path="/login" element={<LogIn />} />
-          <Route path="/oauth/kakao/callback" element={<KakaoRedirect />} />
+          <Route path="/login" element={<Login />} />
+          {/* <Route path="/oauth/kakao/callback" element={<KakaoRedirect />} /> */}
           {/* 로그인 페이지로 수정 필요 */}
           <Route path="/" element={<Home />} />
 

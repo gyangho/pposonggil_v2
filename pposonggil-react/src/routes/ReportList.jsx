@@ -88,7 +88,8 @@
 // export default ReportList;
 
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
+import api from "../api/api";
 import styled from 'styled-components';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFlag, faUser, faArrowRight } from "@fortawesome/free-solid-svg-icons";
@@ -148,14 +149,16 @@ const NoReportsMessage = styled.div`
   font-weight: bold;
 `;
 
+// const myId = localStorage.getItem('id');
+
 function ReportList() {
     const [reports, setReports] = useState([]);
 
     useEffect(() => {
         const fetchReports = async () => {
             try {
-                const myId = 1; // 실제 사용자의 ID로 대체해야 합니다.
-                const response = await axios.get(`http://localhost:8080/api/reports/by-subject/${myId}`);
+                const myId = localStorage.getItem('id');; // 실제 사용자의 ID로 대체해야 합니다.
+                const response = await api.get(`http://localhost:8080/api/reports/by-subject/${myId}`);
                 setReports(response.data);
             } catch (error) {
                 console.error('신고 목록을 불러오는 중 오류 발생:', error);

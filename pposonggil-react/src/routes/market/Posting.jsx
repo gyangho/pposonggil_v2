@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera } from "@fortawesome/free-solid-svg-icons"; // 추가: faCamera 아이콘 import
 import '../../../src/posting.css'; // css 파일 import
-import api from '../../api/api'; // axios import
+import api from '../../api/api'; // axios import를 api로
 import { useNavigate } from 'react-router-dom';
 
 const { kakao } = window;
@@ -10,6 +10,7 @@ const { kakao } = window;
 // JSON 서버 API URL로 변경해야 함
 // const apiUrl = "http://localhost:3001/postList"; // JSON 서버
 const apiUrl = "http://localhost:8080/api/board"; //백엔드 연동
+const myId = localStorage.getItem('id');
 
 function Posting({ onSave, editingPost, onUpdate }) {
   const [title, setTitle] = useState('');
@@ -70,7 +71,7 @@ function Posting({ onSave, editingPost, onUpdate }) {
     const endTimeString = `${currentDate}-${post.endTime}`;
 
     const postData = {
-      writerId: 1, // 나중에 writerId 전달받으면 수정
+      writerId: myId, // 나중에 writerId 전달받으면 수정
       title: post.title,
       content: post.content,
       startTimeString,

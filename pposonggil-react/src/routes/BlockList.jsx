@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBan } from "@fortawesome/free-solid-svg-icons";
+import api from "../api/api";
 
 const Container = styled.div`
   width: 100%;
@@ -70,14 +71,16 @@ const NoTradesMessage = styled.div`
   font-weight: bold; /* 글씨를 굵게 */
 `;
 
+// const myId = localStorage.getItem('id');
+
 function BlockList() {
     const [blockedUsers, setBlockedUsers] = useState([]);
 
     useEffect(() => {
         const fetchBlockedUsers = async () => {
             try {
-                const myId = 1; // 실제 사용자의 ID로 대체해야 합니다.
-                const response = await axios.get(`http://localhost:8080/api/blocks/by-subject/${myId}`);
+                const myId = localStorage.getItem('id'); // 실제 사용자의 ID로 대체해야 합니다.
+                const response = await api.get(`http://localhost:8080/api/blocks/by-subject/${myId}`);
                 setBlockedUsers(response.data);
             } catch (error) {
                 console.error('차단 목록을 불러오는 중 오류 발생:', error);
@@ -89,7 +92,7 @@ function BlockList() {
 
     const handleUnblock = async (blockId) => {
         try {
-            await axios.delete(`http://localhost:8080/api/block/${blockId}`);
+            await api.delete(`http://localhost:8080/api/block/${blockId}`);
             setBlockedUsers(blockedUsers.filter(block => block.blockId !== blockId));
         } catch (error) {
             console.error('차단 해제 중 오류 발생:', error);
