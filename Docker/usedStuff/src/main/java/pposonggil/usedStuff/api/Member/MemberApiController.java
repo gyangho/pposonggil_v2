@@ -61,7 +61,7 @@ public class MemberApiController {
         return "<script> " +
                 "localStorage.setItem('token','"+ token +"');" +
                 "localStorage.setItem('authority', 'ADMIN');"+
-                "window.location.href('/test')"+
+                "window.location.href='/test'"+
                 "</script>";
     }
 }

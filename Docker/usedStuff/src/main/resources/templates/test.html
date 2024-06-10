@@ -16,9 +16,11 @@
             <h1 class="login-header__title welcome-header__title"><br> 반가워요!</h1>
             <p>뽀송길만 걷게 해드릴게요 <i class="fa-solid fa-cloud" style="color: #9fd8f6;"></i></p>
         </header>
-        <a href="/api/blocks" id="Button">전체 차단목록</a><br/><br/>
-        <a href="/find/우분투리눅스" id="Button3">우분투리눅스 찾아보기</a><br/><br/>
         <a href="/api/getadmin" id="button2">어드민 권한 받아보기~</a><br/><br/>
+        <a href="/api/reports" id="Button">전체 신고목록</a><br/><br/>
+        <a href="/api/forcasts" id="Buttom3">기상정보 받아오기</a><br/><br/>
+        <input type="text" id="memberidInput" placeholder="Enter memberid" />
+        <button id="blockMemberButton">Block Member</button><br/><br/>
     </main>
 </div>
 
@@ -51,9 +53,12 @@
                 });
             } else {
                 return response.text().then(data => {
-                    document.open();
-                    document.write(data);
-                    document.close();
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(data, 'text/html');
+                    const newContent = doc.body;
+
+                    // 새로운 내용을 기존 내용의 아래에 추가합니다.
+                    document.body.appendChild(newContent);
                 });
             }
         });
@@ -68,6 +73,20 @@
 
             // 요청 보냅니다.
             sendRequestWithToken(url, token);})
+    });
+
+    // Block Member 버튼 클릭 시 요청 보내는 함수
+    document.getElementById('blockMemberButton').addEventListener('click', function() {
+        let memberid = document.getElementById('memberidInput').value;
+        if (memberid) {
+            let url = `/blockmember/${memberid}`;
+            let token = localStorage.getItem('token'); // 여기에 실제 토큰 값이 들어가야 합니다.
+
+            // 요청 보냅니다.
+            sendRequestWithToken(url, token);
+        } else {
+            alert('Please enter a memberid.');
+        }
     });
 
 </script>

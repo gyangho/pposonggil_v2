@@ -193,7 +193,7 @@ function Chat() {
         />
         <SendButton onClick={handleSendMessage}>전송</SendButton>
       </InputContainer>
-      <ScheduleBtn onClick={handleConfirmTrade}>거래 확정하기</ScheduleBtn>
+      <ScheduleBtn onClick={handleConfirmTrade}>거래 예약하기</ScheduleBtn>
 
       {showReportModal && (
         <Modal>

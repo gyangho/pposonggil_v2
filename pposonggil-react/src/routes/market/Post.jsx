@@ -43,6 +43,7 @@ function Post() {
       }
     } catch (error) {
       if (error.response && error.response.status === 500) {
+        console.log("PLEASE");
         // 채팅방이 없는 경우 새로운 채팅방 생성
         try {
           const response = await api.post(chatApiUrl, {
@@ -103,7 +104,7 @@ function Post() {
         <WeatherWrapper>
           <WeatherHeader>
             <FontAwesomeIcon icon={faBullhorn} />
-            거래 장소까지의 기상정보
+            거래 장소의 기상정보
           </WeatherHeader>
           <WeatherInfo>
             {expectedRain && (

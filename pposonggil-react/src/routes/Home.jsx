@@ -1,6 +1,6 @@
-import React, { useState, useCallback, useRef } from "react";
+import React, { useState, useCallback, useRef, useEffect } from "react";
 import { useRecoilState, useRecoilValue, useResetRecoilState, useSetRecoilState } from "recoil";
-import { markerState, navState, routeInfoState } from "../recoil/atoms";
+import { markerState, navState, routeInfoState, userState } from "../recoil/atoms";
 
 import styled from "styled-components";
 import { motion } from "framer-motion";
@@ -16,10 +16,20 @@ function Home() {
   const [nav, setNav] = useRecoilState(navState);
   const resetRouteInfo = useResetRecoilState(routeInfoState);
   const resetNav = useResetRecoilState(navState);
+  const [user, setUser] = useRecoilState(userState);
 
   //하단 창 슬라이드 업 애니메이션 
   const [slideUp, setSlideUp] = useState(false);
   const contentBoxRef = useRef(null);
+
+  useEffect(() => {
+    const id = localStorage.getItem('id');
+    const nickname = localStorage.getItem('nickname');
+    setUser({
+      userId: id,
+      userNickName: nickname
+    });
+  }, []);
 
   resetRouteInfo(); //이전 출발지/목적지 디폴트 값으로 초기화
   resetNav(); //네비게이션 바 위치 디폴트 값으로 초기화
@@ -54,7 +64,7 @@ function Home() {
         animate={{ height: slideUp ? "45%" : "60%" }}
         transition={{ duration: 0.3 }}
       >
-        <Map/>
+        <Map />
       </MapBox>
       <ContentBox
         layout

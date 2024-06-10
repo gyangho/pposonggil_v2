@@ -11,10 +11,10 @@ function Welcome() {
         localStorage.setItem('token', accessToken);
         localStorage.setItem('id', id);
         localStorage.setItem('nickname', nickname);
-        window.location.replace('http://pposong.ddns.net')
+        window.location.replace('https://pposong.ddns.net')
     }
     else {
-        window.location.replace('http://pposong.ddns.net/login');
+        window.location.replace('https://pposong.ddns.net/login');
     }
     return null;
 }

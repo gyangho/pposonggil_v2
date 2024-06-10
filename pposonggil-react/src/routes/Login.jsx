@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import kakaoImage from "../assets/kakao_login.png";
+import kakaoImage from "../assets/google_login.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCloud } from "@fortawesome/free-solid-svg-icons";
 import { useResetRecoilState } from "recoil";

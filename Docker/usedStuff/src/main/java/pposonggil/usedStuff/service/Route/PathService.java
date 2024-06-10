@@ -172,6 +172,7 @@ public class PathService {
         try {
             List<ForecastSubPathDto> result = new ArrayList<>();
             String standardTime = selectTime.substring(0, 2) + "00";
+            System.out.println("++++++++++++SelectTIme: " + selectTime + "StandardTime: " + standardTime);
             Long duration = null;
 
             for (SubPathDto subPathDto : pathDto.getSubPathDtos()) {

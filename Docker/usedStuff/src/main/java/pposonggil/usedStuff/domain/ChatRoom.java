@@ -33,6 +33,9 @@ public class ChatRoom extends BaseEntity {
     @OneToMany(mappedBy = "messageChatRoom", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Message> messages = new ArrayList<>();
 
+    @OneToOne(mappedBy = "tradeChatRoom", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Trade trade;
+
     @JsonIgnore
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "requester_id")

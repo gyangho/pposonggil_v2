@@ -1,5 +1,6 @@
 package pposonggil.usedStuff.api.ChatRoom;
 
+import jakarta.validation.constraints.Null;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,10 +13,7 @@ import pposonggil.usedStuff.service.Block.BlockService;
 import pposonggil.usedStuff.service.Board.BoardService;
 import pposonggil.usedStuff.service.ChatRoom.ChatRoomService;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -62,12 +60,17 @@ public class ChatRoomApiController {
      */
     @GetMapping("/api/chatroom/by-board/{boardId}")
     public ChatRoomDto findChatRoomWithBoardRequesterByBoardId(@PathVariable Long boardId) {
-        ChatRoomDto chatRoomDto = chatRoomService.findChatRoomWithBoardRequesterByBoardId(boardId);
-        Long chatRoomDtoRequesterId = chatRoomDto.getRequesterId();
-        Long chatRoomDtoWriterId = chatRoomDto.getWriterId();
-
-        validateService.validateChatMembersAndThrow(chatRoomDtoRequesterId, chatRoomDtoWriterId);
-
+        ChatRoomDto chatRoomDto = null;
+        try {
+            chatRoomDto = chatRoomService.findChatRoomWithBoardRequesterByBoardId(boardId);
+            Long chatRoomDtoRequesterId = chatRoomDto.getRequesterId();
+            Long chatRoomDtoWriterId = chatRoomDto.getWriterId();
+            validateService.validateChatMembersAndThrow(chatRoomDtoRequesterId, chatRoomDtoWriterId);
+        }
+        catch(NoSuchElementException e)
+        {
+            throw new AccessDeniedException("500");
+        }
         return chatRoomDto;
     }
 
@@ -104,6 +107,7 @@ public class ChatRoomApiController {
         List<Long> objectIds = subjblocks.stream()
                 .map(BlockDto::getSubjectId)
                 .toList();
+        //차단 당하거나 차단 한 사람과의 채팅일 경우 에러
         for(Long i: objectIds)
         {
             if(Objects.equals(requesterId, i))

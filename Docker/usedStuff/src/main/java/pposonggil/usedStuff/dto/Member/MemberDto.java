@@ -25,6 +25,8 @@ public class MemberDto {
     private boolean isActivated;
     private Set<Role> roles;
 
+
+
     public static MemberDto fromEntity(Member member){
         return MemberDto.builder()
                 .memberId(member.getId())

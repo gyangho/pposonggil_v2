@@ -26,7 +26,7 @@ function PlaceInfo() {
   });
 
   useEffect(() => {
-    if(locationBtn) {
+    if (locationBtn) {
       setPlace({
         depth2: curAddr.depth2,
         depth3: curAddr.depth3,
@@ -84,7 +84,7 @@ function PlaceInfo() {
   };
 
   return (
-    <Container 
+    <Container
       initial={{ y: 20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       exit={{ y: 20, opacity: 0 }}
@@ -93,29 +93,28 @@ function PlaceInfo() {
       <Row id="address_weather">
         <Box>
           <Address>
-            <FontAwesomeIcon icon={faLocationDot} style={{color: "#216CFF", marginRight: "8px" }}/> 
+            <FontAwesomeIcon icon={faLocationDot} style={{ color: "#216CFF", marginRight: "8px" }} />
             {place.addr}
           </Address>
           <AddressBox>
             <Info>
               <span style={{ color: "#5f5f5f" }}>
-                도로명: {place.roadAddr}
               </span>
             </Info>
           </AddressBox>
           <AddressBox>
             <Btn onClick={onOriginClick}><span style={{ color: "#02C73C" }}>출발</span></Btn>
-            <Btn onClick={onDestClick}><span style={{ color: "#216CFF"}}>도착</span></Btn>
+            <Btn onClick={onDestClick}><span style={{ color: "#216CFF" }}>도착</span></Btn>
           </AddressBox>
         </Box>
-      </Row> 
+      </Row>
     </Container>
-   );
-  }
+  );
+}
 
-  export default PlaceInfo
+export default PlaceInfo
 
-  const Container = styled(motion.div)`
+const Container = styled(motion.div)`
   padding: 10px;
   height: 100%;
   width: 100%;

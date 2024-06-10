@@ -64,6 +64,7 @@ public class ValidateService {
         }
         // User 객체의 username을 memberId로 사용한다고 가정
         String authenticatedMemberId = principal.getUsername();
+        System.out.println(authenticatedMemberId);
         return authenticatedMemberId.equals(memberId.toString());
     }
 
@@ -74,9 +75,9 @@ public class ValidateService {
         }
 
         List<GrantedAuthority> authorities = (List<GrantedAuthority>) authentication.getAuthorities();
-        SimpleGrantedAuthority adminAuthority = new SimpleGrantedAuthority("ROLE_ADMIN");
-
-        return authorities.contains(adminAuthority);
+        //SimpleGrantedAuthority adminAuthority = new SimpleGrantedAuthority("ADMIN");
+        System.out.println(authorities);
+        return authorities.toString().contains("ADMIN");
     }
 
     public void checkAdminAndThrow()

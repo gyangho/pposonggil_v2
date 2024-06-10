@@ -97,6 +97,10 @@ public class Member extends BaseEntity {
     {
         roles.add(role);
     }
+    public void setRole(Set<Role> roles)
+    {
+        this.roles = roles;
+    }
     public void deleteRole(Role role) {roles.remove(role);}
 
 }

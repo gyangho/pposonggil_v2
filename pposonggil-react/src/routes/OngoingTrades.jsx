@@ -129,6 +129,7 @@ import api from "../api/api";
 // const myId = localStorage.getItem('id');
 
 const ReservedTrades = () => {
+  const memberId = localStorage.getItem('id');
   const navigate = useNavigate();
   const [trades, setTrades] = useState([]);
   // const myId = localStorage.getItem('id'); // 실제 사용자의 ID로 대체
@@ -162,7 +163,7 @@ const ReservedTrades = () => {
 
   const handleCancelTrade = async (tradeId) => {
     try {
-      await api.delete(`https://pposong.ddns.net/api/trade/${tradeId}`);
+      await api.delete(`https://pposong.ddns.net/api/trade/${tradeId}/by-member/${memberId}`);
       setTrades(prevTrades => prevTrades.filter(trade => trade.tradeId !== tradeId));
       alert('거래를 취소했습니다.');
     } catch (error) {

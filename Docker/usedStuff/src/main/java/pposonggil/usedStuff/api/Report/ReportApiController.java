@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pposonggil.usedStuff.dto.Report.ReportDto;
+import pposonggil.usedStuff.service.Auth.ValidateService;
 import pposonggil.usedStuff.service.Report.ReportService;
 
 import java.util.HashMap;
@@ -15,6 +16,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ReportApiController {
     private final ReportService reportService;
+    private final ValidateService validateService;
 
     /**
      * 전체 신고 조회
@@ -23,6 +25,7 @@ public class ReportApiController {
      */
     @GetMapping("/api/reports")
     public List<ReportDto> reports() {
+        validateService.checkAdmin();
         return reportService.findReports();
     }
 

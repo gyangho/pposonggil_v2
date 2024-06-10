@@ -87,30 +87,23 @@ public class MemberService {
 
     /**
      * 회원 정보 업데이트
+     *
+     * */
 
     @Transactional
-    public void updateMember(MemberDto memberDto){
+    public Member updateMember(MemberDto memberDto){
         Member member = memberRepository.findById(memberDto.getMemberId())
                 .orElseThrow(NoSuchElementException::new);
 
         // 이름 변경 여부 확인
         if(!member.getName().equals(memberDto.getName()))
             member.setName(memberDto.getName());
-
-        // 닉네임 변경 여부 확인 && 닉네임 중복 체크
-        if(!member.getNickName().equals(memberDto.getNickName())){
-            validateDuplicateNickName(memberDto.getNickName());
-            member.setNickName(memberDto.getNickName());
-        }
-
-        // 전화번호 변경 여부 확인 && 전화번호 중복 체크
-        if(!member.getPhone().equals(memberDto.getPhone())){
-            validateDuplicateNickName(memberDto.getPhone());
-            member.setPhone(memberDto.getPhone());
-        }
+        //권한 변경 여부 확인
+        if(!member.getRoles().equals(memberDto.getRoles()))
+            member.setRole(memberDto.getRoles());
         memberRepository.save(member);
+        return member;
     }
-     */
 
      @Transactional
      public void deleteMember(Long memberId) {

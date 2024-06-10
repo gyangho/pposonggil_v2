@@ -60,10 +60,6 @@ api.interceptors.response.use(
                 window.location.href = '/';
             }
 
-            else {
-                alert("알 수 없는 오류\n" + error.response.data);
-                window.location.href = '/';
-            }
         } catch (refreshError) {
             window.location.href = '/login';
         }

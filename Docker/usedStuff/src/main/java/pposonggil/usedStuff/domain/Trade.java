@@ -43,6 +43,9 @@ public class Trade extends BaseEntity {
     @JoinColumn(name = "trade_object_id")
     private Member tradeObject;
 
+    @OneToOne(mappedBy = "distanceTrade",cascade = CascadeType.ALL, orphanRemoval = true)
+    private Distance distance;
+
     private String startTimeString;
     private String endTimeString;
 

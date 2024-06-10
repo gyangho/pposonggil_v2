@@ -11,6 +11,7 @@ public class CustomAccessDeniedHandler implements org.springframework.security.w
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
         String message =accessDeniedException.getMessage();
+        response.setStatus(Integer.parseInt(message));
         response.sendError(Integer.parseInt(message));
     }
 }
