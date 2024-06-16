@@ -1,6 +1,7 @@
 package pposonggil.usedStuff.config;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -28,7 +29,8 @@ import java.util.Arrays;
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
-
+    @Value("${baseurl.url}")
+    private String baseurl;
     private final CustomOAuth2UserService oAuth2UserService;
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
     private final TokenAuthenticationFilter tokenAuthenticationFilter;
@@ -87,7 +89,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("https://pposong.ddns.net"));
+        configuration.setAllowedOrigins(Arrays.asList(baseurl));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
         configuration.setAllowCredentials(true);

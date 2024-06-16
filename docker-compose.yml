@@ -3,6 +3,7 @@ services:
   nginx:
     image: nginx:latest
     container_name: nginx
+    build: ./Docker/nginx
     ports:
       - 80:80
       - 443:443
@@ -178,7 +179,8 @@ services:
         source: ./Docker/osrm/data
         target: /data
     depends_on:
-      - osrm-extract
+      osrm-extract:
+        condition: service_completed_successfully
     networks:
       - osrm-network
 
@@ -192,7 +194,8 @@ services:
         source: ./Docker/osrm/data
         target: /data
     depends_on:
-      - osrm-partition
+      osrm-partition:
+        condition: service_completed_successfully
     networks:
       - osrm-network
 
@@ -200,15 +203,16 @@ services:
     image: osrm/osrm-backend
     container_name: osrm-routed
     command: osrm-routed --algorithm mld /data/seoul.osm
-    ports:
-      - "5000:5000"
+    expose:
+      - 5000
     volumes:
       #- "${PWD}/Docker/osrm/data:/data"
       - type: bind
         source: ./Docker/osrm/data
         target: /data
     depends_on:
-      - osrm-customize
+      osrm-customize:
+            condition: service_completed_successfully
     networks:
       - osrm-network
 

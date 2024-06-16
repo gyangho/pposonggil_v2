@@ -80,7 +80,7 @@ function BlockList() {
         const fetchBlockedUsers = async () => {
             try {
                 const myId = localStorage.getItem('id'); // 실제 사용자의 ID로 대체해야 합니다.
-                const response = await api.get(`https://pposong.ddns.net/api/blocks/by-subject/${myId}`);
+                const response = await api.get(`/blocks/by-subject/${myId}`);
                 setBlockedUsers(response.data);
             } catch (error) {
                 console.error('차단 목록을 불러오는 중 오류 발생:', error);
@@ -92,7 +92,7 @@ function BlockList() {
 
     const handleUnblock = async (blockId) => {
         try {
-            await api.delete(`https://pposong.ddns.net/api/block/${blockId}`);
+            await api.delete(`/block/${blockId}`);
             setBlockedUsers(blockedUsers.filter(block => block.blockId !== blockId));
         } catch (error) {
             console.error('차단 해제 중 오류 발생:', error);

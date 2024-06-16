@@ -35,7 +35,7 @@ function Chat() {
 
   const fetchChatRoomInfo = async () => {//우산 사는 사람, 파는 사람 ID 받아오기
     try {
-      const response = await api.get(`https://pposong.ddns.net/api/chatroom/by-chatroom/${chatRoomId}`);
+      const response = await api.get(`/chatroom/by-chatroom/${chatRoomId}`);
       const { writerId, requesterId } = response.data;
       setSubjectId(writerId);
       setObjectId(requesterId);
@@ -53,7 +53,7 @@ function Chat() {
         objectId: objectId,
       };
 
-      const response = await api.post(`https://pposong.ddns.net/api/trade`, tradeData);
+      const response = await api.post(`/trade`, tradeData);
       alert('거래가 확정되었습니다.');
       // navigate('/mypage/ongoings/status', { state: { transaction: trade } }); // 거래 확정 후 이동할 페이지를 설정하세요.
     } catch (error) {
@@ -65,7 +65,7 @@ function Chat() {
 
   const fetchMessages = async () => {//메시지 가져오기
     try {
-      const response = await api.get(`https://pposong.ddns.net/api/messages/by-chatroom/${chatRoomId}`);
+      const response = await api.get(`/messages/by-chatroom/${chatRoomId}`);
       const sortedMessages = response.data.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
       const formattedMessages = response.data.map(msg => ({
         ...msg,
@@ -103,7 +103,7 @@ function Chat() {
       };
 
       try {
-        await api.post('https://pposong.ddns.net/api/message', newMessage);
+        await api.post('/message', newMessage);
         setMessages(prevMessages => [
           ...prevMessages,
           { ...newMessage, timestamp: new Date().toLocaleTimeString() }
@@ -127,7 +127,7 @@ function Chat() {
         subjectId: myId,
         objectId: otherUserId
       };
-      const response = await api.post('https://pposong.ddns.net/api/block', blockData);
+      const response = await api.post('/block', blockData);
       console.log('Block ID:', response.data.blockId);
       setBlocked(true);
       alert(response.data.message);
@@ -143,7 +143,7 @@ function Chat() {
         objectId: otherUserId,
         reportType: reportReason
       };
-      const response = await api.post('https://pposong.ddns.net/api/report', reportData);
+      const response = await api.post('/report', reportData);
       alert('상대를 신고하였습니다.');
       setShowReportModal(false);
     } catch (error) {

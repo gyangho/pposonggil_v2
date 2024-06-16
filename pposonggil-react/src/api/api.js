@@ -1,21 +1,22 @@
 import axios from 'axios';
 
-const api = axios.create();
+const api = axios.create({
+    baseURL: 'https://pposong.ddns.net/api' //배포용
+    //baseURL : 'http://localhost:8080/api' //개발용
+});
 
 api.interceptors.request.use(
     (config) => {
-        // 요청 URL이 백엔드 서버로의 요청인지 확인
-        if (config.url.startsWith('https://pposong.ddns.net/api')) {
-            // 백엔드 서버로의 요청일 경우에만 Authorization 헤더 추가
-            const token = localStorage.getItem('token');
-            if (token) {
-                console.log("TOKEN", token)
-                config.headers.Authorization = `Bearer ${token}`;
-            }
-            else {
-                window.location.href('/login');
-            }
+        // 백엔드 서버로의 요청일 경우에만 Authorization 헤더 추가
+        const token = localStorage.getItem('token');
+        if (token) {
+            console.log("TOKEN", token)
+            config.headers.Authorization = `Bearer ${token}`;
         }
+        else {
+            window.location.href('/login');
+        }
+
         return config;
     },
     (error) => {
@@ -39,6 +40,7 @@ api.interceptors.response.use(
                     let currentAccessToken = data.accessToken;
                     localStorage.setItem('token', currentAccessToken);
                     originalRequest.headers.Authorization = `Bearer ${currentAccessToken}`;
+                    alert("토큰 정보가 만료되었습니다.")
                     window.location.href = '/';
                 } else {
                     // 로그인 페이지로 리다이렉션 등
@@ -61,6 +63,7 @@ api.interceptors.response.use(
             }
 
         } catch (refreshError) {
+            alert("토큰 정보가 없습니다.");
             window.location.href = '/login';
         }
 

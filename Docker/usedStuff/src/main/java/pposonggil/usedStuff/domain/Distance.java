@@ -68,6 +68,8 @@ public class Distance {
     public static Distance buildDistance(Trade distanceTrade) {
         return Distance.builder(distanceTrade)
                 .address(distanceTrade.getAddress())
+                .subjectDistance(-1L)
+                .objectDistance(-1L)
                 .subjectTotalDistance(-1L)
                 .objectTotalDistance(-1L)
                 .subjectRemainRate(0L)

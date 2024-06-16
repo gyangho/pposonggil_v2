@@ -1,4 +1,7 @@
 ## H2 사용
+baseurl:
+  url: http://localhost:8080
+
 spring:
   config:
     active:

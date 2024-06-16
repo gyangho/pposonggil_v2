@@ -139,7 +139,7 @@ const ReservedTrades = () => {
   useEffect(() => {
     const fetchTrades = async () => {
       try {
-        const response = await api.get(`https://pposong.ddns.net/api/trades/by-member/${myId}`);
+        const response = await api.get(`/trades/by-member/${myId}`);
         const formattedTrades = response.data.map(trade => {
           const TransactionTarget = myId === trade.subjectId ? trade.objectNickName : trade.subjectNickName;
           return { ...trade, TransactionTarget };
@@ -163,7 +163,7 @@ const ReservedTrades = () => {
 
   const handleCancelTrade = async (tradeId) => {
     try {
-      await api.delete(`https://pposong.ddns.net/api/trade/${tradeId}/by-member/${memberId}`);
+      await api.delete(`/trade/${tradeId}/by-member/${memberId}`);
       setTrades(prevTrades => prevTrades.filter(trade => trade.tradeId !== tradeId));
       alert('거래를 취소했습니다.');
     } catch (error) {

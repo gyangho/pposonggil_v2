@@ -73,7 +73,7 @@ function RouteDetail() {
   }, [gridBounds]);
 
   const getGridWeatherFromServer = async () => { //격자 구간별 날씨 정보 get
-    const url = 'https://pposong.ddns.net/api/forecasts';
+    const url = '/forecasts';
     try {
       const response = await api.get(url);
       setGridWeather(response.data);
@@ -242,7 +242,7 @@ function RouteDetail() {
 
   const handlePosongBtnClick = (index) => {
     const getWalkPathWeatherByTime = async () => {
-      const url = 'https://pposong.ddns.net/api/path/with-forecast';
+      const url = '/path/with-forecast';
       const formData = new FormData();
       const pathDto = path;
 
@@ -263,7 +263,7 @@ function RouteDetail() {
 
 
   const getWalkPathWeatherFromServer = async () => {
-    const url = 'https://pposong.ddns.net/api/path/with-forecast';
+    const url = '/path/with-forecast';
     const formData = new FormData();
     const pathDto = path;
     const now = new Date();

@@ -75,7 +75,7 @@ function TransactionStatus() {
   }, [gridBounds]);
 
   const getGridWeatherFromServer = async () => { //격자 구간별 날씨 정보 get
-    const url = 'https://pposong.ddns.net/api/forecasts';
+    const url = '/forecasts';
     try {
       const response = await api.get(url);
       setGridWeather(response.data);
@@ -368,7 +368,7 @@ function TransactionStatus() {
   const sendDtosToServer = async () => {
     console.log("서버에 put");
     //url에 tradeId와 유저의 id 붙여서 보내기 //테스트용으로 일단 거래아이디로 확인해봄
-    const url = `https://pposong.ddns.net/api/distance/${transaction.tradeId}/by-member/${user.userId}`;
+    const url = `/distance/${transaction.tradeId}/by-member/${user.userId}`;
     const formData = new FormData(); // form-data 객체 생성
 
     const startDto = {
@@ -510,13 +510,13 @@ function TransactionStatus() {
               <Bar style={{ width: "50%", backgroundColor: "#E6E6E6", justifyContent: "start" }}>
                 {/* 나의 위치 상태 바 */}
                 {tsData.subjectId === user.userId ? (
-                  <Bar style={{ width: "{tsData.subjectRemainRate}%", backgroundColor: "#63CAFF", justifyContent: "end" }}>
+                  <Bar style={{ width: `${tsData.subjectRemainRate}%`, backgroundColor: "#63CAFF", justifyContent: "end" }}>
                     <IconBox>
                       <FontAwesomeIcon icon={faPersonWalking} style={{ color: "white" }} />
                     </IconBox>
                   </Bar>
                 ) : (
-                  <Bar style={{ width: "{tsData.objectRemainRate}%", backgroundColor: "#63CAFF", justifyContent: "end" }}>
+                  <Bar style={{ width: `${tsData.objectRemainRate}%`, backgroundColor: "#63CAFF", justifyContent: "end" }}>
                     <IconBox>
                       <FontAwesomeIcon icon={faPersonWalking} style={{ color: "white" }} />
                     </IconBox>
@@ -527,13 +527,13 @@ function TransactionStatus() {
               {/* 상대방 위치 상태 바 */}
               <Bar style={{ width: "50%", backgroundColor: "#E6E6E6", justifyContent: "end" }}>
                 {tsData.subjectId === user.userId ? (
-                  <Bar style={{ width: "{tsData.objectRemainRate}%", backgroundColor: "#FFCE1F" }}>
+                  <Bar style={{ width: `${tsData.objectRemainRate}%`, backgroundColor: "#FFCE1F" }}>
                     <IconBox>
                       <FontAwesomeIcon icon={faPersonWalking} style={{ color: "white" }} />
                     </IconBox>
                   </Bar>
                 ) : (
-                  <Bar style={{ width: "{tsData.subjectRemainRate}%", backgroundColor: "#FFCE1F", justifyContent: "end" }}>
+                  <Bar style={{ width: `${tsData.subjectRemainRate}%`, backgroundColor: "#FFCE1F", justifyContent: "end" }}>
                     <IconBox>
                       <FontAwesomeIcon icon={faPersonWalking} style={{ color: "white" }} />
                     </IconBox>

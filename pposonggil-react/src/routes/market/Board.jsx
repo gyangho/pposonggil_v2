@@ -14,7 +14,7 @@ import api from "../../api/api";
 
 //서버 제공 url(실제 url)
 const myId = localStorage.getItem('id');
-const apiUrl = `https://pposong.ddns.net/api/boards/with-expected-rain/${myId}`; // myId를 포함
+const apiUrl = `/boards/with-expected-rain/${myId}`; // myId를 포함
 
 
 function Board() {
@@ -70,13 +70,11 @@ function Board() {
 
     const startDto = {
       "latitude": parseFloat(curAddr.lat),
-      "longitude": parseFloat(curAddr.lon),
-      // "latitude": 37.5042,
-      //"latitude": 37.5042,
-      //"longitude": 127.0044,
+      "longitude": parseFloat(curAddr.lon)
     };
 
     formData.append('startDto', new Blob([JSON.stringify(startDto)], { type: 'application/json' }));
+    console.log("BEFORE SEND POST");
 
     // FormData 내용 출력
     // for (let [key, value] of formData.entries()) {
@@ -96,7 +94,7 @@ function Board() {
       console.log('Response:', response.data);
       setPosts(response.data);
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Error:', startDto.latitude, startDto.longitude);
     }
   }
 
@@ -129,7 +127,7 @@ function Board() {
     //현재 위치 재탐색
     //재탐색한 위치에 해당하는 게시글 목록 다시 불러와야 함
     setIsRotating(true);
-    //fetchPosts();//추가
+    fetchPosts();
   };
 
   const sortPostsByRain = () => {//최소 예상 강수량순으로 정렬
@@ -189,7 +187,7 @@ function Board() {
 
         <PostBtn onClick={() => navigate("/market/posting")}>
           <Btn>
-            <FontAwesomeIcon icon={faPlus} style={{ marginRight: "4px" }} />
+            <FontAwesomeIcon icon={faPlus} style={{ marginRight: "3px" }} />
             <div style={{ paddingTop: "2px" }}>글쓰기</div>
           </Btn>
         </PostBtn>

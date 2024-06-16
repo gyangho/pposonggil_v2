@@ -276,7 +276,7 @@ function MemberPosting() {
   const myId = localStorage.getItem('id');
 
   useEffect(() => {
-    api.get(`https://pposong.ddns.net/api/boards/by-member/${myId}`) // 백엔드 url로 변경
+    api.get(`/boards/by-member/${myId}`) // 백엔드 url로 변경
       .then(response => {
         setPosts(response.data);
       })

@@ -91,14 +91,11 @@ public class BoardService {
     public List<BoardDto> findBoardsWithExpectedRain(PointInformationDto startDto, Long memberId) throws IOException {
         List<BoardDto> results = new ArrayList<>();
         List<TradeDto> tradeDtos = tradeService.findTradesByMemberId(memberId);
-        System.out.println("TRADEDTOS++++++++++");
 
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(NoSuchElementException::new);
-        System.out.println("Memeber++++++++++");
         LocalDateTime curTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
         DateTimeFormatter inputFormatter2 = DateTimeFormatter.ofPattern("HH00");
-        System.out.println("+++++++++curTime"+curTime);
         List<BoardDto> boardDtos = findBoards();
 
         for (BoardDto boardDto : boardDtos) {
@@ -132,7 +129,6 @@ public class BoardService {
                     .longitude(address.getLongitude())
                     .build();
             try {
-                System.out.println("+++++++curTIme,format"+curTime.format(inputFormatter2));
                 PathDto pathDto = pathService.createPath(startDto, endDto, curTime.format(inputFormatter2), memberId);
                 boardDto.setExpectedRain(Math.round(pathDto.getTotalRain() * 100.0) / 100.0);
             } catch (Exception e) {

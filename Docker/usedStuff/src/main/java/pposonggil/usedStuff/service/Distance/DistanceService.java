@@ -81,56 +81,49 @@ public class DistanceService {
         return distance.getId();
     }
 
+    /**
+     * 주체자 거리 계산
+     */
+    @Transactional
     public DistanceDto calMemberDistance(PointInformationDto startDto, DistanceDto distanceDto, Long memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new NoSuchElementException("Member not found with id: " + memberId));
+        Trade trade = tradeRepository.findById(distanceDto.getTradeId())
+                .orElseThrow(() -> new NoSuchElementException("Trade not found with id: " + distanceDto.getTradeId()));
         Distance distance = distanceRepository.findById(distanceDto.getDistanceId())
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(() -> new NoSuchElementException("Distance not found with id: " + distanceDto.getDistanceId()));
+
+        if (!trade.getTradeSubject().getId().equals(member.getId()) && !trade.getTradeObject().getId().equals(member.getId())) {
+            throw new IllegalArgumentException("회원이 거래 멤버가 아닙니다.");
+        }
+
+        Long calculateDistance = calculateDistance(startDto, distanceDto.getTransactionAddressDto());
+
+        // 주체
+        if(trade.getTradeSubject().getId().equals(member.getId())){
+            if (distance.getSubjectTotalDistance() == -1L) {
+                distance.changeSubjectTotalDistance(calculateDistance);
+                distance.changeSubject(calculateDistance, 0L);
+            } else {
+                distance.changeSubject(calculateDistance,
+                        100 - Math.round((double) calculateDistance * 100 / distance.getSubjectTotalDistance()));
+            }
+        }
+
+        // 객체
+        else{
+            if (distance.getObjectTotalDistance() == -1L) {
+                distance.changeObjectTotalDistance(calculateDistance);
+                distance.changeObject(calculateDistance, 0L);
+            } else {
+                distance.changeObject(calculateDistance,
+                        100 - Math.round((double) calculateDistance * 100 / distance.getObjectTotalDistance()));
+            }
+        }
+
+        distanceRepository.save(distance);
         return DistanceDto.fromEntity(distance);
     }
-
-
-//    /**
-//     * 주체자 거리 계산
-//     */
-//    @Transactional
-//    public DistanceDto calMemberDistance(PointInformationDto startDto, DistanceDto distanceDto, Long memberId) {
-//        Member member = memberRepository.findById(memberId)
-//                .orElseThrow(() -> new NoSuchElementException("Member not found with id: " + memberId));
-//        Trade trade = tradeRepository.findById(distanceDto.getTradeId())
-//                .orElseThrow(() -> new NoSuchElementException("Trade not found with id: " + distanceDto.getTradeId()));
-//        Distance distance = distanceRepository.findById(distanceDto.getDistanceId())
-//                .orElseThrow(() -> new NoSuchElementException("Distance not found with id: " + distanceDto.getDistanceId()));
-//
-//        if (!trade.getTradeSubject().getId().equals(member.getId()) && !trade.getTradeObject().getId().equals(member.getId())) {
-//            throw new IllegalArgumentException("회원이 거래 멤버가 아닙니다.");
-//        }
-//
-//        Long calculateDistance = calculateDistance(startDto, distanceDto.getTransactionAddressDto());
-//
-//        // 주체
-//        if(trade.getTradeSubject().getId().equals(member.getId())){
-//            if (distance.getSubjectTotalDistance() == -1L) {
-//                distance.changeSubjectTotalDistance(calculateDistance);
-//                distance.changeSubject(calculateDistance, 0L);
-//            } else {
-//                distance.changeSubject(calculateDistance,
-//                        100 - Math.round((double) calculateDistance * 100 / distance.getSubjectTotalDistance()));
-//            }
-//        }
-//
-//        // 객체
-//        else{
-//            if (distance.getObjectTotalDistance() == -1L) {
-//                distance.changeObjectTotalDistance(calculateDistance);
-//                distance.changeObject(calculateDistance, 0L);
-//            } else {
-//                distance.changeObject(calculateDistance,
-//                        100 - Math.round((double) calculateDistance * 100 / distance.getObjectTotalDistance()));
-//            }
-//        }
-//
-//        distanceRepository.save(distance);
-//        return DistanceDto.fromEntity(distance);
-//    }
 
     /**
      * 거리 삭제

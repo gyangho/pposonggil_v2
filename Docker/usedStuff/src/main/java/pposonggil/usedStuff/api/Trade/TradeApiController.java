@@ -128,12 +128,8 @@ public class TradeApiController {
             return ResponseEntity.ok("거래를 삭제하였습니다.");
         } catch (NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("해당 거래 또는 회원을 찾을 수 없습니다.");
-        } catch (IllegalAccessException e) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("거래 시작 시간 이후에 취소할 수 있습니다.");
-        } catch (IllegalArgumentException e) {
+        }  catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 오류가 발생했습니다.");
         }
     }
 }

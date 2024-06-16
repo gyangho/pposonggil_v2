@@ -66,7 +66,7 @@ function Map() {
   const getGridWeatherFromServer = async () => {
     const now = new Date();
     const time = now.getHours().toString().padStart(2, '0') + now.getMinutes().toString().padStart(2, '0');
-    const url = 'https://pposong.ddns.net/api/forecasts';
+    const url = '/forecasts';
     try {
       const response = await api.get(url);
       setGridWeather(response.data);

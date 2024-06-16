@@ -1,16 +1,22 @@
 import styled from "styled-components"
-import kakaoImage from "../assets/google_login.png";
+import googleImage from "../assets/google_login.png";
+import kakaoImage from "../assets/kakao_login.png"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCloud } from "@fortawesome/free-solid-svg-icons";
 import { useResetRecoilState } from "recoil";
 import { navState } from "../recoil/atoms";
 
+
+export const KAKAO_AUTH_URL = `/oauth2/authorization/kakao`
 export const GOOGLE_AUTH_URL = `/oauth2/authorization/google`;
 
 function Login() {
   const resetNav = useResetRecoilState(navState);
   resetNav();
-  const handleLogin = () => {
+  const handlekakaoLogin = () => {
+    window.location.href = KAKAO_AUTH_URL;
+  };
+  const handlegoogleLogin = () => {
     window.location.href = GOOGLE_AUTH_URL;
   };
 
@@ -21,14 +27,23 @@ function Login() {
         <Title>뽀송길</Title>
         <SubTitle>뽀송길과 함께 시작하는<br /> 쾌적한 경로 탐색</SubTitle>
 
+        <GoogleBtn>
+          <img
+            style={{ cursor: "pointer", width: "40%" }}
+            src={googleImage}
+            onClick={handlegoogleLogin}
+          >
+          </img>
+        </GoogleBtn>
         <KakaoBtn>
           <img
-            style={{ cursor: "pointer", width: "70%" }}
+            style={{ cursor: "pointer", width: "40%" }}
             src={kakaoImage}
-            onClick={handleLogin}
+            onClick={handlekakaoLogin}
           >
           </img>
         </KakaoBtn>
+
         <Footer>
           <div style={{ marginBottom: "5px" }}>안경과 수건</div>
           <div>2024 캡스톤 디자인 프로젝트 2</div>
@@ -99,13 +114,54 @@ const Logo = styled(Title)`
 `;
 
 const KakaoBtn = styled.div`
+  bottom: 35%;
   display: flex;
   align-items: center;
   justify-content: center;
   position: sticky;
 
+  img {
+    cursor: pointer;
+    width: 40%;
+  }
+
+  @media (max-width: 768px) {
+    img {
+      width: 60%;
+    }
+  }
+
+  @media (max-width: 480px) {
+    img {
+      width: 80%;
+    }
+  }
 `;
 
+const GoogleBtn = styled.div`
+  bottom: 40%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: sticky;
+
+  img {
+    cursor: pointer;
+    width: 40%;
+  }
+
+  @media (max-width: 768px) {
+    img {
+      width: 60%;
+    }
+  }
+
+  @media (max-width: 480px) {
+    img {
+      width: 80%;
+    }
+  }
+`;
 const Footer = styled(Title)`
   bottom: 10%;
   display: block;

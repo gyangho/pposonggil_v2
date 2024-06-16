@@ -172,7 +172,6 @@ public class PathService {
         try {
             List<ForecastSubPathDto> result = new ArrayList<>();
             String standardTime = selectTime.substring(0, 2) + "00";
-            System.out.println("++++++++++++SelectTIme: " + selectTime + "StandardTime: " + standardTime);
             Long duration = null;
 
             for (SubPathDto subPathDto : pathDto.getSubPathDtos()) {
@@ -199,6 +198,7 @@ public class PathService {
                             .build();
 
                     result.add(forecastSubPathDto);
+
                 }
                 LocalTime curTime = LocalTime.parse(selectTime, DateTimeFormatter.ofPattern("HHmm"));
                 LocalTime updateTime = curTime.plusMinutes(duration);
@@ -210,12 +210,14 @@ public class PathService {
             throw new RuntimeException("Runtime exception in createForecastBySubPath", e);
         }
     }
+
     /**
      * default osrm을 이용한 도보 경로가 포함된
      * 대중교통 경로
      */
     public PathDto selectDefaultPath(PathDto pathDto) throws IOException {
         List<SubPathDto> walkSubPaths = subPathService.createDefaultSubPaths(pathDto);
+        updateTotalTime(pathDto, walkSubPaths);
         pathDto.setSubPathDtos(walkSubPaths);
         return pathDto;
     }
@@ -227,8 +229,17 @@ public class PathService {
      */
     public PathDto selectPposongPath(PathDto pathDto) throws IOException {
         List<SubPathDto> walkSubPaths = subPathService.createPposongSubPaths(pathDto);
+        updateTotalTime(pathDto, walkSubPaths);
         pathDto.setSubPathDtos(walkSubPaths);
         return pathDto;
+    }
+
+    private static void updateTotalTime(PathDto pathDto, List<SubPathDto> walkSubPaths) {
+        long totalTime = 0L;
+        for (SubPathDto subPathDto : walkSubPaths) {
+            totalTime = totalTime + subPathDto.getTime();
+        }
+        pathDto.setTotalTime(totalTime);
     }
 
     /**

@@ -158,7 +158,7 @@ function ReportList() {
     const fetchReports = async () => {
       try {
         const myId = localStorage.getItem('id');; // 실제 사용자의 ID로 대체해야 합니다.
-        const response = await api.get(`https://pposong.ddns.net/api/reports/by-subject/${myId}`);
+        const response = await api.get(`/reports/by-subject/${myId}`);
         setReports(response.data);
       } catch (error) {
         console.error('신고 목록을 불러오는 중 오류 발생:', error);

@@ -16,7 +16,7 @@ const { kakao } = window;
 
 // JSON 서버 API URL로 변경해야 함
 // const apiUrl = "http://localhost:3001/postList"; // JSON 서버
-const apiUrl = "https://pposong.ddns.net/api/board"; //백엔드 연동
+const apiUrl = "/board"; //백엔드 연동
 
 function Posting({ onSave, editingPost, onUpdate }) {
   const [title, setTitle] = useState('');

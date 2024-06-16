@@ -34,7 +34,7 @@ cloud:
       auto: false
     credentials:
       access-key: ${api-key.s3-access-key}
-      secret-key: ${api-key.s3-secret-key}z
+      secret-key: ${api-key.s3-secret-key}
 
 server:
   address: 0.0.0.0
@@ -44,3 +44,5 @@ logging:
   level:
     org.hibernate.SQL: debug
     org.hibernate.type: trace
+baseurl:
+  url: https://pposong.ddns.net

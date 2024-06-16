@@ -6,35 +6,25 @@
   <component name="ChangeListManager">
     <list default="true" id="fbc73a0f-9444-47e6-9457-7db026927fd3" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/api/ChatRoom/ChatRoomApiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/api/ChatRoom/ChatRoomApiController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/api/Member/MemberApiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/api/Member/MemberApiController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/api/Member/OauthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/api/Member/OauthController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/api/Report/ReportApiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/api/Report/ReportApiController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/nginx/conf.d/api_gateway.conf" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/nginx/conf.d/api_gateway.conf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/osrm/profiles/foot_pposong.lua" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/osrm/profiles/foot_pposong.lua" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/api/Route/PathApiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/api/Route/PathApiController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/api/Trade/TradeApiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/api/Trade/TradeApiController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/component/TokenProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/component/TokenProvider.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/domain/ChatRoom.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/domain/ChatRoom.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/domain/Member.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/domain/Member.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/domain/Trade.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/domain/Trade.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/dto/Member/MemberDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/dto/Member/MemberDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/handler/CustomAccessDeniedHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/handler/CustomAccessDeniedHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/service/Auth/ValidateService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/service/Auth/ValidateService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/config/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/domain/Distance.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/domain/Distance.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/domain/OAuth2UserInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/domain/OAuth2UserInfo.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/service/Board/BoardService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/service/Board/BoardService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/service/Distance/DistanceService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/service/Distance/DistanceService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/service/Member/MemberService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/service/Member/MemberService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/service/Route/PathService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/service/Route/PathService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/service/Route/SubPathService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/service/Route/SubPathService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/service/Trade/TradeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/java/pposonggil/usedStuff/service/Trade/TradeService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/resources/application-dev.yml" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/resources/application-dev.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/resources/application-oauth.yml" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/resources/application-oauth.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/resources/application-prod.yml" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/resources/application-prod.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/usedStuff/src/main/resources/templates/test.html" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/usedStuff/src/main/resources/templates/test.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pposonggil-react/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/public/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/api/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/api/api.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/components/PlaceInfo.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/components/PlaceInfo.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/routes/Home.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/Home.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pposonggil-react/src/routes/Login.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/Login.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/routes/OngoingTrades.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/OngoingTrades.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/routes/TransactionStatus.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/TransactionStatus.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/routes/Welcome.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/Welcome.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/routes/market/Chat.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/market/Chat.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/routes/market/Post.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/market/Post.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/routes/market/Posting.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/market/Posting.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pposonggil-react/src/routes/market/Board.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pposonggil-react/src/routes/market/Board.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -266,6 +256,8 @@
       <workItem from="1718006616303" duration="2686000" />
       <workItem from="1718010787617" duration="316000" />
       <workItem from="1718015053664" duration="428000" />
+      <workItem from="1718467102509" duration="6610000" />
+      <workItem from="1718521410615" duration="14384000" />
     </task>
     <servers />
   </component>

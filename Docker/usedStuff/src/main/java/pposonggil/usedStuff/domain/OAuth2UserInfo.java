@@ -40,7 +40,7 @@ public record OAuth2UserInfo(
 
         return OAuth2UserInfo.builder()
                 .name((String) profile.get("nickname"))
-                .email((String) account.get("email"))
+                .email((String) account.get("nickname"))
                 .profile_image((String) profile.get("profile_image_url"))
                 .provider("Kakao")
                 .build();

@@ -31,7 +31,7 @@ function SearchRoutes() {
 
     const now = new Date();
     const time = now.getHours().toString().padStart(2, '0') + now.getMinutes().toString().padStart(2, '0');
-    const url = 'https://pposong.ddns.net/api/paths/by-member/1';
+    const url = '/paths/by-member/1';
     const formData = new FormData(); // form-data 객체 생성
 
     const startDto = {  // 첫 번째 form-data 추가

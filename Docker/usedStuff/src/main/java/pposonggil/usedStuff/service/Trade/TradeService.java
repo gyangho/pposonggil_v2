@@ -187,11 +187,6 @@ public class TradeService {
         if (!trade.getTradeSubject().getId().equals(memberId) && !trade.getTradeObject().getId().equals(memberId)) {
             throw new IllegalArgumentException("거래 회원이 아닙니다.");
         }
-
-        if (curTime.isBefore(startTime)) {
-            throw new IllegalAccessException("거래 시작 시간 이후에 취소할 수 있습니다.");
-        }
-
         if ((trade.getTradeSubject().getId().equals(memberId) && distance.getObjectDistance() < 500) ||
                 (trade.getTradeObject().getId().equals(memberId) && distance.getSubjectDistance() < 500)) {
             throw new IllegalArgumentException("상대방이 주변에 있습니다. 조금만 기다려주세요");
