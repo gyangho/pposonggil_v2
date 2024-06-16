@@ -28,7 +28,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
    private final TokenProvider tokenProvider;
    private final TokenRepository tokenRepository;
    private final MemberRepository memberRepository;
-    private static final String URI = "http://pposong.ddns.net/auth/success";
+    private static final String URI = "https://pposong.ddns.net/auth/success";
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -52,6 +52,10 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
                     member.deleteRole(Role.ADMIN);
                 }
                 memberRepository.save(member);
+            }
+            else
+            {
+                response.sendRedirect("https://pposong.ddns.net/login");
             }
         }
         else

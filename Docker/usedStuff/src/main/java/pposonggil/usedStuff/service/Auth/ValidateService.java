@@ -18,7 +18,6 @@ import static pposonggil.usedStuff.domain.Role.ADMIN;
 @Service
 @RequiredArgsConstructor
 public class ValidateService {
-
     public Authentication giveAdminAuthentication(Long myid)
     {
         // 현재 인증된 사용자 정보 가져오기
@@ -26,8 +25,8 @@ public class ValidateService {
         validateMemberIdAndThrow(myid);
 
         List<GrantedAuthority> updatedAuthorities = new ArrayList<>(authentication.getAuthorities());
-        System.out.println("GIVEADMIN_UPDATEDAUTHORIES: " + updatedAuthorities);
         updatedAuthorities.add(new SimpleGrantedAuthority(ADMIN.toString()));
+        System.out.println("GIVEADMIN_UPDATEDAUTHORIES: " + updatedAuthorities);
 
         // 기존 인증 정보를 기반으로 새로운 인증 정보 생성
         Authentication newAuth = new UsernamePasswordAuthenticationToken(
@@ -54,7 +53,7 @@ public class ValidateService {
         String authenticatedMemberId = principal.getUsername();
         return Long.valueOf(authenticatedMemberId);
     }
-    public boolean validateMemberId(Long memberId) {
+    private boolean validateMemberId(Long memberId) {
         // 현재 인증된 사용자 정보 가져오기
         User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal == null)
@@ -68,7 +67,7 @@ public class ValidateService {
         return authenticatedMemberId.equals(memberId.toString());
     }
 
-    public boolean checkAdmin() {
+    private boolean checkAdmin() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null) {
             return false;
@@ -76,8 +75,10 @@ public class ValidateService {
 
         List<GrantedAuthority> authorities = (List<GrantedAuthority>) authentication.getAuthorities();
         //SimpleGrantedAuthority adminAuthority = new SimpleGrantedAuthority("ADMIN");
-        System.out.println(authorities);
-        return authorities.toString().contains("ADMIN");
+        System.out.println("CHEKCADMIN_AUTHORITES"+authorities);
+        String stringauthorities = authorities.toString();
+        System.out.println("stringauthorities.contains(\"ADMIN\"): " + stringauthorities.contains("ADMIN"));
+        return stringauthorities.contains("ADMIN");
     }
 
     public void checkAdminAndThrow()

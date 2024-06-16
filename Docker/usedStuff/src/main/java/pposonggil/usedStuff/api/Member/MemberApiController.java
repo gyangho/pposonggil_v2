@@ -58,10 +58,13 @@ public class MemberApiController {
         Member memberToUpdate = existingMember.get();
         memberToUpdate.addRole(Role.ADMIN);
         memberRepository.save(memberToUpdate);
-        return "<script> " +
-                "localStorage.setItem('token','"+ token +"');" +
-                "localStorage.setItem('authority', 'ADMIN');"+
-                "window.location.href='/test'"+
-                "</script>";
+        return "<html><body>" +
+                "<script> " +
+                "localStorage.setItem('token', '" + token + "');" +
+                "localStorage.setItem('authority', 'ADMIN');" +
+                "alert('어드민 권한을 습득했습니다.');" +
+                "window.location.href = '/test';" +  // Optionally redirect to a specific page
+                "</script>" +
+                "</body></html>";
     }
 }

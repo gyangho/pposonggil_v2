@@ -128,7 +128,7 @@ public class TokenProvider {
             return false;
         }
         Claims claims = parseClaims(token);
-        System.out.println("ROles: " + claims.get(KEY_ROLE).toString() + Role.BLOCKED.toString());
+        System.out.println("ROles: " + claims.get(KEY_ROLE).toString());
         if((claims.get(KEY_ROLE)).toString().contains(Role.BLOCKED.toString()))
         {
             throw new AccessDeniedException("999");
@@ -136,6 +136,7 @@ public class TokenProvider {
         if(claims.getExpiration().before(new Date()))
         {
             SecurityContextHolder.clearContext();
+            tokenService.delete(Long.valueOf(claims.getId()));
             return false; // 토큰이 만료된 경우 false 반환
         }
         return true;

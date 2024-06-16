@@ -18,8 +18,14 @@
         </header>
         <a href="/api/getadmin" id="button2">어드민 권한 받아보기~</a><br/><br/>
         <a href="/api/reports" id="Button">전체 신고목록</a><br/><br/>
-        <a href="/api/forcasts" id="Buttom3">기상정보 받아오기</a><br/><br/>
-        <input type="text" id="memberidInput" placeholder="Enter memberid" />
+        <a href="/api/forecasts" id="Button3">기상정보 받아오기</a><br/><br/>
+
+        <input type="text" id="memberidInput2" placeholder="Enter memberid" />
+        <button id="boardMemberButton">게시글을 조회할 Memberid</button><br/><br/>
+        <input type="text" id="boardidInput" placeholder="Enter memberid" />
+        <button id="boardButton">게시글을 조회할 Boardid</button><br/><br/>
+
+        <input type="text" id="memberidInput1" placeholder="Enter memberid" />
         <button id="blockMemberButton">Block Member</button><br/><br/>
     </main>
 </div>
@@ -53,12 +59,36 @@
                 });
             } else {
                 return response.text().then(data => {
-                    const parser = new DOMParser();
-                    const doc = parser.parseFromString(data, 'text/html');
-                    const newContent = doc.body;
+                    const contentType = response.headers.get('Content-Type');
+                    if (contentType && contentType.includes('application/json')) {
+                        // JSON 데이터를 처리합니다.
+                        const jsonData = JSON.parse(data);
+                        const pre = document.createElement('pre');
+                        pre.textContent = JSON.stringify(jsonData, null, 2);
+                        document.body.appendChild(pre);
+                    } else {
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(data, 'text/html');
+                        const newContent = doc.body;
 
-                    // 새로운 내용을 기존 내용의 아래에 추가합니다.
-                    document.body.appendChild(newContent);
+                        // 새로운 내용을 기존 내용의 아래에 추가합니다.
+                        document.body.appendChild(newContent);
+
+                        // 추가된 script 내용을 실행합니다.
+                        const scripts = newContent.querySelectorAll('script');
+                        scripts.forEach(script => {
+                            const newScript = document.createElement('script');
+                            if (script.src) {
+                                newScript.src = script.src;
+                                newScript.onload = () => console.log(`Loaded script: ${newScript.src}`);
+                                document.body.appendChild(newScript);
+                            } else {
+                                newScript.textContent = script.textContent;
+                                document.body.appendChild(newScript);
+                                eval(newScript.textContent); // Inline script 실행
+                            }
+                        });
+                    }
                 });
             }
         });
@@ -77,9 +107,35 @@
 
     // Block Member 버튼 클릭 시 요청 보내는 함수
     document.getElementById('blockMemberButton').addEventListener('click', function() {
-        let memberid = document.getElementById('memberidInput').value;
-        if (memberid) {
-            let url = `/blockmember/${memberid}`;
+        let memberid1 = document.getElementById('memberidInput1').value;
+        if (memberid1) {
+            let url = `/api/blockmember/${memberid1}`;
+            let token = localStorage.getItem('token'); // 여기에 실제 토큰 값이 들어가야 합니다.
+
+            // 요청 보냅니다.
+            sendRequestWithToken(url, token);
+        } else {
+            alert('Please enter a memberid.');
+        }
+    });
+
+    document.getElementById('boardMemberButton').addEventListener('click', function() {
+        let memberid2 = document.getElementById('memberidInput2').value;
+        if (memberid2) {
+            let url = `/api/boards/by-member/${memberid2}`;
+            let token = localStorage.getItem('token'); // 여기에 실제 토큰 값이 들어가야 합니다.
+
+            // 요청 보냅니다.
+            sendRequestWithToken(url, token);
+        } else {
+            alert('Please enter a memberid.');
+        }
+    });
+
+    document.getElementById('boardButton').addEventListener('click', function() {
+        let boardid = document.getElementById('boardidInput').value;
+        if (boardid) {
+            let url = `/api/board/by-board/${boardid}`;
             let token = localStorage.getItem('token'); // 여기에 실제 토큰 값이 들어가야 합니다.
 
             // 요청 보냅니다.

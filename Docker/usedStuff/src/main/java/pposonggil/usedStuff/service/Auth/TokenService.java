@@ -37,4 +37,9 @@ public class TokenService {
     public String findByAccessTokenOrThrow(Long userId) {
         return tokenRepository.findByMember_Id(userId).get().getRefreshToken();
     }
+
+    public void delete(Long userId)
+    {
+        tokenRepository.deleteByMember_Id(userId);
+    }
 }

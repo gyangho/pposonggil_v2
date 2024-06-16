@@ -25,7 +25,7 @@ public class ReportApiController {
      */
     @GetMapping("/api/reports")
     public List<ReportDto> reports() {
-        validateService.checkAdmin();
+        validateService.checkAdminAndThrow();
         return reportService.findReports();
     }
 

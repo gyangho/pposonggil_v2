@@ -9,13 +9,13 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseBody;
 import pposonggil.usedStuff.component.TokenProvider;
 import pposonggil.usedStuff.domain.Member;
-import pposonggil.usedStuff.domain.PrincipalDetails;
-import pposonggil.usedStuff.domain.RefreshToken;
 import pposonggil.usedStuff.domain.Role;
 import pposonggil.usedStuff.dto.Member.MemberDto;
 import pposonggil.usedStuff.service.Auth.TokenService;
+import pposonggil.usedStuff.service.Auth.ValidateService;
 import pposonggil.usedStuff.service.Member.MemberService;
 
 import java.sql.Time;
@@ -27,6 +27,7 @@ public class OauthController {
     private final MemberService memberService;
     private final TokenService tokenService;
     private final TokenProvider tokenProvider;
+    private final ValidateService validateService;
 
     @GetMapping("/")
     public String home(){return "loginform";}
@@ -35,9 +36,14 @@ public class OauthController {
     @GetMapping("/test")
     public String test() {return "test";}
 
-    @GetMapping("/blockmember/{memberId}")
+    @GetMapping("/blocked")
+    public String blocked(){return "blocked";}
+
+    @ResponseBody
+    @GetMapping("/api/blockmember/{memberId}")
     public String blockmember(@PathVariable String memberId)
     {
+        validateService.checkAdminAndThrow();
         String message;
         Date now = new Date();
         String refreshToken = null;
@@ -55,8 +61,9 @@ public class OauthController {
 
             refreshToken = tokenService.findByAccessTokenOrThrow(Long.valueOf(memberId));
             authentication = new UsernamePasswordAuthenticationToken(principal, refreshToken, authorities);
-            blockedToken = tokenProvider.generateBlockedToken(authentication, 1000 * 60 * 60L * 24 * 3);
+            blockedToken = tokenProvider.generateBlockedToken(authentication, 1000 * 60L);
             Member targetmember = memberService.updateMember(target);
+            System.out.println("BLOCKMEMBER_CONTROLLER: " +targetmember.getRoles());
             tokenService.saveOrUpdate(targetmember, blockedToken);
 
         }

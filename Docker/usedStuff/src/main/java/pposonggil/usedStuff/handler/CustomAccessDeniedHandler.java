@@ -13,5 +13,9 @@ public class CustomAccessDeniedHandler implements org.springframework.security.w
         String message =accessDeniedException.getMessage();
         response.setStatus(Integer.parseInt(message));
         response.sendError(Integer.parseInt(message));
+        if(message.contains("999"))
+        {
+            response.sendRedirect("https://pposong.ddns.net/blocked");
+        }
     }
 }
