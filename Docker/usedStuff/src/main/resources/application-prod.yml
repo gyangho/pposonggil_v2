@@ -45,4 +45,4 @@ logging:
     org.hibernate.SQL: debug
     org.hibernate.type: trace
 baseurl:
-  url: https://pposong.ddns.net
+  url: https://localhost

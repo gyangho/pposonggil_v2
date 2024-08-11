@@ -109,6 +109,7 @@ public class SubPathService {
         for (SubPathDto subPathDto : subPathDtos) {
             if (Objects.equals(subPathDto.getType(), "walk")) {
                 String urlInfo = buildPposongUrl(subPathDto.getStartDto(), subPathDto.getEndDto());
+                System.out.println("urlInfo = " + urlInfo);
                 StringBuilder sb = getResponse(urlInfo);
                 JsonNode jsonNode = objectMapper.readTree(sb.toString());
 

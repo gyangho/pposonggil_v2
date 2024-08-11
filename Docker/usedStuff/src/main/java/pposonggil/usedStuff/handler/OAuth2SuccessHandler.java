@@ -25,48 +25,43 @@ import java.util.Optional;
 @Component
 public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
-   private final TokenProvider tokenProvider;
-   private final TokenRepository tokenRepository;
-   private final MemberRepository memberRepository;
-    private static final String URI = "https://pposong.ddns.net/auth/success";
+    private final TokenProvider tokenProvider;
+    private final TokenRepository tokenRepository;
+    private final MemberRepository memberRepository;
+    private static final String URI = "https://localhost/auth/success";
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-                                        Authentication authentication) throws IOException, ServletException {
-        String id = ((PrincipalDetails)authentication.getPrincipal()).getName();
-        String nickname =  ((PrincipalDetails) authentication.getPrincipal()).getUsername();
+            Authentication authentication) throws IOException, ServletException {
+        String id = ((PrincipalDetails) authentication.getPrincipal()).getName();
+        String nickname = ((PrincipalDetails) authentication.getPrincipal()).getUsername();
         String encodedNickname = URLEncoder.encode(nickname, StandardCharsets.UTF_8);
-        Optional<RefreshToken> refreshTokenOptional = tokenRepository.findByMember_Id(Long.valueOf(((PrincipalDetails)authentication.getPrincipal()).getName()));
+        Optional<RefreshToken> refreshTokenOptional = tokenRepository
+                .findByMember_Id(Long.valueOf(((PrincipalDetails) authentication.getPrincipal()).getName()));
         String refreshToken = null;
-        
-        if(refreshTokenOptional.isPresent()) {
+
+        if (refreshTokenOptional.isPresent()) {
             refreshToken = refreshTokenOptional.get().getRefreshToken();
-            //유효한 리프레쉬 토큰이 존재한다면(7일 내에 로그인 기록이 있다)
+
+            // 유효한 리프레쉬 토큰이 존재한다면(7일 내에 로그인 기록이 있다)
             if (tokenProvider.validateToken(refreshToken)) {
                 authentication = tokenProvider.getAuthentication(refreshToken);
                 System.out.println("onAuthenticationSuccess: " + authentication);
                 Member member = memberRepository.findById(Long.valueOf(id))
                         .orElseThrow();
-                if((member.getRoles()).contains(Role.ADMIN))
-                {
+                if ((member.getRoles()).contains(Role.ADMIN)) {
                     member.deleteRole(Role.ADMIN);
                 }
                 memberRepository.save(member);
+            } else {
+                response.sendRedirect("https://localhost/login");
             }
-            else
-            {
-                response.sendRedirect("https://pposong.ddns.net/login");
-            }
-        }
-        else
-        {
-            //refreshToken 이 만료되었거나 존재하지 않으면 새로운 refreshToken 발행(
+        } else {
+            // refreshToken 이 만료되었거나 존재하지 않으면 새로운 refreshToken 발행(
             tokenProvider.generateRefreshToken(authentication);
         }
-            // accessToken, refreshToken 발급
-            String accessToken = tokenProvider.generateAccessToken(authentication);
-
-
+        // accessToken, refreshToken 발급
+        String accessToken = tokenProvider.generateAccessToken(authentication);
 
         // 토큰 전달을 위한 redirect
         String redirectUrl = UriComponentsBuilder.fromUriString(URI)

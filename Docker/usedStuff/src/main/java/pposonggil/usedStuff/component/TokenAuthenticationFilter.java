@@ -26,16 +26,15 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
     private static final String TOKEN_PREFIX = "Bearer ";
     private final TokenProvider tokenProvider;
+
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException
-    {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
         String accessToken = resolveToken(request);
 
         if (tokenProvider.validateToken(accessToken)) {
             setAuthentication(accessToken);
-        }
-        else
-        {
+        } else {
             try {
                 // 만료되었을 경우 accessToken 재발급
                 String reissueAccessToken = tokenProvider.reissueAccessToken(accessToken);
@@ -50,9 +49,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
                     response.sendError(401);
                     return;
                 }
-            }
-            catch (NoSuchElementException e)
-            {
+            } catch (NoSuchElementException e) {
                 System.out.println("CATCH");
             }
         }

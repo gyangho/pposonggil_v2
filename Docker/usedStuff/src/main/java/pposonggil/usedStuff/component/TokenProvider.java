@@ -43,7 +43,7 @@ public class TokenProvider {
     }
 
     private String generateToken(Authentication authentication, long expireTime) {
-        String subject =null;
+        String subject = null;
         Map<String, Object> claims = new HashMap<>();
         Date now = new Date();
         Date expiredDate = new Date(now.getTime() + expireTime);
@@ -51,12 +51,10 @@ public class TokenProvider {
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining());
-        try{
-            subject = ((PrincipalDetails)authentication.getPrincipal()).getName();
-        }
-        catch (ClassCastException e)
-        {
-            subject= ((User)authentication.getPrincipal()).getUsername();
+        try {
+            subject = ((PrincipalDetails) authentication.getPrincipal()).getName();
+        } catch (ClassCastException e) {
+            subject = ((User) authentication.getPrincipal()).getUsername();
         }
         return Jwts.builder()
                 .setClaims(claims)
@@ -68,8 +66,7 @@ public class TokenProvider {
                 .compact();
     }
 
-    public String generateBlockedToken(Authentication authentication, long expireTime)
-    {
+    public String generateBlockedToken(Authentication authentication, long expireTime) {
         return generateToken(authentication, expireTime);
     }
 
@@ -83,7 +80,7 @@ public class TokenProvider {
 
         String refreshToken = generateToken(authentication, REFRESH_TOKEN_EXPIRE_TIME);
 
-        tokenService.saveOrUpdate(principalDetails.member(), refreshToken); //DB에 저장
+        tokenService.saveOrUpdate(principalDetails.member(), refreshToken); // DB에 저장
     }
 
     public Authentication getAuthentication(String token) {
@@ -104,7 +101,7 @@ public class TokenProvider {
     public String reissueAccessToken(String accessToken) {
         if (StringUtils.hasText(accessToken)) {
             Long userId = Long.valueOf(parseClaims(accessToken).getSubject());
-            String refreshToken  = tokenService.findByAccessTokenOrThrow(userId);
+            String refreshToken = tokenService.findByAccessTokenOrThrow(userId);
 
             if (validateToken(refreshToken)) {
                 Authentication authentication = getAuthentication(refreshToken);
@@ -115,11 +112,9 @@ public class TokenProvider {
     }
 
     public boolean validateToken(String token) {
-        try{
+        try {
             token.length();
-        }
-        catch (NullPointerException e)
-        {
+        } catch (NullPointerException e) {
             System.out.println("NULLPOINTEREXCEPTION");
             return false;
         }
@@ -129,12 +124,10 @@ public class TokenProvider {
         }
         Claims claims = parseClaims(token);
         System.out.println("ROles: " + claims.get(KEY_ROLE).toString());
-        if((claims.get(KEY_ROLE)).toString().contains(Role.BLOCKED.toString()))
-        {
+        if ((claims.get(KEY_ROLE)).toString().contains(Role.BLOCKED.toString())) {
             throw new AccessDeniedException("999");
         }
-        if(claims.getExpiration().before(new Date()))
-        {
+        if (claims.getExpiration().before(new Date())) {
             SecurityContextHolder.clearContext();
             tokenService.delete(Long.valueOf(claims.getId()));
             return false; // 토큰이 만료된 경우 false 반환
@@ -151,11 +144,9 @@ public class TokenProvider {
                     .getBody();
         } catch (ExpiredJwtException e) {
             return e.getClaims();
-        } catch (MalformedJwtException e)
-        {
+        } catch (MalformedJwtException e) {
             throw new AccessDeniedException("401");
         }
 
     }
 }
-
