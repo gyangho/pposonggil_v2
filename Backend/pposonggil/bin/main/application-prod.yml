@@ -1,0 +1,48 @@
+# Mysql 사용
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://mysql:3306/Tables_in_nodejs
+    username: ${mysql.username}
+    password: ${mysql.password}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        show_sql: false
+        format_sql: true
+        default_batch_fetch_size: 100
+    database-platform: org.hibernate.dialect.MySQLDialect
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+
+cloud:
+  aws:
+    s3:
+      bucket: pposonggil-bucket
+    region:
+      static: ap-northeast-2
+      auto: false
+    stack:
+      auto: false
+    credentials:
+      access-key: ${api-key.s3-access-key}
+      secret-key: ${api-key.s3-secret-key}
+
+server:
+  address: 0.0.0.0
+  port: 8080
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.type: trace
+baseurl:
+  url: https://localhost

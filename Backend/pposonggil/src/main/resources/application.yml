@@ -1,0 +1,10 @@
+spring:
+  profiles:
+    active: prod
+
+  config:
+    import:
+      - application-secret.yml
+      - application-dev.yml
+      - application-prod.yml
+      - application-oauth.yml

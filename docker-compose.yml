@@ -3,7 +3,7 @@ services:
   nginx:
     image: nginx:latest
     container_name: nginx
-    build: ./Docker/nginx
+    build: ./Backend/nginx
     ports:
       - 80:80
       - 443:443
@@ -11,13 +11,13 @@ services:
       - 8080:8080
     volumes:
       - type: bind
-        source: ./Docker/Keys
+        source: ./Backend/Keys
         target: /etc/Keys
       - type: bind
-        source: ./Docker/nginx/conf.d/api_gateway.conf
+        source: ./Backend/nginx/conf.d/api_gateway.conf
         target: /etc/nginx/conf.d/api_gateway.conf
       - type: bind
-        source: ./Docker/nginx/nginx.conf
+        source: ./Backend/nginx/nginx.conf
         target: /etc/nginx/nginx.conf
     networks:
       - front-network
@@ -26,7 +26,7 @@ services:
     depends_on:
       - server
       - api_gateway
-      - usedstuff.com
+      - pposonggil
       - pposonggil-react
       - mysql
 
@@ -36,7 +36,7 @@ services:
       - mysql
     expose:
       - 8888
-    build: ./Docker/server
+    build: ./Backend/server
     container_name: server
     restart: unless-stopped
     stdin_open: true # `-i`
@@ -48,10 +48,10 @@ services:
       - back-network
     volumes:
       - type: bind
-        source: ./Docker/server
+        source: ./Backend/server
         target: /usr/src/app/server
       - type: bind
-        source: ./Docker/Keys
+        source: ./Backend/Keys
         target: /usr/src/app/server/Keys
 
   api_gateway:
@@ -60,7 +60,7 @@ services:
       - mysql
     expose:
       - 8889
-    build: ./Docker/api_gateway
+    build: ./Backend/api_gateway
     container_name: api_gateway
     restart: unless-stopped
     stdin_open: true # `-i`
@@ -72,10 +72,10 @@ services:
       - back-network
     volumes:
       - type: bind
-        source: ./Docker/api_gateway
+        source: ./Backend/api_gateway
         target: /usr/src/app/api_gateway
       - type: bind
-        source: ./Docker/Keys
+        source: ./Backend/Keys
         target: /usr/src/app/api_gateway/Keys
 
   pposonggil-react:
@@ -84,7 +84,7 @@ services:
       - mysql
     expose:
       - 3000
-    build: ./pposonggil-react
+    build: ./Frontend/pposonggil-react
     container_name: pposonggil-react
     restart: unless-stopped
     stdin_open: true # `-i`
@@ -96,20 +96,20 @@ services:
       - back-network
     volumes:
       - type: bind
-        source: ./pposonggil-react
+        source: ./Frontend/pposonggil-react
         target: /usr/src/app/pposonggil-react
 
-  usedstuff.com:
+  pposonggil:
     image: gyaaaangho/usedstuff:1.0
     build:
-      context: ./Docker/usedStuff
+      context: ./Backend/pposonggil
       dockerfile: Dockerfile
-    container_name: usedstuff.com
+    container_name: pposonggil
     expose:
       - 8080
     environment:
       - SPRING_PROFILES_ACTIVE=prod
-      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/Tables_in_nodejs # MySQL ? ⑦???  ???곌껐
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/Tables_in_nodejs 
       - SPRING_DATASOURCE_USERNAME=pposong
       - SPRING_DATASOURCE_PASSWORD=000000
     depends_on:
@@ -124,7 +124,7 @@ services:
     image: gonaging/mysql:8
     restart: unless-stopped
     env_file:
-      - ./Docker/Keys/.env
+      - ./Backend/Keys/.env
     container_name: mysqlDB
     expose:
       - 3306
@@ -138,7 +138,7 @@ services:
         source: db
         target: /var/lib/mysql
       - type: bind
-        source: ./Docker/mysql
+        source: ./Backend/mysql
         target: /docker-entrypoint-initdb.d
     networks:
       - back-network
@@ -159,11 +159,11 @@ services:
     volumes:
 #      - "${PWD}/Docker/osrm/data:/data"
       - type: bind
-        source: ./Docker/osrm/data
+        source: ./Backend/osrm/data
         target: /data
 #      - "${PWD}/Docker/osrm/profiles/foot_pposong.lua:/opt/foot_pposong.lua"
       - type: bind
-        source: ./Docker/osrm/profiles/foot_pposong.lua
+        source: ./Backend/osrm/profiles/foot_pposong.lua
         target: /opt/foot_pposong.lua
     #
     networks:
@@ -176,7 +176,7 @@ services:
     volumes:
       #- "${PWD}/Docker/osrm/data:/data"
       - type: bind
-        source: ./Docker/osrm/data
+        source: ./Backend/osrm/data
         target: /data
     depends_on:
       osrm-extract:
@@ -191,7 +191,7 @@ services:
     volumes:
       #- "${PWD}/Docker/osrm/data:/data"
       - type: bind
-        source: ./Docker/osrm/data
+        source: ./Backend/osrm/data
         target: /data
     depends_on:
       osrm-partition:
@@ -208,7 +208,7 @@ services:
     volumes:
       #- "${PWD}/Docker/osrm/data:/data"
       - type: bind
-        source: ./Docker/osrm/data
+        source: ./Backend/osrm/data
         target: /data
     depends_on:
       osrm-customize:
