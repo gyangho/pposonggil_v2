@@ -100,10 +100,9 @@ services:
         target: /usr/src/app/pposonggil-react
 
   pposonggil:
-    image: gyaaaangho/usedstuff:1.0
     build:
       context: ./Backend/pposonggil
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     container_name: pposonggil
     expose:
       - 8080

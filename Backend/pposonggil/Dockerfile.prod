@@ -1,0 +1,15 @@
+# 빌드 스테이지
+FROM openjdk:21-jdk-slim AS builder
+WORKDIR pposonggil
+ARG JAR_FILE=build/libs/*.jar
+COPY ${JAR_FILE} application.jar
+RUN java -Djarmode=layertools -jar application.jar extract
+
+# 실행 스테이지
+FROM openjdk:21-jdk-slim
+WORKDIR pposonggil
+COPY --from=builder /pposonggil/dependencies/ ./
+COPY --from=builder /pposonggil/spring-boot-loader/ ./
+COPY --from=builder /pposonggil/snapshot-dependencies/ ./
+COPY --from=builder /pposonggil/application/ ./
+ENTRYPOINT ["java", "-Dspring.profiles.active=prod", "-Duser.timezone=Asia/Seoul", "org.springframework.boot.loader.launch.JarLauncher"]
