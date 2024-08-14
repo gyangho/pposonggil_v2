@@ -101,7 +101,7 @@ services:
 
   pposonggil:
     build:
-      context: ./Backend/pposonggil.prod
+      context: ./Backend/pposonggil
       dockerfile: Dockerfile.prod
     container_name: pposonggil
     expose:

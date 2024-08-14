@@ -63,6 +63,20 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 }
 
+task updateLib(type: Copy) {
+	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+	from configurations.compileClasspath into "libs/"
+	from configurations.runtimeClasspath into "libs/"
+}
+
+task buildAndReload {
+	dependsOn build
+	mustRunAfter build    // buildAndReload must run after the source files are built into class files using build task
+	doLast {
+		new File(".", ".restart").text = "${System.currentTimeMillis()}" // update trigger file in root folder for hot reload
+	}
+}
+
 jar{
 	enabled = false
 }

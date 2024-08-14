@@ -104,6 +104,10 @@ services:
       context: ./Backend/pposonggil
       dockerfile: Dockerfile.dev
     container_name: pposonggil
+    volumes:
+      - type: bind
+        source: ./Backend/pposonggil
+        target: /usr/src/pposonggil
     expose:
       - 8080
     environment:
