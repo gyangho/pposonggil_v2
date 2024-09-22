@@ -1,0 +1,19 @@
+spring:
+  profiles:
+    active: prod
+
+  config:
+    import:
+      - application-secret.yml
+      - application-dev.yml
+      - application-prod.yml
+      - application-oauth.yml
+
+# devtools
+  devtools:
+    restart:
+      enabled: true # restart 활성
+      additional-paths: . # 추가 경로 설정
+      trigger-file: .restart # 트리거 파일로서 해당 파일이 수정되면 서버가 재시적됨
+    livereload:
+      enables: true # livereload 활성화
