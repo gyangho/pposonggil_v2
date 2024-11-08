@@ -1,0 +1,182 @@
+<!-- 추가한 코드 -->
+<!-- 2023.11.30 김건학 
+	뽀송타임 기본 html
+	대중교통 루트 표현
+	강수량 정보 격자로 표현 -->
+<!-- 2023.12.04 김건학 
+    격자 삭제
+    검색 시각에 따라 30분 간격으로 4 시각 계산-->
+<!-- 2023.12.08 김건학 
+    window 객체에 WalkData, WalkWeatherData 저장
+    수아님 코드 합침-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="/css/styles.css" />
+    <link rel="icon" href="/image/21.png" type="image/x-icon">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>뽀송길</title>
+</head>
+
+<body>
+    <div class="status-bar">
+        <div class="status-bar__column">
+            <span>PPOSONG</span>
+
+            <i class="fa-solid fa-cloud" style="color: #9fd8f6;"></i>
+        </div>
+
+        <div class="status-bar__column">
+            <span>ver 0.0.2</span>
+
+        </div>
+    </div>
+
+    <header class="alt-header">
+        <div class="alt-header__column">
+            <i class="fa-solid fa-angle-left fa-xl"></i>
+        </div>
+        <div class="alt-header__column">
+            <h1 class="alt-header__title">뽀송길 검색 결과</h1>
+        </div>
+        <div class="alt-header__column">
+
+            <nav class="screen-header__menu">
+                <ul class="screen-header__menu-list">
+                    <li class="screen-header__menu-btn">
+                        <a class="screen-header__menu-link" href="/main"><i class="fa-solid fa-house fa-lg"></i></a>
+                    </li>
+                    <li class="screen-header__menu-btn">
+                        <a class="screen-header__menu-link" href="/main/mypage"><i
+                                class="fa-solid fa-circle-user fa-lg"></i></a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-screen">
+        <div id="map" style="width:100%;height:50vh;">
+            <div class="btns" style="z-index:999;">
+                <button id="TimeButton1" style="position: absolute; z-index:100; left: 3%; bottom: 5%;"></button>
+                <button id="TimeButton2" style="position: absolute; z-index:100; left: 27%; bottom: 5%;"></button>
+                <button id="TimeButton3" style="position: absolute; z-index:100; left: 52%; bottom: 5%;"></button>
+                <button id="TimeButton4" style="position: absolute; z-index:100; left: 77%; bottom: 5%;"></button>
+            </div>
+        </div>
+        <div class="route-component" style="z-index:999;">
+            <div id="dynamicContent"></div>
+        </div>
+    </main>
+</body>
+
+</html>
+
+<script src="https://kit.fontawesome.com/660f4d6ed1.js" crossorigin="anonymous"></script>
+
+<script src="/js/back.js"></script>
+
+<script type="module">
+    import { getTimeStamp } from "/js/cal_time.js";
+    window.Route_Time = getTimeStamp(3);
+</script>
+<!--2024.03.24 이경호 "https://localhost" 삭제(도커 구동 중이지 않은 장치에서도 호출 가능하도록 수정)-->
+<script type="text/javascript" src="/api/map"></script>
+<script>
+    // localStorage에서 데이터를 가져옴
+    // 해당 코드에서만 Route_Line은 Route(경로 정보)를 뜻한다.
+
+    // 2023.12.10 이경호
+    // local --> session
+    const Route = JSON.parse(sessionStorage.getItem('Route')) || {};
+    // 지도에 표현할 날씨 데이터들 render
+    const receivedData = JSON.parse(`{{gridData}}`);
+
+    // 대중교통 루트 노드들의 가운데를 기준으로 지도 표현
+    let container = document.getElementById('map');
+    let options = {
+        center: new kakao.maps.LatLng(Route.mid_Lat, Route.mid_Lon),
+        level: 7
+    };
+    let map = new kakao.maps.Map(container, options);
+</script>
+
+<script type="module">
+    import { get_RouteLine, get_WalkData } from "/js/pposong.js";
+
+
+    // 2023.12.08 김건학
+    // 버튼을 누르지 않아도 사용할 수 있게 window 객체에 WalkData, WalkWeatherData 저장
+    //window.WalkData = JSON.stringify(get_WalkData(Route, Route_Time));
+
+    // 2023.12.09 김건학
+    // WalkWeatherData 동기적으로 받게 수정
+    get_RouteLine(Route);
+    const WalkData = get_WalkData(Route, Route_Time);
+    const WalkWeatherData = [];
+    try {
+        for (let walkData of WalkData) {
+            let sectionData = [];
+            var sum_RN1 = 0;
+            for (let section of walkData) {
+                for (let temp of receivedData) {
+                    if (Number(temp[0].X) == section.X && Number(temp[0].Y) == section.Y) {
+                        for (let weather of temp) {
+                            if (weather.TIME == section.basetime) {
+                                var section_RN1 = (Number(weather.RN1) * section.sectiontime) / 60 .toFixed();
+                                sum_RN1 += section_RN1;
+                                sectionData.push({
+                                    DATE: weather.DATE,
+                                    TIME: weather.TIME,
+                                    X: weather.X,
+                                    Y: weather.Y,
+                                    RN1: weather.RN1,
+                                    T1H: weather.T1H,
+                                    REH: weather.REH,
+                                    WSD: weather.WSD,
+                                    section_RN1: section_RN1.toFixed(2),
+                                })
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                }
+                var resultData = {
+                    sum_RN1: sum_RN1.toFixed(2),
+                    walkData: sectionData,
+                };
+            }
+            WalkWeatherData.push(resultData);
+        }
+        console.log(WalkWeatherData);
+        document.getElementById("TimeButton1").innerText = window.Route_Time[0] + '\n강수량 :' + WalkWeatherData[0].sum_RN1;
+        document.getElementById("TimeButton2").innerText = window.Route_Time[1] + '\n강수량 :' + WalkWeatherData[1].sum_RN1;
+        document.getElementById("TimeButton3").innerText = window.Route_Time[2] + '\n강수량 :' + WalkWeatherData[2].sum_RN1;
+        document.getElementById("TimeButton4").innerText = window.Route_Time[3] + '\n강수량 :' + WalkWeatherData[3].sum_RN1;
+    } catch (error) {
+        console.error('Error :', error);
+    }
+    document.getElementById("TimeButton1").addEventListener("click", function () {// 버튼 1 누르면 
+        markingWeather(0, WalkData, WalkWeatherData);//버튼 누르면 날씨 정보 띄우는 함수
+    });
+
+    document.getElementById("TimeButton2").addEventListener("click", function () {// 버튼 2 누르면
+        markingWeather(1, WalkData, WalkWeatherData);
+    });
+
+    document.getElementById("TimeButton3").addEventListener("click", function () {// 버튼 3 누르면
+        markingWeather(2, WalkData, WalkWeatherData);
+    });
+
+    document.getElementById("TimeButton4").addEventListener("click", function () {// 버튼 4 누르면
+        markingWeather(3, WalkData, WalkWeatherData);
+    });
+
+
+</script>
+<script type="module" src="/js/map.js" async></script>
+<script src="/js/kakao.js"></script>
+<script src="/js/marking.js"></script>

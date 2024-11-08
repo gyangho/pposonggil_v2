@@ -1,0 +1,9 @@
+# 빌드 스테이지
+FROM openjdk:21-jdk-slim
+WORKDIR /usr/src/pposonggil
+COPY . /usr/src/pposonggil
+VOLUME /tmp
+
+RUN chmod +x entrypoint.sh && ./gradlew updateLib
+EXPOSE 8080
+CMD [ "sh" , "entrypoint.sh" ]
